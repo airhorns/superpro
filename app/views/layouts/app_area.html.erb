@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Flurish</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <link rel="icon" type="image/png" sizes="196x196" href="<%= image_url("/images/favicon-196x196.png") %>">
+    <link rel="icon" type="image/png" sizes="16x16" href="<%= image_url("/images/favicon-16x16.png") %>">
+    <link rel="icon" type="image/png" sizes="32x32" href="<%= image_url("/images/favicon-32x32.png") %>">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+
+  <body>
+    <%= yield %>
+    <%= stylesheet_packs_with_chunks_tag 'app', media: 'all' %>
+    <%= javascript_packs_with_chunks_tag 'app' %>
+  </body>
+</html>

@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -ex
+bundle exec rufo --check app config lib test
+bundle exec rubocop
+yarn run lint

@@ -1,0 +1,43 @@
+AllCops:
+  Exclude:
+    - "vendor/**/*"
+    - "node_modules/**/*"
+  TargetRubyVersion: 2.6
+
+require:
+  - rubocop-performance
+  - rubocop-rails
+
+Rails:
+  Enabled: true
+
+Security:
+  Enabled: true
+
+Performance:
+  Enabled: true
+
+Layout:
+  Enabled: false
+
+Metrics:
+  Enabled: false
+
+Style:
+  Enabled: false
+
+Naming/MemoizedInstanceVariableName:
+  Enabled: false
+
+Lint/AmbiguousBlockAssociation:
+  Enabled: false
+
+Rails/UnknownEnv:
+  Environments:
+    - production
+    - development
+    - test
+    - integration_test
+
+Bundler/OrderedGems:
+  Enabled: false

@@ -1,0 +1,18 @@
+describe("Logins", function() {
+  beforeEach(() => {
+    cy.emptyApp();
+  });
+
+  it("can log in", function() {
+    cy.visit("/");
+    cy.get("#email").type("cypress@flurish.dev")
+    cy.get("#password").type("incorrect")
+
+    cy.get("[data-test-id=login-submit]").click()
+    cy.contains("Invalid Email")
+
+    cy.get("#password").clear().type("secrets")
+    cy.get("[data-test-id=login-submit]").click()
+    cy.contains("Apps")
+  });
+});

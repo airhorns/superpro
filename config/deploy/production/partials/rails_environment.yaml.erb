@@ -1,0 +1,48 @@
+- name: DATABASE_URL
+  valueFrom:
+    secretKeyRef:
+      name: application-secrets
+      key: DATABASE_URL
+- name: FLURISH_CORE_PRODUCTION_GCS_PRIVATE_KEY
+  valueFrom:
+    secretKeyRef:
+      name: application-secrets
+      key: FLURISH_CORE_PRODUCTION_GCS_PRIVATE_KEY
+- name: RAILS_ENV
+  value: production
+- name: REDIS_URL
+  value: redis://redis:6379/1
+- name: SECRET_KEY_BASE
+  valueFrom:
+    secretKeyRef:
+      name: application-secrets
+      key: SECRET_KEY_BASE
+- name: SENTRY_DSN
+  valueFrom:
+    secretKeyRef:
+      name: application-secrets
+      key: SENTRY_DSN
+- name: GOOGLE_OAUTH_CLIENT_ID
+  valueFrom:
+    secretKeyRef:
+      name: application-secrets
+      key: GOOGLE_OAUTH_CLIENT_ID
+- name: GOOGLE_OAUTH_CLIENT_SECRET
+  valueFrom:
+    secretKeyRef:
+      name: application-secrets
+      key: GOOGLE_OAUTH_CLIENT_SECRET
+- name: HONEYCOMB_API_KEY
+  valueFrom:
+    secretKeyRef:
+      name: application-secrets
+      key: HONEYCOMB_API_KEY
+- name: SKYLIGHT_AUTHENTICATION
+  valueFrom:
+    secretKeyRef:
+      name: application-secrets
+      key: SKYLIGHT_AUTHENTICATION
+- name: RAILS_SERVE_STATIC_FILES
+  value: "true"
+- name: RAILS_LOG_TO_STDOUT
+  value: "true"

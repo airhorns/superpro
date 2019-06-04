@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "incremental": true,
+    "declaration": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "lib": ["dom", "esnext.asynciterable", "es2017"],
+    "module": "esNext",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "target": "es6",
+    "jsx": "react",
+    "noImplicitAny": true,
+    "strict": true,
+    "importHelpers": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "types": ["node", "jest"],
+    "tsBuildInfoFile": "tsconfig.tsbuildinfo",
+    "baseUrl": "app/javascript",
+    "paths": {
+      "react-dnd-touch-backend": ["types/react-dnd-touch-backend.d.ts"]
+    }
+  },
+  "exclude": ["node_modules", "vendor", "public"],
+  "compileOnSave": false
+}

@@ -1,0 +1,27 @@
+overwrite: true
+silent: false
+schema:
+  - https://app.ggt.dev/graphql:
+      headers:
+        X-Trusted-Dev-Client: yes
+documents: "app/javascript/app/{components,lib}/**/*.{ts,tsx}"
+generates:
+  app/javascript/app/app-graph.tsx:
+    plugins:
+      - add: "// THIS IS A GENERATED FILE! You shouldn't edit it manually. Regenerate it using `yarn generate-graphql`."
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-apollo"
+    config:
+      scalars:
+        ISO8601DateTime: string
+        EntityKey: string
+        FieldKey: string
+        IconName: string
+      withHOC: false
+      withHooks: false
+      constEnums: true
+  app/javascript/app/app-graph-introspection.ts:
+    plugins:
+      - add: "// THIS IS A GENERATED FILE! You shouldn't edit it manually. Regenerate it using yarn `generate-graphql`."
+      - fragment-matcher

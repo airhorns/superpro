@@ -1,0 +1,27 @@
+class Types::Identity::UserType < Types::BaseObject
+  field :id, GraphQL::Types::ID, null: false
+  field :full_name, String, null: false
+  field :email, String, null: false
+
+  field :locked, Boolean, null: false
+  field :confirmed, Boolean, null: false
+
+  field :created_at, GraphQL::Types::ISO8601DateTime, null: false
+  field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
+
+  field :preferences, Types::Identity::UserPreferencesType, null: false
+  field :accounts, [Types::Identity::AccountType], null: false
+  field :auth_area_url, String, null: false
+
+  def preferences
+    { sidebar_expanded: false }
+  end
+
+  def accounts
+    object.permissioned_accounts.kept
+  end
+
+  def auth_area_url
+    Rails.application.routes.url_helpers.auth_root_url
+  end
+end

@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: migrate-<%= deployment_id %>
+spec:
+  containers:
+    - name: migrate
+      args:
+        - bundle
+        - exec
+        - rake
+        - db:create
+        - db:migrate
+      env: <%= partial 'rails_environment' %>
+      image: gcr.io/flurish-core-production/core:<%= current_sha %>
+      resources: {}
+  restartPolicy: Never

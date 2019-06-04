@@ -1,0 +1,49 @@
+---
+apiVersion: cloud.google.com/v1beta1
+kind: BackendConfig
+metadata:
+  name: assets-backend-config
+spec:
+  cdn:
+    enabled: true
+    cachePolicy:
+      includeHost: true
+      includeProtocol: true
+      includeQueryString: false
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    service: web-assets
+  name: web-assets
+  annotations:
+    beta.cloud.google.com/backend-config: '{"ports": {"80":"assets-backend-config"}}'
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 3000
+  selector:
+    service: web
+  type: NodePort
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: assets-ingress
+  annotations:
+    kubernetes.io/ingress.class: gce
+spec:
+  tls:
+    - secretName: assets.flurish.dev-production
+      hosts:
+        - assets.flurish.dev
+  rules:
+    - host: assets.flurish.dev
+      http:
+        paths:
+          - backend:
+              serviceName: web-assets
+              servicePort: 80

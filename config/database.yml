@@ -1,0 +1,29 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+development:
+  <<: *default
+  database: flurish_development
+  user: flurish
+  host: localhost
+  port: 5432
+
+test:
+  <<: *default
+  database: flurish_test
+  user: flurish
+  host: localhost
+  port: 5432
+
+integration_test:
+  <<: *default
+  database: flurish_integration_test
+  user: flurish
+  host: localhost
+  port: 5432
+
+production:
+  <<: *default
+  url: <%= ENV['DATABASE_URL'] %>

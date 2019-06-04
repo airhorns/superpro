@@ -1,0 +1,33 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    service: jobs
+  name: jobs
+spec:
+  replicas: 2
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        service: jobs
+    spec:
+      containers:
+        - name: jobs
+          image: gcr.io/flurish-core-production/core:<%= current_sha %>
+          args:
+            - bundle
+            - exec
+            - sidekiq
+            - -c
+            - "25"
+            - -q
+            - default
+          env: <%= partial 'rails_environment' %>
+          resources: {}
+          securityContext:
+            capabilities:
+              add:
+                - SYS_PTRACE
+      restartPolicy: Always

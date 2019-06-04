@@ -1,0 +1,51 @@
+<% ["madewithflurish.dev", "gogoflurish.app", "gapp.fun"].each do |appdomain| %>
+# certificate for apps hosted on subdomains of <%= appdomain %>
+---
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  name: <%= appdomain %>-production
+spec:
+  secretName: <%= appdomain %>-production
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  dnsNames:
+    - "<%= appdomain %>"
+    - "*.<%= appdomain %>"
+  acme:
+    config:
+      - dns01:
+          provider: flurish-clouddns
+        domains:
+          - "<%= appdomain %>"
+          - "*.<%= appdomain %>"
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: render-ingress-<%= appdomain %>
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/client-body-buffer-size: 2M
+    nginx.ingress.kubernetes.io/proxy-body-size: 10M
+spec:
+  tls:
+    - secretName: <%= appdomain %>-production
+      hosts:
+        - "<%= appdomain %>"
+        - "*.<%= appdomain %>"
+  rules:
+    - host: <%= appdomain %>
+      http:
+        paths:
+          - backend:
+              serviceName: web
+              servicePort: 80
+    - host: "*.<%= appdomain %>"
+      http:
+        paths:
+          - backend:
+              serviceName: web
+              servicePort: 80
+<% end %>
