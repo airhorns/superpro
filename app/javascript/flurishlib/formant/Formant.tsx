@@ -5,6 +5,7 @@ import { Input } from "./Input";
 import { Select } from "./Select";
 import { ControlWrapper } from "./ControlWrapper";
 import { Switch } from "./Switch";
+import { NumberInput } from "./NumberInput";
 
 type AcceptedFormikProps<Values> = Pick<FormikConfig<Values>, Exclude<keyof FormikConfig<Values>, "component" | "render" | "children">>;
 
@@ -14,6 +15,7 @@ export interface FormantProps<Values> extends AcceptedFormikProps<Values> {
 
 export class Formant<Values> extends React.Component<FormantProps<Values>> {
   static Input = Input;
+  static NumberInput = NumberInput;
   static Select = Select;
   static ControlWrapper = ControlWrapper;
   static Switch = Switch;

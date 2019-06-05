@@ -11,7 +11,7 @@ import { ValueType } from "react-select/lib/types";
 import { isArrayOptionType } from "../utils";
 
 export interface SelectOptionType {
-  value: string | null;
+  value: string | boolean | null;
   label: string | React.ReactNode;
 }
 

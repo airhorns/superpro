@@ -9,6 +9,7 @@ import { UserAvatar } from "../common/UserAvatar";
 import { signOut } from "../../lib/auth";
 import { Settings } from "../../lib/settings";
 import { Row } from "../../../flurishlib";
+import { Budget } from "../common/FlurishIcons";
 
 gql`
   query SiderInfo {
@@ -92,6 +93,7 @@ export const AppSidebar = withRouter(
                   </Box>
                 )}
                 <AppSidebarButton path="/" exact text="Home" icon={<Home />} />
+                <AppSidebarButton path="/budget" exact text="Budget" icon={<Budget />} />
                 <Box flex />
                 {!loading && (
                   <Box pad="small" align="center">
