@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_24_181240) do
+ActiveRecord::Schema.define(version: 2019_06_05_133629) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,6 +29,31 @@ ActiveRecord::Schema.define(version: 2019_04_24_181240) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["discarded_at"], name: "index_accounts_on_discarded_at"
+  end
+
+  create_table "budget_lines", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.bigint "creator_id", null: false
+    t.bigint "budget_id", null: false
+    t.string "description", null: false
+    t.string "section", null: false
+    t.boolean "variable", null: false
+    t.string "recurrence", null: false
+    t.bigint "amount_subunits", null: false
+    t.string "currency", null: false
+    t.integer "sort_order", default: 1, null: false
+    t.datetime "discarded_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "budgets", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.bigint "creator_id", null: false
+    t.string "name", null: false
+    t.datetime "discarded_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -61,4 +86,9 @@ ActiveRecord::Schema.define(version: 2019_04_24_181240) do
   add_foreign_key "account_user_permissions", "accounts"
   add_foreign_key "account_user_permissions", "users"
   add_foreign_key "accounts", "users", column: "creator_id"
+  add_foreign_key "budget_lines", "accounts"
+  add_foreign_key "budget_lines", "budgets"
+  add_foreign_key "budget_lines", "users", column: "creator_id"
+  add_foreign_key "budgets", "accounts"
+  add_foreign_key "budgets", "users", column: "creator_id"
 end

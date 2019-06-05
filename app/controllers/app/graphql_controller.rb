@@ -20,12 +20,14 @@ class App::GraphQLController < AppAreaController
 
   # Dev only helper for Apollo and gql-gen to be able to get the schema
   def set_fake_env
-    if !current_user
-      @current_user = Account.first.permissioned_users.first
-    end
+    if current_user.nil?
+      @current_account = if params[:account_id].blank?
+                           Account.first
+                         else
+                           Account.find(params[:account_id])
+                         end
 
-    if params[:app_id].blank?
-      @current_account = Account.first
+      @current_user = @current_account.permissioned_users.first
     end
   end
 end

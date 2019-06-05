@@ -13,6 +13,7 @@ import { PageLoadSpin } from "../../flurishlib";
 
 const HomePage = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "Home" */ "./home/HomePage"));
 const NewBudgetPage = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "Budget" */ "./budget/NewBudgetPage"));
+const EditBudgetPage = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "Budget" */ "./budget/EditBudgetPage"));
 
 export const FlurishClient = getClient();
 
@@ -33,6 +34,7 @@ export class App extends React.Component {
                         <Switch>
                           <Route path="/" exact component={HomePage} />
                           <Route path="/budget" exact component={NewBudgetPage} />
+                          <Route path="/budget/:budgetId" exact component={EditBudgetPage} />
                           <Route component={NotFoundPage} />
                         </Switch>
                       </React.Suspense>

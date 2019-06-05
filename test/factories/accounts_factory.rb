@@ -6,6 +6,7 @@ FactoryBot.define do
 
     after(:create) do |account, _evaluator|
       create(:account_user_permission, account: account, user: account.creator)
+      create(:base_operational_budget, account: account, creator: account.creator)
     end
   end
 end

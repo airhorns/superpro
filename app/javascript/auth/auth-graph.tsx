@@ -17,9 +17,6 @@ export type Scalars = {
    * used by GraphQL to represent free-form human-readable text.
  */
   MutationClientId: any,
-  EntityKey: string,
-  FieldKey: string,
-  IconName: string,
 };
 
 export type Account = {

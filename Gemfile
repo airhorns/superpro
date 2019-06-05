@@ -14,6 +14,11 @@ gem 'rack-cors'
 gem 'rails', '6.0.0.rc1'
 gem 'webpacker'
 
+# Functionality
+gem 'money-rails'
+gem 'rrule'
+gem 'rails-i18n'
+
 # Integrations
 gem 'omniauth'
 

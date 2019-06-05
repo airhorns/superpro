@@ -13,9 +13,7 @@ export type Scalars = {
   Float: number;
   /** An ISO 8601-encoded datetime */
   ISO8601DateTime: string;
-  EntityKey: string;
-  FieldKey: string;
-  IconName: string;
+  RecurrenceString: any;
 };
 
 export type Account = {
@@ -32,10 +30,62 @@ export type Account = {
 
 export type AppQuery = {
   __typename?: "AppQuery";
+  /** Find a budget by ID */
+  budget?: Maybe<Budget>;
+  /** Fetch all budgets in the system */
+  budgets: Array<Budget>;
   /** Get the details of the current account */
   currentAccount: Account;
   /** Get the details of the currently logged in user */
   currentUser: User;
+};
+
+export type AppQueryBudgetArgs = {
+  budgetId: Scalars["ID"];
+};
+
+export type Budget = {
+  __typename?: "Budget";
+  budgetLines: Array<BudgetLine>;
+  createdAt: Scalars["ISO8601DateTime"];
+  creator: User;
+  discardedAt: Scalars["ISO8601DateTime"];
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  updatedAt: Scalars["ISO8601DateTime"];
+};
+
+export type BudgetLine = {
+  __typename?: "BudgetLine";
+  amount: Money;
+  budget: Budget;
+  createdAt: Scalars["ISO8601DateTime"];
+  creator: User;
+  description: Scalars["String"];
+  discardedAt: Scalars["ISO8601DateTime"];
+  id: Scalars["ID"];
+  recurrence: Scalars["RecurrenceString"];
+  section: Scalars["String"];
+  sortOrder: Scalars["Int"];
+  updatedAt: Scalars["ISO8601DateTime"];
+  variable: Scalars["Boolean"];
+};
+
+export type Currency = {
+  __typename?: "Currency";
+  decimalMark: Scalars["String"];
+  isoCode: Scalars["String"];
+  name: Scalars["String"];
+  symbol: Scalars["String"];
+  symbolFirst: Scalars["Boolean"];
+  thousandsSeparator: Scalars["String"];
+};
+
+export type Money = {
+  __typename?: "Money";
+  currency: Currency;
+  formatted: Scalars["String"];
+  fractional: Scalars["Int"];
 };
 
 export type User = {
@@ -56,6 +106,22 @@ export type UserPreferences = {
   __typename?: "UserPreferences";
   sidebarExpanded: Scalars["Boolean"];
 };
+export type GetBudgetForEditQueryVariables = {
+  budgetId: Scalars["ID"];
+};
+
+export type GetBudgetForEditQuery = { __typename?: "AppQuery" } & {
+  budget: Maybe<
+    { __typename?: "Budget" } & Pick<Budget, "id" | "name"> & {
+        budgetLines: Array<
+          { __typename?: "BudgetLine" } & Pick<BudgetLine, "id" | "description" | "section" | "variable" | "recurrence" | "sortOrder"> & {
+              amount: { __typename?: "Money" } & Pick<Money, "fractional">;
+            }
+        >;
+      }
+  >;
+};
+
 export type SiderInfoQueryVariables = {};
 
 export type SiderInfoQuery = { __typename?: "AppQuery" } & {
@@ -63,6 +129,34 @@ export type SiderInfoQuery = { __typename?: "AppQuery" } & {
       preferences: { __typename?: "UserPreferences" } & Pick<UserPreferences, "sidebarExpanded">;
     };
 };
+
+export const GetBudgetForEditDocument = gql`
+  query GetBudgetForEdit($budgetId: ID!) {
+    budget(budgetId: $budgetId) {
+      id
+      name
+      budgetLines {
+        id
+        description
+        section
+        variable
+        recurrence
+        sortOrder
+        amount {
+          fractional
+        }
+      }
+    }
+  }
+`;
+export type GetBudgetForEditComponentProps = Omit<
+  Omit<ReactApollo.QueryProps<GetBudgetForEditQuery, GetBudgetForEditQueryVariables>, "query">,
+  "variables"
+> & { variables: GetBudgetForEditQueryVariables };
+
+export const GetBudgetForEditComponent = (props: GetBudgetForEditComponentProps) => (
+  <ReactApollo.Query<GetBudgetForEditQuery, GetBudgetForEditQueryVariables> query={GetBudgetForEditDocument} {...props} />
+);
 
 export const SiderInfoDocument = gql`
   query SiderInfo {

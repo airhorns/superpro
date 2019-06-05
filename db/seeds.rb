@@ -10,6 +10,6 @@ user.save!
 FactoryBot.create :account, creator: user
 
 Rails.logger.info "DB Seeded!"
-[Account, User].each do |klass|
+[Account, User, BudgetLine].each do |klass|
   Rails.logger.info "#{klass.name} count: #{klass.all.count}"
 end

@@ -15,9 +15,6 @@ generates:
     config:
       scalars:
         ISO8601DateTime: string
-        EntityKey: string
-        FieldKey: string
-        IconName: string
       withHOC: false
       withHooks: false
       constEnums: true

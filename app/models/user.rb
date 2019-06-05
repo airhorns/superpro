@@ -38,6 +38,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable, :confirmable, :lockable, :timeoutable, :trackable
 
   has_many :created_accounts, foreign_key: :creator_id, inverse_of: :creator, class_name: "Account", dependent: :restrict_with_exception
+  has_many :created_budgets, foreign_key: :creator_id, inverse_of: :creator, class_name: "Budget", dependent: :restrict_with_exception
+  has_many :created_budget_lines, foreign_key: :creator_id, inverse_of: :creator, class_name: "BudgetLine", dependent: :restrict_with_exception
 
   has_many :account_user_permissions, inverse_of: :user, dependent: :destroy
   has_many :permissioned_accounts, through: :account_user_permissions, source: :account

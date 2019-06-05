@@ -56,7 +56,7 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
 
   # Whitelist docker-for-mac ips for web console
-  config.web_console.whitelisted_ips = "172.18.0.0/16"
+  config.web_console.permissions = ["172.18.0.0/16", "172.19.0.0/16"]
 
   # Development happens on a real domain that resolves to localhost through an nginx
   config.force_ssl = true
