@@ -1,6 +1,6 @@
 import * as React from "react";
 import { TextInput as GrommetTextInput, TextInputProps as GrommetTextInputProps } from "grommet";
-import { Field as FormikField, FieldProps as FormikFieldProps } from "formik";
+import { Field as FormikField, FastField as FormikFastField, FieldProps as FormikFieldProps } from "formik";
 import { AcceptedFormikFieldProps } from "./types";
 import { InputConfigProps, propsForGrommetComponent } from "./inputHelpers";
 import { ControlWrapper } from "./ControlWrapper";
@@ -14,12 +14,14 @@ export interface InputProps
     AcceptedGrommetTextInputProps,
     InputConfigProps {
   label?: string;
+  fast?: boolean;
 }
 
 export class Input<Values> extends React.Component<InputProps> {
   render() {
+    const Component = this.props.fast ? FormikFastField : FormikField;
     return (
-      <FormikField validate={this.props.validate} name={this.props.name}>
+      <Component validate={this.props.validate} name={this.props.name}>
         {({ field }: FormikFieldProps<Values>) => {
           return (
             <ControlWrapper name={field.name} label={this.props.label} showErrorMessages={this.props.showErrorMessages}>
@@ -40,7 +42,7 @@ export class Input<Values> extends React.Component<InputProps> {
             </ControlWrapper>
           );
         }}
-      </FormikField>
+      </Component>
     );
   }
 }

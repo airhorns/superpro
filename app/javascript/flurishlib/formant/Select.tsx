@@ -1,6 +1,6 @@
 import * as React from "react";
 import _ from "lodash";
-import { Field as FormikField, FieldProps as FormikFieldProps } from "formik";
+import { Field as FormikField, FastField as FormikFastField, FieldProps as FormikFieldProps } from "formik";
 import ReactSelect from "react-select";
 import { Props as ReactSelectProps } from "react-select/lib/Select";
 import { AcceptedFormikFieldProps } from "./types";
@@ -23,6 +23,7 @@ export interface SelectProps<Option extends SelectOptionType> extends AcceptedFo
   onBlur?: (value: any) => void;
   filterOption?: ReactSelectProps<Option>["filterOption"];
   width?: BoxProps["width"];
+  fast?: boolean;
 }
 
 export class Select<Option extends SelectOptionType = SelectOptionType> extends React.Component<SelectProps<Option>> {
@@ -31,8 +32,10 @@ export class Select<Option extends SelectOptionType = SelectOptionType> extends 
   }
 
   render() {
+    const Component = this.props.fast ? FormikFastField : FormikField;
+
     return (
-      <FormikField validate={this.props.validate} name={this.props.name}>
+      <Component validate={this.props.validate} name={this.props.name}>
         {({ field, form }: FormikFieldProps<any>) => {
           let selectedOption: SelectOptionType | SelectOptionType[] | undefined = undefined;
 
@@ -74,7 +77,7 @@ export class Select<Option extends SelectOptionType = SelectOptionType> extends 
             </ControlWrapper>
           );
         }}
-      </FormikField>
+      </Component>
     );
   }
 }

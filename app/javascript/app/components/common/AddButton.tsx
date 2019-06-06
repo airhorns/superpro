@@ -4,7 +4,6 @@ import { Button, ButtonProps, DropButton, DropButtonProps } from "grommet";
 import { Add, IconProps } from "grommet-icons";
 
 export const AddButtonProps = (size?: IconProps["size"]) => ({
-  primary: true,
   plain: false,
   icon: <Add size={size} />
 });

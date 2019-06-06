@@ -82,7 +82,7 @@
     "nprogress": "^0.2.0",
     "path-to-regexp": "^3.0.0",
     "pluralize": "^8.0.0",
-    "query-string": "^6.4.2",
+    "query-string": "^6.6.0",
     "react": "^16.7.0",
     "react-apollo": "^2.4.1",
     "react-async": "^6.2.0",
@@ -105,13 +105,14 @@
     "react-toast-notifications": "^1.4.0",
     "regenerator-runtime": "^0.13.2",
     "shortid": "^2.2.14",
-    "styled-components": "^4.2.0",
+    "styled-components": "^4.3.0",
     "ts-loader": "^6.0.0",
     "ts-node": "^8.0.3",
     "tslib": "^1.9.3",
     "type-zoo": "^3.3.0",
     "typescript": "^3.5.1",
     "url-join": "^4.0.0",
+    "use-react-router": "^1.0.7",
     "yup": "^0.27.0"
   },
   "devDependencies": {
@@ -126,7 +127,7 @@
     "prettier": "^1.16.4",
     "ts-jest": "^24.0.0",
     "webpack-bundle-analyzer": "^3.1.0",
-    "webpack-dev-server": "^3.3.1"
+    "webpack-dev-server": "^3.6.0"
   },
   "resolutions": {
     "@types/react": "16.8.19"

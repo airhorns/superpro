@@ -17,41 +17,39 @@ const EditBudgetPage = React.lazy(() => import(/* webpackPrefetch: true, webpack
 
 export const FlurishClient = getClient();
 
-export class App extends React.Component {
-  public render() {
-    const app = (
-      <FlagsProvider flags={flags}>
-        <ApolloProvider client={FlurishClient}>
-          <DragDropContextProvider backend={DnDBackendForDevice()}>
-            <Grommet full theme={FlurishGrommetTheme}>
-              <FlurishGlobalStyle />
-              <Router basename={Settings.baseUrl}>
-                <ToastContainer>
-                  <Box fill direction="row">
-                    <AppSidebar />
-                    <Box flex>
-                      <React.Suspense fallback={<PageLoadSpin />}>
-                        <Switch>
-                          <Route path="/" exact component={HomePage} />
-                          <Route path="/budget" exact component={NewBudgetPage} />
-                          <Route path="/budget/:budgetId" exact component={EditBudgetPage} />
-                          <Route component={NotFoundPage} />
-                        </Switch>
-                      </React.Suspense>
-                    </Box>
+export const App = () => {
+  const app = (
+    <FlagsProvider flags={flags}>
+      <ApolloProvider client={FlurishClient}>
+        <DragDropContextProvider backend={DnDBackendForDevice()}>
+          <Grommet full theme={FlurishGrommetTheme}>
+            <FlurishGlobalStyle />
+            <Router basename={Settings.baseUrl}>
+              <ToastContainer>
+                <Box fill direction="row-responsive">
+                  <AppSidebar />
+                  <Box flex>
+                    <React.Suspense fallback={<PageLoadSpin />}>
+                      <Switch>
+                        <Route path="/" exact component={HomePage} />
+                        <Route path="/budget" exact component={NewBudgetPage} />
+                        <Route path="/budget/:budgetId" exact component={EditBudgetPage} />
+                        <Route component={NotFoundPage} />
+                      </Switch>
+                    </React.Suspense>
                   </Box>
-                </ToastContainer>
-              </Router>
-            </Grommet>
-          </DragDropContextProvider>
-        </ApolloProvider>
-      </FlagsProvider>
-    );
+                </Box>
+              </ToastContainer>
+            </Router>
+          </Grommet>
+        </DragDropContextProvider>
+      </ApolloProvider>
+    </FlagsProvider>
+  );
 
-    if (!Settings.devMode) {
-      return <SentryErrorBoundary>{app}</SentryErrorBoundary>;
-    } else {
-      return app;
-    }
+  if (!Settings.devMode) {
+    return <SentryErrorBoundary>{app}</SentryErrorBoundary>;
+  } else {
+    return app;
   }
-}
+};

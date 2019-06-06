@@ -5,6 +5,8 @@ if ((window as any).FLURISH_ENTRYPOINT != "app") {
 export * from "./Page";
 export * from "./PageLayout";
 export * from "./TrashButton";
+export * from "./EditButton";
+export * from "./FadeBox";
 export * from "./AddButton";
 export * from "../../../flurishlib/Link";
 export * from "./DividerHeading";

@@ -1,7 +1,7 @@
 import React from "react";
 import _ from "lodash";
 import { ResponsiveContext, Layer, Box, Button, ButtonProps, Text, DropButton, Heading, Stack } from "grommet";
-import { Home, FormClose } from "grommet-icons";
+import { Home, FormClose, Menu } from "grommet-icons";
 import { withRouter, RouteComponentProps, matchPath } from "react-router-dom";
 import gql from "graphql-tag";
 import { SiderInfoComponent } from "../../app-graph";
@@ -9,7 +9,7 @@ import { UserAvatar } from "../common/UserAvatar";
 import { signOut } from "../../lib/auth";
 import { Settings } from "../../lib/settings";
 import { Row } from "../../../flurishlib";
-import { Budget } from "../common/FlurishIcons";
+import { Budget, FlurishLogo } from "../common/FlurishIcons";
 
 gql`
   query SiderInfo {
@@ -25,6 +25,7 @@ gql`
 `;
 
 interface AppSidebarButtonProps extends RouteComponentProps<{}> {
+  onClick?: (e: React.SyntheticEvent) => void;
   icon?: ButtonProps["icon"];
   text: string;
   path?: string;
@@ -43,10 +44,11 @@ const AppSidebarButton = withRouter((props: AppSidebarButtonProps) => {
         props.history.push(props.path as any);
       }
       e.preventDefault();
+      props.onClick && props.onClick(e);
     };
   } else {
     pathMatch = false;
-    onClick = undefined;
+    onClick = props.onClick;
   }
 
   return (
@@ -59,14 +61,35 @@ const AppSidebarButton = withRouter((props: AppSidebarButtonProps) => {
   );
 });
 
-export interface AppSidebarProps extends RouteComponentProps<{}> {
-  onToggleSidebar?: () => void;
+interface AppSidebarState {
+  openForSmall: boolean;
 }
 
 export const AppSidebar = withRouter(
-  class InnerSidebar extends React.Component<AppSidebarProps> {
+  class InnerSidebar extends React.Component<RouteComponentProps<{}>, AppSidebarState> {
     static contextType = ResponsiveContext;
+    state: AppSidebarState = { openForSmall: false };
 
+    close = () => {
+      this.setState({ openForSmall: false });
+    };
+
+    renderLogo() {
+      return (
+        <Box flex={false}>
+          <Stack anchor="top-right">
+            <Heading level="2" margin={{ horizontal: "large" }}>
+              Flurish
+            </Heading>
+            <Box round="xsmall" background="accent-2" pad={{ horizontal: "xsmall" }}>
+              <Text size="xsmall" color="white">
+                ALPHA
+              </Text>
+            </Box>
+          </Stack>
+        </Box>
+      );
+    }
     renderMenu() {
       return (
         <SiderInfoComponent>
@@ -75,25 +98,16 @@ export const AppSidebar = withRouter(
             if (!data) return "No data";
             return (
               <>
-                <Box pad="small">
-                  <Stack anchor="top-right">
-                    <Heading level="2" margin="none">
-                      Flurish
-                    </Heading>
-                    <Box round="xsmall" background="accent-2" pad={{ horizontal: "xsmall" }}>
-                      <Text size="xsmall" color="white">
-                        ALPHA
-                      </Text>
-                    </Box>
-                  </Stack>
+                <Box pad="small" align="center">
+                  {this.renderLogo()}
                 </Box>
                 {Settings.devMode && (
                   <Box background="accent-3" pad="xsmall" align="center">
                     <Text size="xxsmall">Dev Env</Text>
                   </Box>
                 )}
-                <AppSidebarButton path="/" exact text="Home" icon={<Home />} />
-                <AppSidebarButton path="/budget" exact text="Budget" icon={<Budget />} />
+                <AppSidebarButton path="/" exact text="Home" icon={<Home />} onClick={this.close} />
+                <AppSidebarButton path="/budget" exact text="Budget" icon={<Budget />} onClick={this.close} />
                 <Box flex />
                 {!loading && (
                   <Box pad="small" align="center">
@@ -120,14 +134,29 @@ export const AppSidebar = withRouter(
 
     render() {
       const size = this.context;
+
       if (size === "small") {
         return (
-          <Layer full={true}>
-            <Box align="end">
-              <Button icon={<FormClose />} onClick={this.props.onToggleSidebar} />
-            </Box>
-            {this.renderMenu()}
-          </Layer>
+          <>
+            <Row justify="center">
+              <Box flex>
+                <Button
+                  icon={<Menu />}
+                  onClick={() => {
+                    this.setState({ openForSmall: true });
+                  }}
+                />
+              </Box>
+              <Box flex={false}>{this.renderLogo()}</Box>
+              <Box flex />
+            </Row>
+            {this.state.openForSmall && (
+              <Layer full={true}>
+                <Button icon={<FormClose />} onClick={this.close} style={{ position: "fixed", top: 0, right: 0 }} />
+                {this.renderMenu()}
+              </Layer>
+            )}
+          </>
         );
       } else {
         return (

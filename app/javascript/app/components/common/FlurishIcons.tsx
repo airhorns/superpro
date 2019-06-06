@@ -18,7 +18,8 @@ import {
   Link as GrommetLink,
   Previous as GrommetPrevious,
   Launch,
-  Compare
+  Compare,
+  Menu
 } from "grommet-icons";
 
 // Navigation & Root level ideas
@@ -44,6 +45,7 @@ export const Question = CircleQuestion;
 export const Edit = GrommetEdit;
 export const Add = GrommetAdd;
 export const FormClose = GrommetFormClose;
+export const DragHandle = Menu;
 
 export const AddStack = (props: { icon: React.ReactNode; anchor?: StackProps["anchor"] }) => (
   <Stack anchor={props.anchor || "bottom-right"}>

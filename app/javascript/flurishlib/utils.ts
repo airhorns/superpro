@@ -1,5 +1,6 @@
 import _ from "lodash";
 import { format } from "date-fns";
+import memoizeOne from "memoize-one";
 import HTML5Backend from "react-dnd-html5-backend";
 import createTouchBackend from "react-dnd-touch-backend";
 import { DragDropManager, Backend } from "dnd-core";
@@ -37,7 +38,7 @@ export type ISO8601Date = string;
 export const DefaultDateFormat = "dddd, MMMM do YYYY";
 export const formatDate = (date: ISO8601Date) => format(date, DefaultDateFormat);
 
-export const isTouchDevice = () => {
+export const isTouchDevice = memoizeOne(() => {
   var prefixes = " -webkit- -moz- -o- -ms- ".split(" ");
   var mq = (query: any) => {
     return window.matchMedia(query).matches;
@@ -51,7 +52,7 @@ export const isTouchDevice = () => {
   // https://git.io/vznFH
   var query = ["(", prefixes.join("touch-enabled),("), "heartz", ")"].join("");
   return mq(query);
-};
+});
 
 const hasNativeElementsFromPoint = typeof document != "undefined" && (document.elementsFromPoint || document.msElementsFromPoint);
 

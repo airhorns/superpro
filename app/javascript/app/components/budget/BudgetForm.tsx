@@ -1,13 +1,13 @@
 import React from "react";
+import _ from "lodash";
 import shortid from "shortid";
-import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
-import { Formant, SubmitBar, FieldArray } from "flurishlib/formant";
+import { DragDropContext, DropResult } from "react-beautiful-dnd";
+import { SubmitBar, FieldArray } from "flurishlib/formant";
 import { Heading, Box, Button, Text } from "grommet";
 import { HelpTip, Row, assert } from "flurishlib";
 import { FormikProps, getIn } from "formik";
 import { Add } from "../common/FlurishIcons";
-import { BudgetLineForm } from "./BudgetLineForm";
-import _ from "lodash";
+import { BudgetFormSection } from "./BudgetFormSection";
 
 const Lorem =
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum";
@@ -48,20 +48,27 @@ export interface BudgetFormLineValue {
   frequency: string;
 }
 
+export interface BudgetFormSectionValue {
+  name: string;
+  key: string;
+  lines: BudgetFormLineValue[];
+}
 export interface BudgetFormValues {
   budget: {
     id?: string;
-    sections: {
-      name: string;
-      key: string;
-      lines: BudgetFormLineValue[];
-    }[];
+    sections: BudgetFormSectionValue[];
   };
 }
 
-const EmptyLine = { description: "", amount: 0, variable: false, frequency: "monthly" };
+export const EmptyLine = { description: "", amount: 0, variable: false, frequency: "monthly" };
 
 export class BudgetForm extends React.Component<{ form: FormikProps<BudgetFormValues> }> {
+  onDragStart = () => {
+    if (window.navigator.vibrate) {
+      window.navigator.vibrate(100);
+    }
+  };
+
   onDragEnd = (result: DropResult) => {
     if (!result.destination) {
       return;
@@ -79,66 +86,32 @@ export class BudgetForm extends React.Component<{ form: FormikProps<BudgetFormVa
   };
 
   render() {
-    return (
-      <DragDropContext onDragEnd={this.onDragEnd}>
-        {this.props.form.values.budget.sections.map((section, sectionIndex) => (
-          <Droppable key={section.key} droppableId={section.key} type="SECTION" direction="vertical">
-            {(provided, snapshot) => (
-              <Box
-                pad="small"
-                ref={provided.innerRef as any}
-                background={snapshot.isDraggingOver ? "light-1" : "white"}
-                {...provided.droppableProps}
-              >
-                <Heading level="3">
-                  <Formant.Input name={`budget.sections.${sectionIndex}.name`} />
-                </Heading>
-                <FieldArray name={`budget.sections.${sectionIndex}.lines`}>
-                  {arrayHelpers => (
-                    <>
-                      <Box>
-                        {section.lines.map((line, lineIndex) => (
-                          <BudgetLineForm
-                            key={line.key}
-                            line={line}
-                            index={lineIndex}
-                            lineFieldKey={`budget.sections.${sectionIndex}.lines.${lineIndex}`}
-                            arrayHelpers={arrayHelpers}
-                          />
-                        ))}
-                      </Box>
-                      {provided.placeholder}
+    const existingSections = new Set(_.uniq(this.props.form.values.budget.sections.map(section => section.name)));
+    const suggestedSections = _.filter(BudgetSectionSuggestions, suggestion => !existingSections.has(suggestion.name));
 
-                      <Box pad="small" width="medium">
-                        <Button onClick={() => arrayHelpers.push({ ...EmptyLine, key: shortid.generate() })}>
-                          <Text color="status-unknown">Add a line...</Text>
-                        </Button>
-                      </Box>
-                    </>
-                  )}
-                </FieldArray>
-              </Box>
-            )}
-          </Droppable>
+    return (
+      <DragDropContext onDragEnd={this.onDragEnd} onDragStart={this.onDragStart}>
+        {this.props.form.values.budget.sections.map((section, sectionIndex) => (
+          <BudgetFormSection key={section.key} section={section} index={sectionIndex} form={this.props.form} />
         ))}
         <FieldArray name="budget.sections">
-          {arrayHelpers => {
-            if (this.props.form.values.budget.sections.length > 2) {
-              return (
-                <Box>
-                  <Heading level="3">Add a section</Heading>
-                  <Row wrap>
-                    {BudgetSectionSuggestions.map(suggestion => (
+          {arrayHelpers => (
+            <Box>
+              <Heading level="3">Add sections</Heading>
+              {suggestedSections.map(suggestion => {
+                const onClick = (_e: React.SyntheticEvent) =>
+                  arrayHelpers.push({
+                    name: suggestion.name,
+                    key: shortid.generate(),
+                    lines: [{ ...EmptyLine, key: shortid.generate() }]
+                  });
+
+                if (this.props.form.values.budget.sections.length > 2) {
+                  return (
+                    <Box width="medium" key={suggestion.name}>
                       <Button
-                        key={suggestion.name}
                         as="div"
-                        onClick={(_e: React.SyntheticEvent) =>
-                          arrayHelpers.push({
-                            name: suggestion.name,
-                            key: shortid.generate(),
-                            lines: [{ ...EmptyLine, key: shortid.generate() }]
-                          })
-                        }
+                        onClick={onClick}
                         margin="small"
                         label={
                           <Row justify="between" gap="small">
@@ -147,15 +120,10 @@ export class BudgetForm extends React.Component<{ form: FormikProps<BudgetFormVa
                           </Row>
                         }
                       />
-                    ))}
-                  </Row>
-                </Box>
-              );
-            } else {
-              return (
-                <Box>
-                  <Heading level="3">Add sections</Heading>
-                  {BudgetSectionSuggestions.map(suggestion => (
+                    </Box>
+                  );
+                } else {
+                  return (
                     <Box pad="small" key={suggestion.name}>
                       <Heading level="4">{suggestion.name}</Heading>
                       <Text>{suggestion.description}</Text>
@@ -163,24 +131,42 @@ export class BudgetForm extends React.Component<{ form: FormikProps<BudgetFormVa
                         <Button
                           key={suggestion.name}
                           as="div"
-                          onClick={(_e: React.SyntheticEvent) =>
-                            arrayHelpers.push({
-                              name: suggestion.name,
-                              key: shortid.generate(),
-                              lines: [{ ...EmptyLine, key: shortid.generate() }]
-                            })
-                          }
+                          onClick={onClick}
                           margin="small"
                           icon={<Add />}
                           label={`Add ${suggestion.name}`}
                         />
                       </Box>
                     </Box>
-                  ))}
-                </Box>
-              );
-            }
-          }}
+                  );
+                }
+              })}
+              {(() => {
+                const onClick = (_e: React.SyntheticEvent) =>
+                  arrayHelpers.push({
+                    name: "New Section",
+                    key: shortid.generate(),
+                    lines: [{ ...EmptyLine, key: shortid.generate() }]
+                  });
+
+                return (
+                  <Box width="medium">
+                    <Button
+                      as="div"
+                      onClick={onClick}
+                      margin="small"
+                      label={
+                        <Row justify="between" gap="small">
+                          Add Custom
+                          <HelpTip text="A custom section that can represent any other kind of expense or revenue in your budget." />
+                        </Row>
+                      }
+                    />
+                  </Box>
+                );
+              })()}
+            </Box>
+          )}
         </FieldArray>
         <SubmitBar />
       </DragDropContext>
