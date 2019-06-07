@@ -1,11 +1,12 @@
 import React from "react";
-import _ from "lodash";
+import { uniq, keyBy } from "lodash";
 import shortid from "shortid";
 import { Page } from "../common";
-import { Formant } from "flurishlib/formant";
 import { BudgetForm, BudgetFormValues } from "./BudgetForm";
 import gql from "graphql-tag";
 import { GetBudgetForEditComponent, GetBudgetForEditQuery } from "app/app-graph";
+import { SuperForm } from "flurishlib/superform";
+import { assert } from "flurishlib";
 
 gql`
   query GetBudgetForEdit($budgetId: ID!) {
@@ -29,19 +30,20 @@ gql`
 
 export default class EditBudgetPage extends Page<{ budgetId: string }> {
   processDataForForm(data: Exclude<GetBudgetForEditQuery["budget"], null>) {
+    const sections = uniq(data.budgetLines.map(line => line.section)).map(section => ({ id: shortid(), name: section }));
+    const sectionsIndex = keyBy(sections, "name");
+
     return {
       id: data.id,
-      sections: Object.entries(_.groupBy(data.budgetLines, line => line.section)).map(([section, lines]) => ({
-        name: section,
-        key: shortid.generate(),
-        lines: lines.map(line => ({
-          id: line.id,
-          key: line.id,
-          description: line.description,
-          variable: line.variable,
-          amount: line.amount.fractional / 100,
-          frequency: "daily"
-        }))
+      sections: sections,
+      lines: data.budgetLines.map(line => ({
+        id: line.id,
+        sectionId: assert(sectionsIndex[line.section]).id,
+        sortOrder: line.sortOrder,
+        description: line.description,
+        variable: line.variable,
+        amount: line.amount.fractional / 100,
+        frequency: "daily"
       }))
     };
   }
@@ -51,9 +53,9 @@ export default class EditBudgetPage extends Page<{ budgetId: string }> {
       <Page.Layout title="Budget">
         <Page.Load component={GetBudgetForEditComponent} variables={{ budgetId: this.props.match.params.budgetId }} require={["budget"]}>
           {data => (
-            <Formant<BudgetFormValues> initialValues={{ budget: this.processDataForForm(data.budget) }} onSubmit={console.log}>
+            <SuperForm<BudgetFormValues> initialValues={{ budget: this.processDataForForm(data.budget) }}>
               {form => <BudgetForm form={form} />}
-            </Formant>
+            </SuperForm>
           )}
         </Page.Load>
       </Page.Layout>

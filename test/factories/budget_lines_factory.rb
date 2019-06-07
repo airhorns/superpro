@@ -5,7 +5,7 @@ FactoryBot.define do
     association :budget
     sequence(:description) { |n| "Line #{n}" }
     variable { false }
-    section { %w(Facilities Services Materials).sample }
+    section { "Facilities" }
     recurrence { "FREQ=DAILY;COUNT=3" }
     amount_subunits { 2000 }
     currency { "USD" }

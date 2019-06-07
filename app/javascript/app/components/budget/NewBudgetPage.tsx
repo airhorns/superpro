@@ -1,15 +1,16 @@
 import React from "react";
+import shortid from "shortid";
 import { Page } from "../common";
-import { Formant } from "flurishlib/formant";
 import { BudgetForm, BudgetFormValues } from "./BudgetForm";
+import { SuperForm } from "flurishlib/superform";
 
 export default class NewBudgetPage extends Page {
   render() {
     return (
       <Page.Layout title="Budget">
-        <Formant<BudgetFormValues> initialValues={{ budget: { sections: [] } }} onSubmit={console.log}>
+        <SuperForm<BudgetFormValues> initialValues={{ budget: { id: shortid(), lines: [], sections: [] } }}>
           {form => <BudgetForm form={form} />}
-        </Formant>
+        </SuperForm>
       </Page.Layout>
     );
   }

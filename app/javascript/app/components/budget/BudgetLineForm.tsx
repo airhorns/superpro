@@ -1,18 +1,16 @@
 import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 import { TrashButton, FadeBox } from "../common";
-import { Formant } from "flurishlib/formant";
 import { Box } from "grommet";
 import { Row, shallowSubsetEqual, shallowEqual, isTouchDevice } from "flurishlib";
-import { BudgetFormLineValue } from "./BudgetForm";
-import { FieldArrayRenderProps } from "formik";
+import { BudgetFormLineValue, BudgetFormValues } from "./BudgetForm";
 import { DragHandle } from "../common/FlurishIcons";
+import { SuperForm, Input, Select, NumberInput } from "flurishlib/superform";
 
 export interface BudgetLineFormProps {
-  lineFieldKey: string;
+  linesIndex: number;
   line: BudgetFormLineValue;
-  index: number;
-  arrayHelpers: FieldArrayRenderProps;
+  form: SuperForm<BudgetFormValues>;
 }
 
 export interface BudgetLineFormState {
@@ -23,14 +21,16 @@ export class BudgetLineForm extends React.Component<BudgetLineFormProps, BudgetL
   state: BudgetLineFormState = { hovered: false };
 
   shouldComponentUpdate(nextProps: BudgetLineFormProps, nextState: BudgetLineFormState) {
-    return !shallowEqual(this.state, nextState) || !shallowSubsetEqual(["line", "index", "lineFieldKey"], this.props, nextProps);
+    return !shallowEqual(this.state, nextState) || !shallowSubsetEqual(["line", "sectionIndex", "lineFieldKey"], this.props, nextProps);
   }
 
   render() {
     const showIcons = isTouchDevice() || this.state.hovered;
+    const lineFieldKey = `budget.lines.${this.props.linesIndex}`;
+    const lineHelpers = this.props.form.arrayHelpers(lineFieldKey);
 
     return (
-      <Draggable draggableId={`line-${this.props.line.key}`} index={this.props.index}>
+      <Draggable draggableId={this.props.line.id} index={this.props.line.sortOrder}>
         {provided => (
           <Row
             pad="small"
@@ -48,19 +48,14 @@ export class BudgetLineForm extends React.Component<BudgetLineFormProps, BudgetL
               </FadeBox>
             </Box>
             <Box width="medium">
-              <Formant.Input fast name={`${this.props.lineFieldKey}.description`} placeholder="Line description" />
+              <Input path={`${lineFieldKey}.description`} placeholder="Line description" />
             </Box>
             <Box width="small">
-              <Formant.Select
-                fast
-                name={`${this.props.lineFieldKey}.variable`}
-                options={[{ value: true, label: "Variable" }, { value: false, label: "Fixed" }]}
-              />
+              <Select path={`${lineFieldKey}.variable`} options={[{ value: true, label: "Variable" }, { value: false, label: "Fixed" }]} />
             </Box>
             <Box width="small">
-              <Formant.Select
-                fast
-                name={`${this.props.lineFieldKey}.frequency`}
+              <Select
+                path={`${lineFieldKey}.frequency`}
                 options={[
                   { value: "daily", label: "Daily" },
                   { value: "weekly", label: "Weekly" },
@@ -72,18 +67,11 @@ export class BudgetLineForm extends React.Component<BudgetLineFormProps, BudgetL
               />
             </Box>
             <Box width="small">
-              <Formant.NumberInput
-                fast
-                name={`${this.props.lineFieldKey}.amount`}
-                prefix={"$"}
-                fixedDecimalScale
-                decimalScale={2}
-                placeholder="Line amount"
-              />
+              <NumberInput path={`${lineFieldKey}.amount`} prefix={"$"} fixedDecimalScale decimalScale={2} placeholder="Line amount" />
             </Box>
             <Box>
               <FadeBox visible={showIcons}>
-                <TrashButton onClick={() => this.props.arrayHelpers.remove(this.props.index)} />
+                <TrashButton onClick={() => lineHelpers.deleteAt(this.props.linesIndex)} />
               </FadeBox>
             </Box>
           </Row>
