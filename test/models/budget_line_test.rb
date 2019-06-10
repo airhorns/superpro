@@ -6,7 +6,6 @@
 #  amount_subunits  :bigint(8)        not null
 #  currency         :string           not null
 #  description      :string           not null
-#  discarded_at     :datetime
 #  recurrence_rules :string           not null, is an Array
 #  section          :string           not null
 #  sort_order       :integer          default(1), not null

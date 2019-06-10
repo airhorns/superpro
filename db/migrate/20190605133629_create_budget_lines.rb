@@ -11,7 +11,6 @@ class CreateBudgetLines < ActiveRecord::Migration[6.0]
       t.bigint :amount_subunits, null: false
       t.string :currency, null: false
       t.integer :sort_order, null: false, default: 1
-      t.datetime :discarded_at
 
       t.timestamps
     end

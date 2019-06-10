@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_05_133629) do
+ActiveRecord::Schema.define(version: 2019_06_10_205409) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,7 +42,6 @@ ActiveRecord::Schema.define(version: 2019_06_05_133629) do
     t.bigint "amount_subunits", null: false
     t.string "currency", null: false
     t.integer "sort_order", default: 1, null: false
-    t.datetime "discarded_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -52,6 +51,19 @@ ActiveRecord::Schema.define(version: 2019_06_05_133629) do
     t.bigint "creator_id", null: false
     t.string "name", null: false
     t.datetime "discarded_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "series", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.string "scenario", null: false
+    t.string "domain_type", null: false
+    t.string "series_domain_type", null: false
+    t.string "range_type", null: false
+    t.string "series_range_type", null: false
+    t.string "currency"
+    t.bigint "creator_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
