@@ -19,9 +19,7 @@ gql`
         section
         recurrenceRules
         sortOrder
-        amount {
-          fractional
-        }
+        amountScenarios
       }
     }
   }
@@ -40,9 +38,7 @@ export default class EditBudgetPage extends Page<{ budgetId: string }> {
         sectionId: assert(sectionsIndex[line.section]).id,
         sortOrder: line.sortOrder,
         description: line.description,
-        amountScenarios: {
-          default: line.amount.fractional / 100
-        },
+        amountScenarios: line.amountScenarios,
         recurrenceRules: null
       }))
     };

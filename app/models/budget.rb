@@ -24,6 +24,6 @@ class Budget < ApplicationRecord
   validates :name, presence: true
   validates :creator, presence: true
 
-  has_many :budget_lines, inverse_of: :budget, dependent: :destroy
+  has_many :budget_lines, inverse_of: :budget, dependent: :destroy, autosave: true, validate: true
   belongs_to :creator, class_name: "User", inverse_of: :created_budgets
 end

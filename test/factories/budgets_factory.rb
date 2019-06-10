@@ -14,10 +14,10 @@ FactoryBot.define do
       name { "Operational Budget" }
 
       after(:create) do |budget|
-        facilities_lines = build_list(:budget_line, 4, section: "Facilities", budget: budget, account: budget.account, creator: budget.creator, amount_subunits: 2000) + build_list(:budget_line, 4, section: "Facilities", budget: budget, account: budget.account, creator: budget.creator, amount_subunits: -2000)
+        facilities_lines = build_list(:budget_line, 1, section: "Facilities", budget: budget, account: budget.account, creator: budget.creator) + build_list(:budget_line, 1, section: "Facilities", budget: budget, account: budget.account, creator: budget.creator)
         apply_sort_orders(facilities_lines)
 
-        materials_lines = build_list(:budget_line, 4, section: "Materials", budget: budget, account: budget.account, creator: budget.creator, amount_subunits: 2000) + build_list(:budget_line, 4, section: "Materials", budget: budget, account: budget.account, creator: budget.creator, amount_subunits: -2000)
+        materials_lines = build_list(:budget_line, 2, section: "Materials", budget: budget, account: budget.account, creator: budget.creator) + build_list(:budget_line, 2, section: "Materials", budget: budget, account: budget.account, creator: budget.creator)
         apply_sort_orders(materials_lines)
 
         budget.budget_lines = facilities_lines + materials_lines
