@@ -1,4 +1,5 @@
 import React from "react";
+import { sortBy } from "lodash";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { assert } from "flurishlib";
 import { BudgetFormSection } from "./BudgetFormSection";
@@ -10,7 +11,9 @@ export interface BudgetFormLineValue {
   id: string;
   sortOrder: number;
   description: string;
-  amount: number;
+  amountScenarios: {
+    [key: string]: number;
+  };
   recurrenceRules: SerializedRRuleSet | null;
   sectionId: string;
 }
@@ -30,6 +33,25 @@ export interface BudgetFormValues {
 
 export const EmptyLine = { description: "", amount: 0, variable: false, frequency: "monthly" };
 
+const updateSortOrders = (list: BudgetFormLineValue[]) => {
+  for (let i = 0; i < list.length; i++) {
+    list[i].sortOrder = i;
+  }
+};
+
+const linesForSection = (doc: BudgetFormValues, sectionId: string) => {
+  let list: BudgetFormLineValue[] = [];
+  // Use a for loop here because .forEach or map or other nice things currently have a bug in automerge
+  // where they don't return mutable proxies but isntead frozen objects which can't be mutated. Darn.
+  for (let line of doc.budget.lines) {
+    if (line.sectionId == sectionId) {
+      list.push(line);
+    }
+  }
+
+  return sortBy(list, line => line.sortOrder);
+};
+
 export class BudgetForm extends React.Component<{ form: SuperForm<BudgetFormValues> }> {
   onDragStart = () => {
     if (window.navigator.vibrate) {
@@ -43,37 +65,20 @@ export class BudgetForm extends React.Component<{ form: SuperForm<BudgetFormValu
         return;
       }
 
-      const updateSortOrders = (list: BudgetFormLineValue[]) => {
-        for (let i = 0; i < list.length; i++) {
-          list[i].sortOrder = i;
-        }
-      };
-
-      const newSourceList: BudgetFormLineValue[] = [];
-      for (let i = 0; i < doc.budget.lines.length; i++) {
-        if (doc.budget.lines[i].sectionId == result.source.droppableId) {
-          newSourceList.push(doc.budget.lines[i]);
-        }
-      }
+      const newSourceList = linesForSection(doc, result.source.droppableId);
       const item = assert(newSourceList.splice(result.source.index, 1)[0]);
       item.sectionId = result.destination.droppableId;
 
       if (result.destination.droppableId == result.source.droppableId) {
         // Moving within the same section
         newSourceList.splice(result.destination.index, 0, item);
-        updateSortOrders(newSourceList);
       } else {
         // Moving into new section
-        const newDestinationList: BudgetFormLineValue[] = [];
-        for (let i = 0; i < doc.budget.lines.length; i++) {
-          if (doc.budget.lines[i].sectionId == result.destination.droppableId) {
-            newDestinationList.push(doc.budget.lines[i]);
-          }
-        }
+        const newDestinationList = linesForSection(doc, result.destination.droppableId);
         newDestinationList.splice(result.destination.index, 0, item);
-        updateSortOrders(newSourceList);
         updateSortOrders(newDestinationList);
       }
+      updateSortOrders(newSourceList);
     });
   };
 

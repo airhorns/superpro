@@ -40,7 +40,9 @@ export default class EditBudgetPage extends Page<{ budgetId: string }> {
         sectionId: assert(sectionsIndex[line.section]).id,
         sortOrder: line.sortOrder,
         description: line.description,
-        amount: line.amount.fractional / 100,
+        amountScenarios: {
+          default: line.amount.fractional / 100
+        },
         recurrenceRules: null
       }))
     };

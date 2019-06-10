@@ -1,11 +1,11 @@
 import React from "react";
 import { Draggable } from "react-beautiful-dnd";
-import { TrashButton, FadeBox } from "../common";
+import { TrashButton, FadeBox, ScenarioInput } from "../common";
 import { Box } from "grommet";
 import { Row, shallowSubsetEqual, shallowEqual, isTouchDevice } from "flurishlib";
 import { BudgetFormLineValue, BudgetFormValues } from "./BudgetForm";
 import { DragHandle } from "../common/FlurishIcons";
-import { SuperForm, Input, NumberInput } from "flurishlib/superform";
+import { SuperForm, Input } from "flurishlib/superform";
 import { RecurrenceSelect } from "./RecurrenceSelect";
 
 export interface BudgetLineFormProps {
@@ -55,7 +55,13 @@ export class BudgetLineForm extends React.Component<BudgetLineFormProps, BudgetL
               <RecurrenceSelect path={`${lineFieldKey}.recurrenceRules`} />
             </Box>
             <Box width="small">
-              <NumberInput path={`${lineFieldKey}.amount`} prefix={"$"} fixedDecimalScale decimalScale={2} placeholder="Line amount" />
+              <ScenarioInput
+                path={`${lineFieldKey}.amountScenarios`}
+                prefix={"$"}
+                fixedDecimalScale
+                decimalScale={2}
+                placeholder="Line amount"
+              />
             </Box>
             <Box>
               <FadeBox visible={showIcons}>

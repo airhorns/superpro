@@ -8,7 +8,7 @@ export * from "./HelpTip";
 export * from "./TokenLabel";
 export * from "./EmptyTableMessage";
 export * from "./SentryErrorBoundary";
-export * from "./FlurishGrommetTheme";
+export * from "./FlurishTheme";
 export * from "./SimpleModal";
 export * from "./Link";
 export * from "./DatePicker";

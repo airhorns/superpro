@@ -1,7 +1,7 @@
 import React from "react";
 import { Grommet, Text } from "grommet";
 import { ToastConsumer, ToastProvider } from "react-toast-notifications";
-import { FlurishGrommetTheme } from "./FlurishGrommetTheme";
+import { FlurishGrommetTheme } from "./FlurishTheme";
 
 export interface ToastProps {
   appearance: "success" | "error" | "warning" | "info";

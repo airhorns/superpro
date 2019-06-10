@@ -9,6 +9,7 @@ import { ControlWrapper } from "./ControlWrapper";
 import { BoxProps } from "grommet";
 import { ValueType } from "react-select/lib/types";
 import { isArrayOptionType } from "../utils";
+import { FlurishReactSelectTheme } from "flurishlib";
 
 export interface SelectOptionType {
   value: string | boolean | null;
@@ -54,6 +55,7 @@ export class Select<Option extends SelectOptionType = SelectOptionType> extends 
             >
               <ReactSelect
                 name={field.name}
+                theme={FlurishReactSelectTheme}
                 value={selectedOption}
                 styles={{ container: provided => ({ ...provided, minWidth: 200 }) }}
                 {...this.props}

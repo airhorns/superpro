@@ -2,7 +2,7 @@ import * as React from "react";
 import { Grommet } from "grommet";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { ApolloProvider } from "react-apollo";
-import { FlurishGrommetTheme, FlurishGlobalStyle } from "../flurishlib/FlurishGrommetTheme";
+import { FlurishGrommetTheme, FlurishGlobalStyle } from "../flurishlib/FlurishTheme";
 import { NotFoundPage } from "./components/NotFoundPage";
 import { LoginPage } from "./components/LoginPage";
 import { Settings } from "./lib/settings";

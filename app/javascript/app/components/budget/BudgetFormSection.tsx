@@ -11,7 +11,7 @@ import { useSuperForm, Input } from "flurishlib/superform";
 
 type LineIndexTuple = [BudgetFormLineValue, number];
 
-export const BudgetFormSection = React.memo((props: { section: BudgetFormSectionValue; index: number }) => {
+export const BudgetFormSection = (props: { section: BudgetFormSectionValue; index: number }) => {
   const [hovered, setHovered] = React.useState(false);
   const [editing, setEditing] = React.useState(false);
   const form = useSuperForm<BudgetFormValues>();
@@ -84,4 +84,4 @@ export const BudgetFormSection = React.memo((props: { section: BudgetFormSection
       )}
     </Droppable>
   );
-});
+};

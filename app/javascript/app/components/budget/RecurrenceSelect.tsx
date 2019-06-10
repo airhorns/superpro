@@ -4,7 +4,7 @@ import ReactSelect from "react-select";
 import { ValueType } from "react-select/lib/types";
 import RRule, { RRuleSet } from "rrule";
 import { FieldPath, useSuperForm, pathToName } from "flurishlib/superform";
-import { isArrayOptionType } from "flurishlib";
+import { isArrayOptionType, FlurishReactSelectTheme } from "flurishlib";
 import { RecurrenceSelectCustomForm } from "./RecurrenceSelectCustomForm";
 import { serializeRRuleSet, SerializedRRuleSet, deserializeRRuleSet } from "app/lib/rrules";
 
@@ -106,6 +106,7 @@ export const RecurrenceSelect = (props: RecurrenceSelectProps) => {
     <>
       <ReactSelect<RecurrenceSelectOptionType>
         name={pathToName(props.path)}
+        theme={FlurishReactSelectTheme}
         value={selectedOption}
         options={groupedOptions}
         styles={{ container: provided => ({ ...provided, minWidth: 200 }) }}
