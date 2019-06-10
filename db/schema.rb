@@ -38,7 +38,7 @@ ActiveRecord::Schema.define(version: 2019_06_05_133629) do
     t.string "description", null: false
     t.string "section", null: false
     t.boolean "variable", null: false
-    t.string "recurrence", null: false
+    t.string "recurrence_rules", null: false, array: true
     t.bigint "amount_subunits", null: false
     t.string "currency", null: false
     t.integer "sort_order", default: 1, null: false

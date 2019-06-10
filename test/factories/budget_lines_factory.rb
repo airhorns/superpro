@@ -6,7 +6,7 @@ FactoryBot.define do
     sequence(:description) { |n| "Line #{n}" }
     variable { false }
     section { "Facilities" }
-    recurrence { "FREQ=DAILY;COUNT=3" }
+    recurrence_rules { ["FREQ=DAILY;COUNT=3"] }
     amount_subunits { 2000 }
     currency { "USD" }
     sequence(:sort_order) { |n| n }

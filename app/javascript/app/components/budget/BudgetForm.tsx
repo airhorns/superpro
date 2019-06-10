@@ -44,10 +44,11 @@ export class BudgetForm extends React.Component<{ form: SuperForm<BudgetFormValu
       }
 
       const updateSortOrders = (list: BudgetFormLineValue[]) => {
-        list.forEach((line, index) => (line.sortOrder = index));
+        for (let i = 0; i < list.length; i++) {
+          list[i].sortOrder = i;
+        }
       };
 
-      // Moving within the same section
       const newSourceList: BudgetFormLineValue[] = [];
       for (let i = 0; i < doc.budget.lines.length; i++) {
         if (doc.budget.lines[i].sectionId == result.source.droppableId) {
@@ -55,12 +56,20 @@ export class BudgetForm extends React.Component<{ form: SuperForm<BudgetFormValu
         }
       }
       const item = assert(newSourceList.splice(result.source.index, 1)[0]);
+      item.sectionId = result.destination.droppableId;
 
       if (result.destination.droppableId == result.source.droppableId) {
+        // Moving within the same section
         newSourceList.splice(result.destination.index, 0, item);
         updateSortOrders(newSourceList);
       } else {
-        const newDestinationList = doc.budget.lines.filter(line => line.sectionId == assert(result.destination).droppableId);
+        // Moving into new section
+        const newDestinationList: BudgetFormLineValue[] = [];
+        for (let i = 0; i < doc.budget.lines.length; i++) {
+          if (doc.budget.lines[i].sectionId == result.destination.droppableId) {
+            newDestinationList.push(doc.budget.lines[i]);
+          }
+        }
         newDestinationList.splice(result.destination.index, 0, item);
         updateSortOrders(newSourceList);
         updateSortOrders(newDestinationList);

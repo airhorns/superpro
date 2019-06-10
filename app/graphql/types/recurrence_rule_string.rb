@@ -1,4 +1,4 @@
-class Types::RecurrenceString < Types::BaseScalar
+class Types::RecurrenceRuleString < Types::BaseScalar
   def self.coerce_input(input_value, _context)
     input_value
   end

@@ -14,6 +14,6 @@ module Types::Budget::BudgetQueries
   end
 
   def budget(budget_id:)
-    context[:current_account].budgets.kept.find(budget_id)
+    context[:current_account].budgets.kept.find_by(id: budget_id)
   end
 end

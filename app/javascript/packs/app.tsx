@@ -8,5 +8,5 @@ ReactDOM.render(
   <SettingsContext.Provider value={(window as any).INJECTED_SETTINGS as SettingsBag}>
     <App />
   </SettingsContext.Provider>,
-  document.body.appendChild(document.createElement("div"))
+  document.body.appendChild(document.createElement("main"))
 );

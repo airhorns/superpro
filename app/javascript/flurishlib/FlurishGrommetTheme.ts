@@ -10,6 +10,7 @@ export const FlurishGrommetTheme = {
 };
 
 export const FlurishGlobalStyle = createGlobalStyle`
+body { margin: 0; }
 *, *::before, *::after {
   box-sizing: border-box;
 }

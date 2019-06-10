@@ -2,20 +2,20 @@
 #
 # Table name: budget_lines
 #
-#  id              :bigint(8)        not null, primary key
-#  amount_subunits :bigint(8)        not null
-#  currency        :string           not null
-#  description     :string           not null
-#  discarded_at    :datetime
-#  recurrence      :string           not null
-#  section         :string           not null
-#  sort_order      :integer          default(1), not null
-#  variable        :boolean          not null
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  account_id      :bigint(8)        not null
-#  budget_id       :bigint(8)        not null
-#  creator_id      :bigint(8)        not null
+#  id               :bigint(8)        not null, primary key
+#  amount_subunits  :bigint(8)        not null
+#  currency         :string           not null
+#  description      :string           not null
+#  discarded_at     :datetime
+#  recurrence_rules :string           not null, is an Array
+#  section          :string           not null
+#  sort_order       :integer          default(1), not null
+#  variable         :boolean          not null
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  account_id       :bigint(8)        not null
+#  budget_id        :bigint(8)        not null
+#  creator_id       :bigint(8)        not null
 #
 # Foreign Keys
 #

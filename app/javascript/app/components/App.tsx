@@ -22,11 +22,11 @@ export const App = () => {
     <FlagsProvider flags={flags}>
       <ApolloProvider client={FlurishClient}>
         <DragDropContextProvider backend={DnDBackendForDevice()}>
-          <Grommet full theme={FlurishGrommetTheme}>
+          <Grommet theme={FlurishGrommetTheme}>
             <FlurishGlobalStyle />
             <Router basename={Settings.baseUrl}>
               <ToastContainer>
-                <Box fill direction="row-responsive">
+                <Box fill direction="row-responsive" id="flurish-root" style={{ width: "100vw", height: "100vh" }}>
                   <AppSidebar />
                   <Box flex overflow={{ vertical: "auto" }}>
                     <React.Suspense fallback={<PageLoadSpin />}>

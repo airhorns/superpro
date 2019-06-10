@@ -13,7 +13,7 @@ export type Scalars = {
   Float: number;
   /** An ISO 8601-encoded datetime */
   ISO8601DateTime: string;
-  RecurrenceString: any;
+  RecurrenceRuleString: any;
 };
 
 export type Account = {
@@ -64,7 +64,7 @@ export type BudgetLine = {
   description: Scalars["String"];
   discardedAt: Scalars["ISO8601DateTime"];
   id: Scalars["ID"];
-  recurrence: Scalars["RecurrenceString"];
+  recurrenceRules: Array<Scalars["RecurrenceRuleString"]>;
   section: Scalars["String"];
   sortOrder: Scalars["Int"];
   updatedAt: Scalars["ISO8601DateTime"];
@@ -114,7 +114,7 @@ export type GetBudgetForEditQuery = { __typename?: "AppQuery" } & {
   budget: Maybe<
     { __typename?: "Budget" } & Pick<Budget, "id" | "name"> & {
         budgetLines: Array<
-          { __typename?: "BudgetLine" } & Pick<BudgetLine, "id" | "description" | "section" | "variable" | "recurrence" | "sortOrder"> & {
+          { __typename?: "BudgetLine" } & Pick<BudgetLine, "id" | "description" | "section" | "recurrenceRules" | "sortOrder"> & {
               amount: { __typename?: "Money" } & Pick<Money, "fractional">;
             }
         >;
@@ -139,8 +139,7 @@ export const GetBudgetForEditDocument = gql`
         id
         description
         section
-        variable
-        recurrence
+        recurrenceRules
         sortOrder
         amount {
           fractional

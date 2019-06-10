@@ -42,17 +42,25 @@ export const BudgetFormNewSectionlist = () => {
   const existingSections = new Set(uniq(form.doc.budget.sections.map(section => section.name)));
   const suggestedSections = filter(BudgetSectionSuggestions, suggestion => !existingSections.has(suggestion.name));
   const sectionHelpers = form.arrayHelpers("budget.sections");
+  const lineHelpers = form.arrayHelpers("budget.lines");
+
+  const createNewSection = (name: string) => {
+    const newSectionId = shortid.generate();
+    form.batch(() => {
+      sectionHelpers.push({
+        name: name,
+        id: newSectionId
+      });
+
+      lineHelpers.push({ ...EmptyLine, id: shortid.generate(), sectionId: newSectionId, sortOrder: 0 });
+    });
+  };
 
   return (
     <Box>
       <Heading level="3">Add sections</Heading>
       {suggestedSections.map(suggestion => {
-        const onClick = (_e: React.SyntheticEvent) =>
-          sectionHelpers.push({
-            name: suggestion.name,
-            key: shortid.generate(),
-            lines: [{ ...EmptyLine, key: shortid.generate() }]
-          });
+        const onClick = (_e: React.SyntheticEvent) => createNewSection(suggestion.name);
 
         if (form.doc.budget.sections.length > 2) {
           return (
@@ -83,12 +91,7 @@ export const BudgetFormNewSectionlist = () => {
         }
       })}
       {(() => {
-        const onClick = (_e: React.SyntheticEvent) =>
-          sectionHelpers.push({
-            name: "New Section",
-            key: shortid.generate(),
-            lines: [{ ...EmptyLine, key: shortid.generate() }]
-          });
+        const onClick = (_e: React.SyntheticEvent) => createNewSection("New Section");
 
         return (
           <Box width="medium">

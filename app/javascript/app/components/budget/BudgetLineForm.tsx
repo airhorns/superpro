@@ -28,7 +28,7 @@ export class BudgetLineForm extends React.Component<BudgetLineFormProps, BudgetL
   render() {
     const showIcons = isTouchDevice() || this.state.hovered;
     const lineFieldKey = `budget.lines.${this.props.linesIndex}`;
-    const lineHelpers = this.props.form.arrayHelpers(lineFieldKey);
+    const lineHelpers = this.props.form.arrayHelpers("budget.lines");
 
     return (
       <Draggable draggableId={this.props.line.id} index={this.props.line.sortOrder}>

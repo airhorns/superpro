@@ -15,7 +15,7 @@ export function assert<T>(value: T | undefined | null): T {
 
 export function assertKeys<T extends { [key: string]: any }, K extends keyof T>(object: T, keys: K[]) {
   for (let key of keys) {
-    if (_.isUndefined(object[key])) {
+    if (_.isUndefined(object[key]) || _.isNull(object[key])) {
       return false;
     }
   }

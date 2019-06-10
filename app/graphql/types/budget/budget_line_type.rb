@@ -5,7 +5,7 @@ class Types::Budget::BudgetLineType < Types::BaseObject
   field :amount, Types::MoneyType, null: false
   field :description, String, null: false
   field :section, String, null: false
-  field :recurrence, Types::RecurrenceString, null: false
+  field :recurrence_rules, [Types::RecurrenceRuleString], null: false
   field :sort_order, Integer, null: false
 
   field :creator, Types::Identity::UserType, null: false

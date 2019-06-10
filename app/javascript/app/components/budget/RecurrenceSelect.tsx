@@ -59,7 +59,6 @@ export const DefaultOptions: RecurrenceSelectOptionType[] = [
   }
 ];
 
-const CustomSet = createSet(() => {});
 const DoesntRepeatOption = { label: "Doesn't repeat", value: null };
 
 const optionForValue = (options: RecurrenceSelectOptionType[], value: RecurrenceSelectOptionType["value"]) =>
@@ -75,7 +74,7 @@ export interface RecurrenceSelectProps {
 export const RecurrenceSelect = (props: RecurrenceSelectProps) => {
   const form = useSuperForm<any>();
   const [showCustomForm, setShowCustomForm] = React.useState(false);
-  const customOptions: RecurrenceSelectOptionType[] = [{ value: CustomSet, label: "Other...", openCustomForm: true }];
+  const customOptions: RecurrenceSelectOptionType[] = [{ value: null, label: "Other...", openCustomForm: true }];
 
   let selectedOption: RecurrenceSelectOptionType | undefined;
   const currentValue: SerializedRRuleSet | undefined = form.getValue(props.path);

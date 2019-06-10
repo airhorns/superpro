@@ -17,7 +17,7 @@ gql`
         id
         description
         section
-        recurrence
+        recurrenceRules
         sortOrder
         amount {
           fractional
