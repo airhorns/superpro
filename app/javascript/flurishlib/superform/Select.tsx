@@ -8,7 +8,7 @@ import { FieldProps, DocType, pathToName } from "./utils";
 import { useSuperForm } from ".";
 
 export interface SelectOptionType {
-  value: string | boolean | null;
+  value: string | number | boolean | null;
   label: string | React.ReactNode;
 }
 
@@ -21,7 +21,7 @@ export interface SelectProps<Option extends SelectOptionType> extends FieldProps
   filterOption?: ReactSelectProps<Option>["filterOption"];
 }
 
-const optionForValue = (options: SelectOptionType[], value: SelectOptionType["value"]) =>
+export const optionForValue = (options: SelectOptionType[], value: SelectOptionType["value"]) =>
   find(options, (option: SelectOptionType) => option.value === value);
 
 export const Select = <T extends DocType, Option extends SelectOptionType = SelectOptionType>(props: SelectProps<Option>) => {
@@ -42,6 +42,7 @@ export const Select = <T extends DocType, Option extends SelectOptionType = Sele
       value={selectedOption}
       styles={{ container: provided => ({ ...provided, minWidth: 200 }) }}
       filterOption={props.filterOption}
+      options={props.options}
       onChange={(option: ValueType<SelectOptionType>) => {
         if (option) {
           let value;

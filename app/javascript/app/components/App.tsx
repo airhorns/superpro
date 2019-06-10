@@ -28,7 +28,7 @@ export const App = () => {
               <ToastContainer>
                 <Box fill direction="row-responsive">
                   <AppSidebar />
-                  <Box flex>
+                  <Box flex overflow={{ vertical: "auto" }}>
                     <React.Suspense fallback={<PageLoadSpin />}>
                       <Switch>
                         <Route path="/" exact component={HomePage} />

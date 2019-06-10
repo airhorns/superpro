@@ -5,7 +5,8 @@ import { Box } from "grommet";
 import { Row, shallowSubsetEqual, shallowEqual, isTouchDevice } from "flurishlib";
 import { BudgetFormLineValue, BudgetFormValues } from "./BudgetForm";
 import { DragHandle } from "../common/FlurishIcons";
-import { SuperForm, Input, Select, NumberInput } from "flurishlib/superform";
+import { SuperForm, Input, NumberInput } from "flurishlib/superform";
+import { RecurrenceSelect } from "./RecurrenceSelect";
 
 export interface BudgetLineFormProps {
   linesIndex: number;
@@ -47,24 +48,11 @@ export class BudgetLineForm extends React.Component<BudgetLineFormProps, BudgetL
                 <DragHandle color="light-5" />
               </FadeBox>
             </Box>
-            <Box width="medium">
+            <Box flex style={{ minWidth: "150px" }}>
               <Input path={`${lineFieldKey}.description`} placeholder="Line description" />
             </Box>
             <Box width="small">
-              <Select path={`${lineFieldKey}.variable`} options={[{ value: true, label: "Variable" }, { value: false, label: "Fixed" }]} />
-            </Box>
-            <Box width="small">
-              <Select
-                path={`${lineFieldKey}.frequency`}
-                options={[
-                  { value: "daily", label: "Daily" },
-                  { value: "weekly", label: "Weekly" },
-                  { value: "monthly-first", label: "Monthly on the first business day" },
-                  { value: "monthly-last", label: "Monthly on the last business day" },
-                  { value: "quarterly-first", label: "Quarterly on the first business day" },
-                  { value: "custom", label: "Custom" }
-                ]}
-              />
+              <RecurrenceSelect path={`${lineFieldKey}.recurrenceRules`} />
             </Box>
             <Box width="small">
               <NumberInput path={`${lineFieldKey}.amount`} prefix={"$"} fixedDecimalScale decimalScale={2} placeholder="Line amount" />

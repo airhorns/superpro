@@ -4,14 +4,14 @@ import { assert } from "flurishlib";
 import { BudgetFormSection } from "./BudgetFormSection";
 import { SuperForm } from "flurishlib/superform";
 import { BudgetFormNewSectionlist } from "./BudgetFormNewSectionList";
+import { SerializedRRuleSet } from "app/lib/rrules";
 
 export interface BudgetFormLineValue {
   id: string;
   sortOrder: number;
   description: string;
   amount: number;
-  variable: boolean;
-  frequency: string;
+  recurrenceRules: SerializedRRuleSet | null;
   sectionId: string;
 }
 

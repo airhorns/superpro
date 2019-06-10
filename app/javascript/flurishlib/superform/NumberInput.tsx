@@ -1,4 +1,5 @@
 import React from "react";
+import { isUndefined } from "lodash";
 import { DocType, pathToName, propsForGrommetComponent } from "./utils";
 import { TextInput as GrommetTextInput } from "grommet";
 import { useSuperForm } from ".";
@@ -11,7 +12,7 @@ export const NumberInput = <T extends DocType>(props: NumberInputProps) => {
   const form = useSuperForm<T>();
   const id = pathToName(props.path);
   const renderTextInput = React.useMemo(() => {
-    return (inputProps: any) => <GrommetTextInput {...propsForGrommetComponent(props)} {...inputProps} />;
+    return (inputProps: any) => <GrommetTextInput {...propsForGrommetComponent(props)} type="number" {...inputProps} />;
   }, [props]);
 
   return (
@@ -24,8 +25,10 @@ export const NumberInput = <T extends DocType>(props: NumberInputProps) => {
       fixedDecimalScale={props.fixedDecimalScale}
       customInput={renderTextInput}
       onValueChange={(values: any) => {
-        form.setValue(props.path, values.floatValue);
-        props.onChange && props.onChange({} as any);
+        if (!isUndefined(values.floatValue)) {
+          form.setValue(props.path, values.floatValue);
+          props.onChange && props.onChange({} as any);
+        }
       }}
       onBlur={(e: any) => {
         form.markTouched(props.path);

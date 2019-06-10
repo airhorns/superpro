@@ -1,9 +1,9 @@
 import _ from "lodash";
-import { format } from "date-fns";
 import memoizeOne from "memoize-one";
 import HTML5Backend from "react-dnd-html5-backend";
 import createTouchBackend from "react-dnd-touch-backend";
 import { DragDropManager, Backend } from "dnd-core";
+import { DateTime } from "luxon";
 export type AssertedKeys<T, K extends keyof T> = { [Key in K]: NonNullable<T[Key]> } & T;
 
 export function assert<T>(value: T | undefined | null): T {
@@ -34,9 +34,8 @@ export function invokeIfNeeded<T, U extends any[]>(f: T | ((...args: U) => T), a
 export const isArrayOptionType = <T extends object>(value: T | readonly T[]): value is readonly T[] => _.isArray(value);
 export const isValueOptionType = <T extends object>(value: T | readonly T[]): value is T => value.hasOwnProperty("value");
 
-export type ISO8601Date = string;
-export const DefaultDateFormat = "dddd, MMMM do YYYY";
-export const formatDate = (date: ISO8601Date) => format(date, DefaultDateFormat);
+export type ISO8601DateString = string;
+export const formatDate = (str: ISO8601DateString) => DateTime.fromISO(str).toLocaleString(DateTime.DATE_FULL);
 
 export const isTouchDevice = memoizeOne(() => {
   var prefixes = " -webkit- -moz- -o- -ms- ".split(" ");

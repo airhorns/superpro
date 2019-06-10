@@ -17,7 +17,6 @@ gql`
         id
         description
         section
-        variable
         recurrence
         sortOrder
         amount {
@@ -41,9 +40,8 @@ export default class EditBudgetPage extends Page<{ budgetId: string }> {
         sectionId: assert(sectionsIndex[line.section]).id,
         sortOrder: line.sortOrder,
         description: line.description,
-        variable: line.variable,
         amount: line.amount.fractional / 100,
-        frequency: "daily"
+        recurrenceRules: null
       }))
     };
   }

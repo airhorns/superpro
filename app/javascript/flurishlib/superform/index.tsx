@@ -1,11 +1,13 @@
 import React from "react";
 import { DocType } from "./utils";
+export * from "./utils";
 import { SuperForm } from "./SuperForm";
 export { SuperForm } from "./SuperForm";
 export { Input } from "./Input";
 export { NumberInput } from "./NumberInput";
 export { Select } from "./Select";
 export { ArrayHelpers } from "./ArrayHelpers";
+export { SuperDatePicker } from "./SuperDatePicker";
 
 export const SuperFormContext = React.createContext({});
 

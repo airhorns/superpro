@@ -1,14 +1,14 @@
 import React from "react";
-import { format } from "date-fns";
+import { DateTime } from "luxon";
 import { Calendar, Box, DropButton, Text } from "grommet";
 import { Calendar as CalendarIcon, FormDown } from "grommet-icons";
 import { Row } from "./Row";
-import { ISO8601Date, DefaultDateFormat } from ".";
+import { ISO8601DateString } from ".";
 
 export interface DatePickerProps {
-  value: ISO8601Date | null;
+  value: ISO8601DateString | null;
   disabled?: boolean;
-  onChange?: (newDate: ISO8601Date) => void;
+  onChange?: (newDate: ISO8601DateString) => void;
   onBlur?: (e: any) => void;
 }
 
@@ -21,7 +21,7 @@ export class DatePicker extends React.Component<DatePickerProps, { open: boolean
   render() {
     let label = "Select a date...";
     if (this.props.value) {
-      label = format(this.props.value, DefaultDateFormat);
+      label = DateTime.fromISO(this.props.value).toLocaleString(DateTime.DATE_FULL);
     }
     return (
       <Box width="medium">
@@ -40,7 +40,7 @@ export class DatePicker extends React.Component<DatePickerProps, { open: boolean
                 daysOfWeek
                 date={this.props.value || undefined}
                 onSelect={
-                  ((date: ISO8601Date) => {
+                  ((date: ISO8601DateString) => {
                     this.setState({ open: false });
                     this.props.onChange && this.props.onChange(date);
                   }) as any
