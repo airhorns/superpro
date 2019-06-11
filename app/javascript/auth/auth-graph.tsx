@@ -144,7 +144,7 @@ export const AllAccountsDocument = gql`
   }
 }
     `;
-export type AllAccountsComponentProps = Omit<Omit<ReactApollo.QueryProps<AllAccountsQuery, AllAccountsQueryVariables>, 'query'>, 'variables'> & { variables?: AllAccountsQueryVariables };
+export type AllAccountsComponentProps = Omit<ReactApollo.QueryProps<AllAccountsQuery, AllAccountsQueryVariables>, 'query'>;
 
     export const AllAccountsComponent = (props: AllAccountsComponentProps) => (
       <ReactApollo.Query<AllAccountsQuery, AllAccountsQueryVariables> query={AllAccountsDocument} {...props} />
@@ -166,7 +166,7 @@ export const DiscardAccountDocument = gql`
 }
     `;
 export type DiscardAccountMutationFn = ReactApollo.MutationFn<DiscardAccountMutation, DiscardAccountMutationVariables>;
-export type DiscardAccountComponentProps = Omit<Omit<ReactApollo.MutationProps<DiscardAccountMutation, DiscardAccountMutationVariables>, 'mutation'>, 'variables'> & { variables?: DiscardAccountMutationVariables };
+export type DiscardAccountComponentProps = Omit<ReactApollo.MutationProps<DiscardAccountMutation, DiscardAccountMutationVariables>, 'mutation'>;
 
     export const DiscardAccountComponent = (props: DiscardAccountComponentProps) => (
       <ReactApollo.Mutation<DiscardAccountMutation, DiscardAccountMutationVariables> mutation={DiscardAccountDocument} {...props} />
@@ -191,7 +191,7 @@ export const NewAccountDocument = gql`
 }
     `;
 export type NewAccountMutationFn = ReactApollo.MutationFn<NewAccountMutation, NewAccountMutationVariables>;
-export type NewAccountComponentProps = Omit<Omit<ReactApollo.MutationProps<NewAccountMutation, NewAccountMutationVariables>, 'mutation'>, 'variables'> & { variables?: NewAccountMutationVariables };
+export type NewAccountComponentProps = Omit<ReactApollo.MutationProps<NewAccountMutation, NewAccountMutationVariables>, 'mutation'>;
 
     export const NewAccountComponent = (props: NewAccountComponentProps) => (
       <ReactApollo.Mutation<NewAccountMutation, NewAccountMutationVariables> mutation={NewAccountDocument} {...props} />
