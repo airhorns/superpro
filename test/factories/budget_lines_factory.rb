@@ -7,6 +7,7 @@ FactoryBot.define do
     sequence(:description) { |n| "Line #{n}" }
     section { "Facilities" }
     recurrence_rules { ["FREQ=DAILY;COUNT=3"] }
+    occurs_at { Time.now.utc }
     sequence(:sort_order) { |n| n }
 
     transient do

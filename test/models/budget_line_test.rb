@@ -4,6 +4,7 @@
 #
 #  id               :bigint(8)        not null, primary key
 #  description      :string           not null
+#  occurs_at        :datetime         not null
 #  recurrence_rules :string           is an Array
 #  section          :string           not null
 #  sort_order       :integer          default(1), not null
@@ -20,7 +21,7 @@
 #  fk_rails_...  (creator_id => users.id)
 #
 
-require 'test_helper'
+require "test_helper"
 
 class BudgetLineTest < ActiveSupport::TestCase
   # test "the truth" do

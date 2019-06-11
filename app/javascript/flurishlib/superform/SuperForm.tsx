@@ -1,4 +1,4 @@
-import { isFunction, get, set } from "lodash";
+import { get, set } from "lodash";
 import React from "react";
 import Automerge from "automerge";
 import { FieldPath, DocType } from "./utils";
@@ -6,7 +6,7 @@ import { ArrayHelpers } from "./ArrayHelpers";
 import { SuperFormContext } from ".";
 
 export interface SuperFormProps<T extends DocType> {
-  children: React.ReactNode | ((form: SuperForm<T>) => React.ReactNode);
+  children: (form: SuperForm<T>) => React.ReactNode;
   initialValues?: T;
   onChange?: (doc: T, form: SuperForm<T>) => void;
   onSubmit?: (doc: T, form: SuperForm<T>) => void;
@@ -85,9 +85,7 @@ export class SuperForm<T extends DocType> extends React.Component<SuperFormProps
   render() {
     return (
       <SuperFormContext.Provider value={this}>
-        <form onSubmit={() => this.props.onSubmit && this.props.onSubmit(this.doc, this)}>
-          {isFunction(this.props.children) ? this.props.children(this) : this.props.children}
-        </form>
+        <form onSubmit={() => this.props.onSubmit && this.props.onSubmit(this.doc, this)}>{this.props.children(this)}</form>
       </SuperFormContext.Provider>
     );
   }

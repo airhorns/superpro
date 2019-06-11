@@ -29,22 +29,25 @@ class UpdateBudget
 
       line.budget_line_scenarios = attributes[:amount_scenarios].permit!.to_h.map do |key, amount|
         scenario = BudgetLineScenario.new(budget_line: line, account: budget.account, scenario: key, amount_subunits: amount, currency: "USD")
-        scenario.series = expand_scenario(budget, scenario)
+        scenario.series = expand_scenario(line, scenario)
         scenario
       end
       line
     end
   end
 
-  def expand_scenario(budget, scenario)
+  def expand_scenario(budget_line, scenario)
     series = Series.new(
-      account: budget.account,
+      account: budget_line.account,
       creator: @user,
       scenario: scenario.scenario,
       currency: scenario.currency,
       x_type: "datetime",
       y_type: "money",
     )
+    if budget_line.recurrence_rules && budget_line.recurrence_rules.length > 0
+    else
+    end
     series
   end
 end

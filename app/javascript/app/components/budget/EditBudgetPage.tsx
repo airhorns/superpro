@@ -17,6 +17,7 @@ gql`
         id
         description
         section
+        occursAt
         recurrenceRules
         sortOrder
         amountScenarios
@@ -32,6 +33,7 @@ gql`
           id
           section
           description
+          occursAt
           sortOrder
           recurrenceRules
           amountScenarios
@@ -64,6 +66,7 @@ export default class EditBudgetPage extends Page<{ budgetId: string }, EditBudge
       lines: data.budgetLines.map(line => ({
         id: line.id,
         sectionId: assert(sectionsIndex[line.section]).id,
+        occursAt: line.occursAt,
         sortOrder: line.sortOrder,
         description: line.description,
         amountScenarios: line.amountScenarios,
@@ -83,6 +86,7 @@ export default class EditBudgetPage extends Page<{ budgetId: string }, EditBudge
               id: line.id,
               description: line.description,
               sortOrder: line.sortOrder,
+              occursAt: line.occursAt,
               amountScenarios: line.amountScenarios,
               recurrenceRules: line.recurrenceRules && line.recurrenceRules.rrules,
               section: sectionsIndex[line.sectionId].name

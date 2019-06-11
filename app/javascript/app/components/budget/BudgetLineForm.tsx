@@ -5,7 +5,7 @@ import { Box } from "grommet";
 import { Row, shallowSubsetEqual, shallowEqual, isTouchDevice } from "flurishlib";
 import { BudgetFormLineValue, BudgetFormValues } from "./BudgetForm";
 import { DragHandle } from "../common/FlurishIcons";
-import { SuperForm, Input } from "flurishlib/superform";
+import { SuperForm, Input, SuperDatePicker } from "flurishlib/superform";
 import { RecurrenceSelect } from "./RecurrenceSelect";
 
 export interface BudgetLineFormProps {
@@ -50,6 +50,9 @@ export class BudgetLineForm extends React.Component<BudgetLineFormProps, BudgetL
             </Box>
             <Box flex style={{ minWidth: "150px" }}>
               <Input path={`${lineFieldKey}.description`} placeholder="Line description" />
+            </Box>
+            <Box width="small">
+              <SuperDatePicker path={`${lineFieldKey}.occursAt`} />
             </Box>
             <Box width="small">
               <RecurrenceSelect path={`${lineFieldKey}.recurrenceRules`} />

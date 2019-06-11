@@ -6,6 +6,7 @@ class CreateBudgetLines < ActiveRecord::Migration[6.0]
       t.bigint :budget_id, null: false
       t.string :description, null: false
       t.string :section, null: false
+      t.datetime :occurs_at, null: false
       t.string :recurrence_rules, null: true, array: true
       t.integer :sort_order, null: false, default: 1
 

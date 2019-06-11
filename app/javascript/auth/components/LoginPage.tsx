@@ -13,6 +13,7 @@ interface LoginFormValues {
 interface LoginPageState {
   message?: string;
 }
+
 export class LoginPage extends React.Component<{}, LoginPageState> {
   state: LoginPageState = {};
 
@@ -48,13 +49,17 @@ export class LoginPage extends React.Component<{}, LoginPageState> {
           //   password: Yup.string().required()
           // })}
         >
-          <FieldBox label="Email" path="email">
-            <Input path="email" />
-          </FieldBox>
-          <FieldBox label="Password" path="password">
-            <Input path="password" type="password" />
-          </FieldBox>
-          <Button type="submit" primary label="Login" margin={{ top: "medium" }} data-test-id="login-submit" />
+          {() => (
+            <>
+              <FieldBox label="Email" path="email">
+                <Input path="email" />
+              </FieldBox>
+              <FieldBox label="Password" path="password">
+                <Input path="password" type="password" />
+              </FieldBox>
+              <Button type="submit" primary label="Login" margin={{ top: "medium" }} data-test-id="login-submit" />
+            </>
+          )}
         </SuperForm>
       </PageBox>
     );

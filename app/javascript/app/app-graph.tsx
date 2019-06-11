@@ -92,6 +92,7 @@ export type BudgetLine = {
   description: Scalars["String"];
   discardedAt: Scalars["ISO8601DateTime"];
   id: Scalars["ID"];
+  occursAt: Scalars["ISO8601DateTime"];
   recurrenceRules?: Maybe<Array<Scalars["RecurrenceRuleString"]>>;
   section: Scalars["String"];
   sortOrder: Scalars["Int"];
@@ -178,7 +179,7 @@ export type GetBudgetForEditQuery = { __typename?: "AppQuery" } & {
         budgetLines: Array<
           { __typename?: "BudgetLine" } & Pick<
             BudgetLine,
-            "id" | "description" | "section" | "recurrenceRules" | "sortOrder" | "amountScenarios"
+            "id" | "description" | "section" | "occursAt" | "recurrenceRules" | "sortOrder" | "amountScenarios"
           >
         >;
       }
@@ -198,7 +199,7 @@ export type UpdateBudgetMutation = { __typename?: "AppMutation" } & {
             budgetLines: Array<
               { __typename?: "BudgetLine" } & Pick<
                 BudgetLine,
-                "id" | "section" | "description" | "sortOrder" | "recurrenceRules" | "amountScenarios"
+                "id" | "section" | "description" | "occursAt" | "sortOrder" | "recurrenceRules" | "amountScenarios"
               >
             >;
           }
@@ -225,6 +226,7 @@ export const GetBudgetForEditDocument = gql`
         id
         description
         section
+        occursAt
         recurrenceRules
         sortOrder
         amountScenarios
@@ -248,6 +250,7 @@ export const UpdateBudgetDocument = gql`
           id
           section
           description
+          occursAt
           sortOrder
           recurrenceRules
           amountScenarios

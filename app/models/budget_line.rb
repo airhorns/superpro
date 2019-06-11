@@ -4,6 +4,7 @@
 #
 #  id               :bigint(8)        not null, primary key
 #  description      :string           not null
+#  occurs_at        :datetime         not null
 #  recurrence_rules :string           is an Array
 #  section          :string           not null
 #  sort_order       :integer          default(1), not null

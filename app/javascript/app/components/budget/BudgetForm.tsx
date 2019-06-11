@@ -1,7 +1,7 @@
 import React from "react";
 import { sortBy } from "lodash";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
-import { assert } from "flurishlib";
+import { assert, ISO8601DateString } from "flurishlib";
 import { BudgetFormSection } from "./BudgetFormSection";
 import { SuperForm } from "flurishlib/superform";
 import { BudgetFormNewSectionlist } from "./BudgetFormNewSectionList";
@@ -14,6 +14,7 @@ export interface BudgetFormLineValue {
   amountScenarios: {
     [key: string]: number;
   };
+  occursAt: ISO8601DateString;
   recurrenceRules: SerializedRRuleSet | null;
   sectionId: string;
 }

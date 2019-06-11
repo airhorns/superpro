@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(version: 2019_06_10_221752) do
     t.bigint "budget_id", null: false
     t.string "description", null: false
     t.string "section", null: false
+    t.datetime "occurs_at", null: false
     t.string "recurrence_rules", array: true
     t.integer "sort_order", default: 1, null: false
     t.datetime "created_at", precision: 6, null: false

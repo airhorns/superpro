@@ -1,7 +1,7 @@
 import React from "react";
 import { TextInput as GrommetTextInput, TextInputProps as GrommetTextInputProps } from "grommet";
 import { Omit } from "type-zoo/types";
-import { FieldProps, DocType, pathToName } from "./utils";
+import { FieldProps, DocType, pathToName, propsForGrommetComponent } from "./utils";
 import { useSuperForm } from ".";
 
 type AcceptedGrommetTextInputProps = Omit<GrommetTextInputProps, "name" | "value">;
@@ -14,11 +14,11 @@ export interface InputProps
 export const Input = <T extends DocType>(props: InputProps) => {
   const form = useSuperForm<T>();
   const id = pathToName(props.path);
-
   return (
     <GrommetTextInput
       id={id}
       name={id}
+      {...propsForGrommetComponent(props)}
       value={form.getValue(props.path)}
       onChange={e => {
         form.setValue(props.path, e.target.value || "");
