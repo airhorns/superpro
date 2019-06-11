@@ -1,12 +1,12 @@
 import React from "react";
-import { uniq, keyBy } from "lodash";
+import { uniq, keyBy, debounce } from "lodash";
 import shortid from "shortid";
-import { Page } from "../common";
+import { Page, SavingNotice } from "../common";
 import { BudgetForm, BudgetFormValues } from "./BudgetForm";
 import gql from "graphql-tag";
-import { GetBudgetForEditComponent, GetBudgetForEditQuery } from "app/app-graph";
+import { GetBudgetForEditComponent, GetBudgetForEditQuery, UpdateBudgetComponent, UpdateBudgetMutationFn } from "app/app-graph";
 import { SuperForm } from "flurishlib/superform";
-import { assert } from "flurishlib";
+import { assert, mutationSuccessful, toast } from "flurishlib";
 
 gql`
   query GetBudgetForEdit($budgetId: ID!) {
@@ -23,15 +23,43 @@ gql`
       }
     }
   }
+
+  mutation UpdateBudget($budgetId: ID!, $budget: BudgetAttributes!) {
+    updateBudget(budgetId: $budgetId, budget: $budget) {
+      budget {
+        id
+        budgetLines {
+          id
+          section
+          description
+          sortOrder
+          recurrenceRules
+          amountScenarios
+        }
+      }
+      errors {
+        field
+        fullMessage
+      }
+    }
+  }
 `;
 
-export default class EditBudgetPage extends Page<{ budgetId: string }> {
+interface EditBudgetPageState {
+  lastSaveAt: null | Date;
+  lastChangeAt: null | Date;
+}
+
+export default class EditBudgetPage extends Page<{ budgetId: string }, EditBudgetPageState> {
+  state: EditBudgetPageState = { lastSaveAt: null, lastChangeAt: null };
+
   processDataForForm(data: Exclude<GetBudgetForEditQuery["budget"], null>) {
     const sections = uniq(data.budgetLines.map(line => line.section)).map(section => ({ id: shortid(), name: section }));
     const sectionsIndex = keyBy(sections, "name");
 
     return {
       id: data.id,
+      name: data.name,
       sections: sections,
       lines: data.budgetLines.map(line => ({
         id: line.id,
@@ -44,17 +72,61 @@ export default class EditBudgetPage extends Page<{ budgetId: string }> {
     };
   }
 
+  debouncedSave = debounce(
+    async (doc: BudgetFormValues, update: UpdateBudgetMutationFn) => {
+      const sectionsIndex = keyBy(doc.budget.sections, "id");
+      const result = await update({
+        variables: {
+          budgetId: doc.budget.id,
+          budget: {
+            budgetLines: doc.budget.lines.map(line => ({
+              id: line.id,
+              description: line.description,
+              sortOrder: line.sortOrder,
+              amountScenarios: line.amountScenarios,
+              recurrenceRules: line.recurrenceRules && line.recurrenceRules.rrules,
+              section: sectionsIndex[line.sectionId].name
+            }))
+          }
+        }
+      });
+
+      if (mutationSuccessful(result)) {
+        this.setState({ lastSaveAt: new Date() });
+      } else {
+        toast.error("There was an error saving your budget. Please try again.");
+      }
+    },
+    1000,
+    { leading: false }
+  );
+
+  handleChange = (doc: BudgetFormValues, update: UpdateBudgetMutationFn) => {
+    this.setState({ lastChangeAt: new Date() });
+    this.debouncedSave(doc, update);
+  };
+
   render() {
     return (
-      <Page.Layout title="Budget">
-        <Page.Load component={GetBudgetForEditComponent} variables={{ budgetId: this.props.match.params.budgetId }} require={["budget"]}>
-          {data => (
-            <SuperForm<BudgetFormValues> initialValues={{ budget: this.processDataForForm(data.budget) }}>
-              {form => <BudgetForm form={form} />}
-            </SuperForm>
-          )}
-        </Page.Load>
-      </Page.Layout>
+      <Page.Load component={GetBudgetForEditComponent} variables={{ budgetId: this.props.match.params.budgetId }} require={["budget"]}>
+        {data => (
+          <Page.Layout
+            title={data.budget.name}
+            headerExtra={<SavingNotice lastChangeAt={this.state.lastChangeAt} lastSaveAt={this.state.lastSaveAt} />}
+          >
+            <UpdateBudgetComponent>
+              {update => (
+                <SuperForm<BudgetFormValues>
+                  initialValues={{ budget: this.processDataForForm(data.budget) }}
+                  onChange={doc => this.handleChange(doc, update)}
+                >
+                  {form => <BudgetForm form={form} />}
+                </SuperForm>
+              )}
+            </UpdateBudgetComponent>
+          </Page.Layout>
+        )}
+      </Page.Load>
     );
   }
 }

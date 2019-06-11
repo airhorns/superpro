@@ -8,6 +8,8 @@ import { SuperFormContext } from ".";
 export interface SuperFormProps<T extends DocType> {
   children: React.ReactNode | ((form: SuperForm<T>) => React.ReactNode);
   initialValues?: T;
+  onChange?: (doc: T, form: SuperForm<T>) => void;
+  onSubmit?: (doc: T, form: SuperForm<T>) => void;
 }
 
 export type Command<T extends DocType> = (doc: T) => void;
@@ -44,10 +46,13 @@ export class SuperForm<T extends DocType> extends React.Component<SuperFormProps
   }
 
   dispatch = (command: Command<T>) => {
+    // Queue up changes for the batch if batching is underway
     if (this.currentBatch) {
       this.currentBatch.push(command);
       return;
     }
+
+    // Otherwise, setState the result of applying the passed command to the document using Automerge
     const prevDoc = this.state.doc;
     this.setState(
       prevState => {
@@ -56,6 +61,7 @@ export class SuperForm<T extends DocType> extends React.Component<SuperFormProps
       },
       () => {
         console.debug(Automerge.getChanges(prevDoc, this.state.doc));
+        this.props.onChange && this.props.onChange(this.state.doc, this);
       }
     );
   };
@@ -79,7 +85,9 @@ export class SuperForm<T extends DocType> extends React.Component<SuperFormProps
   render() {
     return (
       <SuperFormContext.Provider value={this}>
-        <form>{isFunction(this.props.children) ? this.props.children(this) : this.props.children}</form>
+        <form onSubmit={() => this.props.onSubmit && this.props.onSubmit(this.doc, this)}>
+          {isFunction(this.props.children) ? this.props.children(this) : this.props.children}
+        </form>
       </SuperFormContext.Provider>
     );
   }

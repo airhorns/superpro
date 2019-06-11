@@ -27,7 +27,7 @@ class UpdateBudget
                budget.budget_lines.build(account: budget.account, creator: @user, **attributes.except(:id, :amount_scenarios))
              end
 
-      line.budget_line_scenarios = attributes[:amount_scenarios].map do |key, amount|
+      line.budget_line_scenarios = attributes[:amount_scenarios].permit!.to_h.map do |key, amount|
         scenario = BudgetLineScenario.new(budget_line: line, account: budget.account, scenario: key, amount_subunits: amount, currency: "USD")
         scenario.series = expand_scenario(budget, scenario)
         scenario

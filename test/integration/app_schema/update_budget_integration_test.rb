@@ -1,8 +1,8 @@
 require "test_helper"
 
 UPDATE_BUDGET_MUTATION = <<~QUERY
-  mutation updateBudget($id: ID!, $budget: BudgetAttributes!) {
-    updateBudget(id: $id, budget: $budget) {
+  mutation updateBudget($budgetId: ID!, $budget: BudgetAttributes!) {
+    updateBudget(budgetId: $budgetId, budget: $budget) {
       budget {
         id
         creator {

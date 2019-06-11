@@ -8,7 +8,7 @@ export default class NewBudgetPage extends Page {
   render() {
     return (
       <Page.Layout title="Budget">
-        <SuperForm<BudgetFormValues> initialValues={{ budget: { id: shortid(), lines: [], sections: [] } }}>
+        <SuperForm<BudgetFormValues> initialValues={{ budget: { id: shortid(), name: "New Budget", lines: [], sections: [] } }}>
           {form => <BudgetForm form={form} />}
         </SuperForm>
       </Page.Layout>

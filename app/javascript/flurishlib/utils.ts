@@ -4,6 +4,7 @@ import HTML5Backend from "react-dnd-html5-backend";
 import createTouchBackend from "react-dnd-touch-backend";
 import { DragDropManager, Backend } from "dnd-core";
 import { DateTime } from "luxon";
+import { FetchResult } from "react-apollo";
 export type AssertedKeys<T, K extends keyof T> = { [Key in K]: NonNullable<T[Key]> } & T;
 
 export function assert<T>(value: T | undefined | null): T {
@@ -115,4 +116,15 @@ export const shallowSubsetEqual = (keys: string[], objA: any, objB: any): boolea
   }
 
   return true;
+};
+
+export interface FlurishStyleMutationResult {
+  errors: {
+    field: string;
+  }[];
+  [key: string]: any;
+}
+
+export const mutationSuccessful = <T extends FlurishStyleMutationResult>(result: void | FetchResult<T>): result is FetchResult<T> => {
+  return !!(result && !result.errors);
 };

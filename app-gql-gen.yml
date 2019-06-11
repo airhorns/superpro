@@ -15,6 +15,7 @@ generates:
     config:
       scalars:
         ISO8601DateTime: string
+        RecurrenceRuleString: string
       withHOC: false
       withHooks: false
       constEnums: true

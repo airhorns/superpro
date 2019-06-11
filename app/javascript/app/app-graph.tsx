@@ -15,7 +15,7 @@ export type Scalars = {
   JSONScalar: any;
   /** An ISO 8601-encoded datetime */
   ISO8601DateTime: string;
-  RecurrenceRuleString: any;
+  RecurrenceRuleString: string;
   /** Represents textual data as UTF-8 character sequences. This type is most often
    * used by GraphQL to represent free-form human-readable text.
    */
@@ -40,7 +40,7 @@ export type AppMutation = {
 };
 
 export type AppMutationUpdateBudgetArgs = {
-  id: Scalars["ID"];
+  budgetId: Scalars["ID"];
   budget: BudgetAttributes;
 };
 
@@ -106,7 +106,7 @@ export type BudgetLineAttributes = {
   id: Scalars["ID"];
   description: Scalars["String"];
   section: Scalars["String"];
-  recurrenceRules: Array<Scalars["RecurrenceRuleString"]>;
+  recurrenceRules?: Maybe<Array<Scalars["RecurrenceRuleString"]>>;
   sortOrder: Scalars["Int"];
   amountScenarios: Scalars["JSONScalar"];
 };
@@ -185,6 +185,29 @@ export type GetBudgetForEditQuery = { __typename?: "AppQuery" } & {
   >;
 };
 
+export type UpdateBudgetMutationVariables = {
+  budgetId: Scalars["ID"];
+  budget: BudgetAttributes;
+};
+
+export type UpdateBudgetMutation = { __typename?: "AppMutation" } & {
+  updateBudget: Maybe<
+    { __typename?: "UpdateBudgetPayload" } & {
+      budget: Maybe<
+        { __typename?: "Budget" } & Pick<Budget, "id"> & {
+            budgetLines: Array<
+              { __typename?: "BudgetLine" } & Pick<
+                BudgetLine,
+                "id" | "section" | "description" | "sortOrder" | "recurrenceRules" | "amountScenarios"
+              >
+            >;
+          }
+      >;
+      errors: Maybe<Array<{ __typename?: "MutationError" } & Pick<MutationError, "field" | "fullMessage">>>;
+    }
+  >;
+};
+
 export type SiderInfoQueryVariables = {};
 
 export type SiderInfoQuery = { __typename?: "AppQuery" } & {
@@ -216,6 +239,37 @@ export type GetBudgetForEditComponentProps = Omit<
 
 export const GetBudgetForEditComponent = (props: GetBudgetForEditComponentProps) => (
   <ReactApollo.Query<GetBudgetForEditQuery, GetBudgetForEditQueryVariables> query={GetBudgetForEditDocument} {...props} />
+);
+
+export const UpdateBudgetDocument = gql`
+  mutation UpdateBudget($budgetId: ID!, $budget: BudgetAttributes!) {
+    updateBudget(budgetId: $budgetId, budget: $budget) {
+      budget {
+        id
+        budgetLines {
+          id
+          section
+          description
+          sortOrder
+          recurrenceRules
+          amountScenarios
+        }
+      }
+      errors {
+        field
+        fullMessage
+      }
+    }
+  }
+`;
+export type UpdateBudgetMutationFn = ReactApollo.MutationFn<UpdateBudgetMutation, UpdateBudgetMutationVariables>;
+export type UpdateBudgetComponentProps = Omit<
+  Omit<ReactApollo.MutationProps<UpdateBudgetMutation, UpdateBudgetMutationVariables>, "mutation">,
+  "variables"
+> & { variables?: UpdateBudgetMutationVariables };
+
+export const UpdateBudgetComponent = (props: UpdateBudgetComponentProps) => (
+  <ReactApollo.Mutation<UpdateBudgetMutation, UpdateBudgetMutationVariables> mutation={UpdateBudgetDocument} {...props} />
 );
 
 export const SiderInfoDocument = gql`

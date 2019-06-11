@@ -1,7 +1,8 @@
 import React from "react";
 import { sortBy } from "lodash";
+import { Heading } from "grommet";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
-import { assert } from "flurishlib";
+import { assert, Row } from "flurishlib";
 import { BudgetFormSection } from "./BudgetFormSection";
 import { SuperForm } from "flurishlib/superform";
 import { BudgetFormNewSectionlist } from "./BudgetFormNewSectionList";
@@ -26,12 +27,13 @@ export interface BudgetFormSectionValue {
 export interface BudgetFormValues {
   budget: {
     id: string;
+    name: string;
     lines: BudgetFormLineValue[];
     sections: BudgetFormSectionValue[];
   };
 }
 
-export const EmptyLine = { description: "", amount: 0, variable: false, frequency: "monthly" };
+export const EmptyLine = { description: "", amountScenarios: {} };
 
 const updateSortOrders = (list: BudgetFormLineValue[]) => {
   for (let i = 0; i < list.length; i++) {
