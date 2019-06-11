@@ -8,6 +8,7 @@ export * from "./NumberInput";
 export * from "./Select";
 export * from "./ArrayHelpers";
 export * from "./SuperDatePicker";
+export * from "./FieldBox";
 
 export const SuperFormContext = React.createContext({});
 

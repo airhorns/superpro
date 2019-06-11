@@ -8,13 +8,13 @@ import NumberFormat, { NumberFormatProps } from "react-number-format";
 
 export interface NumberInputProps extends InputProps, Pick<NumberFormatProps, "prefix" | "decimalScale" | "fixedDecimalScale"> {}
 
+// this should be using the propsForGrommetComponent helper to propagate props from the NumberInput props to the Grommet Input component, but, I couldn't get it to do that while not causing the NumberInput.customInput value to change all the time, which caused the input to lose focus every rerender.
+const GrommetizedInput = (props: any) => <GrommetTextInput {...props} />;
+
 export const NumberInput = <T extends DocType>(props: NumberInputProps) => {
   const form = useSuperForm<T>();
   const id = pathToName(props.path);
-  const renderTextInput = React.useMemo(() => {
-    return (inputProps: any) => <GrommetTextInput {...propsForGrommetComponent(props)} type="number" {...inputProps} />;
-  }, [props]);
-
+  const grommetProps = propsForGrommetComponent(props);
   return (
     <NumberFormat
       id={id}
@@ -23,7 +23,7 @@ export const NumberInput = <T extends DocType>(props: NumberInputProps) => {
       prefix={props.prefix}
       decimalScale={props.decimalScale}
       fixedDecimalScale={props.fixedDecimalScale}
-      customInput={renderTextInput}
+      customInput={GrommetizedInput}
       onValueChange={(values: any) => {
         if (!isUndefined(values.floatValue)) {
           form.setValue(props.path, values.floatValue);
@@ -34,6 +34,7 @@ export const NumberInput = <T extends DocType>(props: NumberInputProps) => {
         form.markTouched(props.path);
         props.onBlur && props.onBlur(e);
       }}
+      {...grommetProps}
     />
   );
 };

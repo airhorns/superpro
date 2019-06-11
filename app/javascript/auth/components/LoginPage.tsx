@@ -1,11 +1,9 @@
 import * as React from "react";
 import { client } from "../../flurishlib/axios";
-import { Formant } from "../../flurishlib/formant";
 import { Alert } from "../../flurishlib/Alert";
 import { Heading, Button, Box } from "grommet";
 import { PageBox } from "./PageBox";
-import { FormikActions } from "formik";
-import * as Yup from "yup";
+import { SuperForm, Input, FieldBox } from "flurishlib/superform";
 
 interface LoginFormValues {
   email: string;
@@ -18,9 +16,9 @@ interface LoginPageState {
 export class LoginPage extends React.Component<{}, LoginPageState> {
   state: LoginPageState = {};
 
-  handleSubmit = async (details: LoginFormValues, actions: FormikActions<LoginFormValues>) => {
+  handleSubmit = async (doc: LoginFormValues) => {
     try {
-      const response = await client.post("/auth/api/sign_in.json", { user: details });
+      const response = await client.post("/auth/api/sign_in.json", { user: doc });
       if (response.data.success) {
         window.location = response.data.redirect_url;
       } else {
@@ -33,7 +31,6 @@ export class LoginPage extends React.Component<{}, LoginPageState> {
       }
       this.setState({ message });
     }
-    actions.setSubmitting(false);
   };
 
   render() {
@@ -43,18 +40,22 @@ export class LoginPage extends React.Component<{}, LoginPageState> {
           <Heading>Login to Flurish</Heading>
         </Box>
         {this.state.message && <Alert type="error" message={this.state.message} />}
-        <Formant<LoginFormValues>
+        <SuperForm<LoginFormValues>
           onSubmit={this.handleSubmit}
           initialValues={{ email: "", password: "" }}
-          validationSchema={Yup.object().shape({
-            email: Yup.string().required(),
-            password: Yup.string().required()
-          })}
+          // validationSchema={Yup.object().shape({
+          //   email: Yup.string().required(),
+          //   password: Yup.string().required()
+          // })}
         >
-          <Formant.Input name="email" label="Email" />
-          <Formant.Input name="password" type="password" label="Password" />
+          <FieldBox label="Email" path="email">
+            <Input path="email" />
+          </FieldBox>
+          <FieldBox label="Password" path="password">
+            <Input path="password" type="password" />
+          </FieldBox>
           <Button type="submit" primary label="Login" margin={{ top: "medium" }} data-test-id="login-submit" />
-        </Formant>
+        </SuperForm>
       </PageBox>
     );
   }

@@ -1,10 +1,10 @@
 import _ from "lodash";
 import React from "react";
-import { ErrorMessage, connect, getIn } from "formik";
-import { Box, BoxProps, FormField } from "grommet";
+import { Box, BoxProps, Text, FormField } from "grommet";
+import { DocType } from ".";
 
-export interface ControlWrapperProps {
-  name: string;
+export interface FieldBoxProps {
+  path: string;
   showErrorMessages?: boolean;
   label?: string;
   width?: BoxProps["width"];
@@ -12,14 +12,14 @@ export interface ControlWrapperProps {
   children: React.ReactNode;
 }
 
-export const ControlWrapper = connect<ControlWrapperProps>(props => {
+export const FieldBox = <T extends DocType>(props: FieldBoxProps) => {
   const showErrorMessages = _.isUndefined(props.showErrorMessages) ? true : props.showErrorMessages;
-  const error = getIn(props.formik.errors, props.name);
+  const error = null; // someday this should be actually implemented on the form object
 
   if (props.label) {
     return (
       <Box width={props.width || "medium"}>
-        <FormField label={props.label} htmlFor={props.htmlFor || props.name} error={showErrorMessages && error}>
+        <FormField label={props.label} htmlFor={props.htmlFor || props.path} error={showErrorMessages && error}>
           {props.children}
         </FormField>
       </Box>
@@ -28,8 +28,8 @@ export const ControlWrapper = connect<ControlWrapperProps>(props => {
     return (
       <>
         {props.children}
-        {showErrorMessages && <ErrorMessage name={props.name} />}
+        {showErrorMessages && <Text color="status-critical">{props.path}</Text>}
       </>
     );
   }
-});
+};
