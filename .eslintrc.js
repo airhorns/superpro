@@ -3,7 +3,7 @@ module.exports = {
   parserOptions: {
     project: __dirname + "/tsconfig.json"
   },
-  plugins: ["@typescript-eslint"],
+  plugins: ["@typescript-eslint", "react-hooks"],
   extends: ["plugin:@typescript-eslint/recommended", "prettier", "prettier/@typescript-eslint", "plugin:react/recommended"],
   rules: {
     "@typescript-eslint/explicit-function-return-type": "off",
@@ -15,7 +15,9 @@ module.exports = {
         argsIgnorePattern: "^_"
       }
     ],
-    "react/display-name": "off"
+    "react/display-name": "off",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
   },
   settings: {
     react: {

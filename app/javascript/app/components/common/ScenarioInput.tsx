@@ -7,10 +7,6 @@ import NumberFormat from "react-number-format";
 import { Row } from "flurishlib";
 import styled from "styled-components";
 
-export interface ScenarioInputProps extends NumberInputProps {
-  something?: boolean;
-}
-
 const ControlRow = styled(Row)`
   ${controlBorderStyle};
 `;
@@ -51,10 +47,10 @@ interface Scenario {
 
 const AvailableScenarios = ["optimistic", "default", "pessimistic"].map(key => ({ key, label: labelForScenario(key) }));
 
-export const ScenarioInput = <T extends DocType>(props: ScenarioInputProps) => {
+export const ScenarioInput = <T extends DocType>(props: NumberInputProps) => {
   const form = useSuperForm<T>();
   const [open, setOpen] = React.useState(false);
-  const dropRef = React.createRef<HTMLDivElement>();
+  const dropRef = React.useRef<HTMLDivElement>();
   const scenariosEnabled = some(Object.keys(form.getValue(props.path)), key => key != "default");
   let scenarios: Scenario[] = Object.entries<number>(form.getValue(props.path)).map(([key, value]) => ({
     key,

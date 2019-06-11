@@ -9,7 +9,7 @@ import { UserAvatar } from "../common/UserAvatar";
 import { signOut } from "../../lib/auth";
 import { Settings } from "../../lib/settings";
 import { Row } from "../../../flurishlib";
-import { Budget, FlurishLogo } from "../common/FlurishIcons";
+import { Budget } from "../common/FlurishIcons";
 
 gql`
   query SiderInfo {

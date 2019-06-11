@@ -1,5 +1,5 @@
 import { ApolloClient } from "apollo-client";
-import { InMemoryCache, IntrospectionFragmentMatcher, defaultDataIdFromObject } from "apollo-cache-inmemory";
+import { InMemoryCache, IntrospectionFragmentMatcher } from "apollo-cache-inmemory";
 import { HttpLink } from "apollo-link-http";
 import { onError } from "apollo-link-error";
 import { ApolloLink } from "apollo-link";

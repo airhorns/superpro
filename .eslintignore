@@ -1,5 +1,5 @@
 app/javascript/server/generated
-app/javascript/edit/app-graph.tsx
+app/javascript/app/app-graph.tsx
 app/javascript/auth/auth-graph.tsx
 node_modules
 public

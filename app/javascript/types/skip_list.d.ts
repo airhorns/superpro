@@ -29,7 +29,7 @@ declare module "skip_list" {
     [Symbol.iterator](): IteratorResult<T>;
   }
 
-  class SkipList<T> {
+  export class SkipList<T> {
     _nodes: Map<string, T>;
     _randomSource: RandomGenerator;
 
