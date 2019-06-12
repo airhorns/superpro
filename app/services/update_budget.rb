@@ -45,9 +45,22 @@ class UpdateBudget
       x_type: "datetime",
       y_type: "money",
     )
-    if budget_line.recurrence_rules && budget_line.recurrence_rules.length > 0
-    else
+
+    # If the budget line is recurring, expand all the recurrence rules and create cells for each.
+    # If it isn't recurring, add one cell for the time when the line occurs
+    dates = if budget_line.recurrence_rules && budget_line.recurrence_rules.length > 0
+              budget_line.recurrence_rules.flat_map do |rule_string|
+                rule = RRule::Rule.new(rule_string, dtstart: budget_line.occurs_at)
+                rule.between(budget_line.occurs_at, Time.now.utc + 2.years)
+              end.uniq
+            else
+              [budget_line.occurs_at]
+            end
+
+    dates.each do |date|
+      series.cells.build(account: budget_line.account, x_datetime: date, y_money_subunits: scenario.amount_subunits)
     end
+
     series
   end
 end

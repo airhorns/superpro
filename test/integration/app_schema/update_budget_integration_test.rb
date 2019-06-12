@@ -29,10 +29,10 @@ class UpdateBudgetIntegrationTest < ActiveSupport::TestCase
   end
 
   test "it can update a budget's name" do
-    result = FlurishAppSchema.execute(UPDATE_BUDGET_MUTATION, context: @context, variables: {
-                                                                id: @budget.id,
+    result = FlurishAppSchema.execute(UPDATE_BUDGET_MUTATION, context: @context, variables: ActionController::Parameters.new({
+                                                                budgetId: @budget.id,
                                                                 budget: { "name": "Other budget", budgetLines: [] },
-                                                              })
+                                                              }))
     assert_no_graphql_errors result
     assert_nil result["data"]["updateBudget"]["errors"]
     assert_equal @budget.id.to_s, result["data"]["updateBudget"]["budget"]["id"]
@@ -41,12 +41,13 @@ class UpdateBudgetIntegrationTest < ActiveSupport::TestCase
 
   test "it can update a budget's lines" do
     line = @budget.budget_lines.first
-    result = FlurishAppSchema.execute(UPDATE_BUDGET_MUTATION, context: @context, variables: {
-                                                                id: @budget.id,
+    result = FlurishAppSchema.execute(UPDATE_BUDGET_MUTATION, context: @context, variables: ActionController::Parameters.new({
+                                                                budgetId: @budget.id,
                                                                 budget: { "name": "Other budget", budgetLines: [{
                                                                   id: line.id,
                                                                   description: line.description,
                                                                   section: line.section,
+                                                                  occursAt: Time.now.utc.iso8601,
                                                                   recurrenceRules: [],
                                                                   sortOrder: 0,
                                                                   amountScenarios: {
@@ -55,7 +56,7 @@ class UpdateBudgetIntegrationTest < ActiveSupport::TestCase
                                                                     "pessimistic" => 500,
                                                                   },
                                                                 }] },
-                                                              })
+                                                              }))
     assert_no_graphql_errors result
     assert_nil result["data"]["updateBudget"]["errors"]
     assert_equal @budget.id.to_s, result["data"]["updateBudget"]["budget"]["id"]

@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Heading } from "grommet";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
+import { Row } from "flurishlib";
 
 const StaticBreadcrumbs = {
   home: { text: "Home", path: "/" },
@@ -79,12 +80,10 @@ export class PageLayout extends React.Component<PageLayoutProps> {
         <Helmet>
           <title>{this.props.documentTitle || this.props.title} - Flurish</title>
         </Helmet>
-        <Box
+        <Row
           tag="header"
-          direction="row"
           background="white"
           align="center"
-          alignContent="center"
           justify="between"
           pad="small"
           responsive={false}
@@ -94,10 +93,8 @@ export class PageLayout extends React.Component<PageLayoutProps> {
           <Heading level={"3"} margin="xsmall">
             {this.props.title}
           </Heading>
-          <Box alignSelf="end" direction="row">
-            {this.props.headerExtra}
-          </Box>
-        </Box>
+          <Row>{this.props.headerExtra}</Row>
+        </Row>
         <Box flex pad={this.props.padded ? "medium" : undefined}>
           {this.props.children}
         </Box>
