@@ -24,7 +24,7 @@
 #  fk_rails_...  (series_id => series.id)
 #
 
-require 'test_helper'
+require "test_helper"
 
 class CellTest < ActiveSupport::TestCase
   # test "the truth" do

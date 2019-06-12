@@ -79,8 +79,17 @@ ActiveRecord::Schema.define(version: 2019_06_10_221752) do
     t.index ["account_id", "series_id"], name: "index_cells_on_account_id_and_series_id"
   end
 
-# Could not dump table "series" because of following StandardError
-#   Unknown type 'series_x_type' for column 'x_type'
+  create_table "series", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.string "scenario", null: false
+    t.string "x_type", null: false
+    t.string "y_type", null: false
+    t.string "currency"
+    t.bigint "creator_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["account_id", "scenario"], name: "index_series_on_account_id_and_scenario"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "full_name", null: false

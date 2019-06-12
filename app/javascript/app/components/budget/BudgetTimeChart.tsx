@@ -30,7 +30,8 @@ export const BudgetTimeChart = (props: { budgetId: string }) => {
           }
         ],
         filters: [],
-        dimensions: []
+        dimensions: [],
+        renewQuery: true
       }}
       cubejsApi={CubeJSAPI}
       render={({ resultSet }: { resultSet: any }) => {

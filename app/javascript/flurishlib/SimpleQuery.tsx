@@ -61,6 +61,6 @@ export class SimpleQuery<
   };
 
   render() {
-    return <this.props.component {...this.props as any}>{this.handleResult}</this.props.component>;
+    return <this.props.component {...(this.props as any)}>{this.handleResult}</this.props.component>;
   }
 }

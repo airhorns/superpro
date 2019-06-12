@@ -68,7 +68,7 @@ export const ScenarioInput = <T extends DocType>(props: NumberInputProps) => {
             {scenarios.map(scenario => (
               <Box key={scenario.key} pad="xsmall" round="xsmall" style={{ backgroundColor: backgroundForScenario(scenario.key) }}>
                 <NumberFormat
-                  {...pick(props, ["prefix", "fixedDecimalScale", "decimalScale", "format"]) as any}
+                  {...(pick(props, ["prefix", "fixedDecimalScale", "decimalScale", "format"]) as any)}
                   value={scenario.value}
                   displayType={"text"}
                 />

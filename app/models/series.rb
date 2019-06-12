@@ -5,8 +5,8 @@
 #  id         :bigint(8)        not null, primary key
 #  currency   :string
 #  scenario   :string           not null
-#  x_type     :enum             not null
-#  y_type     :enum             not null
+#  x_type     :string           not null
+#  y_type     :string           not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  account_id :bigint(8)        not null

@@ -22,7 +22,7 @@
 #  fk_rails_...  (budget_line_id => budget_lines.id)
 #
 
-require 'test_helper'
+require "test_helper"
 
 class BudgetLineScenarioTest < ActiveSupport::TestCase
   # test "the truth" do

@@ -16,7 +16,7 @@
 #  fk_rails_...  (creator_id => users.id)
 #
 
-require 'test_helper'
+require "test_helper"
 
 class BudgetTest < ActiveSupport::TestCase
   # test "the truth" do
