@@ -50,7 +50,7 @@ class UpdateBudget
     # If it isn't recurring, add one cell for the time when the line occurs
     dates = if budget_line.recurrence_rules && budget_line.recurrence_rules.length > 0
               budget_line.recurrence_rules.flat_map do |rule_string|
-                rule = RRule::Rule.new(rule_string, dtstart: budget_line.occurs_at)
+                rule = RRule::Rule.new(rule_string.gsub(/\ARRULE:/, ""), dtstart: budget_line.occurs_at)
                 rule.between(budget_line.occurs_at, Time.now.utc + 2.years)
               end.uniq
             else

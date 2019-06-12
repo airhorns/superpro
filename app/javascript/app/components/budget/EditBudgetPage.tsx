@@ -7,6 +7,7 @@ import gql from "graphql-tag";
 import { GetBudgetForEditComponent, GetBudgetForEditQuery, UpdateBudgetComponent, UpdateBudgetMutationFn } from "app/app-graph";
 import { SuperForm } from "flurishlib/superform";
 import { assert, mutationSuccessful, toast } from "flurishlib";
+import { BudgetTimeChart } from "./BudgetTimeChart";
 
 gql`
   query GetBudgetForEdit($budgetId: ID!) {
@@ -120,12 +121,15 @@ export default class EditBudgetPage extends Page<{ budgetId: string }, EditBudge
           >
             <UpdateBudgetComponent>
               {update => (
-                <SuperForm<BudgetFormValues>
-                  initialValues={{ budget: this.processDataForForm(data.budget) }}
-                  onChange={doc => this.handleChange(doc, update)}
-                >
-                  {form => <BudgetForm form={form} />}
-                </SuperForm>
+                <>
+                  <BudgetTimeChart budgetId={data.budget.id} />
+                  <SuperForm<BudgetFormValues>
+                    initialValues={{ budget: this.processDataForForm(data.budget) }}
+                    onChange={doc => this.handleChange(doc, update)}
+                  >
+                    {form => <BudgetForm form={form} />}
+                  </SuperForm>
+                </>
               )}
             </UpdateBudgetComponent>
           </Page.Layout>
