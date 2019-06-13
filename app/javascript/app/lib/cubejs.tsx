@@ -1,10 +1,9 @@
 import React from "react";
 import { isEqual, toPairs, fromPairs } from "lodash";
 import cubejs from "@cubejs-client/core";
+import { Settings } from "./settings";
 
-export const CubeJSAPI = cubejs("whatever", {
-  apiUrl: "https://cube.ggt.dev/cubejs-api/v1/"
-});
+export const CubeJSAPI = cubejs(Settings.cubeJs.token, { apiUrl: Settings.cubeJs.apiUrl });
 
 export interface QueryDescriptor {
   measures?: string[];

@@ -9,6 +9,7 @@ SELECT
   , budget_lines.section as section
   , budget_lines.description as line_name
   , budget_lines.budget_id AS budget_id
+  , budget_lines.account_id AS account_id
 FROM cells
 INNER JOIN series ON series.id = cells.series_id
 INNER JOIN budget_line_scenarios ON budget_line_scenarios.series_id = series.id

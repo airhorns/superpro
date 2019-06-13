@@ -209,7 +209,8 @@ ActiveRecord::Schema.define(version: 2019_06_13_215004) do
       budget_lines.id AS budget_line_id,
       budget_lines.section,
       budget_lines.description AS line_name,
-      budget_lines.budget_id
+      budget_lines.budget_id,
+      budget_lines.account_id
      FROM (((cells
        JOIN series ON ((series.id = cells.series_id)))
        JOIN budget_line_scenarios ON ((budget_line_scenarios.series_id = series.id)))
@@ -218,13 +219,15 @@ ActiveRecord::Schema.define(version: 2019_06_13_215004) do
   create_view "budget_forecasts", sql_definition: <<-SQL
       WITH active_scenarios AS (
            SELECT DISTINCT cell_details.scenario,
-              cell_details.budget_id
+              cell_details.budget_id,
+              cell_details.account_id
              FROM cell_details
           ), running_totals AS (
            SELECT cell_details.cell_at,
               cell_details.scenario,
               cell_details.series_id,
               cell_details.budget_id,
+              cell_details.account_id,
               sum(
                   CASE cell_details.is_revenue
                       WHEN true THEN cell_details.amount_subunits
@@ -241,19 +244,21 @@ ActiveRecord::Schema.define(version: 2019_06_13_215004) do
            SELECT (date_trunc('week'::text, t.week_start))::date AS week_start
              FROM generate_series(('2019-01-01 00:00:00'::timestamp without time zone)::timestamp with time zone, (now() + '2 years'::interval), '7 days'::interval) t(week_start)
           ), totals_by_week AS (
-           SELECT active_scenarios.budget_id,
-              active_scenarios.scenario,
+           SELECT active_scenarios.scenario,
               weeks.week_start,
               (array_agg(running_totals.cash_on_hand))[1] AS cash_on_hand,
               (array_agg(running_totals.running_revenue_total))[1] AS running_revenue_total,
-              (array_agg(running_totals.running_expenses_total))[1] AS running_expenses_total
+              (array_agg(running_totals.running_expenses_total))[1] AS running_expenses_total,
+              active_scenarios.account_id,
+              active_scenarios.budget_id
              FROM ((weeks
                CROSS JOIN active_scenarios)
                LEFT JOIN running_totals ON ((((date_trunc('week'::text, running_totals.cell_at))::date = weeks.week_start) AND (running_totals.budget_id = active_scenarios.budget_id) AND ((running_totals.scenario)::text = (active_scenarios.scenario)::text))))
-            GROUP BY active_scenarios.budget_id, active_scenarios.scenario, weeks.week_start
+            GROUP BY active_scenarios.budget_id, active_scenarios.account_id, active_scenarios.scenario, weeks.week_start
             ORDER BY weeks.week_start
           ), gapfilled_totals_by_week AS (
            SELECT totals_by_week.budget_id,
+              totals_by_week.account_id,
               totals_by_week.scenario,
               totals_by_week.week_start,
               COALESCE(gapfill(totals_by_week.cash_on_hand) OVER (PARTITION BY totals_by_week.budget_id, totals_by_week.scenario ORDER BY totals_by_week.week_start), (0)::bigint) AS cash_on_hand,
@@ -262,6 +267,7 @@ ActiveRecord::Schema.define(version: 2019_06_13_215004) do
              FROM totals_by_week
           )
    SELECT gapfilled_totals_by_week.budget_id,
+      gapfilled_totals_by_week.account_id,
       gapfilled_totals_by_week.scenario,
       gapfilled_totals_by_week.week_start,
       gapfilled_totals_by_week.cash_on_hand,
@@ -273,6 +279,7 @@ ActiveRecord::Schema.define(version: 2019_06_13_215004) do
   create_view "budget_problem_spots", sql_definition: <<-SQL
       WITH spot_grouped AS (
            SELECT budget_forecasts_flagged.budget_id,
+              budget_forecasts_flagged.account_id,
               budget_forecasts_flagged.scenario,
               budget_forecasts_flagged.week_start,
               budget_forecasts_flagged.cash_on_hand,
@@ -281,6 +288,7 @@ ActiveRecord::Schema.define(version: 2019_06_13_215004) do
               budget_forecasts_flagged.group_flag,
               sum(budget_forecasts_flagged.group_flag) OVER (ORDER BY budget_forecasts_flagged.week_start) AS spot_group
              FROM ( SELECT budget_forecasts.budget_id,
+                      budget_forecasts.account_id,
                       budget_forecasts.scenario,
                       budget_forecasts.week_start,
                       budget_forecasts.cash_on_hand,

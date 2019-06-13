@@ -42,5 +42,6 @@ module Flurish
     config.x.domains.admin = "replaceme"
 
     config.admin = config_for(:admin)
+    config.cubejs = config_for(:cubejs)
   end
 end

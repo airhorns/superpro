@@ -4,6 +4,10 @@ export interface SettingsBag {
   accountId: number;
   baseUrl: string;
   devMode: boolean;
+  cubeJs: {
+    apiUrl: string;
+    token: string;
+  };
 }
 
 // eslint-disable-next-line @typescript-eslint/no-object-literal-type-assertion

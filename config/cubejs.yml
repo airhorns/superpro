@@ -1,0 +1,6 @@
+development:
+  api_url: https://cube.ggt.dev/cubejs-api/v1/
+  api_secret: testdevelopmentapisecret
+production:
+  api_url: https://cube.getflurish.io/cubejs-api/v1/
+  api_secret: <%= ENV['CUBEJS_API_SECRET'] %>

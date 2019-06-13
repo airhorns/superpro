@@ -36,6 +36,7 @@ gem "bullet", github: 'flyerhzm/bullet'
 gem "google-cloud-storage", require: false
 gem "health_check"
 gem 'hiredis'
+gem 'jwt'
 gem "lru_redux"
 gem "marginalia"
 gem "oj"

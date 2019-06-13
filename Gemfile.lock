@@ -483,6 +483,7 @@ DEPENDENCIES
   graphql-batch
   health_check
   hiredis
+  jwt
   kubernetes-deploy
   listen (>= 3.0.5, < 3.2)
   lru_redux
