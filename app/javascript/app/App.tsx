@@ -2,18 +2,25 @@ import React from "react";
 import { ApolloProvider } from "react-apollo";
 import { DragDropContextProvider } from "react-dnd";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { getClient } from "../lib/apollo";
-import { FlurishGrommetTheme, SentryErrorBoundary, FlurishGlobalStyle, DnDBackendForDevice } from "../../flurishlib";
+import { getClient } from "./lib/apollo";
+import { FlurishGrommetTheme, SentryErrorBoundary, FlurishGlobalStyle, DnDBackendForDevice } from "../flurishlib";
 import { Grommet, Box } from "grommet";
-import { Settings } from "../lib/settings";
-import { ToastContainer, FlagsProvider, flags } from "../../flurishlib";
-import { AppSidebar } from "./chrome/AppSidebar";
-import { NotFoundPage } from "./chrome/NotFoundPage";
-import { PageLoadSpin } from "../../flurishlib";
+import { Settings } from "./lib/settings";
+import { ToastContainer, FlagsProvider, flags } from "../flurishlib";
+import { AppSidebar } from "./components/chrome/AppSidebar";
+import { NotFoundPage } from "./components/chrome/NotFoundPage";
+import { PageLoadSpin } from "../flurishlib";
 
-const HomePage = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "Home" */ "./home/HomePage"));
-const NewBudgetPage = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "Budget" */ "./budget/NewBudgetPage"));
-const EditBudgetPage = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "Budget" */ "./budget/EditBudgetPage"));
+const HomePage = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "Home" */ "./components/home/HomePage"));
+const BudgetReportsIndexPage = React.lazy(() =>
+  import(/* webpackPrefetch: true, webpackChunkName: "Budget" */ "./components/budget/BudgetReportsIndexPage")
+);
+const BudgetReportPage = React.lazy(() =>
+  import(/* webpackPrefetch: true, webpackChunkName: "Budget" */ "./components/budget/BudgetReportPage")
+);
+const EditBudgetPage = React.lazy(() =>
+  import(/* webpackPrefetch: true, webpackChunkName: "Budget" */ "./components/budget/EditBudgetPage")
+);
 
 export const FlurishClient = getClient();
 
@@ -32,8 +39,9 @@ export const App = () => {
                     <React.Suspense fallback={<PageLoadSpin />}>
                       <Switch>
                         <Route path="/" exact component={HomePage} />
-                        <Route path="/budget" exact component={NewBudgetPage} />
-                        <Route path="/budget/:budgetId" exact component={EditBudgetPage} />
+                        <Route path="/budget" exact component={EditBudgetPage} />
+                        <Route path="/budget/:budgetId/reports" exact component={BudgetReportsIndexPage} />
+                        <Route path="/budget/:budgetId/report/:reportKey" exact component={BudgetReportPage} />
                         <Route component={NotFoundPage} />
                       </Switch>
                     </React.Suspense>

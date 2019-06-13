@@ -7,10 +7,16 @@ module Types::Budget::BudgetQueries
       description "Find a budget by ID"
       argument :budget_id, GraphQL::Types::ID, required: true
     end
+
+    field :default_budget, Types::Budget::BudgetType, null: false, description: "Get the default budget premade for all accounts"
   end
 
   def budgets
     context[:current_account].budgets.kept.all
+  end
+
+  def default_budget
+    context[:current_account].budgets.kept.first
   end
 
   def budget(budget_id:)

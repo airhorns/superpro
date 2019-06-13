@@ -32,5 +32,5 @@ class Series < ApplicationRecord
   validates :scenario, presence: true
 
   belongs_to :creator, class_name: "User", inverse_of: :created_series
-  has_many :cells, inverse_of: :series, autosave: true, dependent: :destroy
+  has_many :cells, inverse_of: :series, autosave: true, dependent: :delete_all
 end

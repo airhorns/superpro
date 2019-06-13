@@ -1,8 +1,8 @@
 import React from "react";
-import { sortBy, some, capitalize, pick } from "lodash";
+import { sortBy, some, capitalize, pick, pickBy, isUndefined, isNull } from "lodash";
 import { Box, DropButton, Text } from "grommet";
 import { controlBorderStyle } from "grommet/utils/styles";
-import { DocType, useSuperForm, NumberInputProps, NumberInput } from "flurishlib/superform";
+import { DocType, useSuperForm, NumberInputProps, NumberInput, pathToName } from "flurishlib/superform";
 import NumberFormat from "react-number-format";
 import { Row } from "flurishlib";
 import styled from "styled-components";
@@ -47,12 +47,28 @@ interface Scenario {
 
 const AvailableScenarios = ["optimistic", "default", "pessimistic"].map(key => ({ key, label: labelForScenario(key) }));
 
+export const ScenarioInputRowInput = (props: { inputProps: NumberInputProps; label: string }) => {
+  const inputRef = React.useRef<HTMLInputElement>();
+  const id = pathToName(props.inputProps.path);
+
+  return (
+    <Row gap="small">
+      <label htmlFor={id}>
+        <Text size="xlarge">{props.label}</Text>
+      </label>
+      <NumberInput {...props.inputProps} ref={inputRef as any} />
+    </Row>
+  );
+};
+
 export const ScenarioInput = <T extends DocType>(props: NumberInputProps) => {
   const form = useSuperForm<T>();
   const [open, setOpen] = React.useState(false);
   const dropRef = React.useRef<HTMLDivElement>();
-  const scenariosEnabled = some(Object.keys(form.getValue(props.path)), key => key != "default");
-  let scenarios: Scenario[] = Object.entries<number>(form.getValue(props.path)).map(([key, value]) => ({
+
+  const currentValues = pickBy(form.getValue(props.path), (value, _key) => !isNull(value) && !isUndefined(value));
+  const scenariosEnabled = some(Object.keys(currentValues), key => key != "default");
+  let scenarios: Scenario[] = Object.entries<number>(currentValues).map(([key, value]) => ({
     key,
     value,
     label: labelForScenario(key)
@@ -85,10 +101,11 @@ export const ScenarioInput = <T extends DocType>(props: NumberInputProps) => {
         dropContent={
           <Box pad="small" gap="small">
             {AvailableScenarios.map(scenario => (
-              <Row gap="small" key={scenario.key}>
-                <Text size="xlarge">{scenario.label}</Text>
-                <NumberInput {...props} path={props.path + "." + scenario.key} />
-              </Row>
+              <ScenarioInputRowInput
+                key={scenario.key}
+                label={scenario.label}
+                inputProps={{ ...props, path: props.path + "." + scenario.key }}
+              />
             ))}
           </Box>
         }

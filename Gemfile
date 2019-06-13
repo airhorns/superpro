@@ -29,6 +29,7 @@ gem 'xxhash'
 # Performance & Infrastructure
 gem 'active_record_query_trace'
 gem "annotate"
+gem 'ar_transaction_changes'
 gem 'bcrypt', '~> 3.1.7'
 gem 'bootsnap', '>= 1.1.0', require: false
 gem "bullet", github: 'flyerhzm/bullet'

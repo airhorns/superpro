@@ -25,10 +25,14 @@ export const NumberInput = <T extends DocType>(props: NumberInputProps) => {
       fixedDecimalScale={props.fixedDecimalScale}
       customInput={GrommetizedInput}
       onValueChange={(values: any) => {
-        if (!isUndefined(values.floatValue)) {
-          form.setValue(props.path, values.floatValue);
-          props.onChange && props.onChange({} as any);
+        let value: any;
+        if (isUndefined(values.floatValue)) {
+          value = null;
+        } else {
+          value = values.floatValue;
         }
+        form.setValue(props.path, value);
+        props.onChange && props.onChange({} as any);
       }}
       onBlur={(e: any) => {
         form.markTouched(props.path);

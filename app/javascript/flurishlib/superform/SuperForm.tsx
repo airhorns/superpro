@@ -85,7 +85,14 @@ export class SuperForm<T extends DocType> extends React.Component<SuperFormProps
   render() {
     return (
       <SuperFormContext.Provider value={this}>
-        <form onSubmit={() => this.props.onSubmit && this.props.onSubmit(this.doc, this)}>{this.props.children(this)}</form>
+        <form
+          onSubmit={e => {
+            e.preventDefault();
+            this.props.onSubmit && this.props.onSubmit(this.doc, this);
+          }}
+        >
+          {this.props.children(this)}
+        </form>
       </SuperFormContext.Provider>
     );
   }

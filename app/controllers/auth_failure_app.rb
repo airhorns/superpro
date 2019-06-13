@@ -22,4 +22,19 @@ class AuthFailureApp < Devise::FailureApp
   def scope_url
     auth_root_url
   end
+
+  # Used by devise to figure out what URL to redirect to after login or whatnot. Because auth runs on a different domain, we need to
+  # do something different than the default Devise behaviour and redirect to a different domain sometimes.
+  def extract_path_from_location(location)
+    uri = parse_uri(location)
+
+    if uri
+      if not [Rails.config.x.domains.app, Rails.config.x.domains.auth].include?(uri.host)
+        path = remove_domain_from_uri(uri)
+        path = add_fragment_back_to_path(uri, path)
+      end
+
+      path
+    end
+  end
 end

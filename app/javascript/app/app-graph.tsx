@@ -15,6 +15,9 @@ export type Scalars = {
   JSONScalar: any;
   /** An ISO 8601-encoded datetime */
   ISO8601DateTime: string;
+  /** Represents textual data as UTF-8 character sequences. This type is most often
+   * used by GraphQL to represent free-form human-readable text.
+   */
   RecurrenceRuleString: string;
   /** Represents textual data as UTF-8 character sequences. This type is most often
    * used by GraphQL to represent free-form human-readable text.
@@ -54,6 +57,8 @@ export type AppQuery = {
   currentAccount: Account;
   /** Get the details of the currently logged in user */
   currentUser: User;
+  /** Get the default budget premade for all accounts */
+  defaultBudget: Budget;
 };
 
 export type AppQueryBudgetArgs = {
@@ -68,6 +73,7 @@ export type Budget = {
   discardedAt: Scalars["ISO8601DateTime"];
   id: Scalars["ID"];
   name: Scalars["String"];
+  sections: Array<Scalars["String"]>;
   updatedAt: Scalars["ISO8601DateTime"];
 };
 
@@ -107,6 +113,7 @@ export type BudgetLineAttributes = {
   id: Scalars["ID"];
   description: Scalars["String"];
   section: Scalars["String"];
+  occursAt: Scalars["ISO8601DateTime"];
   recurrenceRules?: Maybe<Array<Scalars["RecurrenceRuleString"]>>;
   sortOrder: Scalars["Int"];
   amountScenarios: Scalars["JSONScalar"];
@@ -169,21 +176,25 @@ export type UserPreferences = {
   __typename?: "UserPreferences";
   sidebarExpanded: Scalars["Boolean"];
 };
-export type GetBudgetForEditQueryVariables = {
+export type GetBudgetForReportsQueryVariables = {
   budgetId: Scalars["ID"];
 };
 
+export type GetBudgetForReportsQuery = { __typename?: "AppQuery" } & {
+  budget: Maybe<{ __typename?: "Budget" } & Pick<Budget, "id" | "name" | "sections">>;
+};
+
+export type GetBudgetForEditQueryVariables = {};
+
 export type GetBudgetForEditQuery = { __typename?: "AppQuery" } & {
-  budget: Maybe<
-    { __typename?: "Budget" } & Pick<Budget, "id" | "name"> & {
-        budgetLines: Array<
-          { __typename?: "BudgetLine" } & Pick<
-            BudgetLine,
-            "id" | "description" | "section" | "occursAt" | "recurrenceRules" | "sortOrder" | "amountScenarios"
-          >
-        >;
-      }
-  >;
+  budget: { __typename?: "Budget" } & Pick<Budget, "id" | "name"> & {
+      budgetLines: Array<
+        { __typename?: "BudgetLine" } & Pick<
+          BudgetLine,
+          "id" | "description" | "section" | "occursAt" | "recurrenceRules" | "sortOrder" | "amountScenarios"
+        >
+      >;
+    };
 };
 
 export type UpdateBudgetMutationVariables = {
@@ -217,9 +228,28 @@ export type SiderInfoQuery = { __typename?: "AppQuery" } & {
     };
 };
 
-export const GetBudgetForEditDocument = gql`
-  query GetBudgetForEdit($budgetId: ID!) {
+export const GetBudgetForReportsDocument = gql`
+  query GetBudgetForReports($budgetId: ID!) {
     budget(budgetId: $budgetId) {
+      id
+      name
+      sections
+    }
+  }
+`;
+export type GetBudgetForReportsComponentProps = Omit<
+  ReactApollo.QueryProps<GetBudgetForReportsQuery, GetBudgetForReportsQueryVariables>,
+  "query"
+> &
+  ({ variables: GetBudgetForReportsQueryVariables; skip?: false } | { skip: true });
+
+export const GetBudgetForReportsComponent = (props: GetBudgetForReportsComponentProps) => (
+  <ReactApollo.Query<GetBudgetForReportsQuery, GetBudgetForReportsQueryVariables> query={GetBudgetForReportsDocument} {...props} />
+);
+
+export const GetBudgetForEditDocument = gql`
+  query GetBudgetForEdit {
+    budget: defaultBudget {
       id
       name
       budgetLines {
@@ -234,8 +264,7 @@ export const GetBudgetForEditDocument = gql`
     }
   }
 `;
-export type GetBudgetForEditComponentProps = Omit<ReactApollo.QueryProps<GetBudgetForEditQuery, GetBudgetForEditQueryVariables>, "query"> &
-  ({ variables: GetBudgetForEditQueryVariables; skip?: false } | { skip: true });
+export type GetBudgetForEditComponentProps = Omit<ReactApollo.QueryProps<GetBudgetForEditQuery, GetBudgetForEditQueryVariables>, "query">;
 
 export const GetBudgetForEditComponent = (props: GetBudgetForEditComponentProps) => (
   <ReactApollo.Query<GetBudgetForEditQuery, GetBudgetForEditQueryVariables> query={GetBudgetForEditDocument} {...props} />

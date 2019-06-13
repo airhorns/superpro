@@ -2,7 +2,7 @@ class RRuleListValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
     if value.present?
       value.each do |rule_string|
-        RRule.parse(rule_string.gsub(/\ARRULE:/, ""))
+        RRule.parse(rule_string)
       end
     end
   rescue RRule::InvalidRRule

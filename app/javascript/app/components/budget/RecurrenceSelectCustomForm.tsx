@@ -19,7 +19,6 @@ interface CustomRecurrenceFormValues {
   interval: number;
   until?: ISO8601DateString;
   count?: number;
-  dtstart: ISO8601DateString;
 }
 
 const parseIfPresent = (str: ISO8601DateString | undefined) => (str ? DateTime.fromISO(str).toJSDate() : undefined);
@@ -27,7 +26,7 @@ const parseIfPresent = (str: ISO8601DateString | undefined) => (str ? DateTime.f
 export const RecurrenceSelectCustomForm = (props: RecurrenceSelectCustomFormProps) => {
   return (
     <SimpleModalOverlay setShow={props.setShow}>
-      <SuperForm<CustomRecurrenceFormValues> initialValues={{ freq: RRule.WEEKLY, interval: 1, dtstart: DateTime.local().toISO() }}>
+      <SuperForm<CustomRecurrenceFormValues> initialValues={{ freq: RRule.WEEKLY, interval: 1 }}>
         {form => {
           let endingValue = "never";
           if (form.doc.until) {
@@ -77,7 +76,7 @@ export const RecurrenceSelectCustomForm = (props: RecurrenceSelectCustomFormProp
                           break;
                         }
                         case "on_date": {
-                          const start = DateTime.fromISO(doc.dtstart);
+                          const start = DateTime.local();
                           let end;
                           if (doc.freq == RRule.DAILY) {
                             end = start.plus({ days: 7 });
@@ -120,7 +119,6 @@ export const RecurrenceSelectCustomForm = (props: RecurrenceSelectCustomFormProp
                         freq: form.doc.freq,
                         interval: form.doc.interval,
                         count: form.doc.count,
-                        dtstart: parseIfPresent(form.doc.dtstart),
                         until: parseIfPresent(form.doc.until)
                       })
                     );

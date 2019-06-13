@@ -1,5 +1,5 @@
 import React from "react";
-import { uniq, keyBy, debounce } from "lodash";
+import { uniq, keyBy, debounce, isNull, isUndefined, pickBy } from "lodash";
 import shortid from "shortid";
 import { Page, SavingNotice } from "../common";
 import { BudgetForm, BudgetFormValues } from "./BudgetForm";
@@ -7,11 +7,12 @@ import gql from "graphql-tag";
 import { GetBudgetForEditComponent, GetBudgetForEditQuery, UpdateBudgetComponent, UpdateBudgetMutationFn } from "app/app-graph";
 import { SuperForm } from "flurishlib/superform";
 import { assert, mutationSuccessful, toast } from "flurishlib";
-import { BudgetTimeChart } from "./BudgetTimeChart";
+import { BudgetTimeChart } from "./reports/BudgetTimeChart";
+import { dispatch } from "use-bus";
 
 gql`
-  query GetBudgetForEdit($budgetId: ID!) {
-    budget(budgetId: $budgetId) {
+  query GetBudgetForEdit {
+    budget: defaultBudget {
       id
       name
       budgetLines {
@@ -53,7 +54,7 @@ interface EditBudgetPageState {
   lastChangeAt: null | Date;
 }
 
-export default class EditBudgetPage extends Page<{ budgetId: string }, EditBudgetPageState> {
+export default class EditBudgetPage extends Page<{}, EditBudgetPageState> {
   state: EditBudgetPageState = { lastSaveAt: null, lastChangeAt: null };
 
   processDataForForm(data: Exclude<GetBudgetForEditQuery["budget"], null>) {
@@ -71,7 +72,8 @@ export default class EditBudgetPage extends Page<{ budgetId: string }, EditBudge
         sortOrder: line.sortOrder,
         description: line.description,
         amountScenarios: line.amountScenarios,
-        recurrenceRules: null
+        recurrenceRules:
+          line.recurrenceRules && line.recurrenceRules.length > 0 ? { rrules: line.recurrenceRules, exdates: [], rdates: [] } : null
       }))
     };
   }
@@ -88,7 +90,7 @@ export default class EditBudgetPage extends Page<{ budgetId: string }, EditBudge
               description: line.description,
               sortOrder: line.sortOrder,
               occursAt: line.occursAt,
-              amountScenarios: line.amountScenarios,
+              amountScenarios: pickBy(line.amountScenarios, value => !isNull(value) && !isUndefined(value)),
               recurrenceRules: line.recurrenceRules && line.recurrenceRules.rrules,
               section: sectionsIndex[line.sectionId].name
             }))
@@ -98,6 +100,7 @@ export default class EditBudgetPage extends Page<{ budgetId: string }, EditBudge
 
       if (mutationSuccessful(result)) {
         this.setState({ lastSaveAt: new Date() });
+        dispatch("budgets:refresh");
       } else {
         toast.error("There was an error saving your budget. Please try again.");
       }
@@ -113,23 +116,21 @@ export default class EditBudgetPage extends Page<{ budgetId: string }, EditBudge
 
   render() {
     return (
-      <Page.Load component={GetBudgetForEditComponent} variables={{ budgetId: this.props.match.params.budgetId }} require={["budget"]}>
+      <Page.Load component={GetBudgetForEditComponent} require={["budget"]}>
         {data => (
           <Page.Layout
             title={data.budget.name}
             headerExtra={<SavingNotice lastChangeAt={this.state.lastChangeAt} lastSaveAt={this.state.lastSaveAt} />}
           >
+            <BudgetTimeChart budgetId={data.budget.id} />
             <UpdateBudgetComponent>
               {update => (
-                <>
-                  <BudgetTimeChart budgetId={data.budget.id} />
-                  <SuperForm<BudgetFormValues>
-                    initialValues={{ budget: this.processDataForForm(data.budget) }}
-                    onChange={doc => this.handleChange(doc, update)}
-                  >
-                    {form => <BudgetForm form={form} />}
-                  </SuperForm>
-                </>
+                <SuperForm<BudgetFormValues>
+                  initialValues={{ budget: this.processDataForForm(data.budget) }}
+                  onChange={doc => this.handleChange(doc, update)}
+                >
+                  {form => <BudgetForm form={form} />}
+                </SuperForm>
               )}
             </UpdateBudgetComponent>
           </Page.Layout>

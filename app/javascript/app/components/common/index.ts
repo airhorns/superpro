@@ -10,6 +10,7 @@ export * from "./FadeBox";
 export * from "./AddButton";
 export * from "./ScenarioInput";
 export * from "./SavingNotice";
+export * from "./CubeChart";
 export * from "../../../flurishlib/Link";
 export * from "./DividerHeading";
 export * from "../../../flurishlib/SimpleModal";
