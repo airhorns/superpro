@@ -73,6 +73,7 @@ export type Budget = {
   discardedAt: Scalars["ISO8601DateTime"];
   id: Scalars["ID"];
   name: Scalars["String"];
+  problemSpots: Array<BudgetProblemSpot>;
   sections: Array<Scalars["String"]>;
   updatedAt: Scalars["ISO8601DateTime"];
 };
@@ -117,6 +118,15 @@ export type BudgetLineAttributes = {
   recurrenceRules?: Maybe<Array<Scalars["RecurrenceRuleString"]>>;
   sortOrder: Scalars["Int"];
   amountScenarios: Scalars["JSONScalar"];
+};
+
+export type BudgetProblemSpot = {
+  __typename?: "BudgetProblemSpot";
+  endDate: Scalars["ISO8601DateTime"];
+  minCashOnHand: Money;
+  scenario: Scalars["String"];
+  spotNumber: Scalars["Int"];
+  startDate: Scalars["ISO8601DateTime"];
 };
 
 export type Currency = {
@@ -220,6 +230,22 @@ export type UpdateBudgetMutation = { __typename?: "AppMutation" } & {
   >;
 };
 
+export type GetBudgetProblemSpotsQueryVariables = {
+  budgetId: Scalars["ID"];
+};
+
+export type GetBudgetProblemSpotsQuery = { __typename?: "AppQuery" } & {
+  budget: Maybe<
+    { __typename?: "Budget" } & Pick<Budget, "id"> & {
+        problemSpots: Array<
+          { __typename?: "BudgetProblemSpot" } & Pick<BudgetProblemSpot, "startDate" | "endDate"> & {
+              minCashOnHand: { __typename?: "Money" } & Pick<Money, "formatted">;
+            }
+        >;
+      }
+  >;
+};
+
 export type SiderInfoQueryVariables = {};
 
 export type SiderInfoQuery = { __typename?: "AppQuery" } & {
@@ -297,6 +323,30 @@ export type UpdateBudgetComponentProps = Omit<ReactApollo.MutationProps<UpdateBu
 
 export const UpdateBudgetComponent = (props: UpdateBudgetComponentProps) => (
   <ReactApollo.Mutation<UpdateBudgetMutation, UpdateBudgetMutationVariables> mutation={UpdateBudgetDocument} {...props} />
+);
+
+export const GetBudgetProblemSpotsDocument = gql`
+  query GetBudgetProblemSpots($budgetId: ID!) {
+    budget(budgetId: $budgetId) {
+      id
+      problemSpots {
+        startDate
+        endDate
+        minCashOnHand {
+          formatted
+        }
+      }
+    }
+  }
+`;
+export type GetBudgetProblemSpotsComponentProps = Omit<
+  ReactApollo.QueryProps<GetBudgetProblemSpotsQuery, GetBudgetProblemSpotsQueryVariables>,
+  "query"
+> &
+  ({ variables: GetBudgetProblemSpotsQueryVariables; skip?: false } | { skip: true });
+
+export const GetBudgetProblemSpotsComponent = (props: GetBudgetProblemSpotsComponentProps) => (
+  <ReactApollo.Query<GetBudgetProblemSpotsQuery, GetBudgetProblemSpotsQueryVariables> query={GetBudgetProblemSpotsDocument} {...props} />
 );
 
 export const SiderInfoDocument = gql`

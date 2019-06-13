@@ -51,7 +51,7 @@ export class BudgetLineForm extends React.Component<BudgetLineFormProps, BudgetL
             <Box flex style={{ minWidth: "150px" }}>
               <Input path={`${lineFieldKey}.description`} placeholder="Line description" />
             </Box>
-            <Box width="small">
+            <Box width="265px">
               <SuperDatePicker path={`${lineFieldKey}.occursAt`} />
             </Box>
             <Box width="small">

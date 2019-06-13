@@ -1,5 +1,5 @@
 import React from "react";
-import { Area, XAxis, YAxis, Tooltip, AreaChart, ReferenceLine } from "recharts";
+import { Area, XAxis, YAxis, Tooltip, AreaChart, ReferenceLine, Brush } from "recharts";
 import { ThemeContext } from "grommet";
 import { lighten } from "polished";
 import { tickDateFormatter, DefaultBudgetTimeChartRange } from "./utils";
@@ -68,7 +68,12 @@ export const BudgetTimeChart = (props: { budgetId: string }) => {
               ]}
             />
             <Tooltip labelFormatter={tickDateFormatter} />
-            <Area dataKey="BudgetForecasts.cashOnHand" stroke="url(#positiveIndicatorStroke)" fill="url(#positiveIndicatorFill)" />
+            <Area
+              dataKey="BudgetForecasts.cashOnHand"
+              stroke="url(#positiveIndicatorStroke)"
+              fill="url(#positiveIndicatorFill)"
+              animationDuration={500}
+            />
             <defs>
               <linearGradient id="positiveIndicatorFill" x1="0" y1="0" x2="0" y2="1">
                 <stop offset={zeroOffset} stopColor={lighten(0.3, theme.global.colors.brand)} stopOpacity={1} />
@@ -79,7 +84,8 @@ export const BudgetTimeChart = (props: { budgetId: string }) => {
                 <stop offset={zeroOffset} stopColor={theme.global.colors["status-error"]} stopOpacity={1} />
               </linearGradient>
             </defs>
-            <ReferenceLine y={0} label="Break Even" stroke={theme.global.colors["status-error"]} strokeDasharray="3 3" />
+            <ReferenceLine y={0} stroke={theme.global.colors["status-error"]} strokeDasharray="3 3" />
+            <Brush />
           </AreaChart>
         );
       }}

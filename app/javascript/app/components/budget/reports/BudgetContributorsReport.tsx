@@ -1,5 +1,5 @@
 import React from "react";
-import { XAxis, YAxis, Tooltip, CartesianGrid, BarChart, Bar, ReferenceLine, Brush } from "recharts";
+import { XAxis, YAxis, Tooltip, CartesianGrid, BarChart, Bar, ReferenceLine, Brush, Legend } from "recharts";
 import { tickDateFormatter, DefaultBudgetTimeChartRange, colorScaleForSeries } from "./utils";
 import { CubeChart } from "../../common";
 
@@ -25,7 +25,7 @@ export const BudgetContributorsReport = (props: { budgetId: string }) => {
         dimensions: ["Budgets.section"],
         renewQuery: true
       }}
-      height={300}
+      height={600}
       refreshKey="budgets:refresh"
     >
       {resultSet => {
@@ -40,6 +40,7 @@ export const BudgetContributorsReport = (props: { budgetId: string }) => {
             {resultSet.seriesNames().map((series: any, index: number) => (
               <Bar stackId="amounts" key={series.key} dataKey={series.key} name={series.title} fill={colors[index]} />
             ))}
+            <Legend />
             <Brush />
           </BarChart>
         );

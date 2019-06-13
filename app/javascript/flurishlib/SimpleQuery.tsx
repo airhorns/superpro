@@ -49,6 +49,7 @@ export class SimpleQuery<
       return <PageLoadSpin />;
     }
     if (result.error || !result.data) {
+      console.error("Error loading data from backend", result.error);
       return <Alert message="There was an internal error. Please refresh the page and try again." type="error" />;
     }
 

@@ -42,6 +42,7 @@ gem "oj"
 gem 'redis', '~> 4.0'
 gem 'request_store'
 gem "safely"
+gem "scenic"
 gem "sentry-raven"
 gem 'sidekiq'
 gem 'skylight'

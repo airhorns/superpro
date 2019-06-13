@@ -1,19 +1,8 @@
 import React from "react";
 import { Page, LinkButton } from "../common";
-import gql from "graphql-tag";
 import { GetBudgetForReportsComponent } from "app/app-graph";
 import { Reports } from "./BudgetReportPage";
 import { Box, Heading, Text } from "grommet";
-
-gql`
-  query GetBudgetForReports($budgetId: ID!) {
-    budget(budgetId: $budgetId) {
-      id
-      name
-      sections
-    }
-  }
-`;
 
 export default class BudgetReportsIndexPage extends Page<{ budgetId: string }> {
   render() {
@@ -29,6 +18,9 @@ export default class BudgetReportsIndexPage extends Page<{ budgetId: string }> {
                 </Box>
               </LinkButton>
             ))}
+            <Box pad="small" gap="small" width="medium" margin={{ top: "small" }}>
+              <LinkButton to={`/budget`} label="Back to Budget" />
+            </Box>
           </Page.Layout>
         )}
       </Page.Load>

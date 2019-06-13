@@ -49,9 +49,11 @@ export class DatePicker extends React.Component<DatePickerProps, { open: boolean
             </Box>
           }
         >
-          <Row gap="small" pad="small">
-            <CalendarIcon />
-            <Text>{label}</Text>
+          <Row gap="small" pad="small" justify="between">
+            <Row gap="small">
+              <CalendarIcon />
+              <Text>{label}</Text>
+            </Row>
             <FormDown color="brand" />
           </Row>
         </DropButton>
