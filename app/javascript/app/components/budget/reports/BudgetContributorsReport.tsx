@@ -1,6 +1,12 @@
 import React from "react";
 import { XAxis, YAxis, Tooltip, CartesianGrid, BarChart, Bar, ReferenceLine, Brush, Legend } from "recharts";
-import { tickDateFormatter, DefaultBudgetTimeChartRange, colorScaleForSeries } from "./utils";
+import {
+  DefaultTimeTickFormatter,
+  DefaultBudgetTimeChartRange,
+  colorScaleForSeries,
+  DefaultTimeLabelFormatter,
+  CurrencyValueFormatter
+} from "./utils";
 import { CubeChart } from "../../common";
 
 export const BudgetContributorsReport = (props: { budgetId: string }) => {
@@ -32,11 +38,11 @@ export const BudgetContributorsReport = (props: { budgetId: string }) => {
         const colors = colorScaleForSeries(resultSet.seriesNames().length);
         return (
           <BarChart data={resultSet.chartPivot()} stackOffset="sign">
-            <XAxis dataKey="x" tickFormatter={tickDateFormatter} />
-            <YAxis type="number" />
+            <XAxis dataKey="x" tickFormatter={DefaultTimeTickFormatter} />
+            <YAxis type="number" tickFormatter={CurrencyValueFormatter} />
             <CartesianGrid />
             <ReferenceLine y={0} stroke="#000" />
-            <Tooltip labelFormatter={tickDateFormatter} />
+            <Tooltip labelFormatter={DefaultTimeLabelFormatter} formatter={CurrencyValueFormatter} />
             {resultSet.seriesNames().map((series: any, index: number) => (
               <Bar stackId="amounts" key={series.key} dataKey={series.key} name={series.title} fill={colors[index]} />
             ))}

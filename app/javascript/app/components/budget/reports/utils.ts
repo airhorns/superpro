@@ -1,15 +1,13 @@
 import { DateTime } from "luxon";
+import { scaleTime } from "d3-scale";
 import { isNumber } from "lodash";
+import Dinero from "dinero.js";
 
-export const tickDateFormatter = (date: string | number) => {
-  let dateTime: DateTime;
-  if (isNumber(date)) {
-    dateTime = DateTime.fromMillis(date);
-  } else {
-    dateTime = DateTime.fromISO(date);
-  }
-
-  return dateTime.toFormat("MMM d");
+export const timeTickFormatter = (domain: [Date, Date]) => {
+  const scale = scaleTime()
+    .domain(domain)
+    .range([0, 1]);
+  return scale.tickFormat();
 };
 
 export const DefaultBudgetTimeChartRange = [
@@ -18,6 +16,35 @@ export const DefaultBudgetTimeChartRange = [
     .plus({ years: 1 })
     .toISO()
 ];
+
+export const DateTickFormatter = timeTickFormatter(DefaultBudgetTimeChartRange.map(str => DateTime.fromISO(str).toJSDate()) as [
+  Date,
+  Date
+]);
+
+export const DefaultTimeTickFormatter = (date: string | number) => {
+  let dateTime: DateTime;
+  if (isNumber(date)) {
+    dateTime = DateTime.fromMillis(date);
+  } else {
+    dateTime = DateTime.fromISO(date);
+  }
+
+  return DateTickFormatter(dateTime.toJSDate());
+};
+
+export const DefaultTimeLabelFormatter = (date: string | number) => {
+  let dateTime: DateTime;
+  if (isNumber(date)) {
+    dateTime = DateTime.fromMillis(date);
+  } else {
+    dateTime = DateTime.fromISO(date);
+  }
+
+  return dateTime.toLocaleString(DateTime.DATE_FULL);
+};
+
+export const CurrencyValueFormatter = (value: any) => Dinero({ amount: value }).toFormat();
 
 export const Colors = [
   "#ff4040",

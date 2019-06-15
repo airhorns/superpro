@@ -77,16 +77,7 @@ export const AppSidebar = withRouter(
     renderLogo() {
       return (
         <Box flex={false}>
-          <Stack anchor="top-right">
-            <Heading level="2" margin={{ horizontal: "large" }}>
-              Flurish
-            </Heading>
-            <Box round="xsmall" background="accent-2" pad={{ horizontal: "xsmall" }}>
-              <Text size="xsmall" color="white">
-                ALPHA
-              </Text>
-            </Box>
-          </Stack>
+          <Heading level="2">Flurish</Heading>
         </Box>
       );
     }
@@ -101,11 +92,19 @@ export const AppSidebar = withRouter(
                 <Box pad="small" align="center">
                   {this.renderLogo()}
                 </Box>
+                <Box background="accent-2" align="center">
+                  <Text size="xsmall" color="white">
+                    ALPHA
+                  </Text>
+                </Box>
                 {Settings.devMode && (
-                  <Box background="accent-3" pad="xsmall" align="center">
-                    <Text size="xxsmall">Dev Env</Text>
+                  <Box background="accent-3" align="center">
+                    <Text size="xsmall" color="white">
+                      DEV ENV
+                    </Text>
                   </Box>
                 )}
+
                 <AppSidebarButton path="/" exact text="Home" icon={<Home />} onClick={this.close} />
                 <AppSidebarButton path="/budget" exact text="Budget" icon={<Budget />} onClick={this.close} />
                 <Box flex />

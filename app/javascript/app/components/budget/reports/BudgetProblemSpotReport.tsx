@@ -1,7 +1,7 @@
 import React from "react";
 import gql from "graphql-tag";
 import { XAxis, YAxis, Tooltip, ReferenceLine, Brush, AreaChart, Area } from "recharts";
-import { tickDateFormatter, DefaultBudgetTimeChartRange } from "./utils";
+import { DefaultBudgetTimeChartRange, DefaultTimeTickFormatter, DefaultTimeLabelFormatter, CurrencyValueFormatter } from "./utils";
 import { CubeChart } from "../../common";
 import { ThemeContext, DataTable, Box, Text } from "grommet";
 import { lighten } from "polished";
@@ -70,7 +70,7 @@ export const BudgetProblemSpotReport = (props: { budgetId: string }) => {
 
           return (
             <AreaChart data={data}>
-              <XAxis dataKey="x" tickFormatter={tickDateFormatter} />
+              <XAxis dataKey="x" tickFormatter={DefaultTimeTickFormatter} />
               <YAxis
                 type="number"
                 domain={[
@@ -85,8 +85,9 @@ export const BudgetProblemSpotReport = (props: { budgetId: string }) => {
                   },
                   "auto"
                 ]}
+                tickFormatter={CurrencyValueFormatter}
               />
-              <Tooltip labelFormatter={tickDateFormatter} />
+              <Tooltip labelFormatter={DefaultTimeLabelFormatter} formatter={CurrencyValueFormatter} />
               <Area
                 dataKey="BudgetForecasts.cashOnHand"
                 stroke="url(#positiveIndicatorStroke)"

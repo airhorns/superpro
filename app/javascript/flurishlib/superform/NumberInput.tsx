@@ -1,29 +1,33 @@
 import React from "react";
-import { isUndefined } from "lodash";
+import { isUndefined, isNumber } from "lodash";
 import { DocType, pathToName, propsForGrommetComponent } from "./utils";
 import { TextInput as GrommetTextInput } from "grommet";
 import { useSuperForm } from ".";
 import { InputProps } from "./Input";
 import NumberFormat, { NumberFormatProps } from "react-number-format";
 
-export interface NumberInputProps extends InputProps, Pick<NumberFormatProps, "prefix" | "decimalScale" | "fixedDecimalScale"> {}
-
-// this should be using the propsForGrommetComponent helper to propagate props from the NumberInput props to the Grommet Input component, but, I couldn't get it to do that while not causing the NumberInput.customInput value to change all the time, which caused the input to lose focus every rerender.
-const GrommetizedInput = (props: any) => <GrommetTextInput {...props} />;
+export interface NumberInputProps extends InputProps, Pick<NumberFormatProps, "prefix" | "decimalScale" | "fixedDecimalScale"> {
+  storeAsSubunits?: boolean; // useful for currency inputs where the subunits should be stored instead of a float with decimal places
+}
 
 export const NumberInput = <T extends DocType>(props: NumberInputProps) => {
   const form = useSuperForm<T>();
   const id = pathToName(props.path);
-  const grommetProps = propsForGrommetComponent(props);
+
+  let value = form.getValue(props.path);
+  if (props.storeAsSubunits && isNumber(props.decimalScale)) {
+    value = value / 10 ** props.decimalScale;
+  }
+
   return (
     <NumberFormat
       id={id}
       name={id}
-      value={form.getValue(props.path)}
+      value={value}
       prefix={props.prefix}
       decimalScale={props.decimalScale}
       fixedDecimalScale={props.fixedDecimalScale}
-      customInput={GrommetizedInput}
+      customInput={GrommetTextInput}
       onValueChange={(values: any) => {
         let value: any;
         if (isUndefined(values.floatValue)) {
@@ -31,6 +35,11 @@ export const NumberInput = <T extends DocType>(props: NumberInputProps) => {
         } else {
           value = values.floatValue;
         }
+
+        if (props.storeAsSubunits && isNumber(props.decimalScale)) {
+          value = value * 10 ** props.decimalScale;
+        }
+
         form.setValue(props.path, value);
         props.onChange && props.onChange({} as any);
       }}
@@ -38,7 +47,8 @@ export const NumberInput = <T extends DocType>(props: NumberInputProps) => {
         form.markTouched(props.path);
         props.onBlur && props.onBlur(e);
       }}
-      {...grommetProps}
+      // NumberFormat passes through unrecognized props to the customInput component, so this allows things like the plain prop to make it down to the Grommet component and style it
+      {...propsForGrommetComponent(props)}
     />
   );
 };

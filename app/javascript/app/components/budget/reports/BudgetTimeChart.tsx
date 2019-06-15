@@ -2,10 +2,10 @@ import React from "react";
 import { Area, XAxis, YAxis, Tooltip, AreaChart, ReferenceLine, Brush } from "recharts";
 import { ThemeContext } from "grommet";
 import { lighten } from "polished";
-import { tickDateFormatter, DefaultBudgetTimeChartRange } from "./utils";
+import { DefaultBudgetTimeChartRange, DefaultTimeTickFormatter, DefaultTimeLabelFormatter, CurrencyValueFormatter } from "./utils";
 import { CubeChart } from "../../common";
 
-export const BudgetTimeChart = (props: { budgetId: string }) => {
+export const BudgetTimeChart = React.memo((props: { budgetId: string }) => {
   const theme = React.useContext(ThemeContext) as any;
 
   return (
@@ -51,7 +51,7 @@ export const BudgetTimeChart = (props: { budgetId: string }) => {
 
         return (
           <AreaChart data={data}>
-            <XAxis dataKey="x" tickFormatter={tickDateFormatter} />
+            <XAxis dataKey="x" tickFormatter={DefaultTimeTickFormatter} />
             <YAxis
               type="number"
               domain={[
@@ -66,8 +66,9 @@ export const BudgetTimeChart = (props: { budgetId: string }) => {
                 },
                 "auto"
               ]}
+              tickFormatter={CurrencyValueFormatter}
             />
-            <Tooltip labelFormatter={tickDateFormatter} />
+            <Tooltip labelFormatter={DefaultTimeLabelFormatter} formatter={CurrencyValueFormatter} />
             <Area
               dataKey="BudgetForecasts.cashOnHand"
               stroke="url(#positiveIndicatorStroke)"
@@ -91,4 +92,4 @@ export const BudgetTimeChart = (props: { budgetId: string }) => {
       }}
     </CubeChart>
   );
-};
+});

@@ -22,7 +22,12 @@ export class BudgetLineForm extends React.Component<BudgetLineFormProps, BudgetL
   state: BudgetLineFormState = { hovered: false };
 
   shouldComponentUpdate(nextProps: BudgetLineFormProps, nextState: BudgetLineFormState) {
-    return !shallowEqual(this.state, nextState) || !shallowSubsetEqual(["line", "sectionIndex", "lineFieldKey"], this.props, nextProps);
+    const value =
+      !shallowEqual(this.state, nextState) ||
+      !shallowSubsetEqual(["line", "linesIndex"], this.props, nextProps) ||
+      !shallowEqual(this.props.line, nextProps.line);
+    console.log(this.props.line.description, value);
+    return value;
   }
 
   render() {
@@ -63,6 +68,7 @@ export class BudgetLineForm extends React.Component<BudgetLineFormProps, BudgetL
                 prefix={"$"}
                 fixedDecimalScale
                 decimalScale={2}
+                storeAsSubunits
                 placeholder="Line amount"
               />
             </Box>
