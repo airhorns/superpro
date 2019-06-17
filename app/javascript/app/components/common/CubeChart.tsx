@@ -1,4 +1,5 @@
 import React from "react";
+import { Box } from "grommet";
 import { ResponsiveContainer } from "recharts";
 import { PageLoadSpin } from "flurishlib";
 import { CubeQuery } from "../../lib/cubejs";
@@ -27,9 +28,11 @@ export const CubeChart = (props: CubeChartProps) => {
         }
 
         return (
-          <ResponsiveContainer width="100%" height={300}>
-            {content}
-          </ResponsiveContainer>
+          <Box>
+            <ResponsiveContainer width="100%" height={300}>
+              {content}
+            </ResponsiveContainer>
+          </Box>
         );
       }}
     </CubeQuery>

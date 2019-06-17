@@ -26,7 +26,6 @@ export class BudgetLineForm extends React.Component<BudgetLineFormProps, BudgetL
       !shallowEqual(this.state, nextState) ||
       !shallowSubsetEqual(["line", "linesIndex"], this.props, nextProps) ||
       !shallowEqual(this.props.line, nextProps.line);
-    console.log(this.props.line.description, value);
     return value;
   }
 

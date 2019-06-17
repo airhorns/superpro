@@ -6,7 +6,9 @@ import { useSuperForm } from ".";
 import { InputProps } from "./Input";
 import NumberFormat, { NumberFormatProps } from "react-number-format";
 
-export interface NumberInputProps extends InputProps, Pick<NumberFormatProps, "prefix" | "decimalScale" | "fixedDecimalScale"> {
+export interface NumberInputProps
+  extends InputProps,
+    Pick<NumberFormatProps, "prefix" | "decimalScale" | "fixedDecimalScale" | "displayType"> {
   storeAsSubunits?: boolean; // useful for currency inputs where the subunits should be stored instead of a float with decimal places
 }
 

@@ -44,7 +44,13 @@ export const DefaultTimeLabelFormatter = (date: string | number) => {
   return dateTime.toLocaleString(DateTime.DATE_FULL);
 };
 
-export const CurrencyValueFormatter = (value: any) => Dinero({ amount: value }).toFormat();
+export const CurrencyValueFormatter = (value: any) => {
+  if (Number.isInteger(value)) {
+    return Dinero({ amount: value }).toFormat();
+  } else {
+    return String(value);
+  }
+};
 
 export const Colors = [
   "#ff4040",

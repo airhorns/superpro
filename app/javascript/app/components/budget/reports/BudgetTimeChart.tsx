@@ -1,9 +1,18 @@
 import React from "react";
-import { Area, XAxis, YAxis, Tooltip, AreaChart, ReferenceLine, Brush } from "recharts";
+import { XAxis, YAxis, Tooltip, LineChart, Line, ReferenceLine, Brush } from "recharts";
 import { ThemeContext } from "grommet";
-import { lighten } from "polished";
 import { DefaultBudgetTimeChartRange, DefaultTimeTickFormatter, DefaultTimeLabelFormatter, CurrencyValueFormatter } from "./utils";
 import { CubeChart } from "../../common";
+
+export const strokeForScenario = (key: string, theme: any) => {
+  switch (key) {
+    case "optimistic":
+      return "#ffcc00";
+    case "pessimistic":
+      return "#0084ea";
+  }
+  return theme.global.colors.brand;
+};
 
 export const BudgetTimeChart = React.memo((props: { budgetId: string }) => {
   const theme = React.useContext(ThemeContext) as any;
@@ -26,7 +35,7 @@ export const BudgetTimeChart = React.memo((props: { budgetId: string }) => {
             values: [String(props.budgetId)]
           }
         ],
-        dimensions: [],
+        dimensions: ["BudgetForecasts.scenario"],
         renewQuery: true
       }}
       height={300}
@@ -34,23 +43,10 @@ export const BudgetTimeChart = React.memo((props: { budgetId: string }) => {
     >
       {resultSet => {
         const data = resultSet.chartPivot();
-        const gradientOffset = () => {
-          const dataMax = Math.max(...data.map((row: any) => row["BudgetForecasts.cashOnHand"]));
-          const dataMin = Math.min(...data.map((row: any) => row["BudgetForecasts.cashOnHand"]));
-
-          if (dataMax <= 0) {
-            return 0;
-          } else if (dataMin >= 0) {
-            return 1;
-          } else {
-            return dataMax / (dataMax - dataMin);
-          }
-        };
-
-        const zeroOffset = gradientOffset();
+        const seriesNames = resultSet.seriesNames();
 
         return (
-          <AreaChart data={data}>
+          <LineChart data={data}>
             <XAxis dataKey="x" tickFormatter={DefaultTimeTickFormatter} />
             <YAxis
               type="number"
@@ -69,25 +65,18 @@ export const BudgetTimeChart = React.memo((props: { budgetId: string }) => {
               tickFormatter={CurrencyValueFormatter}
             />
             <Tooltip labelFormatter={DefaultTimeLabelFormatter} formatter={CurrencyValueFormatter} />
-            <Area
-              dataKey="BudgetForecasts.cashOnHand"
-              stroke="url(#positiveIndicatorStroke)"
-              fill="url(#positiveIndicatorFill)"
-              animationDuration={500}
-            />
-            <defs>
-              <linearGradient id="positiveIndicatorFill" x1="0" y1="0" x2="0" y2="1">
-                <stop offset={zeroOffset} stopColor={lighten(0.3, theme.global.colors.brand)} stopOpacity={1} />
-                <stop offset={zeroOffset} stopColor={lighten(0.3, theme.global.colors["status-error"])} stopOpacity={1} />
-              </linearGradient>
-              <linearGradient id="positiveIndicatorStroke" x1="0" y1="0" x2="0" y2="1">
-                <stop offset={zeroOffset} stopColor={theme.global.colors.brand} stopOpacity={1} />
-                <stop offset={zeroOffset} stopColor={theme.global.colors["status-error"]} stopOpacity={1} />
-              </linearGradient>
-            </defs>
+            {seriesNames.map((name: any) => (
+              <Line
+                key={name.key}
+                dataKey={name.key}
+                name={name.title}
+                stroke={strokeForScenario(name.key.split(",")[0], theme)}
+                animationDuration={500}
+              />
+            ))}
             <ReferenceLine y={0} stroke={theme.global.colors["status-error"]} strokeDasharray="3 3" />
             <Brush />
-          </AreaChart>
+          </LineChart>
         );
       }}
     </CubeChart>

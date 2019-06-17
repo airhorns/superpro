@@ -1,9 +1,8 @@
 import React from "react";
-import { sortBy, some, capitalize, pick, pickBy, isUndefined, isNull } from "lodash";
+import { sortBy, some, capitalize, pickBy, isUndefined, isNull } from "lodash";
 import { Box, DropButton, Text } from "grommet";
 import { controlBorderStyle } from "grommet/utils/styles";
 import { DocType, useSuperForm, NumberInputProps, NumberInput, pathToName } from "flurishlib/superform";
-import NumberFormat from "react-number-format";
 import { Row } from "flurishlib";
 import styled from "styled-components";
 
@@ -17,7 +16,7 @@ const ScenarioSortOrders: { [key: string]: number } = {
   pessimistic: 2
 };
 
-const labelForScenario = (key: string) => {
+export const labelForScenario = (key: string) => {
   switch (key) {
     case "optimistic":
       return "☀️";
@@ -29,7 +28,7 @@ const labelForScenario = (key: string) => {
   return capitalize(key);
 };
 
-const backgroundForScenario = (key: string) => {
+export const backgroundForScenario = (key: string) => {
   switch (key) {
     case "optimistic":
       return "#fffecc";
@@ -83,11 +82,7 @@ export const ScenarioInput = <T extends DocType>(props: NumberInputProps) => {
           <Row gap="small" pad={{ left: "small" }}>
             {scenarios.map(scenario => (
               <Box key={scenario.key} pad="xsmall" round="xsmall" style={{ backgroundColor: backgroundForScenario(scenario.key) }}>
-                <NumberFormat
-                  {...(pick(props, ["prefix", "fixedDecimalScale", "decimalScale", "format", "storeAsSubunits"]) as any)}
-                  value={scenario.value}
-                  displayType={"text"}
-                />
+                <NumberInput {...{ ...props, path: props.path + "." + scenario.key }} displayType={"text"} />
               </Box>
             ))}
           </Row>
