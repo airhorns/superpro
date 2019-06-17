@@ -1,4 +1,4 @@
-import { get, set } from "lodash";
+import { get, set, toPath } from "lodash";
 import React from "react";
 import Automerge from "automerge";
 import { FieldPath, DocType } from "./utils";
@@ -45,6 +45,14 @@ export class SuperForm<T extends DocType> extends React.Component<SuperFormProps
     this.dispatch(doc => set(doc, path, value));
   }
 
+  deletePath(path: FieldPath) {
+    const keys = toPath(path);
+    this.dispatch(doc => {
+      const root = get(doc, keys.slice(0, keys.length - 1));
+      delete root[keys[keys.length - 1]];
+    });
+  }
+
   dispatch = (command: Command<T>) => {
     // Queue up changes for the batch if batching is underway
     if (this.currentBatch) {
@@ -60,7 +68,8 @@ export class SuperForm<T extends DocType> extends React.Component<SuperFormProps
         return { doc: newDoc };
       },
       () => {
-        console.debug(Automerge.getChanges(prevDoc, this.state.doc));
+        console.debug("doc", this.state.doc);
+        console.debug("changes", Automerge.getChanges(prevDoc, this.state.doc));
         this.props.onChange && this.props.onChange(this.state.doc, this);
       }
     );

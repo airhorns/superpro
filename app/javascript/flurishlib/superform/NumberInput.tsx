@@ -8,7 +8,7 @@ import NumberFormat, { NumberFormatProps } from "react-number-format";
 
 export interface NumberInputProps
   extends InputProps,
-    Pick<NumberFormatProps, "prefix" | "decimalScale" | "fixedDecimalScale" | "displayType"> {
+    Pick<NumberFormatProps, "prefix" | "decimalScale" | "fixedDecimalScale" | "displayType" | "getInputRef"> {
   storeAsSubunits?: boolean; // useful for currency inputs where the subunits should be stored instead of a float with decimal places
 }
 
@@ -17,8 +17,11 @@ export const NumberInput = <T extends DocType>(props: NumberInputProps) => {
   const id = pathToName(props.path);
 
   let value = form.getValue(props.path);
-  if (props.storeAsSubunits && isNumber(props.decimalScale)) {
+  if (isNumber(value) && props.storeAsSubunits && isNumber(props.decimalScale)) {
     value = value / 10 ** props.decimalScale;
+  }
+  if (!isNumber(value)) {
+    value = "";
   }
 
   return (
@@ -38,7 +41,7 @@ export const NumberInput = <T extends DocType>(props: NumberInputProps) => {
           value = values.floatValue;
         }
 
-        if (props.storeAsSubunits && isNumber(props.decimalScale)) {
+        if (isNumber(value) && props.storeAsSubunits && isNumber(props.decimalScale)) {
           value = value * 10 ** props.decimalScale;
         }
 

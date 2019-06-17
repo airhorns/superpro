@@ -8,4 +8,4 @@ export interface FieldProps {
 
 export type Dispatcher<T extends DocType> = (callback: (doc: T) => void) => void;
 export const pathToName = (path: FieldPath) => toPath(path).join(".");
-export const propsForGrommetComponent = (props: any) => omit(props, ["validate", "name", "showErrorMessages"]);
+export const propsForGrommetComponent = (props: any) => omit(props, ["validate", "name", "showErrorMessages", "storeAsSubunits"]);

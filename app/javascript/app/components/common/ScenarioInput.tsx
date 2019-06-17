@@ -1,10 +1,11 @@
 import React from "react";
 import { sortBy, some, capitalize, pickBy, isUndefined, isNull } from "lodash";
-import { Box, DropButton, Text } from "grommet";
+import { Box, Button, DropButton, Text } from "grommet";
 import { controlBorderStyle } from "grommet/utils/styles";
 import { DocType, useSuperForm, NumberInputProps, NumberInput, pathToName } from "flurishlib/superform";
 import { Row } from "flurishlib";
 import styled from "styled-components";
+import { FormClose } from "./FlurishIcons";
 
 const ControlRow = styled(Row)`
   ${controlBorderStyle};
@@ -46,16 +47,22 @@ interface Scenario {
 
 const AvailableScenarios = ["optimistic", "default", "pessimistic"].map(key => ({ key, label: labelForScenario(key) }));
 
-export const ScenarioInputRowInput = (props: { inputProps: NumberInputProps; label: string }) => {
-  const inputRef = React.useRef<HTMLInputElement>();
-  const id = pathToName(props.inputProps.path);
+export const ScenarioInputRowInput = <T extends DocType>(props: { inputProps: NumberInputProps; label: string; path: string }) => {
+  const form = useSuperForm<T>();
+  const id = pathToName(props.path);
 
   return (
     <Row gap="small">
       <label htmlFor={id}>
         <Text size="xlarge">{props.label}</Text>
       </label>
-      <NumberInput {...props.inputProps} ref={inputRef as any} />
+      <NumberInput {...props.inputProps} path={props.path} />
+      <Button
+        onClick={() => {
+          form.deletePath(props.path);
+        }}
+        icon={<FormClose />}
+      />
     </Row>
   );
 };
@@ -96,11 +103,7 @@ export const ScenarioInput = <T extends DocType>(props: NumberInputProps) => {
         dropContent={
           <Box pad="small" gap="small">
             {AvailableScenarios.map(scenario => (
-              <ScenarioInputRowInput
-                key={scenario.key}
-                label={scenario.label}
-                inputProps={{ ...props, path: props.path + "." + scenario.key }}
-              />
+              <ScenarioInputRowInput key={scenario.key} label={scenario.label} path={props.path + "." + scenario.key} inputProps={props} />
             ))}
           </Box>
         }
