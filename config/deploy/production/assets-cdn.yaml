@@ -37,11 +37,11 @@ metadata:
     kubernetes.io/ingress.class: gce
 spec:
   tls:
-    - secretName: assets.flurish.dev-production
+    - secretName: assets.gapp.fun-production
       hosts:
-        - assets.flurish.dev
+        - assets.gapp.fun
   rules:
-    - host: assets.flurish.dev
+    - host: assets.gapp.fun
       http:
         paths:
           - backend:

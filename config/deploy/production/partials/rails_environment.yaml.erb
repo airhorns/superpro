@@ -22,26 +22,13 @@
     secretKeyRef:
       name: application-secrets
       key: SENTRY_DSN
-- name: GOOGLE_OAUTH_CLIENT_ID
+- name: ADMIN_GOOGLE_OAUTH_CLIENT_ID
+  value: "910628609504-a9jbv5u80uh220nla0ih4h6tlhvt1ijf.apps.googleusercontent.com"
+- name: ADMIN_GOOGLE_OAUTH_CLIENT_SECRET
   valueFrom:
     secretKeyRef:
       name: application-secrets
-      key: GOOGLE_OAUTH_CLIENT_ID
-- name: GOOGLE_OAUTH_CLIENT_SECRET
-  valueFrom:
-    secretKeyRef:
-      name: application-secrets
-      key: GOOGLE_OAUTH_CLIENT_SECRET
-- name: HONEYCOMB_API_KEY
-  valueFrom:
-    secretKeyRef:
-      name: application-secrets
-      key: HONEYCOMB_API_KEY
-- name: SKYLIGHT_AUTHENTICATION
-  valueFrom:
-    secretKeyRef:
-      name: application-secrets
-      key: SKYLIGHT_AUTHENTICATION
+      key: ADMIN_GOOGLE_OAUTH_CLIENT_SECRET
 - name: RAILS_SERVE_STATIC_FILES
   value: "true"
 - name: RAILS_LOG_TO_STDOUT

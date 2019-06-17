@@ -8,16 +8,16 @@ local:
 
 gcs_production:
   service: GCS
-  project: flurish-core-production
+  project: omp-core
   bucket: flurish-core-attachments
   credentials:
     type: "service_account"
-    project_id: "flurish-core-production"
-    private_key_id: "3569548d305b981379b76c42bf8ce81da2dc65cc"
-    private_key: "<%= ENV['FLURISH_CORE_PRODUCTION_GCS_PRIVATE_KEY'] %>"
-    client_email: "core-production@flurish-core-production.iam.gserviceaccount.com"
-    client_id: "107032969967502674003"
+    project_id: "omp-core"
+    private_key_id: "9b7824ef876d3185fd704a25ba6b2d3d6891ec62"
+    client_email: "core-production@omp-core.iam.gserviceaccount.com"
+    client_id: "100670567629311180822"
     auth_uri: "https://accounts.google.com/o/oauth2/auth"
     token_uri: "https://oauth2.googleapis.com/token"
     auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs"
-    client_x509_cert_url: "https://www.googleapis.com/robot/v1/metadata/x509/core-production%40flurish-core-production.iam.gserviceaccount.com"
+    client_x509_cert_url: "https://www.googleapis.com/robot/v1/metadata/x509/core-production%40omp-core.iam.gserviceaccount.com"
+    private_key: "<%= ENV['FLURISH_CORE_PRODUCTION_GCS_PRIVATE_KEY'] %>"

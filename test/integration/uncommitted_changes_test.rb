@@ -4,6 +4,7 @@ require "test_helper"
 
 class UncommittedChangesTest < ActiveSupport::TestCase
   test "graphql components can be built and doesn't have uncommitted changes" do
+    skip("no dev server running") unless dev_server_running?
     assert_no_filesystem_changes(Rails.root.join("app", "assets", "javascript").to_s) do
       Subprocess.check_output(%W{yarn generate-graphql})
     end
@@ -23,5 +24,14 @@ class UncommittedChangesTest < ActiveSupport::TestCase
       md5 << File.read(f)
     end
     md5.hexdigest
+  end
+
+  def dev_server_running?
+    @dev_server_running ||= begin
+                              TCPSocket.new("app.ggt.dev", 443)
+                              true
+                            rescue Errno::ECONNREFUSED, Errno::ETIMEDOUT
+                              false
+                            end
   end
 end

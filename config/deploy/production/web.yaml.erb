@@ -41,7 +41,7 @@ spec:
             - -b
             - 0.0.0.0
           env: <%= partial 'rails_environment' %>
-          image: gcr.io/flurish-core-production/core:<%= current_sha %>
+          image: gcr.io/omp-core/core:<%= current_sha %>
           ports:
             - containerPort: 3000
           resources: {}

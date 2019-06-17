@@ -12,6 +12,6 @@ spec:
         - db:create
         - db:migrate
       env: <%= partial 'rails_environment' %>
-      image: gcr.io/flurish-core-production/core:<%= current_sha %>
+      image: gcr.io/omp-core/core:<%= current_sha %>
       resources: {}
   restartPolicy: Never

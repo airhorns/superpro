@@ -36,7 +36,7 @@ jobs:
             - ruby-v1-dependencies-{{ .Branch }}-
             - ruby-v1-dependencies-
       - run: &ruby_dependencies
-          name: install dependencies
+          name: Install Ruby dependencies
           command: |
             bundle install --jobs=4 --retry=3 --path vendor/bundle
       - save_cache:
@@ -138,6 +138,9 @@ jobs:
       - run:
           name: Run cypress tests
           command: yarn run cypress run --project ./test --reporter junit --reporter-options "mochaFile=test/results/cypress-test-output.xml"
+      - run:
+          name: Run uncommitted changes tests
+          command: bin/rails test test/integration/uncommitted_changes_test.rb # this test requires a running dev server to introspect the GraphQL schema so we run it here where that's all set up
       - store_test_results:
           path: test/results
       - store_artifacts:
@@ -172,7 +175,7 @@ jobs:
           name: Configure gcloud k8s context
           command: |
             sudo apt-get install kubectl
-            gcloud container clusters get-credentials alpha-1
+            gcloud container clusters get-credentials beta
       - run:
           name: Deploy
           command: config/deploy/deploy.sh

@@ -3,11 +3,12 @@ require "faker"
 Rails.logger = ActiveSupport::Logger.new(STDOUT)
 Rails.logger.info("Starting seed")
 
-user = User.new(full_name: "Smart Developer", email: "dev@flurish.dev", password: "developer", password_confirmation: "developer")
+user = User.new(full_name: "Smart Developer", email: "dev@gapp.fun", password: "developer", password_confirmation: "developer")
 user.skip_confirmation!
 user.save!
 
-FactoryBot.create :account, creator: user
+account = FactoryBot.create :account, creator: user
+FactoryBot.create(:base_operational_budget, account: account, creator: account.creator)
 
 Rails.logger.info "DB Seeded!"
 [Account, User, BudgetLine, Series, Cell].each do |klass|

@@ -84,7 +84,7 @@ class UpdateBudget
         {
           series_id: series.id,
           account_id: budget_line.account_id,
-          scenario: scenario.scenario,
+          scenario: scenario_key,
           x_datetime: date,
           y_money_subunits: scenario.amount_subunits,
           created_at: Time.now.utc,

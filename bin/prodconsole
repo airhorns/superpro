@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+set -ex
+kubectl exec -i -t --namespace=core-production $(kubectl get pod --namespace=core-production --selector="service=web" -o jsonpath='{.items[0].metadata.name}') -- bin/rails console

@@ -5,7 +5,7 @@ const globalVar = typeof window === "undefined" ? { environment: "unknown", entr
 // Only send sentry errors in prod, modify but don't commit this code if you want to test sentry things
 if (globalVar.FLURISH_ENVIRONMENT === "production") {
   Sentry.init({
-    dsn: "https://1245454588f9463b82374d9e4a7a9717@sentry.io/1448183",
+    dsn: "https://c494714d521243ebab42377f494ff159@sentry.io/1484795",
     environment: globalVar.FLURISH_ENVIRONMENT
   });
 }

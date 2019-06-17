@@ -2,53 +2,71 @@
 apiVersion: certmanager.k8s.io/v1alpha1
 kind: Certificate
 metadata:
-  name: flurish.dev-production
+  name: gapp.fun-production
 spec:
-  secretName: flurish.dev-production
+  secretName: gapp.fun-production
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
   dnsNames:
-    - "app.flurish.dev"
+    - "app.gapp.fun"
   acme:
     config:
       - dns01:
-          provider: flurish-clouddns
+          provider: gke-clouddns
         domains:
-          - "app.flurish.dev"
+          - "app.gapp.fun"
 ---
 apiVersion: certmanager.k8s.io/v1alpha1
 kind: Certificate
 metadata:
-  name: admin.flurish.dev-production
+  name: admin.gapp.fun-production
 spec:
-  secretName: admin.flurish.dev-production
+  secretName: admin.gapp.fun-production
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
   dnsNames:
-    - "admin.flurish.dev"
+    - "admin.gapp.fun"
   acme:
     config:
       - dns01:
-          provider: flurish-clouddns
+          provider: gke-clouddns
         domains:
-          - "admin.flurish.dev"
+          - "admin.gapp.fun"
 ---
 apiVersion: certmanager.k8s.io/v1alpha1
 kind: Certificate
 metadata:
-  name: assets.flurish.dev-production
+  name: assets.gapp.fun-production
 spec:
-  secretName: assets.flurish.dev-production
+  secretName: assets.gapp.fun-production
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
   dnsNames:
-    - "assets.flurish.dev"
+    - "assets.gapp.fun"
   acme:
     config:
       - dns01:
-          provider: flurish-clouddns
+          provider: gke-clouddns
         domains:
-          - "assets.flurish.dev"
+          - "assets.gapp.fun"
+---
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  name: auth.gapp.fun-production
+spec:
+  secretName: auth.gapp.fun-production
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  dnsNames:
+    - "auth.gapp.fun"
+  acme:
+    config:
+      - dns01:
+          provider: gke-clouddns
+        domains:
+          - "auth.gapp.fun"

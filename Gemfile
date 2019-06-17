@@ -46,7 +46,6 @@ gem "safely"
 gem "scenic"
 gem "sentry-raven"
 gem 'sidekiq'
-gem 'skylight'
 
 # Admin
 gem 'omniauth-google-oauth2'

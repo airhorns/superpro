@@ -1,11 +1,11 @@
 describe("Logins", function() {
   beforeEach(() => {
-    cy.emptyApp();
+    cy.emptyAccount();
   });
 
   it("can log in", function() {
     cy.visit("/");
-    cy.get("#email").type("cypress@flurish.dev")
+    cy.get("#email").type("cypress@gapp.fun")
     cy.get("#password").type("incorrect")
 
     cy.get("[data-test-id=login-submit]").click()
@@ -13,6 +13,6 @@ describe("Logins", function() {
 
     cy.get("#password").clear().type("secrets")
     cy.get("[data-test-id=login-submit]").click()
-    cy.contains("Apps")
+    cy.contains("Accounts")
   });
 });
