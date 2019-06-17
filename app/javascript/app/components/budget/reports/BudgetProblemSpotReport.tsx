@@ -44,6 +44,11 @@ export const BudgetProblemSpotReport = (props: { budgetId: string }) => {
               member: "BudgetForecasts.budgetId",
               operator: "equals",
               values: [String(props.budgetId)]
+            },
+            {
+              member: "BudgetForecasts.scenario",
+              operator: "equals",
+              values: ["default"]
             }
           ],
           renewQuery: true

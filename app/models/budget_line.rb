@@ -13,12 +13,14 @@
 #  account_id       :bigint(8)        not null
 #  budget_id        :bigint(8)        not null
 #  creator_id       :bigint(8)        not null
+#  series_id        :bigint(8)        not null
 #
 # Foreign Keys
 #
 #  fk_rails_...  (account_id => accounts.id)
 #  fk_rails_...  (budget_id => budgets.id)
 #  fk_rails_...  (creator_id => users.id)
+#  fk_rails_...  (series_id => series.id)
 #
 
 class BudgetLine < ApplicationRecord
@@ -30,6 +32,7 @@ class BudgetLine < ApplicationRecord
 
   belongs_to :budget, optional: false, inverse_of: :budget_lines
   belongs_to :creator, class_name: "User", inverse_of: :created_budget_lines
+  belongs_to :series
 
   has_many :budget_line_scenarios, autosave: true, validate: true, dependent: :destroy, inverse_of: :budget_line
 end

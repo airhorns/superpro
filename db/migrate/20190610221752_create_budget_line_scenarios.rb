@@ -6,7 +6,6 @@ class CreateBudgetLineScenarios < ActiveRecord::Migration[6.0]
       t.string :scenario, null: false
       t.string :currency, null: false
       t.bigint :amount_subunits, null: false
-      t.bigint :series_id, null: false
 
       t.timestamps
     end

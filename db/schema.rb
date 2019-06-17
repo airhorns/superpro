@@ -37,7 +37,6 @@ ActiveRecord::Schema.define(version: 2019_06_13_215004) do
     t.string "scenario", null: false
     t.string "currency", null: false
     t.bigint "amount_subunits", null: false
-    t.bigint "series_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["account_id", "budget_line_id"], name: "index_budget_line_scenarios_on_account_id_and_budget_line_id"
@@ -54,6 +53,7 @@ ActiveRecord::Schema.define(version: 2019_06_13_215004) do
     t.integer "sort_order", default: 1, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "series_id", null: false
   end
 
   create_table "budgets", force: :cascade do |t|
@@ -68,6 +68,7 @@ ActiveRecord::Schema.define(version: 2019_06_13_215004) do
   create_table "cells", force: :cascade do |t|
     t.bigint "account_id", null: false
     t.bigint "series_id", null: false
+    t.string "scenario", null: false
     t.decimal "x_number"
     t.string "x_string"
     t.datetime "x_datetime"
@@ -76,19 +77,17 @@ ActiveRecord::Schema.define(version: 2019_06_13_215004) do
     t.string "y_string"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["account_id", "series_id"], name: "index_cells_on_account_id_and_series_id"
+    t.index ["account_id", "series_id", "scenario"], name: "index_cells_on_account_id_and_series_id_and_scenario"
   end
 
   create_table "series", force: :cascade do |t|
     t.bigint "account_id", null: false
-    t.string "scenario", null: false
     t.string "x_type", null: false
     t.string "y_type", null: false
     t.string "currency"
     t.bigint "creator_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["account_id", "scenario"], name: "index_series_on_account_id_and_scenario"
   end
 
   create_table "users", force: :cascade do |t|
@@ -125,6 +124,7 @@ ActiveRecord::Schema.define(version: 2019_06_13_215004) do
   add_foreign_key "budget_line_scenarios", "budget_lines"
   add_foreign_key "budget_lines", "accounts"
   add_foreign_key "budget_lines", "budgets"
+  add_foreign_key "budget_lines", "series"
   add_foreign_key "budget_lines", "users", column: "creator_id"
   add_foreign_key "budgets", "accounts"
   add_foreign_key "budgets", "users", column: "creator_id"
@@ -133,88 +133,21 @@ ActiveRecord::Schema.define(version: 2019_06_13_215004) do
   add_foreign_key "series", "accounts"
   add_foreign_key "series", "users", column: "creator_id"
 
-  create_view "budget_forecast_totals", sql_definition: <<-SQL
-      WITH cell_details AS (
-           SELECT cells.x_datetime AS cell_at,
-              cells.y_money_subunits AS amount_subunits,
-              (budget_line_scenarios.amount_subunits > 0) AS is_revenue,
-              series.id AS series_id,
-              budget_line_scenarios.scenario,
-              budget_lines.id AS budget_line_id,
-              budget_lines.budget_id
-             FROM (((cells
-               JOIN series ON ((series.id = cells.series_id)))
-               JOIN budget_line_scenarios ON ((budget_line_scenarios.series_id = series.id)))
-               JOIN budget_lines ON ((budget_lines.id = budget_line_scenarios.budget_line_id)))
-          ), active_scenarios AS (
-           SELECT DISTINCT cell_details.scenario,
-              cell_details.budget_id
-             FROM cell_details
-          ), running_totals AS (
-           SELECT cell_details.cell_at,
-              cell_details.scenario,
-              cell_details.series_id,
-              cell_details.budget_id,
-              sum(
-                  CASE cell_details.is_revenue
-                      WHEN true THEN cell_details.amount_subunits
-                      ELSE 0
-                  END) OVER (PARTITION BY cell_details.scenario ORDER BY cell_details.cell_at) AS running_revenue_total,
-              sum(
-                  CASE cell_details.is_revenue
-                      WHEN false THEN cell_details.amount_subunits
-                      ELSE 0
-                  END) OVER (PARTITION BY cell_details.scenario ORDER BY cell_details.cell_at) AS running_expenses_total,
-              sum(cell_details.amount_subunits) OVER (PARTITION BY cell_details.scenario ORDER BY cell_details.cell_at) AS cash_on_hand
-             FROM cell_details
-          ), weeks AS (
-           SELECT (date_trunc('week'::text, t.week_start))::date AS week_start
-             FROM generate_series(('2019-01-01 00:00:00'::timestamp without time zone)::timestamp with time zone, (now() + '2 years'::interval), '7 days'::interval) t(week_start)
-          ), totals_by_week AS (
-           SELECT active_scenarios.budget_id,
-              active_scenarios.scenario,
-              weeks.week_start,
-              (array_agg(running_totals.cash_on_hand))[1] AS cash_on_hand,
-              (array_agg(running_totals.running_revenue_total))[1] AS running_revenue_total,
-              (array_agg(running_totals.running_expenses_total))[1] AS running_expenses_total
-             FROM ((weeks
-               CROSS JOIN active_scenarios)
-               LEFT JOIN running_totals ON ((((date_trunc('week'::text, running_totals.cell_at))::date = weeks.week_start) AND (running_totals.budget_id = active_scenarios.budget_id) AND ((running_totals.scenario)::text = (active_scenarios.scenario)::text))))
-            GROUP BY active_scenarios.budget_id, active_scenarios.scenario, weeks.week_start
-            ORDER BY weeks.week_start
-          ), gapfilled_totals_by_week AS (
-           SELECT totals_by_week.budget_id,
-              totals_by_week.scenario,
-              totals_by_week.week_start,
-              COALESCE(gapfill(totals_by_week.cash_on_hand) OVER (PARTITION BY totals_by_week.budget_id, totals_by_week.scenario ORDER BY totals_by_week.week_start), (0)::bigint) AS cash_on_hand,
-              COALESCE(gapfill(totals_by_week.running_revenue_total) OVER (PARTITION BY totals_by_week.budget_id, totals_by_week.scenario ORDER BY totals_by_week.week_start), (0)::bigint) AS running_revenue_total,
-              COALESCE(gapfill(totals_by_week.running_expenses_total) OVER (PARTITION BY totals_by_week.budget_id, totals_by_week.scenario ORDER BY totals_by_week.week_start), (0)::bigint) AS running_expenses_total
-             FROM totals_by_week
-          )
-   SELECT gapfilled_totals_by_week.budget_id,
-      gapfilled_totals_by_week.scenario,
-      gapfilled_totals_by_week.week_start,
-      gapfilled_totals_by_week.cash_on_hand,
-      gapfilled_totals_by_week.running_revenue_total,
-      gapfilled_totals_by_week.running_expenses_total
-     FROM gapfilled_totals_by_week;
-  SQL
   create_view "cell_details", sql_definition: <<-SQL
       SELECT cells.x_datetime AS cell_at,
       cells.y_money_subunits AS amount_subunits,
       (cells.y_money_subunits > 0) AS is_revenue,
       cells.updated_at,
+      cells.scenario,
       series.id AS series_id,
-      budget_line_scenarios.scenario,
       budget_lines.id AS budget_line_id,
       budget_lines.section,
       budget_lines.description AS line_name,
       budget_lines.budget_id,
       budget_lines.account_id
-     FROM (((cells
+     FROM ((cells
        JOIN series ON ((series.id = cells.series_id)))
-       JOIN budget_line_scenarios ON ((budget_line_scenarios.series_id = series.id)))
-       JOIN budget_lines ON ((budget_lines.id = budget_line_scenarios.budget_line_id)));
+       JOIN budget_lines ON ((budget_lines.series_id = series.id)));
   SQL
   create_view "budget_forecasts", sql_definition: <<-SQL
       WITH active_scenarios AS (

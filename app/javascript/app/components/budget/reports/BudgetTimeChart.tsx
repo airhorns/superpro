@@ -11,7 +11,7 @@ export const strokeForScenario = (key: string, theme: any) => {
     case "pessimistic":
       return "#0084ea";
   }
-  return theme.global.colors.brand;
+  return theme.global.colors["dark-1"];
 };
 
 export const BudgetTimeChart = React.memo((props: { budgetId: string }) => {
@@ -70,6 +70,7 @@ export const BudgetTimeChart = React.memo((props: { budgetId: string }) => {
                 key={name.key}
                 dataKey={name.key}
                 name={name.title}
+                dot={false}
                 stroke={strokeForScenario(name.key.split(",")[0], theme)}
                 animationDuration={500}
               />

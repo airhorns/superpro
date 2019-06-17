@@ -1,4 +1,6 @@
 class UpdateBudget
+  SCENARIO_KEYS = ["default", "optimistic", "pessimistic"].freeze
+
   def initialize(user)
     @user = user
   end
@@ -30,6 +32,7 @@ class UpdateBudget
              end
 
       process_budget_line_scenarios(line, attributes[:amount_scenarios].permit!.to_h)
+      process_budget_line_series(line)
       line
     end
   end
@@ -38,33 +41,31 @@ class UpdateBudget
     existing_scenarios = budget_line.budget_line_scenarios.index_by(&:scenario)
     budget_line.budget_line_scenarios = amount_scenarios.map do |key, amount|
       existing_scenario = existing_scenarios[key]
-      scenario = if existing_scenario
-                   existing_scenario.update(amount_subunits: amount)
-                   existing_scenario
-                 else
-                   scenario = BudgetLineScenario.new(budget_line: budget_line, account_id: budget_line.account_id, scenario: key, amount_subunits: amount, currency: "USD")
-                   scenario
-                 end
-
-      if scenario_requires_expansion?(scenario)
-        scenario.series = expand_scenario(scenario)
+      if existing_scenario
+        existing_scenario.update(amount_subunits: amount)
+        existing_scenario
+      else
+        scenario = BudgetLineScenario.new(budget_line: budget_line, account_id: budget_line.account_id, scenario: key, amount_subunits: amount, currency: "USD")
+        scenario
       end
-
-      scenario
     end
   end
 
-  def expand_scenario(scenario)
-    budget_line = scenario.budget_line
-    series = Series.new(
+  def process_budget_line_series(budget_line)
+    scenarios_by_key = budget_line.budget_line_scenarios.index_by(&:scenario)
+    series = budget_line.series || Series.new(
       account_id: budget_line.account_id,
       creator_id: @user.id,
-      scenario: scenario.scenario,
-      currency: scenario.currency,
+      currency: scenarios_by_key["default"].currency,
       x_type: "datetime",
       y_type: "money",
     )
-    series.save!
+
+    if !series.new_record?
+      series.cells.delete_all
+    else
+      series.save!
+    end
 
     # If the budget line is recurring, expand all the recurrence rules and create cells for each.
     # If it isn't recurring, add one cell for the time when the line occurs
@@ -78,19 +79,23 @@ class UpdateBudget
             end
 
     cells = dates.map do |date|
-      {
-        series_id: series.id,
-        account_id: budget_line.account_id,
-        x_datetime: date,
-        y_money_subunits: scenario.amount_subunits,
-        created_at: Time.now.utc,
-        updated_at: Time.now.utc,
-      }
-    end
+      SCENARIO_KEYS.map do |scenario_key|
+        scenario = scenarios_by_key[scenario_key] || scenarios_by_key["default"]
+        {
+          series_id: series.id,
+          account_id: budget_line.account_id,
+          scenario: scenario.scenario,
+          x_datetime: date,
+          y_money_subunits: scenario.amount_subunits,
+          created_at: Time.now.utc,
+          updated_at: Time.now.utc,
+        }
+      end
+    end.flatten
 
     Cell.insert_all(cells)
 
-    series
+    budget_line.series = series
   end
 
   def scenario_requires_expansion?(scenario)

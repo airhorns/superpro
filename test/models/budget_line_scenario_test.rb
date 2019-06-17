@@ -10,7 +10,6 @@
 #  updated_at      :datetime         not null
 #  account_id      :bigint(8)        not null
 #  budget_line_id  :bigint(8)        not null
-#  series_id       :bigint(8)        not null
 #
 # Indexes
 #

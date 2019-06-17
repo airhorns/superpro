@@ -15,6 +15,7 @@ FactoryBot.define do
     end
 
     after(:build) do |line, evaluator|
+      line.series = build(:forecast_series, account: line.account, creator: line.creator, cell_options: { y_money_subunits: evaluator.amount_subunits })
       line.budget_line_scenarios << build(:budget_line_scenario, account: line.account, budget_line: line, amount_subunits: evaluator.amount_subunits)
     end
   end

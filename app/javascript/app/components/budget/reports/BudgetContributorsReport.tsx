@@ -26,6 +26,11 @@ export const BudgetContributorsReport = (props: { budgetId: string }) => {
             member: "Budgets.budgetId",
             operator: "equals",
             values: [String(props.budgetId)]
+          },
+          {
+            member: "Budgets.scenario",
+            operator: "equals",
+            values: ["default"]
           }
         ],
         dimensions: ["Budgets.section"],

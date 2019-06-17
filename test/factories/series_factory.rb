@@ -4,17 +4,12 @@
 #
 #  id         :bigint(8)        not null, primary key
 #  currency   :string
-#  scenario   :string           not null
 #  x_type     :string           not null
 #  y_type     :string           not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  account_id :bigint(8)        not null
 #  creator_id :bigint(8)        not null
-#
-# Indexes
-#
-#  index_series_on_account_id_and_scenario  (account_id,scenario)
 #
 # Foreign Keys
 #
@@ -28,7 +23,6 @@ FactoryBot.define do
     association :creator, factory: :user
     x_type { "number" }
     y_type { "number" }
-    scenario { "default" }
 
     transient {
       cell_factory { :number_cell }
@@ -43,7 +37,11 @@ FactoryBot.define do
     end
 
     after(:build) do |series, evaluator|
-      series.cells = build_list(evaluator.cell_factory, 5, account: series.account, series: series, **evaluator.cell_options)
+      cells = []
+      UpdateBudget::SCENARIO_KEYS.each do |key|
+        cells += build_list(evaluator.cell_factory, 5, account: series.account, series: series, scenario: key, **evaluator.cell_options)
+      end
+      series.cells = cells
     end
   end
 end

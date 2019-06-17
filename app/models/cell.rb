@@ -3,6 +3,7 @@
 # Table name: cells
 #
 #  id               :bigint(8)        not null, primary key
+#  scenario         :string           not null
 #  x_datetime       :datetime
 #  x_number         :decimal(, )
 #  x_string         :string
@@ -16,7 +17,7 @@
 #
 # Indexes
 #
-#  index_cells_on_account_id_and_series_id  (account_id,series_id)
+#  index_cells_on_account_id_and_series_id_and_scenario  (account_id,series_id,scenario)
 #
 # Foreign Keys
 #

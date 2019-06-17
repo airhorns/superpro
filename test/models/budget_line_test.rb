@@ -13,12 +13,14 @@
 #  account_id       :bigint(8)        not null
 #  budget_id        :bigint(8)        not null
 #  creator_id       :bigint(8)        not null
+#  series_id        :bigint(8)        not null
 #
 # Foreign Keys
 #
 #  fk_rails_...  (account_id => accounts.id)
 #  fk_rails_...  (budget_id => budgets.id)
 #  fk_rails_...  (creator_id => users.id)
+#  fk_rails_...  (series_id => series.id)
 #
 
 require "test_helper"

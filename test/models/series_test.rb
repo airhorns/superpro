@@ -4,17 +4,12 @@
 #
 #  id         :bigint(8)        not null, primary key
 #  currency   :string
-#  scenario   :string           not null
 #  x_type     :string           not null
 #  y_type     :string           not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  account_id :bigint(8)        not null
 #  creator_id :bigint(8)        not null
-#
-# Indexes
-#
-#  index_series_on_account_id_and_scenario  (account_id,scenario)
 #
 # Foreign Keys
 #

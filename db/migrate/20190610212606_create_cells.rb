@@ -3,6 +3,7 @@ class CreateCells < ActiveRecord::Migration[6.0]
     create_table :cells do |t|
       t.bigint :account_id, null: false
       t.bigint :series_id, null: false
+      t.string :scenario, null: false
 
       t.numeric :x_number
       t.string :x_string
@@ -16,6 +17,6 @@ class CreateCells < ActiveRecord::Migration[6.0]
 
     add_foreign_key :cells, :accounts
     add_foreign_key :cells, :series
-    add_index :cells, [:account_id, :series_id]
+    add_index :cells, [:account_id, :series_id, :scenario]
   end
 end
