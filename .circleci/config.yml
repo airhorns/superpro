@@ -73,8 +73,8 @@ jobs:
       - run:
           name: Load schema
           command: |
-            bundle exec rake db:create --trace
-            bundle exec rake db:schema:load --trace
+            sudo apt update && sudo apt install postgresql-client
+            bundle exec rake db:prepare --trace
       - run:
           name: Run tests
           command: |
@@ -108,11 +108,11 @@ jobs:
       - run: *node_dependencies
       - run:
           name: Install cypress apt dependencies
-          command: sudo apt install xvfb libgtk2.0-0 libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2
+          command: sudo apt update && sudo apt install xvfb libgtk2.0-0 libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2
       - run:
           name: Configure nginx & setup SSL
           command: |
-            sudo apt install libnss3-tools nginx
+            sudo apt install libnss3-tools nginx postgresql-client
             sudo cp .circleci/nginx.conf /etc/nginx/sites-enabled/default
             wget -O mkcert https://github.com/FiloSottile/mkcert/releases/download/v1.3.0/mkcert-v1.3.0-linux-amd64
             chmod +x mkcert
@@ -152,12 +152,12 @@ jobs:
       - checkout
       - run:
           name: Build docker container
-          command: docker build -t gcr.io/flurish-core-production/core:$CIRCLE_SHA1 .
+          command: docker build -t gcr.io/omp-core/core:$CIRCLE_SHA1 .
       - gcp-cli/install
       - gcp-cli/initialize
       - run:
           name: Push docker container
-          command: gcloud auth configure-docker && docker push gcr.io/flurish-core-production/core:$CIRCLE_SHA1
+          command: gcloud auth configure-docker && docker push gcr.io/omp-core/core:$CIRCLE_SHA1
 
   deploy:
     docker:
@@ -172,7 +172,7 @@ jobs:
           name: Configure gcloud k8s context
           command: |
             sudo apt-get install kubectl
-            gcloud container clusters get-credentials alpha
+            gcloud container clusters get-credentials alpha-1
       - run:
           name: Deploy
           command: config/deploy/deploy.sh

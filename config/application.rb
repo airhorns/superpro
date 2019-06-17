@@ -37,6 +37,7 @@ module Flurish
     end
 
     config.active_record.index_nested_attribute_errors = true
+    config.active_record.schema_format = :sql
 
     config.x.domains.app = "replaceme"
     config.x.domains.admin = "replaceme"

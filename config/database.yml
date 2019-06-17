@@ -6,21 +6,21 @@ default: &default
 development:
   <<: *default
   database: flurish_development
-  user: flurish
+  username: flurish
   host: localhost
   port: 5432
 
 test:
   <<: *default
   database: flurish_test
-  user: flurish
+  username: flurish
   host: localhost
   port: 5432
 
 integration_test:
   <<: *default
   database: flurish_integration_test
-  user: flurish
+  username: flurish
   host: localhost
   port: 5432
 
