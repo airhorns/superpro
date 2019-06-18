@@ -69,6 +69,7 @@ export const BudgetFormNewSectionlist = () => {
                 as="div"
                 onClick={onClick}
                 margin="small"
+                data-test-id={`add-section-${suggestion.name}`}
                 label={
                   <Row justify="between" gap="small">
                     {suggestion.name}
@@ -84,7 +85,15 @@ export const BudgetFormNewSectionlist = () => {
               <Heading level="4">{suggestion.name}</Heading>
               <Text>{suggestion.description}</Text>
               <Box align="start">
-                <Button key={suggestion.name} as="div" onClick={onClick} margin="small" icon={<Add />} label={`Add ${suggestion.name}`} />
+                <Button
+                  key={suggestion.name}
+                  data-test-id={`add-section-${suggestion.name}`}
+                  as="div"
+                  onClick={onClick}
+                  margin="small"
+                  icon={<Add />}
+                  label={`Add ${suggestion.name}`}
+                />
               </Box>
             </Box>
           );

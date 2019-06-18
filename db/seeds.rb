@@ -8,6 +8,7 @@ user.skip_confirmation!
 user.save!
 
 account = FactoryBot.create :account, creator: user
+account.budgets.destroy_all
 FactoryBot.create(:base_operational_budget, account: account, creator: account.creator)
 
 Rails.logger.info "DB Seeded!"
