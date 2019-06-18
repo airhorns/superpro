@@ -115,7 +115,7 @@ export const AppSidebar = withRouter(
                       dropAlign={{ bottom: "top" }}
                       dropContent={
                         <Box pad="small" background="white" gap="small" width="small">
-                          <Button onClick={() => (window.location.href = data.currentUser.authAreaUrl)}>My Apps</Button>
+                          <Button onClick={() => (window.location.href = data.currentUser.authAreaUrl)}>Switch Accounts</Button>
                           <Button onClick={signOut}>Sign Out</Button>
                         </Box>
                       }
