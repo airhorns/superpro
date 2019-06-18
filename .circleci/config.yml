@@ -41,7 +41,7 @@ jobs:
             bundle install --jobs=4 --retry=3 --path vendor/bundle
       - save_cache:
           paths:
-            - ./vendor/bundle
+            - ~/repo/vendor/bundle
           key: ruby-v1-dependencies-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
       - run:
           name: Run rufo linter
@@ -140,7 +140,12 @@ jobs:
           command: yarn run cypress run --project ./test --reporter junit --reporter-options "mochaFile=test/results/cypress-test-output.xml"
       - run:
           name: Run uncommitted changes tests
-          command: bundle exec rails test test/integration/uncommitted_changes_test.rb # this test requires a running dev server to introspect the GraphQL schema so we run it here where that's all set up
+          command: |
+            # this test requires a running dev server to introspect the GraphQL schema so we run it here where that's all set up
+            # because this test hits the running dev server through nginx, it needs SSL to be ok with the mkcert'd SSL cert
+            # see https://github.com/FiloSottile/mkcert#using-the-root-with-nodejs
+            export NODE_EXTRA_CA_CERTS="$(./mkcert -CAROOT)/rootCA.pem"
+            bundle exec rake test TEST=test/integration/uncommitted_changes_test.rb
       - store_test_results:
           path: test/results
       - store_artifacts:
