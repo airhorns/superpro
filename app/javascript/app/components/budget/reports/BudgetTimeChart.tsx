@@ -1,18 +1,14 @@
 import React from "react";
 import { XAxis, YAxis, Tooltip, LineChart, Line, ReferenceLine, Brush } from "recharts";
 import { ThemeContext } from "grommet";
-import { DefaultBudgetTimeChartRange, DefaultTimeTickFormatter, DefaultTimeLabelFormatter, CurrencyValueFormatter } from "./utils";
+import {
+  DefaultBudgetTimeChartRange,
+  DefaultTimeTickFormatter,
+  DefaultTimeLabelFormatter,
+  CurrencyValueFormatter,
+  strokeForScenario
+} from "./utils";
 import { CubeChart } from "../../common";
-
-export const strokeForScenario = (key: string, theme: any) => {
-  switch (key) {
-    case "optimistic":
-      return "#ffcc00";
-    case "pessimistic":
-      return "#0084ea";
-  }
-  return theme.global.colors["dark-1"];
-};
 
 export const BudgetTimeChart = React.memo((props: { budgetId: string }) => {
   const theme = React.useContext(ThemeContext) as any;

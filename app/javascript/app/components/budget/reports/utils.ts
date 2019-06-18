@@ -52,6 +52,16 @@ export const CurrencyValueFormatter = (value: any) => {
   }
 };
 
+export const strokeForScenario = (key: string, theme: any) => {
+  switch (key) {
+    case "optimistic":
+      return "#ffcc00";
+    case "pessimistic":
+      return "#0084ea";
+  }
+  return theme.global.colors["dark-1"];
+};
+
 export const Colors = [
   "#ff4040",
   "#ff423d",

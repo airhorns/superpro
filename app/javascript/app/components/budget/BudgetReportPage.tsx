@@ -1,11 +1,12 @@
 import React from "react";
+import { Box } from "grommet";
 import { Page, LinkButton } from "../common";
 import gql from "graphql-tag";
 import { GetBudgetForReportsComponent } from "app/app-graph";
 import { BudgetContributorsReport } from "./reports/BudgetContributorsReport";
 import { NotFoundPage } from "../chrome/NotFoundPage";
 import { BudgetProblemSpotReport } from "./reports/BudgetProblemSpotReport";
-import { Box } from "grommet";
+import { BudgetRunRateReport } from "./reports/BudgetRunRateReport";
 
 gql`
   query GetBudgetForReports($budgetId: ID!) {
@@ -18,6 +19,11 @@ gql`
 `;
 
 export const Reports: { [key: string]: { title: string; description: string; Component: React.ComponentType<{ budgetId: string }> } } = {
+  runRate: {
+    title: "Run Rate",
+    description: "View a simple revenue and expenses month to month forecast",
+    Component: BudgetRunRateReport
+  },
   contributors: {
     title: "Contributors",
     description: "View which pieces contribute the most to revenue and expenses",
