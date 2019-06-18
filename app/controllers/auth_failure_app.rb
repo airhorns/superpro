@@ -29,7 +29,7 @@ class AuthFailureApp < Devise::FailureApp
     uri = parse_uri(location)
 
     if uri
-      if not [Rails.configuration.x.domains.app, Rails.configuration.x.domains.auth].include?(uri.host)
+      if not [Rails.configuration.x.domains.app].include?(uri.host)
         path = remove_domain_from_uri(uri)
         path = add_fragment_back_to_path(uri, path)
       end

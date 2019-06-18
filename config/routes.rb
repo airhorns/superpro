@@ -14,17 +14,6 @@ Rails.application.routes.draw do
   end
 
   constraints host: Rails.configuration.x.domains.app do
-    scope module: :app do
-      mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "graphql", as: "app_graphiql"
-      post "/graphql", to: "graphql#execute"
-
-      # Forward all the other requests to the edit area client side router
-      get "*path", to: "client_side_app#index", as: "app_client_side_app"
-      root to: "client_side_app#index", as: "app_root"
-    end
-  end
-
-  constraints host: Rails.configuration.x.domains.auth do
     # Auth area configuration where users login and register to the system.
     # Some API is managed by devise and some is is managed by graphql right now.
     devise_for :users, path: "/auth/api", controllers: {
@@ -35,12 +24,21 @@ Rails.application.routes.draw do
                          unlocks: "auth/unlocks",
                        }
 
-    scope module: "auth" do
-      mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "graphql", as: "auth_graphiql"
+    namespace "auth" do
+      mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "graphql"
       post "/graphql", to: "graphql#execute"
 
-      get "*path", to: "client_side_app#index", as: "auth_client_side_app"
-      root to: "client_side_app#index", as: "auth_root"
+      get "*path", to: "client_side_app#index"
+      root to: "client_side_app#index"
+    end
+
+    scope module: :app do
+      mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "graphql", as: "app_graphiql"
+      post "/graphql", to: "graphql#execute"
+
+      # Forward all the other requests to the edit area client side router
+      get "*path", to: "client_side_app#index", as: "app_client_side_app"
+      root to: "client_side_app#index", as: "app_root"
     end
   end
 end

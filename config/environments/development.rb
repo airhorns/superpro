@@ -70,7 +70,6 @@ Rails.application.configure do
   end
 
   config.x.domains.app = "app.ggt.dev"
-  config.x.domains.auth = "auth.ggt.dev"
   config.x.domains.admin = "admin.ggt.dev"
   config.action_controller.asset_host = "assets.ggt.dev"
   config.hosts << ".ggt.dev"

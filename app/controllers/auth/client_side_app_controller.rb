@@ -1,14 +1,12 @@
-module Auth
-  class ClientSideAppController < ApplicationController
-    layout "auth_area_client_side_app"
+class Auth::ClientSideAppController < ApplicationController
+  include BaseClientSideAppSettings
 
-    def index
-      @settings = {
-        baseUrl: auth_root_path,
-        signedIn: current_user.present?,
-        devMode: Rails.env.development?,
-        sentryDsn: ENV["FRONTEND_SENTRY_DSN"],
-      }
-    end
+  layout "auth_area_client_side_app"
+
+  def index
+    @settings = base_settings.merge({
+      baseUrl: auth_root_path,
+      signedIn: current_user.present?,
+    })
   end
 end

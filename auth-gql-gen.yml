@@ -1,7 +1,7 @@
 overwrite: true
 silent: false
 schema:
-  - https://auth.ggt.dev/graphql:
+  - https://app.ggt.dev/auth/graphql:
       headers:
         X-Trusted-Dev-Client: yes
 documents: "app/javascript/auth/{components,lib}/**/*.{ts,tsx}"

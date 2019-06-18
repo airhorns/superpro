@@ -47,7 +47,6 @@ Rails.application.configure do
   config.action_view.raise_on_missing_translations = true
 
   config.x.domains.app = "test-app.ggt.dev"
-  config.x.domains.auth = "test-auth.ggt.dev"
   config.x.domains.admin = "test-admin.ggt.dev"
   config.x.domains.assets = "test-assets.ggt.dev"
   config.hosts << ".ggt.dev"

@@ -10,7 +10,7 @@ export const client = new ApolloClient({
   link: ApolloLink.from([
     new ApolloLink((operation, forward) => {
       operation.setContext({
-        uri: `/graphql?operation=${operation.operationName}`
+        uri: `/auth/graphql?operation=${operation.operationName}`
       });
 
       return (forward as any)(operation);
@@ -23,7 +23,7 @@ export const client = new ApolloClient({
       if (networkError) console.log(`[Network error]: ${networkError}`);
     }),
     new HttpLink({
-      uri: "/graphql",
+      uri: "/auth/graphql",
       credentials: "same-origin",
       headers: {
         "X-CSRF-Token": csrfToken()

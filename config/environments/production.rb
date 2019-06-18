@@ -82,7 +82,6 @@ Rails.application.configure do
   config.webpacker.check_yarn_integrity = false
 
   config.x.domains.app = "app.gapp.fun"
-  config.x.domains.auth = "auth.gapp.fun"
   config.x.domains.admin = "admin.gapp.fun"
   config.action_controller.asset_host = "assets.gapp.fun"
   config.action_mailer.default_url_options = { host: "app.gapp.fun", protocol: "https" }

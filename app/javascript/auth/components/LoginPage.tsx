@@ -1,5 +1,5 @@
 import * as React from "react";
-import { client } from "../../flurishlib/axios";
+import { authClient } from "../../flurishlib/axios";
 import { Alert } from "../../flurishlib/Alert";
 import { Heading, Button, Box } from "grommet";
 import { PageBox } from "./PageBox";
@@ -19,7 +19,7 @@ export class LoginPage extends React.Component<{}, LoginPageState> {
 
   handleSubmit = async (doc: LoginFormValues) => {
     try {
-      const response = await client.post("/auth/api/sign_in.json", { user: doc });
+      const response = await authClient.post("sign_in.json", { user: doc });
       if (response.data.success) {
         window.location = response.data.redirect_url;
       } else {

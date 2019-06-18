@@ -1,12 +1,8 @@
 class AppAreaController < ApplicationController
   before_action :authenticate_user!
   before_action :set_current_account
-
   layout "app_area"
-
-  def current_account
-    @current_account
-  end
+  attr_reader :current_account
 
   private
 

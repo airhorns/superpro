@@ -1,9 +1,9 @@
-import { client } from "../../flurishlib/axios";
+import { authClient } from "../../flurishlib/axios";
 import { toast } from "../../flurishlib";
 
 export const signOut = async () => {
   try {
-    const response = await client.delete("/auth/api/sign_out.json");
+    const response = await authClient.delete("sign_out.json");
     (window as any).location = response.headers["Location"] || "/";
   } catch (error) {
     console.error(error);

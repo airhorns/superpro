@@ -52,21 +52,3 @@ spec:
           provider: gke-clouddns
         domains:
           - "assets.gapp.fun"
----
-apiVersion: certmanager.k8s.io/v1alpha1
-kind: Certificate
-metadata:
-  name: auth.gapp.fun-production
-spec:
-  secretName: auth.gapp.fun-production
-  issuerRef:
-    name: letsencrypt-production
-    kind: ClusterIssuer
-  dnsNames:
-    - "auth.gapp.fun"
-  acme:
-    config:
-      - dns01:
-          provider: gke-clouddns
-        domains:
-          - "auth.gapp.fun"
