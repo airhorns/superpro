@@ -140,7 +140,7 @@ jobs:
           command: yarn run cypress run --project ./test --reporter junit --reporter-options "mochaFile=test/results/cypress-test-output.xml"
       - run:
           name: Run uncommitted changes tests
-          command: bin/rails test test/integration/uncommitted_changes_test.rb # this test requires a running dev server to introspect the GraphQL schema so we run it here where that's all set up
+          command: bundle exec rails test test/integration/uncommitted_changes_test.rb # this test requires a running dev server to introspect the GraphQL schema so we run it here where that's all set up
       - store_test_results:
           path: test/results
       - store_artifacts:
