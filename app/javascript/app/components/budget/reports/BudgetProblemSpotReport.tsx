@@ -78,6 +78,7 @@ export const BudgetProblemSpotReport = (props: { budgetId: string }) => {
               <XAxis dataKey="x" tickFormatter={DefaultTimeTickFormatter} />
               <YAxis
                 type="number"
+                width={90}
                 domain={[
                   dataMin => {
                     if (dataMin < 0) {
