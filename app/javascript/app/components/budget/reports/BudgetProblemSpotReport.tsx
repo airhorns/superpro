@@ -75,7 +75,7 @@ export const BudgetProblemSpotReport = (props: { budgetId: string }) => {
 
           return (
             <AreaChart data={data}>
-              <XAxis dataKey="x" tickFormatter={DefaultTimeTickFormatter} />
+              <XAxis dataKey="x" tickFormatter={DefaultTimeTickFormatter} minTickGap={8} />
               <YAxis
                 type="number"
                 width={90}

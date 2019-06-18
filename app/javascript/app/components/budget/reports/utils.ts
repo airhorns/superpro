@@ -30,7 +30,7 @@ export const DefaultTimeTickFormatter = (date: string | number) => {
     dateTime = DateTime.fromISO(date);
   }
 
-  return DateTickFormatter(dateTime.toJSDate());
+  return dateTime.toFormat("d MMM");
 };
 
 export const DefaultTimeLabelFormatter = (date: string | number) => {

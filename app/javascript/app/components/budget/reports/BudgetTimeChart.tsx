@@ -43,7 +43,7 @@ export const BudgetTimeChart = React.memo((props: { budgetId: string }) => {
 
         return (
           <LineChart data={data}>
-            <XAxis dataKey="x" tickFormatter={DefaultTimeTickFormatter} />
+            <XAxis dataKey="x" tickFormatter={DefaultTimeTickFormatter} minTickGap={8} />
             <YAxis
               type="number"
               width={90}

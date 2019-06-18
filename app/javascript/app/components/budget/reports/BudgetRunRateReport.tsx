@@ -41,7 +41,7 @@ export const BudgetRunRateReport = (props: { budgetId: string }) => {
       {resultSet => {
         return (
           <BarChart data={resultSet.chartPivot()} stackOffset="sign">
-            <XAxis dataKey="x" tickFormatter={DefaultTimeTickFormatter} />
+            <XAxis dataKey="x" tickFormatter={DefaultTimeTickFormatter} minTickGap={8} />
             <YAxis width={90} type="number" tickFormatter={CurrencyValueFormatter} />
             <CartesianGrid />
             <ReferenceLine y={0} stroke="#000" />
