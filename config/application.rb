@@ -44,5 +44,12 @@ module Flurish
 
     config.admin = config_for(:admin)
     config.cubejs = config_for(:cubejs)
+
+    config.middleware.swap(
+      Rails::Rack::Logger,
+      Silencer::Logger,
+      config.log_tags,
+      silence: ["/health_check", "/favicon.ico"],
+    )
   end
 end
