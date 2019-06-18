@@ -3,6 +3,10 @@ import Helmet from "react-helmet";
 import { Box } from "grommet";
 
 export const PageBox = (props: { children: React.ReactNode; documentTitle?: string }) => {
+  React.useEffect(() => {
+    analytics.page(props.documentTitle || "Auth Page");
+  }, [props.documentTitle]);
+
   return (
     <Box fill background="light-2" align="center" justify="center">
       <Helmet>

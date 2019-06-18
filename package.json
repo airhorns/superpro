@@ -50,6 +50,7 @@
     "@types/react-router-dom": "^4.3.1",
     "@types/react-select": "^2.0.17",
     "@types/recharts": "^1.1.16",
+    "@types/segment-analytics": "^0.0.31",
     "@types/shortid": "^0.0.29",
     "@types/styled-components": "^4.1.14",
     "@types/url-join": "^4.0.0",

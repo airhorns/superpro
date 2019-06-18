@@ -74,6 +74,14 @@ export class PageLayout extends React.Component<PageLayoutProps> {
     };
   }
 
+  componentDidMount() {
+    analytics.page(this.props.documentTitle || (this.props.title as string));
+  }
+
+  componentDidUpdate() {
+    analytics.page(this.props.documentTitle || (this.props.title as string));
+  }
+
   render() {
     return (
       <Box flex>

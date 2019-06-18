@@ -8,6 +8,7 @@ export * from "./HelpTip";
 export * from "./TokenLabel";
 export * from "./EmptyTableMessage";
 export * from "./SentryErrorBoundary";
+export * from "./SegmentAnalytics";
 export * from "./FlurishTheme";
 export * from "./SimpleModal";
 export * from "./Link";
