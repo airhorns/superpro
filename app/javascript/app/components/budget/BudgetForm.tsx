@@ -6,6 +6,7 @@ import { BudgetFormSection } from "./BudgetFormSection";
 import { SuperForm } from "flurishlib/superform";
 import { BudgetFormNewSectionlist } from "./BudgetFormNewSectionList";
 import { SerializedRRuleSet } from "app/lib/rrules";
+import { DateTime } from "luxon";
 
 export interface BudgetFormLineValue {
   id: string;
@@ -33,7 +34,7 @@ export interface BudgetFormValues {
   };
 }
 
-export const EmptyLine = { description: "", amountScenarios: {} };
+export const EmptyLine = { description: "", amountScenarios: { default: 0 }, occursAt: DateTime.local().toISO() };
 
 const updateSortOrders = (list: BudgetFormLineValue[]) => {
   for (let i = 0; i < list.length; i++) {

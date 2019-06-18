@@ -27,7 +27,6 @@ class BudgetLine < ApplicationRecord
   include AccountScoped
   include MutationClientId
 
-  validates :description, presence: true
   validates :recurrence_rules, rrule_list: true
 
   belongs_to :budget, optional: false, inverse_of: :budget_lines

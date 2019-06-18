@@ -53,10 +53,11 @@ class UpdateBudget
 
   def process_budget_line_series(budget_line)
     scenarios_by_key = budget_line.budget_line_scenarios.index_by(&:scenario)
+
     series = budget_line.series || Series.new(
       account_id: budget_line.account_id,
       creator_id: @user.id,
-      currency: scenarios_by_key["default"].currency,
+      currency: "USD",
       x_type: "datetime",
       y_type: "money",
     )
@@ -67,38 +68,36 @@ class UpdateBudget
       series.save!
     end
 
-    # If the budget line is recurring, expand all the recurrence rules and create cells for each.
-    # If it isn't recurring, add one cell for the time when the line occurs
-    dates = if budget_line.recurrence_rules && budget_line.recurrence_rules.length > 0
-              budget_line.recurrence_rules.flat_map do |rule_string|
-                rule = RRule::Rule.new(rule_string, dtstart: budget_line.occurs_at)
-                rule.between(budget_line.occurs_at, Time.now.utc + 2.years)
-              end.uniq
-            else
-              [budget_line.occurs_at]
-            end
+    if scenarios_by_key["default"]
+      # If the budget line is recurring, expand all the recurrence rules and create cells for each.
+      # If it isn't recurring, add one cell for the time when the line occurs
+      dates = if budget_line.recurrence_rules && budget_line.recurrence_rules.length > 0
+                budget_line.recurrence_rules.flat_map do |rule_string|
+                  rule = RRule::Rule.new(rule_string, dtstart: budget_line.occurs_at)
+                  rule.between(budget_line.occurs_at, Time.now.utc + 2.years)
+                end.uniq
+              else
+                [budget_line.occurs_at]
+              end
 
-    cells = dates.map do |date|
-      SCENARIO_KEYS.map do |scenario_key|
-        scenario = scenarios_by_key[scenario_key] || scenarios_by_key["default"]
-        {
-          series_id: series.id,
-          account_id: budget_line.account_id,
-          scenario: scenario_key,
-          x_datetime: date,
-          y_money_subunits: scenario.amount_subunits,
-          created_at: Time.now.utc,
-          updated_at: Time.now.utc,
-        }
-      end
-    end.flatten
+      cells = dates.map do |date|
+        SCENARIO_KEYS.map do |scenario_key|
+          scenario = scenarios_by_key[scenario_key] || scenarios_by_key["default"]
+          {
+            series_id: series.id,
+            account_id: budget_line.account_id,
+            scenario: scenario_key,
+            x_datetime: date,
+            y_money_subunits: scenario.amount_subunits,
+            created_at: Time.now.utc,
+            updated_at: Time.now.utc,
+          }
+        end
+      end.flatten
 
-    Cell.insert_all(cells)
+      Cell.insert_all(cells)
+    end
 
     budget_line.series = series
-  end
-
-  def scenario_requires_expansion?(scenario)
-    scenario.new_record? || scenario.budget_line.new_record? || scenario.budget_line.transaction_changed_attributes.has_key?(:recurrence_rules) || scenario.transaction_changed_attributes.has_key?(:amount_subunits)
   end
 end
