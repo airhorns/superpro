@@ -9,11 +9,11 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-body-size: 10M
 spec:
   tls:
-    - secretName: gapp.fun-production
+    - secretName: fluri.sh-production
       hosts:
-        - app.gapp.fun
+        - app.fluri.sh
   rules:
-    - host: app.gapp.fun
+    - host: app.fluri.sh
       http:
         paths:
           - backend:
@@ -30,11 +30,11 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-body-size: 10M
 spec:
   tls:
-    - secretName: admin.gapp.fun-production
+    - secretName: admin.fluri.sh-production
       hosts:
-        - admin.gapp.fun
+        - admin.fluri.sh
   rules:
-    - host: admin.gapp.fun
+    - host: admin.fluri.sh
       http:
         paths:
           - backend:

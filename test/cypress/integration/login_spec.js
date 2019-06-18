@@ -5,7 +5,7 @@ describe("Logins", function() {
 
   it("can log in", function() {
     cy.visit("/");
-    cy.get("#email").type("cypress@gapp.fun")
+    cy.get("#email").type("cypress@fluri.sh")
     cy.get("#password").type("incorrect")
 
     cy.get("[data-test-id=login-submit]").click()

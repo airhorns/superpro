@@ -81,8 +81,8 @@ Rails.application.configure do
   # Don't run yarn for prod commands since it can change whats installed depending on the environment, and we're in docker where it shouldn't matter.
   config.webpacker.check_yarn_integrity = false
 
-  config.x.domains.app = "app.gapp.fun"
-  config.x.domains.admin = "admin.gapp.fun"
-  config.action_controller.asset_host = "assets.gapp.fun"
-  config.action_mailer.default_url_options = { host: "app.gapp.fun", protocol: "https" }
+  config.x.domains.app = "app.fluri.sh"
+  config.x.domains.admin = "admin.fluri.sh"
+  config.action_controller.asset_host = "assets.fluri.sh"
+  config.action_mailer.default_url_options = { host: "app.fluri.sh", protocol: "https" }
 end

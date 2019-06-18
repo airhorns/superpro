@@ -2,53 +2,53 @@
 apiVersion: certmanager.k8s.io/v1alpha1
 kind: Certificate
 metadata:
-  name: gapp.fun-production
+  name: fluri.sh-production
 spec:
-  secretName: gapp.fun-production
+  secretName: fluri.sh-production
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
   dnsNames:
-    - "app.gapp.fun"
+    - "app.fluri.sh"
   acme:
     config:
       - dns01:
           provider: gke-clouddns
         domains:
-          - "app.gapp.fun"
+          - "app.fluri.sh"
 ---
 apiVersion: certmanager.k8s.io/v1alpha1
 kind: Certificate
 metadata:
-  name: admin.gapp.fun-production
+  name: admin.fluri.sh-production
 spec:
-  secretName: admin.gapp.fun-production
+  secretName: admin.fluri.sh-production
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
   dnsNames:
-    - "admin.gapp.fun"
+    - "admin.fluri.sh"
   acme:
     config:
       - dns01:
           provider: gke-clouddns
         domains:
-          - "admin.gapp.fun"
+          - "admin.fluri.sh"
 ---
 apiVersion: certmanager.k8s.io/v1alpha1
 kind: Certificate
 metadata:
-  name: assets.gapp.fun-production
+  name: assets.fluri.sh-production
 spec:
-  secretName: assets.gapp.fun-production
+  secretName: assets.fluri.sh-production
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
   dnsNames:
-    - "assets.gapp.fun"
+    - "assets.fluri.sh"
   acme:
     config:
       - dns01:
           provider: gke-clouddns
         domains:
-          - "assets.gapp.fun"
+          - "assets.fluri.sh"
