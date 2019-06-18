@@ -7,6 +7,7 @@ module Auth
         baseUrl: auth_root_path,
         signedIn: current_user.present?,
         devMode: Rails.env.development?,
+        sentryDsn: ENV["FRONTEND_SENTRY_DSN"],
       }
     end
   end

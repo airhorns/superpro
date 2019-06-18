@@ -13,6 +13,7 @@ class App::ClientSideAppController < AppAreaController
         token: CubeJSAuth.token_for_user(current_user, current_account),
       },
       reportingCurrency: currency_details,
+      sentryDsn: ENV["FRONTEND_SENTRY_DSN"],
     }
   end
 end

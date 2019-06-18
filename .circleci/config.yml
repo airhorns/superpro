@@ -170,6 +170,7 @@ jobs:
   deploy:
     docker:
       - image: circleci/ruby:2.6.2-node
+    working_directory: ~/repo
     steps:
       - gcp-cli/install
       - gcp-cli/initialize
@@ -204,6 +205,7 @@ workflows:
             - test_javascript
             - lint_javascript
             - build_docker
+            - test_cypress
           filters:
             branches:
               only: master
