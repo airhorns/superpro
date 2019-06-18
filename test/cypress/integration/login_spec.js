@@ -13,6 +13,6 @@ describe("Logins", function() {
 
     cy.get("#password").clear().type("secrets")
     cy.get("[data-test-id=login-submit]").click()
-    cy.contains("Accounts")
+    cy.contains("Flurish")
   });
 });
