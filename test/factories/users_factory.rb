@@ -6,7 +6,7 @@ FactoryBot.define do
     after(:build) { |user| user.password_confirmation = user.password = "secrets" }
 
     factory :cypress_user do
-      email { "cypress@gapp.fun" }
+      email { "cypress@fluri.sh" }
       full_name { "Cypress Test User" }
 
       after(:build) { |user| user.skip_confirmation! }
