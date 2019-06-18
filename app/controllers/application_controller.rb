@@ -27,6 +27,6 @@ class ApplicationController < ActionController::Base
   end
 
   def trusted_dev_request?
-    Rails.env.development? && request.headers["HTTP_X_TRUSTED_DEV_CLIENT"].present?
+    (Rails.env.development? || Rails.env.integration_test?) && request.headers["HTTP_X_TRUSTED_DEV_CLIENT"].present?
   end
 end
