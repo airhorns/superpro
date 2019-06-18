@@ -6,6 +6,7 @@
 
   <body>
     <%= yield %>
-    <%= javascript_packs_with_chunks_tag 'auth' %>
+    <%= stylesheet_packs_with_chunks_tag 'app', media: 'all' %>
+    <%= javascript_packs_with_chunks_tag 'app' %>
   </body>
 </html>

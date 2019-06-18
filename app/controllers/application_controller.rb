@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  before_action :set_raven_context
+
   private
 
   # Handle form data, JSON body, or a blank value
@@ -28,5 +30,9 @@ class ApplicationController < ActionController::Base
 
   def trusted_dev_request?
     (Rails.env.development? || Rails.env.integration_test?) && request.headers["HTTP_X_TRUSTED_DEV_CLIENT"].present?
+  end
+
+  def set_raven_context
+    Raven.user_context(user_id: current_user.try(:id))
   end
 end
