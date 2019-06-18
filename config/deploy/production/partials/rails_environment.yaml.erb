@@ -1,3 +1,11 @@
+- name: RAILS_ENV
+  value: production
+- name: REDIS_URL
+  value: redis://redis:6379/1
+- name: RAILS_SERVE_STATIC_FILES
+  value: "true"
+- name: RAILS_LOG_TO_STDOUT
+  value: "true"
 - name: DATABASE_URL
   valueFrom:
     secretKeyRef:
@@ -8,10 +16,6 @@
     secretKeyRef:
       name: application-secrets
       key: FLURISH_CORE_PRODUCTION_GCS_PRIVATE_KEY
-- name: RAILS_ENV
-  value: production
-- name: REDIS_URL
-  value: redis://redis:6379/1
 - name: SECRET_KEY_BASE
   valueFrom:
     secretKeyRef:
@@ -22,6 +26,11 @@
     secretKeyRef:
       name: application-secrets
       key: SENTRY_DSN
+- name: CUBEJS_API_SECRET
+  valueFrom:
+    secretKeyRef:
+      name: application-secrets
+      key: CUBEJS_API_SECRET
 - name: ADMIN_GOOGLE_OAUTH_CLIENT_ID
   value: "910628609504-a9jbv5u80uh220nla0ih4h6tlhvt1ijf.apps.googleusercontent.com"
 - name: ADMIN_GOOGLE_OAUTH_CLIENT_SECRET
@@ -29,7 +38,3 @@
     secretKeyRef:
       name: application-secrets
       key: ADMIN_GOOGLE_OAUTH_CLIENT_SECRET
-- name: RAILS_SERVE_STATIC_FILES
-  value: "true"
-- name: RAILS_LOG_TO_STDOUT
-  value: "true"
