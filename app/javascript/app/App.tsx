@@ -41,8 +41,8 @@ export const App = () => {
                         <Switch>
                           <Route path="/" exact component={HomePage} />
                           <Route path="/budget" exact component={EditBudgetPage} />
-                          <Route path="/budget/:budgetId/reports" exact component={BudgetReportsIndexPage} />
-                          <Route path="/budget/:budgetId/report/:reportKey" exact component={BudgetReportPage} />
+                          <Route path="/budget/reports" exact component={BudgetReportsIndexPage} />
+                          <Route path="/budget/reports/:reportKey" exact component={BudgetReportPage} />
                           <Route component={NotFoundPage} />
                         </Switch>
                       </React.Suspense>

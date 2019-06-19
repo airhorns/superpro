@@ -9,8 +9,8 @@ import { BudgetProblemSpotReport } from "./reports/BudgetProblemSpotReport";
 import { BudgetRunRateReport } from "./reports/BudgetRunRateReport";
 
 gql`
-  query GetBudgetForReports($budgetId: ID!) {
-    budget(budgetId: $budgetId) {
+  query GetBudgetForReports {
+    budget: defaultBudget {
       id
       name
       sections
@@ -36,7 +36,7 @@ export const Reports: { [key: string]: { title: string; description: string; Com
   }
 };
 
-export default class BudgetReportPage extends Page<{ budgetId: string; reportKey: string }> {
+export default class BudgetReportPage extends Page<{ reportKey: string }> {
   render() {
     const report = Reports[this.props.match.params.reportKey];
     if (!report) {
@@ -44,7 +44,7 @@ export default class BudgetReportPage extends Page<{ budgetId: string; reportKey
     }
 
     return (
-      <Page.Load component={GetBudgetForReportsComponent} variables={{ budgetId: this.props.match.params.budgetId }} require={["budget"]}>
+      <Page.Load component={GetBudgetForReportsComponent} require={["budget"]}>
         {data => (
           <Page.Layout title={`${data.budget.name} - ${report.title}`}>
             <Box>

@@ -186,12 +186,10 @@ export type UserPreferences = {
   __typename?: "UserPreferences";
   sidebarExpanded: Scalars["Boolean"];
 };
-export type GetBudgetForReportsQueryVariables = {
-  budgetId: Scalars["ID"];
-};
+export type GetBudgetForReportsQueryVariables = {};
 
 export type GetBudgetForReportsQuery = { __typename?: "AppQuery" } & {
-  budget: Maybe<{ __typename?: "Budget" } & Pick<Budget, "id" | "name" | "sections">>;
+  budget: { __typename?: "Budget" } & Pick<Budget, "id" | "name" | "sections">;
 };
 
 export type GetBudgetForEditQueryVariables = {};
@@ -255,8 +253,8 @@ export type SiderInfoQuery = { __typename?: "AppQuery" } & {
 };
 
 export const GetBudgetForReportsDocument = gql`
-  query GetBudgetForReports($budgetId: ID!) {
-    budget(budgetId: $budgetId) {
+  query GetBudgetForReports {
+    budget: defaultBudget {
       id
       name
       sections
@@ -266,8 +264,7 @@ export const GetBudgetForReportsDocument = gql`
 export type GetBudgetForReportsComponentProps = Omit<
   ReactApollo.QueryProps<GetBudgetForReportsQuery, GetBudgetForReportsQueryVariables>,
   "query"
-> &
-  ({ variables: GetBudgetForReportsQueryVariables; skip?: false } | { skip: true });
+>;
 
 export const GetBudgetForReportsComponent = (props: GetBudgetForReportsComponentProps) => (
   <ReactApollo.Query<GetBudgetForReportsQuery, GetBudgetForReportsQueryVariables> query={GetBudgetForReportsDocument} {...props} />

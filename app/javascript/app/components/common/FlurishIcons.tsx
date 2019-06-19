@@ -19,13 +19,17 @@ import {
   Previous as GrommetPrevious,
   Launch,
   Compare,
-  Menu
+  Menu,
+  Analytics,
+  CheckboxSelected
 } from "grommet-icons";
 
 // Navigation & Root level ideas
 export const FlurishLogo = Launch;
 export const Home = GrommetHome;
 export const Budget = Compare;
+export const Reports = Analytics;
+export const Tasks = CheckboxSelected;
 
 // Toolbar & Editor
 export const Undo = GrommetUndo;
