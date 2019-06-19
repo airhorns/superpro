@@ -5,6 +5,8 @@ import { FieldPath, DocType } from "./utils";
 import { ArrayHelpers } from "./ArrayHelpers";
 import { SuperFormContext } from ".";
 
+export type Command<T extends DocType> = (doc: T) => void;
+
 export interface SuperFormProps<T extends DocType> {
   children: (form: SuperForm<T>) => React.ReactNode;
   initialValues?: T;
@@ -12,10 +14,16 @@ export interface SuperFormProps<T extends DocType> {
   onSubmit?: (doc: T, form: SuperForm<T>) => void;
 }
 
-export type Command<T extends DocType> = (doc: T) => void;
+export type SuperFormErrors<T extends DocType> = {
+  [K in keyof T]?: T[K] extends object ? SuperFormErrors<T[K]> : string;
+};
 
-export class SuperForm<T extends DocType> extends React.Component<SuperFormProps<T>, { doc: T }> {
-  errors: { [key: string]: string } = {};
+interface SuperFormState<T extends DocType> {
+  doc: T;
+  errors: SuperFormErrors<T>;
+}
+
+export class SuperForm<T extends DocType> extends React.Component<SuperFormProps<T>, SuperFormState<T>> {
   currentBatch: Command<T>[] | null = null;
 
   constructor(props: SuperFormProps<T>) {
@@ -26,7 +34,7 @@ export class SuperForm<T extends DocType> extends React.Component<SuperFormProps
       doc = Automerge.change(doc, doc => Object.assign(doc, this.props.initialValues));
     }
 
-    this.state = { doc };
+    this.state = { doc, errors: {} };
   }
 
   get doc(): T {
@@ -86,6 +94,21 @@ export class SuperForm<T extends DocType> extends React.Component<SuperFormProps
   };
 
   markTouched(_path: FieldPath) {}
+
+  getError(path: FieldPath) {
+    return get(this.state.errors, path);
+  }
+
+  setError(path: FieldPath, message: string) {
+    this.setState(prevState => ({
+      ...prevState,
+      errors: set(prevState.errors, path, message)
+    }));
+  }
+
+  setErrors(errors: SuperFormErrors<T>) {
+    this.setState({ errors });
+  }
 
   arrayHelpers(path: FieldPath) {
     return new ArrayHelpers(path, this.dispatch);

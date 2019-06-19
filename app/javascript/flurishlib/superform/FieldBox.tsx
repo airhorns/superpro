@@ -1,7 +1,7 @@
 import _ from "lodash";
 import React from "react";
 import { Box, BoxProps, Text, FormField } from "grommet";
-import { DocType } from ".";
+import { DocType, useSuperForm } from ".";
 
 export interface FieldBoxProps {
   path: string;
@@ -13,8 +13,9 @@ export interface FieldBoxProps {
 }
 
 export const FieldBox = <T extends DocType>(props: FieldBoxProps) => {
+  const form = useSuperForm<T>();
   const showErrorMessages = _.isUndefined(props.showErrorMessages) ? true : props.showErrorMessages;
-  const error = null; // someday this should be actually implemented on the form object
+  const error = form.getError(props.path); // someday this should be actually implemented on the form object
 
   if (props.label) {
     return (
@@ -28,7 +29,7 @@ export const FieldBox = <T extends DocType>(props: FieldBoxProps) => {
     return (
       <>
         {props.children}
-        {showErrorMessages && <Text color="status-critical">{props.path}</Text>}
+        {showErrorMessages && error && <Text color="status-critical">{error}</Text>}
       </>
     );
   }

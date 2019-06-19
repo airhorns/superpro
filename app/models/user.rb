@@ -44,4 +44,6 @@ class User < ApplicationRecord
 
   has_many :account_user_permissions, inverse_of: :user, dependent: :destroy
   has_many :permissioned_accounts, through: :account_user_permissions, source: :account
+
+  validates :full_name, presence: true
 end

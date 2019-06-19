@@ -1,6 +1,6 @@
 import React from "react";
 import _ from "lodash";
-import { ResponsiveContext, Layer, Box, Button, ButtonProps, Text, DropButton, Heading, Stack } from "grommet";
+import { ResponsiveContext, Layer, Box, Button, ButtonProps, Text, DropButton, Heading } from "grommet";
 import { Home, FormClose, Menu } from "grommet-icons";
 import { withRouter, RouteComponentProps, matchPath } from "react-router-dom";
 import gql from "graphql-tag";

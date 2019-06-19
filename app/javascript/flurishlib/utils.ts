@@ -1,10 +1,11 @@
-import _ from "lodash";
+import { set, isUndefined, isNull, isFunction, isArray } from "lodash";
 import memoizeOne from "memoize-one";
 import HTML5Backend from "react-dnd-html5-backend";
 import createTouchBackend from "react-dnd-touch-backend";
 import { DragDropManager, Backend } from "dnd-core";
 import { DateTime } from "luxon";
 import { FetchResult } from "react-apollo";
+import { SuperForm, DocType, SuperFormErrors } from "./superform";
 export type AssertedKeys<T, K extends keyof T> = { [Key in K]: NonNullable<T[Key]> } & T;
 
 export function assert<T>(value: T | undefined | null): T {
@@ -16,7 +17,7 @@ export function assert<T>(value: T | undefined | null): T {
 
 export function assertKeys<T extends { [key: string]: any }, K extends keyof T>(object: T, keys: K[]) {
   for (let key of keys) {
-    if (_.isUndefined(object[key]) || _.isNull(object[key])) {
+    if (isUndefined(object[key]) || isNull(object[key])) {
       return false;
     }
   }
@@ -29,10 +30,10 @@ export const encodeURIParams = (params: { [key: string]: string }) =>
     .join("&");
 
 export function invokeIfNeeded<T, U extends any[]>(f: T | ((...args: U) => T), args: U) {
-  return _.isFunction(f) ? f(...args) : f;
+  return isFunction(f) ? f(...args) : f;
 }
 
-export const isArrayOptionType = <T extends object>(value: T | readonly T[]): value is readonly T[] => _.isArray(value);
+export const isArrayOptionType = <T extends object>(value: T | readonly T[]): value is readonly T[] => isArray(value);
 export const isValueOptionType = <T extends object>(value: T | readonly T[]): value is T => value.hasOwnProperty("value");
 
 export type ISO8601DateString = string;
@@ -118,6 +119,20 @@ export const shallowSubsetEqual = (keys: string[], objA: any, objB: any): boolea
   return true;
 };
 
+export interface FlurishStyleGraphQLError {
+  field: string;
+  relativeField: string;
+  mutationClientId?: string;
+  message: string;
+}
+
+export interface FlurishStyleRESTError {
+  field: string;
+  relative_field: string;
+  mutation_client_id?: string;
+  message: string;
+}
+
 export interface FlurishStyleMutationResult {
   errors: {
     field: string;
@@ -127,4 +142,29 @@ export interface FlurishStyleMutationResult {
 
 export const mutationSuccessful = <T extends FlurishStyleMutationResult>(result: void | FetchResult<T>): result is FetchResult<T> => {
   return !!(result && !result.errors);
+};
+
+export const applyResponseErrors = <T extends DocType>(
+  errors: (FlurishStyleGraphQLError | FlurishStyleRESTError)[],
+  form: SuperForm<T>
+) => {
+  const errorsObject: SuperFormErrors<T> = {};
+  errors.forEach(error => {
+    if ((error as FlurishStyleGraphQLError).mutationClientId) {
+      set(
+        errorsObject,
+        `${(error as FlurishStyleGraphQLError).mutationClientId}.${(error as FlurishStyleGraphQLError).relativeField}`,
+        error.message
+      );
+    } else if ((error as FlurishStyleRESTError).mutation_client_id) {
+      set(
+        errorsObject,
+        `${(error as FlurishStyleRESTError).mutation_client_id}.${(error as FlurishStyleRESTError).relative_field}`,
+        error.message
+      );
+    } else {
+      console.warn("Received error from server response without a mutationClientId for client side association", error);
+    }
+  });
+  form.setErrors(errorsObject);
 };

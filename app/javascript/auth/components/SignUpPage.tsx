@@ -4,6 +4,7 @@ import { Heading, Box, Button } from "grommet";
 import { PageBox } from "./PageBox";
 import { SuperForm, FieldBox, Input } from "flurishlib/superform";
 import { authClient } from "flurishlib/axios";
+import { Alert, applyResponseErrors } from "flurishlib";
 
 interface SignUpFormValues {
   user: {
@@ -19,19 +20,27 @@ interface SignUpFormValues {
   };
 }
 
-export default class SignUpPage extends React.Component<RouteComponentProps> {
-  handleSubmit = async (doc: SignUpFormValues) => {
+interface SignUpPageState {
+  message?: string;
+}
+export default class SignUpPage extends React.Component<RouteComponentProps, SignUpPageState> {
+  state: SignUpPageState = {};
+
+  handleSubmit = async (doc: SignUpFormValues, form: SuperForm<SignUpFormValues>) => {
     try {
-      const response = await authClient.post("sign_up.json", doc);
+      const response = await authClient.post("sign_up.json", { sign_up: doc }); // eslint-disable-line
       if (response.data.success) {
         window.location = response.data.redirect_url;
       } else {
         this.setState({ message: response.data.message });
       }
     } catch (error) {
-      let message = "There was an error trying to log in. Please try again.";
+      let message = "There was an error signing up. Please try again.";
       if (error.response && error.response.data && error.response.data.message) {
         message = error.response.data.message;
+      }
+      if (error.response && error.response.data && error.response.data.errors) {
+        applyResponseErrors(error.response.data.errors, form);
       }
       this.setState({ message });
     }
@@ -41,6 +50,7 @@ export default class SignUpPage extends React.Component<RouteComponentProps> {
     return (
       <PageBox documentTitle="Sign Up">
         <Heading level="1">Sign Up for Flurish</Heading>
+        {this.state.message && <Alert type="error" message={this.state.message} />}
         <SuperForm<SignUpFormValues>
           initialValues={{ user: { mutation_client_id: "user" }, account: { mutation_client_id: "account" } }} // eslint-disable-line
           onSubmit={this.handleSubmit}

@@ -6,7 +6,7 @@ class SignUpIntegrationTest < ActionDispatch::IntegrationTest
   end
 
   test "can create a new user and account" do
-    post "/auth/api/sign_up.json", params: {
+    post "/auth/api/sign_up.json", params: { sign_up: {
                                      user: {
                                        full_name: "Testy Testerson",
                                        email: "test@gmail.com",
@@ -16,7 +16,7 @@ class SignUpIntegrationTest < ActionDispatch::IntegrationTest
                                      account: {
                                        name: "Test Inc",
                                      },
-                                   }
+                                   } }
     assert_response :success
     json = JSON.parse(response.body)
     assert json["success"]
@@ -24,7 +24,7 @@ class SignUpIntegrationTest < ActionDispatch::IntegrationTest
   end
 
   test "validates user email" do
-    post "/auth/api/sign_up.json", params: {
+    post "/auth/api/sign_up.json", params: { sign_up: {
                                      user: {
                                        full_name: "Testy Testerson",
                                        email: "",
@@ -34,15 +34,15 @@ class SignUpIntegrationTest < ActionDispatch::IntegrationTest
                                      account: {
                                        name: "Test Inc",
                                      },
-                                   }
+                                   } }
     assert_response :unprocessable_entity
     json = JSON.parse(response.body)
-    assert !json["success"]
+    assert_not json["success"]
     assert_not_nil json["errors"]
   end
 
   test "validates passwords match" do
-    post "/auth/api/sign_up.json", params: {
+    post "/auth/api/sign_up.json", params: { sign_up: {
                                      user: {
                                        full_name: "Testy Testerson",
                                        email: "test@gmail.com",
@@ -52,10 +52,11 @@ class SignUpIntegrationTest < ActionDispatch::IntegrationTest
                                      account: {
                                        name: "Test Inc",
                                      },
-                                   }
+                                   } }
+
     assert_response :unprocessable_entity
     json = JSON.parse(response.body)
-    assert !json["success"]
+    assert_not json["success"]
     assert_not_nil json["errors"]
   end
 end

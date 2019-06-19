@@ -1,8 +1,9 @@
 import React from "react";
 import { DocType } from "./utils";
-export * from "./utils";
 import { SuperForm } from "./SuperForm";
-export { SuperForm } from "./SuperForm";
+
+export * from "./utils";
+export * from "./SuperForm";
 export * from "./Input";
 export * from "./NumberInput";
 export * from "./Select";
