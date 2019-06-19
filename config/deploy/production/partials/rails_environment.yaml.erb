@@ -40,3 +40,8 @@
     secretKeyRef:
       name: application-secrets
       key: ADMIN_GOOGLE_OAUTH_CLIENT_SECRET
+- name: SEGMENT_BACKEND_WRITE_KEY
+  valueFrom:
+    secretKeyRef:
+      name: application-secrets
+      key: SEGMENT_BACKEND_WRITE_KEY

@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   before_action :set_raven_context
+  after_action :track_server_side_page_view
 
   private
 
@@ -33,6 +34,30 @@ class ApplicationController < ActionController::Base
   end
 
   def set_raven_context
-    Raven.user_context(user_id: current_user.try(:id))
+    if current_user.present?
+      Raven.user_context(user_id: current_user.id, email: current_user.email)
+    end
+    if respond_to?(:current_account) && current_account.present?
+      Raven.tags_context(account_id: current_account.id, account_name: current_account.name)
+    end
+    Raven.tags_context(client_session_id: client_session_id)
+  end
+
+  def track_server_side_page_view
+    if current_user.present?
+      Analytics.track(
+        user_id: current_user.id,
+        event: "Request Made",
+        properties: {
+          account_id: respond_to?(:current_account) && current_account.id,
+          request_id: request.request_id,
+          client_session_id: client_session_id,
+        },
+      )
+    end
+  end
+
+  def client_session_id
+    request.headers["X-Client-Session-Id"]
   end
 end

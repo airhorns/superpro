@@ -88,6 +88,7 @@ GEM
       zeitwerk (~> 2.1, >= 2.1.4)
     addressable (2.6.0)
       public_suffix (>= 2.0.2, < 4.0)
+    analytics-ruby (2.0.13)
     annotate (2.7.5)
       activerecord (>= 3.2, < 7.0)
       rake (>= 10.4, < 13.0)
@@ -463,6 +464,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_record_query_trace
+  analytics-ruby (~> 2.0.0)
   annotate
   ar_transaction_changes
   bcrypt (~> 3.1.7)
