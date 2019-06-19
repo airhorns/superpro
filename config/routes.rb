@@ -16,15 +16,18 @@ Rails.application.routes.draw do
   constraints host: Rails.configuration.x.domains.app do
     # Auth area configuration where users login and register to the system.
     # Some API is managed by devise and some is is managed by graphql right now.
-    devise_for :users, path: "/auth/api", controllers: {
+    devise_for :users, path: "/auth/api", skip: ["registration"], controllers: {
                          sessions: "auth/sessions",
-                         registrations: "auth/registrations",
                          confirmations: "auth/confirmations",
                          passwords: "auth/passwords",
                          unlocks: "auth/unlocks",
                        }
 
     namespace "auth" do
+      scope "api" do
+        post "sign_up", to: "sign_ups#sign_up"
+      end
+
       mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "graphql"
       post "/graphql", to: "graphql#execute"
 

@@ -11,7 +11,7 @@ import { PrivateRoute } from "./components/PrivateRoute";
 import { SentryErrorBoundary, FlagsProvider, flags, PageLoadSpin, ToastContainer, SegmentIdentify } from "../flurishlib";
 
 const HomePage = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "AuthHome" */ "./components/HomePage"));
-const NewAppPage = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "AuthNewApp" */ "./components/NewAccountPage"));
+const SignUpPage = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "AuthNewApp" */ "./components/SignUpPage"));
 
 export class App extends React.Component {
   public render() {
@@ -25,9 +25,9 @@ export class App extends React.Component {
                 <Router basename={Settings.baseUrl}>
                   <React.Suspense fallback={<PageLoadSpin />}>
                     <Switch>
+                      <Route path="/sign_up" exact component={SignUpPage} />
                       <Route path="/sign_in" exact component={LoginPage} />
                       <PrivateRoute path="/" exact component={HomePage} />
-                      <PrivateRoute path="/new" exact component={NewAppPage} />
                       <Route component={NotFoundPage} />
                     </Switch>
                   </React.Suspense>

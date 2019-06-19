@@ -60,4 +60,10 @@ class ApplicationController < ActionController::Base
   def client_session_id
     request.headers["X-Client-Session-Id"]
   end
+
+  def require_no_signed_in_user
+    if current_user.present?
+      render status: :forbidden, json: { error: "Already signed in as a user, this action is forbidden" }
+    end
+  end
 end
