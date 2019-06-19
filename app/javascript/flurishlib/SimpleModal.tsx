@@ -1,4 +1,4 @@
-import _ from "lodash";
+import { isUndefined, isFunction } from "lodash";
 import React from "react";
 import { Box, Button, ButtonProps, Layer } from "grommet";
 import { FormClose } from "../app/components/common/FlurishIcons";
@@ -28,12 +28,12 @@ export const SimpleModalOverlay = (props: { children: React.ReactNode; setShow: 
 export const SimpleModal = (props: SimpleModalProps) => {
   const [show, setShow] = React.useState();
   const onShow = () => setShow(true);
-  const content = _.isFunction(props.children) ? props.children(setShow) : props.children;
+  const content = isFunction(props.children) ? props.children(setShow) : props.children;
+  const showTrigger = !isUndefined(props.triggerLabel) || !isUndefined(props.triggerIcon);
 
   return (
     <Box>
-      {props.triggerLabel ||
-        (props.triggerIcon && <Button label={props.triggerLabel} icon={props.triggerIcon} onClick={onShow} hoverIndicator />)}
+      {showTrigger && <Button label={props.triggerLabel} icon={props.triggerIcon} onClick={onShow} hoverIndicator />}
       {show && <SimpleModalOverlay setShow={setShow}>{content}</SimpleModalOverlay>}
     </Box>
   );

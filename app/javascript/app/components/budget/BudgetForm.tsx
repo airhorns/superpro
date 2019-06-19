@@ -4,9 +4,10 @@ import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { assert, ISO8601DateString, LinkButton } from "flurishlib";
 import { BudgetFormSection } from "./BudgetFormSection";
 import { SuperForm } from "flurishlib/superform";
-import { BudgetFormNewSectionlist } from "./BudgetFormNewSectionList";
+import { BudgetFormNewSectionList, BudgetFormNewSectionModal } from "./BudgetFormNewSectionList";
 import { SerializedRRuleSet } from "app/lib/rrules";
 import { DateTime } from "luxon";
+import { Box } from "grommet";
 
 export interface BudgetFormLineValue {
   id: string;
@@ -91,7 +92,12 @@ export class BudgetForm extends React.Component<{ form: SuperForm<BudgetFormValu
         {this.props.form.doc.budget.sections.map((section, sectionIndex) => (
           <BudgetFormSection key={section.id} section={section} index={sectionIndex} />
         ))}
-        <BudgetFormNewSectionlist />
+        {this.props.form.doc.budget.sections.length == 0 && (
+          <Box pad="medium">
+            <BudgetFormNewSectionList />
+          </Box>
+        )}
+        {this.props.form.doc.budget.sections.length > 0 && <BudgetFormNewSectionModal />}
         <LinkButton to={`/budget/${this.props.form.doc.budget.id}/reports`} label="Reports" />
       </DragDropContext>
     );
