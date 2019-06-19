@@ -43,7 +43,7 @@ export default class HomePage extends React.Component<RouteComponentProps> {
       <PageBox>
         <Row tag="header" background="white" justify="between" pad="small">
           <Heading level="1">Accounts</Heading>
-          <Button onClick={() => this.props.history.push("/new")} label="New Account" />
+          <Button onClick={() => this.props.history.push("/new_account")} label="New Account" />
         </Row>
         <SimpleQuery component={AllAccountsComponent} require={["accounts"]}>
           {data =>

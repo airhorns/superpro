@@ -13,6 +13,7 @@ class CreateAccount
       if !new_account.save
         raise ActiveRecord::Rollback
       end
+      Budget.create!(name: "Operational Budget", account: new_account, creator: @creator)
 
       success = true
     end

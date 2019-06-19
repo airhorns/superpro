@@ -10,8 +10,9 @@ import { client } from "./lib/apollo";
 import { PrivateRoute } from "./components/PrivateRoute";
 import { SentryErrorBoundary, FlagsProvider, flags, PageLoadSpin, ToastContainer, SegmentIdentify } from "../flurishlib";
 
-const HomePage = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "AuthHome" */ "./components/HomePage"));
-const SignUpPage = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "AuthNewApp" */ "./components/SignUpPage"));
+const HomePage = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "Auth" */ "./components/HomePage"));
+const SignUpPage = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "Auth" */ "./components/SignUpPage"));
+const NewAccountPage = React.lazy(() => import(/* webpackChunkName: "AuthNewAccount" */ "./components/NewAccountPage"));
 
 export class App extends React.Component {
   public render() {
@@ -28,6 +29,7 @@ export class App extends React.Component {
                       <Route path="/sign_up" exact component={SignUpPage} />
                       <Route path="/sign_in" exact component={LoginPage} />
                       <PrivateRoute path="/" exact component={HomePage} />
+                      <PrivateRoute path="/new_account" exact component={NewAccountPage} />
                       <Route component={NotFoundPage} />
                     </Switch>
                   </React.Suspense>
