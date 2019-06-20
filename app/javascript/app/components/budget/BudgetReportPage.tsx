@@ -7,6 +7,7 @@ import { BudgetContributorsReport } from "./reports/BudgetContributorsReport";
 import { NotFoundPage } from "../chrome/NotFoundPage";
 import { BudgetProblemSpotReport } from "./reports/BudgetProblemSpotReport";
 import { BudgetRunRateReport } from "./reports/BudgetRunRateReport";
+import { BudgetMonthlyTotalsReport } from "./reports/BudgetMonthlyTotalsReport";
 
 gql`
   query GetBudgetForReports {
@@ -33,6 +34,11 @@ export const Reports: { [key: string]: { title: string; description: string; Com
     title: "Problem Spots",
     description: "View times at which cash on hand is forecasted to go negative and ways to remedy this",
     Component: BudgetProblemSpotReport
+  },
+  monthlyTotals: {
+    title: "Monthly Totals",
+    description: "View category-wise totals month to month in a handy table",
+    Component: BudgetMonthlyTotalsReport
   }
 };
 

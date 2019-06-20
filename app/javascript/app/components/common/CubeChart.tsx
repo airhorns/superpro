@@ -6,7 +6,7 @@ import useBus from "use-bus";
 
 export interface CubeChartProps {
   query: any;
-  height: number;
+  height?: number;
   refreshKey: string;
   children: (result: any) => React.ReactNode;
 }
@@ -26,11 +26,15 @@ export const CubeChart = (props: CubeChartProps) => {
           content = <PageLoadSpin />;
         }
 
-        return (
-          <ResponsiveContainer width="100%" height={300}>
-            {content}
-          </ResponsiveContainer>
-        );
+        if (props.height) {
+          return (
+            <ResponsiveContainer width="100%" height={props.height}>
+              {content}
+            </ResponsiveContainer>
+          );
+        } else {
+          return content;
+        }
       }}
     </CubeQuery>
   );
