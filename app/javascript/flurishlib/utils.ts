@@ -1,8 +1,5 @@
 import { set, isUndefined, isNull, isFunction, isArray } from "lodash";
 import memoizeOne from "memoize-one";
-import HTML5Backend from "react-dnd-html5-backend";
-import createTouchBackend from "react-dnd-touch-backend";
-import { DragDropManager, Backend } from "dnd-core";
 import { DateTime } from "luxon";
 import { FetchResult } from "react-apollo";
 import { SuperForm, DocType, SuperFormErrors } from "./superform";
@@ -54,25 +51,6 @@ export const isTouchDevice = memoizeOne(() => {
   var query = ["(", prefixes.join("touch-enabled),("), "heartz", ")"].join("");
   return mq(query);
 });
-
-const hasNativeElementsFromPoint = typeof document != "undefined" && (document.elementsFromPoint || document.msElementsFromPoint);
-
-const getDropTargetElementsAtPoint = (x: number, y: number, dropTargets: HTMLElement[]) => {
-  return dropTargets.filter(t => {
-    const rect = t.getBoundingClientRect();
-    return x >= rect.left && x <= rect.right && y <= rect.bottom && y >= rect.top;
-  });
-};
-
-export const DnDBackendForDevice = () => {
-  if (isTouchDevice()) {
-    return createTouchBackend({
-      getDropTargetElementsAtPoint: hasNativeElementsFromPoint ? getDropTargetElementsAtPoint : undefined
-    }) as ((manager: DragDropManager<any>) => Backend);
-  } else {
-    return HTML5Backend;
-  }
-};
 
 const hasOwnProperty = Object.prototype.hasOwnProperty;
 export const shallowEqual = (objA: any, objB: any): boolean => {
