@@ -37,7 +37,7 @@ export const BudgetFormSection = (props: { section: BudgetFormSectionValue; inde
     <Droppable key={props.section.id} droppableId={props.section.id} type="SECTION" direction="vertical">
       {(provided, snapshot) => (
         <Box
-          pad="small"
+          pad={{ horizontal: "small", bottom: "small" }}
           ref={provided.innerRef as any}
           background={snapshot.isDraggingOver ? "light-1" : "white"}
           {...provided.droppableProps}

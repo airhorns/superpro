@@ -57,7 +57,7 @@ export default class BudgetReportPage extends Page<{ reportKey: string }> {
               <report.Component budgetId={data.budget.id} />
             </Box>
             <Box pad="small" gap="small" width="medium" margin={{ top: "small" }}>
-              <LinkButton to={`/budget/${data.budget.id}/reports`} label="Back to Reports" />
+              <LinkButton to={`/budget/reports`} label="Back to Reports" />
               <LinkButton to={`/budget`} label="Back to Budget" />
             </Box>
           </Page.Layout>

@@ -114,6 +114,32 @@ export class SuperForm<T extends DocType> extends React.Component<SuperFormProps
     return new ArrayHelpers(path, this.dispatch);
   }
 
+  canUndo() {
+    return Automerge.canUndo(this.state.doc);
+  }
+
+  canRedo() {
+    return Automerge.canRedo(this.state.doc);
+  }
+
+  undo() {
+    this.setState(
+      prevState => ({ doc: Automerge.undo(prevState.doc) }),
+      () => {
+        this.props.onChange && this.props.onChange(this.state.doc, this);
+      }
+    );
+  }
+
+  redo() {
+    this.setState(
+      prevState => ({ doc: Automerge.redo(prevState.doc) }),
+      () => {
+        this.props.onChange && this.props.onChange(this.state.doc, this);
+      }
+    );
+  }
+
   render() {
     return (
       <SuperFormContext.Provider value={this}>

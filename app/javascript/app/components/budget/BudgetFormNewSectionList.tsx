@@ -114,7 +114,7 @@ export const BudgetFormNewSectionList = (props: { onAdd?: () => void }) => {
 
 export const BudgetFormNewSectionModal = () => {
   return (
-    <Box pad="small" width="medium">
+    <Box pad="small">
       <SimpleModal triggerIcon={<Add />} triggerLabel="Add Section">
         {setShow => <BudgetFormNewSectionList onAdd={() => setShow(false)} />}
       </SimpleModal>

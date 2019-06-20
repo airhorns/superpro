@@ -8,6 +8,7 @@ import { BudgetFormNewSectionList, BudgetFormNewSectionModal } from "./BudgetFor
 import { SerializedRRuleSet } from "app/lib/rrules";
 import { DateTime } from "luxon";
 import { Box } from "grommet";
+import { BudgetFormToolbar } from "./BudgetFormToolbar";
 
 export interface BudgetFormLineValue {
   id: string;
@@ -89,6 +90,7 @@ export class BudgetForm extends React.Component<{ form: SuperForm<BudgetFormValu
   render() {
     return (
       <DragDropContext onDragEnd={this.onDragEnd} onDragStart={this.onDragStart}>
+        <BudgetFormToolbar />
         {this.props.form.doc.budget.sections.map((section, sectionIndex) => (
           <BudgetFormSection key={section.id} section={section} index={sectionIndex} />
         ))}
@@ -97,7 +99,6 @@ export class BudgetForm extends React.Component<{ form: SuperForm<BudgetFormValu
             <BudgetFormNewSectionList />
           </Box>
         )}
-        {this.props.form.doc.budget.sections.length > 0 && <BudgetFormNewSectionModal />}
       </DragDropContext>
     );
   }
