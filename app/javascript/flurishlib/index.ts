@@ -16,3 +16,4 @@ export * from "./DatePicker";
 export * from "./utils";
 export * from "./flags";
 export * from "./csrf";
+export * from "./hotkeys";

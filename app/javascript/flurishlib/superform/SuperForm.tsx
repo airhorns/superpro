@@ -32,6 +32,8 @@ export class SuperForm<T extends DocType> extends React.Component<SuperFormProps
 
     if (this.props.initialValues) {
       doc = Automerge.change(doc, doc => Object.assign(doc, this.props.initialValues));
+      // reset undo/redo state
+      doc = Automerge.load(Automerge.save(doc));
     }
 
     this.state = { doc, errors: {} };

@@ -2,7 +2,7 @@ import React from "react";
 import { ApolloProvider } from "react-apollo";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { getClient } from "./lib/apollo";
-import { FlurishGrommetTheme, SentryErrorBoundary, FlurishGlobalStyle, SegmentIdentify } from "../flurishlib";
+import { FlurishGrommetTheme, SentryErrorBoundary, FlurishGlobalStyle, SegmentIdentify, HotkeysContainer } from "../flurishlib";
 import { Grommet, Box } from "grommet";
 import { Settings } from "./lib/settings";
 import { ToastContainer, FlagsProvider, flags } from "../flurishlib";
@@ -32,20 +32,22 @@ export const App = () => {
             <FlurishGlobalStyle />
             <Router basename={Settings.baseUrl}>
               <ToastContainer>
-                <Box fill direction="row-responsive" id="flurish-root" style={{ width: "100vw", height: "100vh" }}>
-                  <AppSidebar />
-                  <Box flex overflow={{ vertical: "auto" }}>
-                    <React.Suspense fallback={<PageLoadSpin />}>
-                      <Switch>
-                        <Route path="/" exact component={HomePage} />
-                        <Route path="/budget" exact component={EditBudgetPage} />
-                        <Route path="/budget/reports" exact component={BudgetReportsIndexPage} />
-                        <Route path="/budget/reports/:reportKey" exact component={BudgetReportPage} />
-                        <Route component={NotFoundPage} />
-                      </Switch>
-                    </React.Suspense>
+                <HotkeysContainer>
+                  <Box fill direction="row-responsive" id="flurish-root" style={{ width: "100vw", height: "100vh" }}>
+                    <AppSidebar />
+                    <Box flex overflow={{ vertical: "auto" }}>
+                      <React.Suspense fallback={<PageLoadSpin />}>
+                        <Switch>
+                          <Route path="/" exact component={HomePage} />
+                          <Route path="/budget" exact component={EditBudgetPage} />
+                          <Route path="/budget/reports" exact component={BudgetReportsIndexPage} />
+                          <Route path="/budget/reports/:reportKey" exact component={BudgetReportPage} />
+                          <Route component={NotFoundPage} />
+                        </Switch>
+                      </React.Suspense>
+                    </Box>
                   </Box>
-                </Box>
+                </HotkeysContainer>
               </ToastContainer>
             </Router>
           </Grommet>
