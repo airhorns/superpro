@@ -2,6 +2,22 @@ version: 2.1
 orbs:
   gcp-cli: circleci/gcp-cli@1.3.0
 jobs:
+    build_docker:
+    docker:
+      - image: circleci/node
+    working_directory: ~/repo
+    steps:
+      - setup_remote_docker
+      - checkout
+      - run:
+          name: Build docker container
+          command: docker build -t gcr.io/omp-core/core:$CIRCLE_SHA1 .
+      - gcp-cli/install
+      - gcp-cli/initialize
+      - run:
+          name: Push docker container
+          command: gcloud auth configure-docker && docker push gcr.io/omp-core/core:$CIRCLE_SHA1
+
   lint_javascript:
     docker:
       - image: circleci/node:11.9
@@ -151,21 +167,7 @@ jobs:
       - store_artifacts:
           path: test/cypress
 
-  build_docker:
-    docker:
-      - image: circleci/node
-    working_directory: ~/repo
-    steps:
-      - setup_remote_docker
-      - checkout
-      - run:
-          name: Build docker container
-          command: docker build -t gcr.io/omp-core/core:$CIRCLE_SHA1 .
-      - gcp-cli/install
-      - gcp-cli/initialize
-      - run:
-          name: Push docker container
-          command: gcloud auth configure-docker && docker push gcr.io/omp-core/core:$CIRCLE_SHA1
+
 
   deploy:
     docker:
@@ -190,22 +192,22 @@ workflows:
   version: 2
   build_test_push:
     jobs:
+      - build_docker:
+        context: flurish-gke
+      - test_cypress
       - test_ruby
+      - test_javascript
       - lint_ruby
       - lint_javascript
-      - test_javascript
-      - test_cypress
-      - build_docker:
-          context: flurish-gke
       - deploy:
-          context: flurish-gke
-          requires:
-            - test_ruby
-            - lint_ruby
-            - test_javascript
-            - lint_javascript
-            - build_docker
-            - test_cypress
-          filters:
-            branches:
-              only: master
+        context: flurish-gke
+        requires:
+          - test_ruby
+          - lint_ruby
+          - test_javascript
+          - lint_javascript
+          - build_docker
+          - test_cypress
+        filters:
+          branches:
+            only: master
