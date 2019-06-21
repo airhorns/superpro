@@ -123,12 +123,12 @@ CREATE TABLE public.budget_lines (
     budget_id bigint NOT NULL,
     description character varying NOT NULL,
     section character varying NOT NULL,
-    occurs_at timestamp without time zone NOT NULL,
-    recurrence_rules character varying[],
     sort_order integer DEFAULT 1 NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    series_id bigint NOT NULL
+    series_id bigint NOT NULL,
+    fixed_budget_line_descriptor_id bigint,
+    value_type character varying NOT NULL
 );
 
 
@@ -261,7 +261,7 @@ CREATE VIEW public.budget_forecasts AS
 CREATE TABLE public.budget_line_scenarios (
     id bigint NOT NULL,
     account_id bigint NOT NULL,
-    budget_line_id bigint NOT NULL,
+    fixed_budget_line_descriptor_id bigint NOT NULL,
     scenario character varying NOT NULL,
     currency character varying NOT NULL,
     amount_subunits bigint NOT NULL,
@@ -401,6 +401,39 @@ ALTER SEQUENCE public.cells_id_seq OWNED BY public.cells.id;
 
 
 --
+-- Name: fixed_budget_line_descriptors; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.fixed_budget_line_descriptors (
+    id bigint NOT NULL,
+    account_id bigint NOT NULL,
+    occurs_at timestamp without time zone NOT NULL,
+    recurrence_rules character varying[],
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: fixed_budget_line_descriptors_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.fixed_budget_line_descriptors_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: fixed_budget_line_descriptors_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.fixed_budget_line_descriptors_id_seq OWNED BY public.fixed_budget_line_descriptors.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -519,6 +552,13 @@ ALTER TABLE ONLY public.cells ALTER COLUMN id SET DEFAULT nextval('public.cells_
 
 
 --
+-- Name: fixed_budget_line_descriptors id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.fixed_budget_line_descriptors ALTER COLUMN id SET DEFAULT nextval('public.fixed_budget_line_descriptors_id_seq'::regclass);
+
+
+--
 -- Name: series id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -589,6 +629,14 @@ ALTER TABLE ONLY public.cells
 
 
 --
+-- Name: fixed_budget_line_descriptors fixed_budget_line_descriptors_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.fixed_budget_line_descriptors
+    ADD CONSTRAINT fixed_budget_line_descriptors_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: schema_migrations schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -613,17 +661,17 @@ ALTER TABLE ONLY public.users
 
 
 --
+-- Name: idx_scenarios_to_fixed_descriptors; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_scenarios_to_fixed_descriptors ON public.budget_line_scenarios USING btree (account_id, fixed_budget_line_descriptor_id);
+
+
+--
 -- Name: index_accounts_on_discarded_at; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_accounts_on_discarded_at ON public.accounts USING btree (discarded_at);
-
-
---
--- Name: index_budget_line_scenarios_on_account_id_and_budget_line_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_budget_line_scenarios_on_account_id_and_budget_line_id ON public.budget_line_scenarios USING btree (account_id, budget_line_id);
 
 
 --
@@ -659,14 +707,6 @@ CREATE UNIQUE INDEX index_users_on_reset_password_token ON public.users USING bt
 --
 
 CREATE UNIQUE INDEX index_users_on_unlock_token ON public.users USING btree (unlock_token);
-
-
---
--- Name: budget_line_scenarios fk_rails_036beba0e7; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.budget_line_scenarios
-    ADD CONSTRAINT fk_rails_036beba0e7 FOREIGN KEY (budget_line_id) REFERENCES public.budget_lines(id);
 
 
 --
@@ -750,6 +790,14 @@ ALTER TABLE ONLY public.cells
 
 
 --
+-- Name: budget_line_scenarios fk_rails_9ab43f1055; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.budget_line_scenarios
+    ADD CONSTRAINT fk_rails_9ab43f1055 FOREIGN KEY (fixed_budget_line_descriptor_id) REFERENCES public.fixed_budget_line_descriptors(id);
+
+
+--
 -- Name: budget_line_scenarios fk_rails_b67a79b20d; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -799,6 +847,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190610221752'),
 ('20190613211137'),
 ('20190613211138'),
-('20190613215004');
+('20190613215004'),
+('20190620221343');
 
 

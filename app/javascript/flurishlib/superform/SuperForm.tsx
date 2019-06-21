@@ -86,6 +86,12 @@ export class SuperForm<T extends DocType> extends React.Component<SuperFormProps
   };
 
   batch = (callback: () => void) => {
+    if (this.currentBatch) {
+      // This is probably possible but it likely indicates the calling code isn't factored right, nested batches adds overhead and
+      // commands should operate either at the batch level or atomic level, and batch level ones should only call atomic ones.
+      throw new Error("can't nest superform batches");
+    }
+
     this.currentBatch = [];
     callback();
     const commands = this.currentBatch;

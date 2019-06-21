@@ -4,7 +4,7 @@ import ReactSelect from "react-select";
 import { Props as ReactSelectProps } from "react-select/lib/Select";
 import { ValueType } from "react-select/lib/types";
 import { isArrayOptionType } from "../utils";
-import { FieldProps, DocType, pathToName } from "./utils";
+import { FieldProps, DocType, pathToName, pathToClassName } from "./utils";
 import { useSuperForm } from ".";
 import { FlurishReactSelectTheme } from "flurishlib/FlurishTheme";
 
@@ -40,6 +40,7 @@ export const Select = <T extends DocType, Option extends SelectOptionType = Sele
   return (
     <ReactSelect
       name={pathToName(props.path)}
+      className={`SuperSelect SuperSelect-${pathToClassName(props.path)}`}
       theme={FlurishReactSelectTheme}
       value={selectedOption}
       styles={{ container: provided => ({ ...provided, minWidth: 200 }) }}

@@ -1,26 +1,17 @@
 import RRule, { RRuleSet } from "rrule";
 import { DateTime } from "luxon";
+import { Scalars } from "../app-graph";
 
-export interface SerializedRRuleSet {
-  rrules: string[];
-  exdates: string[];
-  rdates: string[];
-}
+export type SerializedRRuleSet = Scalars["RecurrenceRuleString"][];
 
 export const parseISODate = (str: string) => DateTime.fromISO(str).toJSDate();
 
 export const serializeRRuleSet = (set: RRuleSet): SerializedRRuleSet => {
-  return {
-    rrules: set.rrules().map(rrule => rrule.toString()),
-    exdates: set.exdates().map(String),
-    rdates: set.rdates().map(String)
-  };
+  return set.rrules().map(rrule => rrule.toString());
 };
 
 export const deserializeRRuleSet = (obj: SerializedRRuleSet): RRuleSet => {
   const set = new RRuleSet();
-  obj.rrules.forEach(rule => set.rrule(RRule.fromString(rule)));
-  obj.rdates.forEach(date => set.rdate(parseISODate(date)));
-  obj.exdates.forEach(date => set.exdate(parseISODate(date)));
+  obj.forEach(rule => set.rrule(RRule.fromString(rule)));
   return set;
 };

@@ -1,6 +1,6 @@
 import React from "react";
 import { sortBy } from "lodash";
-import { BudgetFormSectionValue, BudgetFormValues, EmptyLine, BudgetFormLineValue } from "./BudgetForm";
+import { BudgetFormSectionValues, BudgetFormValues, EmptyLine, BudgetFormLine } from "./BudgetForm";
 import { Heading, Box, Text } from "grommet";
 import { Row, isTouchDevice } from "flurishlib";
 import { FadeBox, AddButton, EditButton, TrashButton } from "../common";
@@ -9,9 +9,9 @@ import { Droppable } from "react-beautiful-dnd";
 import { BudgetLineForm } from "./BudgetLineForm";
 import { useSuperForm, Input } from "flurishlib/superform";
 
-type LineIndexTuple = [BudgetFormLineValue, number];
+type LineIndexTuple = [BudgetFormLine, number];
 
-export const BudgetFormSection = (props: { section: BudgetFormSectionValue; index: number }) => {
+export const BudgetFormSection = (props: { section: BudgetFormSectionValues; index: number }) => {
   const [hovered, setHovered] = React.useState(false);
   const [editing, setEditing] = React.useState(false);
   const form = useSuperForm<BudgetFormValues>();

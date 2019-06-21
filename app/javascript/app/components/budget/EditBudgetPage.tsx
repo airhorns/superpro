@@ -1,45 +1,61 @@
 import React from "react";
-import { uniq, keyBy, debounce, isNull, isUndefined, pickBy } from "lodash";
+import { uniq, keyBy, debounce, pick } from "lodash";
 import shortid from "shortid";
 import { Page, SavingNotice } from "../common";
-import { BudgetForm, BudgetFormValues } from "./BudgetForm";
+import { BudgetForm, BudgetFormValues, BudgetFormLineValue } from "./BudgetForm";
 import gql from "graphql-tag";
-import { GetBudgetForEditComponent, GetBudgetForEditQuery, UpdateBudgetComponent, UpdateBudgetMutationFn } from "app/app-graph";
+import {
+  GetBudgetForEditComponent,
+  GetBudgetForEditQuery,
+  UpdateBudgetComponent,
+  UpdateBudgetMutationFn,
+  BudgetLineValue,
+  BudgetLineValueAttributes
+} from "app/app-graph";
 import { SuperForm } from "flurishlib/superform";
 import { assert, mutationSuccessful, toast } from "flurishlib";
 import { BudgetTimeChart } from "./reports/BudgetTimeChart";
 import { dispatch } from "use-bus";
+import { DateTime } from "luxon";
 
 gql`
+  fragment BudgetForEdit on Budget {
+    id
+    name
+    budgetLines {
+      id
+      description
+      section
+      sortOrder
+      value {
+        __typename
+        ... on BudgetLineFixedValue {
+          type
+          occursAt
+          recurrenceRules
+          amountScenarios
+        }
+        ... on BudgetLineSeriesValue {
+          type
+          cells {
+            dateTime
+            amountScenarios
+          }
+        }
+      }
+    }
+  }
+
   query GetBudgetForEdit {
     budget: defaultBudget {
-      id
-      name
-      budgetLines {
-        id
-        description
-        section
-        occursAt
-        recurrenceRules
-        sortOrder
-        amountScenarios
-      }
+      ...BudgetForEdit
     }
   }
 
   mutation UpdateBudget($budgetId: ID!, $budget: BudgetAttributes!) {
     updateBudget(budgetId: $budgetId, budget: $budget) {
       budget {
-        id
-        budgetLines {
-          id
-          section
-          description
-          occursAt
-          sortOrder
-          recurrenceRules
-          amountScenarios
-        }
+        ...BudgetForEdit
       }
       errors {
         field
@@ -57,7 +73,24 @@ interface EditBudgetPageState {
 export default class EditBudgetPage extends Page<{}, EditBudgetPageState> {
   state: EditBudgetPageState = { lastSaveAt: null, lastChangeAt: null };
 
-  processDataForForm(data: Exclude<GetBudgetForEditQuery["budget"], null>) {
+  processLineValueForForm(data: BudgetLineValue): BudgetFormLineValue {
+    if (data.__typename == "BudgetLineFixedValue") {
+      return {
+        type: "fixed",
+        recurrenceRules: data.recurrenceRules || [],
+        occursAt: data.occursAt,
+        amountScenarios: data.amountScenarios
+      };
+    } else if (data.__typename == "BudgetLineSeriesValue") {
+      return {
+        type: "series",
+        cells: keyBy(data.cells.map(cell => pick(cell, "dateTime", "amountScenarios")), cell => DateTime.fromISO(cell.dateTime).valueOf())
+      };
+    }
+    throw new Error(`unknown value type for form ${data.type}`);
+  }
+
+  processDataForForm(data: Exclude<GetBudgetForEditQuery["budget"], null>): BudgetFormValues["budget"] {
     const sections = uniq(data.budgetLines.map(line => line.section)).map(section => ({ id: shortid(), name: section }));
     const sectionsIndex = keyBy(sections, "name");
 
@@ -68,12 +101,9 @@ export default class EditBudgetPage extends Page<{}, EditBudgetPageState> {
       lines: data.budgetLines.map(line => ({
         id: line.id,
         sectionId: assert(sectionsIndex[line.section]).id,
-        occursAt: line.occursAt,
         sortOrder: line.sortOrder,
         description: line.description,
-        amountScenarios: line.amountScenarios,
-        recurrenceRules:
-          line.recurrenceRules && line.recurrenceRules.length > 0 ? { rrules: line.recurrenceRules, exdates: [], rdates: [] } : null
+        value: this.processLineValueForForm(line.value)
       }))
     };
   }
@@ -81,23 +111,36 @@ export default class EditBudgetPage extends Page<{}, EditBudgetPageState> {
   debouncedSave = debounce(
     async (doc: BudgetFormValues, update: UpdateBudgetMutationFn) => {
       const sectionsIndex = keyBy(doc.budget.sections, "id");
+
       const result = await update({
         variables: {
           budgetId: doc.budget.id,
           budget: {
-            budgetLines: doc.budget.lines.map(line => ({
-              id: line.id,
-              description: line.description,
-              sortOrder: line.sortOrder,
-              occursAt: line.occursAt,
-              amountScenarios: pickBy(line.amountScenarios, value => !isNull(value) && !isUndefined(value)),
-              recurrenceRules: line.recurrenceRules && line.recurrenceRules.rrules,
-              section: sectionsIndex[line.sectionId].name
-            }))
+            budgetLines: doc.budget.lines.map(line => {
+              let value: BudgetLineValueAttributes;
+              if (line.value.type == "series") {
+                value = {
+                  ...line.value,
+                  cells: Object.entries(line.value.cells).map(([millis, cell]) => ({
+                    dateTime: DateTime.fromMillis(parseInt(millis, 10)).toISO(),
+                    ...cell
+                  }))
+                };
+              } else {
+                value = line.value;
+              }
+
+              return {
+                id: line.id,
+                description: line.description,
+                sortOrder: line.sortOrder,
+                value: value,
+                section: sectionsIndex[line.sectionId].name
+              };
+            })
           }
         }
       });
-
       if (mutationSuccessful(result)) {
         this.setState({ lastSaveAt: new Date() });
         dispatch("budgets:refresh");

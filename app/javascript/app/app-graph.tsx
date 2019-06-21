@@ -12,10 +12,10 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  /** Untyped JSON output useful for bags of values who's keys or types can't be predicted ahead of time. */
-  JSONScalar: any;
   /** An ISO 8601-encoded datetime */
   ISO8601DateTime: string;
+  /** Untyped JSON output useful for bags of values who's keys or types can't be predicted ahead of time. */
+  JSONScalar: any;
   /** Represents textual data as UTF-8 character sequences. This type is most often
    * used by GraphQL to represent free-form human-readable text.
    */
@@ -93,18 +93,16 @@ export type BudgetAttributes = {
 export type BudgetLine = {
   __typename?: "BudgetLine";
   amount: Money;
-  amountScenarios: Scalars["JSONScalar"];
   budget: Budget;
   createdAt: Scalars["ISO8601DateTime"];
   creator: User;
   description: Scalars["String"];
   discardedAt: Scalars["ISO8601DateTime"];
   id: Scalars["ID"];
-  occursAt: Scalars["ISO8601DateTime"];
-  recurrenceRules?: Maybe<Array<Scalars["RecurrenceRuleString"]>>;
   section: Scalars["String"];
   sortOrder: Scalars["Int"];
   updatedAt: Scalars["ISO8601DateTime"];
+  value: BudgetLineValue;
 };
 
 export type BudgetLineAttributes = {
@@ -115,10 +113,52 @@ export type BudgetLineAttributes = {
   id: Scalars["ID"];
   description: Scalars["String"];
   section: Scalars["String"];
+  sortOrder: Scalars["Int"];
+  value: BudgetLineValueAttributes;
+};
+
+export type BudgetLineFixedValue = {
+  __typename?: "BudgetLineFixedValue";
+  amountScenarios: Scalars["JSONScalar"];
   occursAt: Scalars["ISO8601DateTime"];
   recurrenceRules?: Maybe<Array<Scalars["RecurrenceRuleString"]>>;
-  sortOrder: Scalars["Int"];
+  type: Scalars["String"];
+};
+
+export type BudgetLineSeriesCell = {
+  __typename?: "BudgetLineSeriesCell";
   amountScenarios: Scalars["JSONScalar"];
+  dateTime: Scalars["ISO8601DateTime"];
+};
+
+export type BudgetLineSeriesCellAttributes = {
+  /** An opaque identifier that will appear on objects created/updated because of
+   * this attributes hash, or on errors from it being invalid.
+   */
+  mutationClientId?: Maybe<Scalars["MutationClientId"]>;
+  dateTime?: Maybe<Scalars["ISO8601DateTime"]>;
+  amountScenarios?: Maybe<Scalars["JSONScalar"]>;
+};
+
+export type BudgetLineSeriesValue = {
+  __typename?: "BudgetLineSeriesValue";
+  cells: Array<BudgetLineSeriesCell>;
+  type: Scalars["String"];
+};
+
+/** How the value over time of a budget line is expressed */
+export type BudgetLineValue = BudgetLineFixedValue | BudgetLineSeriesValue;
+
+export type BudgetLineValueAttributes = {
+  /** An opaque identifier that will appear on objects created/updated because of
+   * this attributes hash, or on errors from it being invalid.
+   */
+  mutationClientId?: Maybe<Scalars["MutationClientId"]>;
+  type: Scalars["String"];
+  occursAt?: Maybe<Scalars["ISO8601DateTime"]>;
+  recurrenceRules?: Maybe<Array<Scalars["RecurrenceRuleString"]>>;
+  amountScenarios?: Maybe<Scalars["JSONScalar"]>;
+  cells?: Maybe<Array<BudgetLineSeriesCellAttributes>>;
 };
 
 export type BudgetProblemSpot = {
@@ -193,18 +233,24 @@ export type GetBudgetForReportsQuery = { __typename?: "AppQuery" } & {
   budget: { __typename?: "Budget" } & Pick<Budget, "id" | "name" | "sections">;
 };
 
+export type BudgetForEditFragment = { __typename?: "Budget" } & Pick<Budget, "id" | "name"> & {
+    budgetLines: Array<
+      { __typename?: "BudgetLine" } & Pick<BudgetLine, "id" | "description" | "section" | "sortOrder"> & {
+          value:
+            | ({ __typename?: "BudgetLineFixedValue" } & Pick<
+                BudgetLineFixedValue,
+                "type" | "occursAt" | "recurrenceRules" | "amountScenarios"
+              >)
+            | ({ __typename?: "BudgetLineSeriesValue" } & Pick<BudgetLineSeriesValue, "type"> & {
+                  cells: Array<{ __typename?: "BudgetLineSeriesCell" } & Pick<BudgetLineSeriesCell, "dateTime" | "amountScenarios">>;
+                });
+        }
+    >;
+  };
+
 export type GetBudgetForEditQueryVariables = {};
 
-export type GetBudgetForEditQuery = { __typename?: "AppQuery" } & {
-  budget: { __typename?: "Budget" } & Pick<Budget, "id" | "name"> & {
-      budgetLines: Array<
-        { __typename?: "BudgetLine" } & Pick<
-          BudgetLine,
-          "id" | "description" | "section" | "occursAt" | "recurrenceRules" | "sortOrder" | "amountScenarios"
-        >
-      >;
-    };
-};
+export type GetBudgetForEditQuery = { __typename?: "AppQuery" } & { budget: { __typename?: "Budget" } & BudgetForEditFragment };
 
 export type UpdateBudgetMutationVariables = {
   budgetId: Scalars["ID"];
@@ -214,16 +260,7 @@ export type UpdateBudgetMutationVariables = {
 export type UpdateBudgetMutation = { __typename?: "AppMutation" } & {
   updateBudget: Maybe<
     { __typename?: "UpdateBudgetPayload" } & {
-      budget: Maybe<
-        { __typename?: "Budget" } & Pick<Budget, "id"> & {
-            budgetLines: Array<
-              { __typename?: "BudgetLine" } & Pick<
-                BudgetLine,
-                "id" | "section" | "description" | "occursAt" | "sortOrder" | "recurrenceRules" | "amountScenarios"
-              >
-            >;
-          }
-      >;
+      budget: Maybe<{ __typename?: "Budget" } & BudgetForEditFragment>;
       errors: Maybe<Array<{ __typename?: "MutationError" } & Pick<MutationError, "field" | "fullMessage">>>;
     }
   >;
@@ -252,7 +289,34 @@ export type SiderInfoQuery = { __typename?: "AppQuery" } & {
       preferences: { __typename?: "UserPreferences" } & Pick<UserPreferences, "sidebarExpanded">;
     };
 };
-
+export const BudgetForEditFragmentDoc = gql`
+  fragment BudgetForEdit on Budget {
+    id
+    name
+    budgetLines {
+      id
+      description
+      section
+      sortOrder
+      value {
+        __typename
+        ... on BudgetLineFixedValue {
+          type
+          occursAt
+          recurrenceRules
+          amountScenarios
+        }
+        ... on BudgetLineSeriesValue {
+          type
+          cells {
+            dateTime
+            amountScenarios
+          }
+        }
+      }
+    }
+  }
+`;
 export const GetBudgetForReportsDocument = gql`
   query GetBudgetForReports {
     budget: defaultBudget {
@@ -274,19 +338,10 @@ export const GetBudgetForReportsComponent = (props: GetBudgetForReportsComponent
 export const GetBudgetForEditDocument = gql`
   query GetBudgetForEdit {
     budget: defaultBudget {
-      id
-      name
-      budgetLines {
-        id
-        description
-        section
-        occursAt
-        recurrenceRules
-        sortOrder
-        amountScenarios
-      }
+      ...BudgetForEdit
     }
   }
+  ${BudgetForEditFragmentDoc}
 `;
 export type GetBudgetForEditComponentProps = Omit<ReactApollo.QueryProps<GetBudgetForEditQuery, GetBudgetForEditQueryVariables>, "query">;
 
@@ -298,16 +353,7 @@ export const UpdateBudgetDocument = gql`
   mutation UpdateBudget($budgetId: ID!, $budget: BudgetAttributes!) {
     updateBudget(budgetId: $budgetId, budget: $budget) {
       budget {
-        id
-        budgetLines {
-          id
-          section
-          description
-          occursAt
-          sortOrder
-          recurrenceRules
-          amountScenarios
-        }
+        ...BudgetForEdit
       }
       errors {
         field
@@ -315,6 +361,7 @@ export const UpdateBudgetDocument = gql`
       }
     }
   }
+  ${BudgetForEditFragmentDoc}
 `;
 export type UpdateBudgetMutationFn = ReactApollo.MutationFn<UpdateBudgetMutation, UpdateBudgetMutationVariables>;
 export type UpdateBudgetComponentProps = Omit<ReactApollo.MutationProps<UpdateBudgetMutation, UpdateBudgetMutationVariables>, "mutation">;

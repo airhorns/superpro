@@ -119,27 +119,34 @@ export const BudgetProblemSpotReport = (props: { budgetId: string }) => {
       <Box>
         <SimpleQuery component={GetBudgetProblemSpotsComponent} variables={{ budgetId: props.budgetId }} require={["budget"]}>
           {data => (
-            <DataTable
-              columns={[
-                {
-                  property: "startDate",
-                  header: "Start Date",
-                  render: datum => DateTime.fromISO(datum.startDate).toLocaleString(DateTime.DATE_FULL)
-                },
-                {
-                  property: "endDate",
-                  header: "End Date",
-                  render: datum => DateTime.fromISO(datum.endDate).toLocaleString(DateTime.DATE_FULL)
-                },
-                {
-                  property: "minCashOnHand",
-                  header: "Minimum Cash Available",
-                  render: datum => <Text color="status-critical">{datum.minCashOnHand.formatted}</Text>,
-                  primary: true
-                }
-              ]}
-              data={data.budget.problemSpots}
-            />
+            <>
+              <DataTable
+                columns={[
+                  {
+                    property: "startDate",
+                    header: "Start Date",
+                    render: datum => DateTime.fromISO(datum.startDate).toLocaleString(DateTime.DATE_FULL)
+                  },
+                  {
+                    property: "endDate",
+                    header: "End Date",
+                    render: datum => DateTime.fromISO(datum.endDate).toLocaleString(DateTime.DATE_FULL)
+                  },
+                  {
+                    property: "minCashOnHand",
+                    header: "Minimum Cash Available",
+                    render: datum => <Text color="status-critical">{datum.minCashOnHand.formatted}</Text>,
+                    primary: true
+                  }
+                ]}
+                data={data.budget.problemSpots}
+              />
+              {data.budget.problemSpots.length == 0 && (
+                <Box pad="small" align="center">
+                  <Text>No problem spots! 🎉</Text>
+                </Box>
+              )}
+            </>
           )}
         </SimpleQuery>
       </Box>

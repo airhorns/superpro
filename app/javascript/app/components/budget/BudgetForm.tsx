@@ -4,25 +4,43 @@ import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { assert, ISO8601DateString } from "flurishlib";
 import { BudgetFormSection } from "./BudgetFormSection";
 import { SuperForm } from "flurishlib/superform";
-import { BudgetFormNewSectionList, BudgetFormNewSectionModal } from "./BudgetFormNewSectionList";
+import { BudgetFormNewSectionList } from "./BudgetFormNewSectionList";
 import { SerializedRRuleSet } from "app/lib/rrules";
 import { DateTime } from "luxon";
 import { Box } from "grommet";
 import { BudgetFormToolbar } from "./BudgetFormToolbar";
 
-export interface BudgetFormLineValue {
-  id: string;
-  sortOrder: number;
-  description: string;
+export interface BudgetFormLineFixedValue {
+  type: "fixed";
+  occursAt: ISO8601DateString;
+  recurrenceRules: SerializedRRuleSet | null;
   amountScenarios: {
     [key: string]: number;
   };
-  occursAt: ISO8601DateString;
-  recurrenceRules: SerializedRRuleSet | null;
-  sectionId: string;
 }
 
-export interface BudgetFormSectionValue {
+export interface BudgetFormLineSeriesValue {
+  type: "series";
+  cells: {
+    [dateTime: string]: {
+      amountScenarios: {
+        [key: string]: number;
+      };
+    };
+  };
+}
+
+export type BudgetFormLineValue = BudgetFormLineFixedValue | BudgetFormLineSeriesValue;
+
+export interface BudgetFormLine {
+  id: string;
+  sortOrder: number;
+  description: string;
+  sectionId: string;
+  value: BudgetFormLineValue;
+}
+
+export interface BudgetFormSectionValues {
   name: string;
   id: string;
 }
@@ -31,21 +49,24 @@ export interface BudgetFormValues {
   budget: {
     id: string;
     name: string;
-    lines: BudgetFormLineValue[];
-    sections: BudgetFormSectionValue[];
+    lines: BudgetFormLine[];
+    sections: BudgetFormSectionValues[];
   };
 }
 
-export const EmptyLine = { description: "", amountScenarios: { default: 0 }, occursAt: DateTime.local().toISO() };
+export const EmptyLine: Partial<BudgetFormLine> = {
+  description: "",
+  value: { type: "fixed", amountScenarios: { default: 0 }, occursAt: DateTime.local().toISO(), recurrenceRules: null }
+};
 
-const updateSortOrders = (list: BudgetFormLineValue[]) => {
+const updateSortOrders = (list: BudgetFormLine[]) => {
   for (let i = 0; i < list.length; i++) {
     list[i].sortOrder = i;
   }
 };
 
 const linesForSection = (doc: BudgetFormValues, sectionId: string) => {
-  let list: BudgetFormLineValue[] = [];
+  let list: BudgetFormLine[] = [];
   // Use a for loop here because .forEach or map or other nice things currently have a bug in automerge
   // where they don't return mutable proxies but isntead frozen objects which can't be mutated. Darn.
   for (let line of doc.budget.lines) {

@@ -1,9 +1,9 @@
 import * as React from "react";
-import { find, isEqual, capitalize } from "lodash";
+import { find, isEqual } from "lodash";
 import ReactSelect from "react-select";
 import { ValueType } from "react-select/lib/types";
 import RRule, { RRuleSet } from "rrule";
-import { FieldPath, useSuperForm, pathToName } from "flurishlib/superform";
+import { FieldPath, useSuperForm, pathToName, pathToClassName } from "flurishlib/superform";
 import { isArrayOptionType, FlurishReactSelectTheme } from "flurishlib";
 import { RecurrenceSelectCustomForm } from "./RecurrenceSelectCustomForm";
 import { serializeRRuleSet, SerializedRRuleSet, deserializeRRuleSet } from "app/lib/rrules";
@@ -22,19 +22,19 @@ const createSet = (callback: (set: RRuleSet) => void) => {
 
 export const DefaultOptions: RecurrenceSelectOptionType[] = [
   {
-    label: "Every day",
+    label: "Repeats every day",
     value: createSet(set => {
       set.rrule(new RRule({ freq: RRule.DAILY, interval: 1 }));
     })
   },
   {
-    label: "Every month on the 1st",
+    label: "Repeats every month on the 1st",
     value: createSet(set => {
       set.rrule(new RRule({ freq: RRule.MONTHLY, interval: 1, bymonthday: [1] }));
     })
   },
   {
-    label: "Every month on weekdays closest to the the 15th and the last day",
+    label: "Repeats twice a month on the 1st and 15th",
     value: createSet(set => {
       // On the weekday closest to the 15th
       set.rrule(
@@ -83,12 +83,12 @@ export const RecurrenceSelect = (props: RecurrenceSelectProps) => {
     if (!selectedOption) {
       selectedOption = {
         value: currentValue,
-        label: capitalize(
+        label:
+          "Repeats " +
           deserializeRRuleSet(currentValue)
             .rrules()
             .map((rule: RRule) => rule.toText())
             .join(",")
-        )
       };
       customOptions.push(selectedOption);
     }
@@ -106,9 +106,11 @@ export const RecurrenceSelect = (props: RecurrenceSelectProps) => {
     <>
       <ReactSelect<RecurrenceSelectOptionType>
         name={pathToName(props.path)}
+        className={`RecurrenceSelect RecurrenceSelect-${pathToClassName(props.path)}`}
         theme={FlurishReactSelectTheme}
         value={selectedOption}
         options={groupedOptions}
+        isSearchable={false}
         styles={{ container: provided => ({ ...provided, minWidth: 200 }) }}
         onChange={(option: ValueType<RecurrenceSelectOptionType>) => {
           if (option) {

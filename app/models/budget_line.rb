@@ -2,18 +2,18 @@
 #
 # Table name: budget_lines
 #
-#  id               :bigint(8)        not null, primary key
-#  description      :string           not null
-#  occurs_at        :datetime         not null
-#  recurrence_rules :string           is an Array
-#  section          :string           not null
-#  sort_order       :integer          default(1), not null
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  account_id       :bigint(8)        not null
-#  budget_id        :bigint(8)        not null
-#  creator_id       :bigint(8)        not null
-#  series_id        :bigint(8)        not null
+#  id                              :bigint(8)        not null, primary key
+#  description                     :string           not null
+#  section                         :string           not null
+#  sort_order                      :integer          default(1), not null
+#  value_type                      :string           not null
+#  created_at                      :datetime         not null
+#  updated_at                      :datetime         not null
+#  account_id                      :bigint(8)        not null
+#  budget_id                       :bigint(8)        not null
+#  creator_id                      :bigint(8)        not null
+#  fixed_budget_line_descriptor_id :bigint(8)
+#  series_id                       :bigint(8)        not null
 #
 # Foreign Keys
 #
@@ -27,11 +27,21 @@ class BudgetLine < ApplicationRecord
   include AccountScoped
   include MutationClientId
 
-  validates :recurrence_rules, rrule_list: true
-
   belongs_to :budget, optional: false, inverse_of: :budget_lines
   belongs_to :creator, class_name: "User", inverse_of: :created_budget_lines
-  belongs_to :series
+  belongs_to :series, optional: false
+  belongs_to :fixed_budget_line_descriptor, optional: true, validate: true
 
-  has_many :budget_line_scenarios, autosave: true, validate: true, dependent: :destroy, inverse_of: :budget_line
+  enum value_type: { fixed: "datetime", series: "series" }, _prefix: true
+  validates :value_type, inclusion: { in: ["fixed", "series"] }
+
+  validate :descriptor_present_if_fixed_type?
+
+  private
+
+  def descriptor_present_if_fixed_type?
+    if value_type_fixed?
+      errors.add(:fixed_budget_line_descriptor, "must be present") if fixed_budget_line_descriptor.blank?
+    end
+  end
 end

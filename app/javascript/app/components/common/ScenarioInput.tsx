@@ -7,8 +7,8 @@ import { Row } from "flurishlib";
 import styled from "styled-components";
 import { FormClose } from "./FlurishIcons";
 
-const ControlRow = styled(Row)`
-  ${controlBorderStyle};
+const ControlRow = styled(Row)<{ plain?: boolean }>`
+  ${props => !props.plain && controlBorderStyle};
 `;
 
 const ScenarioSortOrders: { [key: string]: number } = {
@@ -82,7 +82,7 @@ export const ScenarioInput = <T extends DocType>(props: NumberInputProps) => {
   scenarios = sortBy(scenarios, scenario => ScenarioSortOrders[scenario.key] || 100);
 
   return (
-    <ControlRow ref={dropRef}>
+    <ControlRow ref={dropRef} plain={props.plain}>
       <Box direction="row" flex basis="auto">
         {!scenariosEnabled && <NumberInput {...props} plain path={props.path + ".default"} />}
         {scenariosEnabled && (
