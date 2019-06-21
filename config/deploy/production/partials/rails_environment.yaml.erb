@@ -45,3 +45,8 @@
     secretKeyRef:
       name: application-secrets
       key: SEGMENT_BACKEND_WRITE_KEY
+- name: SENDGRID_APIKEY
+  valueFrom:
+    secretKeyRef:
+      name: application-secrets
+      key: SENDGRID_APIKEY

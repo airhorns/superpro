@@ -52,6 +52,15 @@ Rails.application.configure do
   # config.active_job.queue_name_prefix = "flurish_production"
 
   config.action_mailer.perform_caching = false
+  config.action_mailer.smtp_settings = {
+    user_name: "apikey",
+    password: ENV["SENDGRID_APIKEY"],
+    domain: "yourdomain.com",
+    address: "smtp.sendgrid.net",
+    port: 587,
+    authentication: :plain,
+    enable_starttls_auto: true,
+  }
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
@@ -84,5 +93,5 @@ Rails.application.configure do
   config.x.domains.app = "app.fluri.sh"
   config.x.domains.admin = "admin.fluri.sh"
   config.action_controller.asset_host = "assets.fluri.sh"
-  config.action_mailer.default_url_options = { host: "app.fluri.sh", protocol: "https" }
+  config.action_mailer.default_url_options = { host: config.x.domains.app, protocol: "https" }
 end
