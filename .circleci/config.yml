@@ -2,7 +2,7 @@ version: 2.1
 orbs:
   gcp-cli: circleci/gcp-cli@1.3.0
 jobs:
-    build_docker:
+  build_docker:
     docker:
       - image: circleci/node
     working_directory: ~/repo
@@ -193,21 +193,21 @@ workflows:
   build_test_push:
     jobs:
       - build_docker:
-        context: flurish-gke
+          context: flurish-gke
       - test_cypress
       - test_ruby
       - test_javascript
       - lint_ruby
       - lint_javascript
       - deploy:
-        context: flurish-gke
-        requires:
-          - test_ruby
-          - lint_ruby
-          - test_javascript
-          - lint_javascript
-          - build_docker
-          - test_cypress
-        filters:
-          branches:
-            only: master
+          context: flurish-gke
+          requires:
+            - test_ruby
+            - lint_ruby
+            - test_javascript
+            - lint_javascript
+            - build_docker
+            - test_cypress
+          filters:
+            branches:
+              only: master
