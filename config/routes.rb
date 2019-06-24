@@ -4,8 +4,11 @@ Rails.application.routes.draw do
   health_check_routes
 
   constraints host: Rails.configuration.x.domains.admin do
+    constraints AdminAuthConstraint.new do
+      mount Sidekiq::Web, at: "/sidekiq"
+    end
+
     mount Trestle::Engine => Trestle.config.path
-    mount Sidekiq::Web, at: "/sidekiq"
   end
 
   if Rails.env.integration_test? || Rails.env.development?

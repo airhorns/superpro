@@ -14,7 +14,7 @@ Rails.application.configure do
   config.consider_all_requests_local = false
   config.action_controller.perform_caching = true
 
-  config.cache_store = :redis_cache_store, { url: "redis://redis:6379/0" }
+  config.cache_store = :redis_cache_store, { url: ENV.fetch("REDIS_URL") }
   config.session_store :cache_store, key: "flurish_production_sessions"
 
   # Ensures that a master key has been made available in either ENV["RAILS_MASTER_KEY"]
