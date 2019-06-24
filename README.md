@@ -9,7 +9,7 @@ Install homebrew deps for your host:
 Configure [`mkcert`](https://github.com/FiloSottile/mkcert) for your local machine and generate a development SSL certificate:
 
     mkcert -install
-    mkcert -cert-file config/docker-compose/server.crt -key-file config/docker-compose/server.key ggt.dev admin.ggt.dev app.ggt.dev assets.ggt.dev cube.ggt.dev
+    mkcert -cert-file config/docker-compose/server.crt -key-file config/docker-compose/server.key ggt.dev "*.ggt.dev"
 
 Install gems
 

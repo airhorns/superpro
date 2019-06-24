@@ -20,6 +20,7 @@ services:
       - ./config/docker-compose/nginx.conf:/etc/nginx/conf.d/default.conf
       - ./config/docker-compose/server.crt:/etc/nginx/conf.d/server.crt
       - ./config/docker-compose/server.key:/etc/nginx/conf.d/server.key
+
   postgres:
     image: postgres:11.2
     ports:
@@ -39,45 +40,17 @@ services:
       - redis-data:/var/lib/redis:delegated
     restart: on-failure
     command: redis-server --appendonly yes
-  # jobs: &app_base
-  #   build:
-  #     context: .
-  #     args:
-  #       bundle_without: ""
-  #   command: bundle exec sidekiq -c 25 -q default
-  #   restart: on-failure
-  #   volumes:
-  #     - .:/app:delegated
-  #     - ~/Code:/root/Code:delegated # useful for linking other gems
-  #     - app-gems:/usr/local/bundle:delegated
-  #   env_file:
-  #     - .env
-  #   depends_on:
-  #     - postgres
-  #     - redis
-  #   environment: &app_environment
-  #     DEV_DATABASE_URL: postgres://flurish@postgres/flurish_development
-  #     TEST_DATABASE_URL: postgres://flurish@postgres/flurish_test
-  #     DB_POOL: 30
-  #     RELOAD_CODE: "false"
-  #     REDIS_URL: redis://redis:6379/1
-  #     RACK_ENV: development
-  #     RAILS_ENV: development
-  #     NODE_ENV: development
-  # web:
-  #   <<: *app_base
-  #   command: bundle exec rails s -p 3000 -b '0.0.0.0'
-  #   stdin_open: true
-  #   tty: true
-  #   ports:
-  #     - 3000:3000 # rails server
-  #     - 9229:9229 # node debugger
-  #   environment:
-  #     <<: *app_environment
-  #     DB_POOL: 5
-  #     RELOAD_CODE: "true"
-  # webpack-dev-server:
-  #   <<: *app_base
-  #   command: bin/webpack-dev-server
-  #   ports:
-  #     - 3035:3035
+
+  cubeserver:
+    image: gcr.io/omp-core/cubeserver:96d370d6a2cdeccbfd7932a49c3a7818d54e73a6
+    ports:
+      - 4001:4000
+    restart: on-failure
+    environment:
+      NODE_ENV: development
+      CUBEJS_DB_HOST: postgres
+      CUBEJS_DB_TYPE: postgres
+      CUBEJS_DB_NAME: flurish_development
+      CUBEJS_DB_USER: flurish
+      CUBEJS_API_SECRET: testdevelopmentapisecret
+      REDIS_URL: redis://redis:6379/0

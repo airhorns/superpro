@@ -22,6 +22,8 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+/config/docker-compose/server.key
+/config/docker-compose/server.crt
 /public/packs
 /public/packs-*
 /test/reports
