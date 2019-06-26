@@ -9,18 +9,26 @@ class Types::Budget::BudgetLineFixedValueType < Types::BaseObject
   end
 
   def occurs_at
-    object.fixed_budget_line_descriptor.occurs_at
+    load_descriptor.then { |descriptor| descriptor.occurs_at }
   end
 
   def recurrence_rules
-    object.fixed_budget_line_descriptor.recurrence_rules
+    load_descriptor.then { |descriptor| descriptor.recurrence_rules }
   end
 
   def amount_scenarios
-    AssociationLoader.for(FixedBudgetLineDescriptor, :budget_line_scenarios).load(object.fixed_budget_line_descriptor).then do |scenarios|
-      scenarios.each_with_object({}) do |scenario, agg|
-        agg[scenario.scenario] = scenario.amount.fractional
+    load_descriptor.then do |descriptor|
+      AssociationLoader.for(FixedBudgetLineDescriptor, :budget_line_scenarios).load(descriptor).then do |scenarios|
+        scenarios.each_with_object({}) do |scenario, agg|
+          agg[scenario.scenario] = scenario.amount.fractional
+        end
       end
     end
+  end
+
+  private
+
+  def load_descriptor
+    AssociationLoader.for(BudgetLine, :fixed_budget_line_descriptor).load(object)
   end
 end

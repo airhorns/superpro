@@ -7,10 +7,12 @@ class Types::Budget::BudgetLineSeriesValueType < Types::BaseObject
   end
 
   def cells
-    AssociationLoader.for(Series, :cells).load(object.series).then do |cells|
-      cells.group_by(&:x_datetime).map do |datetime, cell_group|
-        { date_time: datetime, amount_scenarios: cell_group.each_with_object({}) { |cell, obj| obj[cell.scenario] = cell.y_money_subunits } }
-      end.sort_by { |cell| cell[:date_time] }
+    AssociationLoader.for(BudgetLine, :series).load(object).then do |_series|
+      AssociationLoader.for(Series, :cells).load(object.series).then do |cells|
+        cells.group_by(&:x_datetime).map do |datetime, cell_group|
+          { date_time: datetime, amount_scenarios: cell_group.each_with_object({}) { |cell, obj| obj[cell.scenario] = cell.y_money_subunits } }
+        end.sort_by { |cell| cell[:date_time] }
+      end
     end
   end
 end
