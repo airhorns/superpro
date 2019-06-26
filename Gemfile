@@ -34,6 +34,10 @@ gem 'ar_transaction_changes'
 gem 'bcrypt', '~> 3.1.7'
 gem 'bootsnap', '>= 1.1.0', require: false
 gem "bullet", github: 'flyerhzm/bullet'
+gem "flipper"
+gem "flipper-active_record"
+gem "flipper-active_support_cache_store"
+gem 'flipper-ui'
 gem "google-cloud-storage", require: false
 gem "health_check"
 gem 'hiredis'

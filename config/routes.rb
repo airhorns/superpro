@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   constraints host: Rails.configuration.x.domains.admin do
     constraints AdminAuthConstraint.new do
       mount Sidekiq::Web, at: "/sidekiq"
+      mount Flipper::UI.app(Flipper) => "/flipper"
     end
 
     mount Trestle::Engine => Trestle.config.path

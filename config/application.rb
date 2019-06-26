@@ -51,5 +51,7 @@ module Flurish
       config.log_tags,
       silence: ["/health_check", "/favicon.ico"],
     )
+
+    config.middleware.use Flipper::Middleware::Memoizer
   end
 end
