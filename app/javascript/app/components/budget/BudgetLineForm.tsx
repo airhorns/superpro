@@ -1,14 +1,13 @@
 import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 import { TrashButton, FadeBox, ScenarioInput } from "../common";
-import { Box, Text } from "grommet";
+import { Box } from "grommet";
 import { Row, shallowSubsetEqual, shallowEqual, isTouchDevice } from "flurishlib";
 import { BudgetFormLine, BudgetFormValues, BudgetFormLineValue } from "./BudgetForm";
 import { DragHandle } from "../common/FlurishIcons";
-import { SuperForm, Input, NumberInput } from "flurishlib/superform";
+import { SuperForm, Input } from "flurishlib/superform";
 import { RecurrenceSelect } from "./RecurrenceSelect";
 import { LineValueStyleSelect } from "./LineValueStyleSelect";
-import { DateTime } from "luxon";
 import { BudgetLineSeriesCells } from "./BudgetLineSeriesCells";
 
 export interface BudgetLineFormProps {

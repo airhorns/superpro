@@ -9,7 +9,8 @@ import {
   View as GrommetView,
   Bold as GrommetBold,
   Italic as GrommetItalic,
-  Tape,
+  Underline as GrommetUnderline,
+  BlockQuote as GrommetBlockQuote,
   Superscript,
   CircleQuestion,
   Edit as GrommetEdit,
@@ -21,7 +22,11 @@ import {
   Compare,
   Menu,
   Analytics,
-  CheckboxSelected
+  CheckboxSelected,
+  Code as GrommetCode,
+  List,
+  OrderedList as GrommetOrderedList,
+  Task
 } from "grommet-icons";
 
 // Navigation & Root level ideas
@@ -39,8 +44,13 @@ export const Refresh = GrommetRefresh;
 export const Preview = GrommetView;
 export const Bold = GrommetBold;
 export const Italic = GrommetItalic;
-export const Token = Tape;
+export const Underline = GrommetUnderline;
+export const Code = GrommetCode;
+export const BlockQuote = GrommetBlockQuote;
 export const FontSize = Superscript;
+export const BulletedList = List;
+export const OrderedList = GrommetOrderedList;
+export const CheckList = Task;
 export const Link = GrommetLink;
 
 // Misc

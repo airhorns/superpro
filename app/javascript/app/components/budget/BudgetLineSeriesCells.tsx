@@ -4,8 +4,7 @@ import { range } from "lodash";
 import memoizeOne from "memoize-one";
 import { Box, Text } from "grommet";
 import { DateTime } from "luxon";
-import { NumberInput, useSuperForm } from "flurishlib/superform";
-import { BudgetFormValues, BudgetFormLineSeriesValue } from "./BudgetForm";
+import { NumberInput } from "flurishlib/superform";
 
 const DefaultCellMonths = memoizeOne(() => {
   const now = DateTime.local();
