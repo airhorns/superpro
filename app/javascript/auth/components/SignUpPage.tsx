@@ -28,7 +28,7 @@ export default class SignUpPage extends React.Component<RouteComponentProps, Sig
 
   handleSubmit = async (doc: SignUpFormValues, form: SuperForm<SignUpFormValues>) => {
     try {
-      const response = await authClient.post("sign_up.json", { sign_up: doc }); // eslint-disable-line
+      const response = await authClient.post("sign_up.json", { sign_up: doc });
       if (response.data.success) {
         window.location = response.data.redirect_url;
       } else {

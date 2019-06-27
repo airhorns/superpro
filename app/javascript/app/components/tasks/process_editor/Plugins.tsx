@@ -6,7 +6,6 @@ import { StagesPlugin } from "./StagesPlugin";
 import { BasicFormattingPlugin } from "./BasicFormattingPlugin";
 // import Lists from "@convertkit/slate-lists";
 
-/* eslint-disable @typescript-eslint/camelcase */
 export const Plugins = [
   ChecklistPlugin(),
   StagesPlugin(),
