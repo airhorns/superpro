@@ -42,7 +42,7 @@ services:
     command: redis-server --appendonly yes
 
   cubeserver:
-    image: gcr.io/omp-core/cubeserver:96d370d6a2cdeccbfd7932a49c3a7818d54e73a6
+    image: gcr.io/omp-core/cubeserver:e0b678a8c4458eaddabe6486410e1fa31a7f0f4a
     ports:
       - 4001:4000
     restart: on-failure
