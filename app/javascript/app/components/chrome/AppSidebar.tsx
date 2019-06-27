@@ -68,7 +68,7 @@ export const AppSidebar = withRouter(
                   </Box>
                 )}
 
-                <NavigationSectionButton path="/" text="Launchpad" icon={<Launch />} onClick={this.close} />
+                <NavigationSectionButton path="/launchpad" text="Launchpad" icon={<Launch />} onClick={this.close} />
                 <NavigationSectionButton path="/budget" text="Budgets" icon={<Budget />} onClick={this.close}>
                   <NavigationSubItemButton path="/budget" exact text="My Budget" onClick={this.close} />
                   <NavigationSubItemButton path="/budget/reports" text="Reports" onClick={this.close} />
