@@ -7,7 +7,7 @@ import { SiderInfoComponent } from "../../app-graph";
 import { UserAvatar } from "../common/UserAvatar";
 import { signOut } from "../../lib/auth";
 import { Settings } from "../../lib/settings";
-import { Row } from "../../../flurishlib";
+import { Row, Flag } from "../../../flurishlib";
 import { Budget, Tasks } from "../common/FlurishIcons";
 import { NavigationSectionButton, NavigationSubItemButton } from "./Navigation";
 
@@ -69,10 +69,12 @@ export const AppSidebar = withRouter(
                 )}
 
                 <NavigationSectionButton path="/launchpad" text="Launchpad" icon={<Launch />} onClick={this.close} />
-                <NavigationSectionButton path="/tasks" text="Tasks" icon={<Tasks />} onClick={this.close}>
-                  <NavigationSubItemButton path="/tasks" exact text="Tasks" onClick={this.close} />
-                  <NavigationSubItemButton path="/tasks/processes" exact text="Processes" onClick={this.close} />
-                </NavigationSectionButton>
+                <Flag name={["feature.tasks"]}>
+                  <NavigationSectionButton path="/tasks" text="Tasks" icon={<Tasks />} onClick={this.close}>
+                    <NavigationSubItemButton path="/tasks" exact text="Tasks" onClick={this.close} />
+                    <NavigationSubItemButton path="/tasks/processes" exact text="Processes" onClick={this.close} />
+                  </NavigationSectionButton>
+                </Flag>
                 <NavigationSectionButton path="/budget" text="Budgets" icon={<Budget />} onClick={this.close}>
                   <NavigationSubItemButton path="/budget" exact text="My Budget" onClick={this.close} />
                   <NavigationSubItemButton path="/budget/reports" text="Reports" onClick={this.close} />

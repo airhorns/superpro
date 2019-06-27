@@ -11,6 +11,11 @@ account = FactoryBot.create :account, creator: user
 account.budgets.destroy_all
 FactoryBot.create(:base_operational_budget, account: account, creator: account.creator)
 
+# Enable all feature flags for developers
+BaseClientSideAppSettings::EXPORTED_FLAGS.each do |flag|
+  Flipper[flag].enable
+end
+
 Rails.logger.info "DB Seeded!"
 [Account, User, BudgetLine, Series, Cell].each do |klass|
   Rails.logger.info "#{klass.name} count: #{klass.all.count}"

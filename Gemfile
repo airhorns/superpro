@@ -33,7 +33,7 @@ gem "annotate"
 gem 'ar_transaction_changes'
 gem 'bcrypt', '~> 3.1.7'
 gem 'bootsnap', '>= 1.1.0', require: false
-gem "bullet", github: 'flyerhzm/bullet'
+gem "bullet", "~> 6.0.1"
 gem "flipper"
 gem "flipper-active_record"
 gem "flipper-active_support_cache_store"

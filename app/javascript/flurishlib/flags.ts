@@ -1,19 +1,10 @@
-import createFlags, { Computable } from "flag";
+import createFlags from "flag";
 
 export interface FlurishFlags {
-  features: {
-    connections: boolean;
-  };
-  publicSignUps: boolean;
+  "feature.connections": boolean;
+  "feature.tasks": boolean;
+  "gate.publicSignUps": boolean;
 }
 
 const { FlagsProvider, Flag, useFlag, useFlags } = createFlags<FlurishFlags>();
-
 export { FlagsProvider, Flag, useFlag, useFlags };
-
-export const flags: Computable<FlurishFlags> = {
-  features: {
-    connections: false
-  },
-  publicSignUps: true
-};

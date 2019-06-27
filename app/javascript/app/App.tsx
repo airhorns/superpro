@@ -5,7 +5,7 @@ import { getClient } from "./lib/apollo";
 import { FlurishGrommetTheme, SentryErrorBoundary, FlurishGlobalStyle, SegmentIdentify, HotkeysContainer } from "../flurishlib";
 import { Grommet, Box } from "grommet";
 import { Settings } from "./lib/settings";
-import { ToastContainer, FlagsProvider, flags } from "../flurishlib";
+import { ToastContainer, FlagsProvider } from "../flurishlib";
 import { AppSidebar } from "./components/chrome/AppSidebar";
 import { NotFoundPage } from "./components/chrome/NotFoundPage";
 import { PageLoadSpin } from "../flurishlib";
@@ -33,7 +33,7 @@ export const FlurishClient = getClient();
 export const App = () => {
   const app = (
     <SegmentIdentify>
-      <FlagsProvider flags={flags}>
+      <FlagsProvider flags={Settings.flags}>
         <ApolloProvider client={FlurishClient}>
           <Grommet theme={FlurishGrommetTheme}>
             <FlurishGlobalStyle />

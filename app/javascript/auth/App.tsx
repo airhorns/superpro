@@ -8,7 +8,7 @@ import { LoginPage } from "./components/LoginPage";
 import { Settings } from "./lib/settings";
 import { client } from "./lib/apollo";
 import { PrivateRoute } from "./components/PrivateRoute";
-import { SentryErrorBoundary, FlagsProvider, flags, PageLoadSpin, ToastContainer, SegmentIdentify } from "../flurishlib";
+import { SentryErrorBoundary, FlagsProvider, PageLoadSpin, ToastContainer, SegmentIdentify } from "../flurishlib";
 
 const HomePage = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "Auth" */ "./components/HomePage"));
 const SignUpPage = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "Auth" */ "./components/SignUpPage"));
@@ -18,7 +18,7 @@ export class App extends React.Component {
   public render() {
     const app = (
       <SegmentIdentify>
-        <FlagsProvider flags={flags}>
+        <FlagsProvider flags={Settings.flags}>
           <Grommet full theme={FlurishGrommetTheme}>
             <FlurishGlobalStyle />
             <ApolloProvider client={client}>

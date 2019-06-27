@@ -46,4 +46,8 @@ class User < ApplicationRecord
   has_many :permissioned_accounts, through: :account_user_permissions, source: :account
 
   validates :full_name, presence: true
+
+  def flipper_id
+    @flipper_id ||= "user-#{id}"
+  end
 end
