@@ -20,7 +20,7 @@ jobs:
 
   lint_javascript:
     docker:
-      - image: circleci/node:11.9
+      - image: circleci/node:11.15
     working_directory: ~/repo
     steps:
       - checkout
@@ -102,7 +102,7 @@ jobs:
 
   test_javascript:
     docker:
-      - image: circleci/node:11.9
+      - image: circleci/node:11.15
     working_directory: ~/repo
     steps:
       - checkout
@@ -167,8 +167,6 @@ jobs:
           path: test/results
       - store_artifacts:
           path: test/cypress
-
-
 
   deploy:
     docker:
