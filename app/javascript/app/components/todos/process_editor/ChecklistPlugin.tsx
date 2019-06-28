@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { CheckBox } from "grommet";
 import { Row } from "flurishlib";
 import { isAuthoringMode } from "./utils";
+import isHotkey from "is-hotkey";
 
 const CheckboxContainer = styled.div`
   display: flex;
@@ -27,6 +28,8 @@ const CheckboxLabel = styled.span<{ checked: boolean }>`
     outline: none;
   }
 `;
+
+const isEnter = isHotkey("enter");
 
 export class CheckListItem extends React.Component<RenderBlockProps> {
   onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,25 +65,14 @@ export const ChecklistPlugin = (_options?: {}): Plugin => {
     },
     onKeyDown(event, editor, next) {
       const { value } = editor;
-      const key = (event as any).key;
 
-      if (key === "Enter" && value.startBlock.type === "check-list-item") {
+      if (isEnter(event as any) && value.startBlock.type === "check-list-item") {
         // On starting a new line with the enter key, add a new block of the same type that isn't checked below by splitting the current block
         if (value.startText.text.length > 0) {
           editor.splitBlock().setBlocks({ data: { checked: false } } as any);
         } else {
           editor.setBlocks("paragraph");
         }
-        return;
-      }
-
-      if (
-        key === "Backspace" &&
-        value.selection.isCollapsed &&
-        value.startBlock.type === "check-list-item" &&
-        value.selection.start.offset === 0
-      ) {
-        editor.setBlocks("paragraph");
         return;
       }
 

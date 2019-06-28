@@ -1,6 +1,11 @@
 import React from "react";
 import { Box, Text } from "grommet";
 
+export interface SavingNoticeState {
+  lastSaveAt: null | Date;
+  lastChangeAt: null | Date;
+}
+
 export const SavingNotice = (props: { lastChangeAt: Date | null; lastSaveAt: Date | null }) => {
   let content: string;
 

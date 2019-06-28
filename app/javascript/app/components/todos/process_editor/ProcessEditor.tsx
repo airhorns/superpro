@@ -6,45 +6,16 @@ import { Plugins } from "./Plugins";
 import { ProcessSchema } from "./ProcessSchema";
 import { ProcessEditorToolbar } from "./ProcessEditorToolbar";
 
-const initialValue = Value.fromJSON({
-  document: {
-    data: {
-      mode: "authoring"
-    },
-    nodes: [
-      {
-        object: "block",
-        type: "paragraph",
-        nodes: [
-          {
-            object: "text",
-            text: "A line of text in a paragraph."
-          }
-        ]
-      }
-    ]
-  }
-} as any);
-
 export interface ProcessEditorProps {
-  onChange?: (value: Value) => void;
-}
-interface ProcessEditorState {
   value: Value;
+  onChange: (value: Value) => void;
 }
 
-export class ProcessEditor extends React.Component<ProcessEditorProps, ProcessEditorState> {
-  state: ProcessEditorState = {
-    value: initialValue
-  };
-
+export class ProcessEditor extends React.Component<ProcessEditorProps> {
   editorRef: React.RefObject<Editor> = React.createRef();
 
   onChange = ({ value }: { value: Value }) => {
-    console.debug(value);
-    this.setState({ value }, () => {
-      this.props.onChange && this.props.onChange(this.state.value);
-    });
+    this.props.onChange && this.props.onChange(value);
   };
 
   render() {
@@ -56,7 +27,7 @@ export class ProcessEditor extends React.Component<ProcessEditorProps, ProcessEd
           autoFocus
           schema={ProcessSchema}
           plugins={Plugins}
-          value={this.state.value}
+          value={this.props.value}
           onChange={this.onChange}
           ref={this.editorRef}
         />

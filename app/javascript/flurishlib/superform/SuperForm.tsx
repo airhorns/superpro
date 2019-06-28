@@ -1,17 +1,16 @@
 import { get, set, toPath } from "lodash";
 import React from "react";
-import Automerge from "automerge";
 import { FieldPath, DocType } from "./utils";
 import { ArrayHelpers } from "./ArrayHelpers";
 import { SuperFormContext } from ".";
-
-export type Command<T extends DocType> = (doc: T) => void;
+import { Backend, AutomergeBackend, Command } from "./Backends";
 
 export interface SuperFormProps<T extends DocType> {
   children: (form: SuperForm<T>) => React.ReactNode;
   initialValues?: T;
   onChange?: (doc: T, form: SuperForm<T>) => void;
   onSubmit?: (doc: T, form: SuperForm<T>) => void;
+  backendClass?: typeof Backend;
 }
 
 export type SuperFormErrors<T extends DocType> = {
@@ -25,26 +24,31 @@ interface SuperFormState<T extends DocType> {
 
 export class SuperForm<T extends DocType> extends React.Component<SuperFormProps<T>, SuperFormState<T>> {
   currentBatch: Command<T>[] | null = null;
+  backend: Backend<T>;
 
   constructor(props: SuperFormProps<T>) {
     super(props);
-    let doc = Automerge.init<T>();
+
+    // Initialize the backend
+    const backendClass: any = props.backendClass || AutomergeBackend;
+    this.backend = new backendClass((doc: T) => {
+      const prevDoc = this.state.doc;
+      this.setState({ doc }, () => {
+        console.debug("doc", this.state.doc);
+        console.debug("changes", this.backend.getChanges(prevDoc, this.state.doc));
+        this.props.onChange && this.props.onChange(this.state.doc, this);
+      });
+    });
 
     if (this.props.initialValues) {
-      doc = Automerge.change(doc, doc => Object.assign(doc, this.props.initialValues));
-      // reset undo/redo state
-      doc = Automerge.load(Automerge.save(doc));
+      this.backend.setInitialValues(this.props.initialValues);
     }
 
-    this.state = { doc, errors: {} };
+    this.state = { doc: this.backend.doc, errors: {} };
   }
 
   get doc(): T {
     return this.state.doc;
-  }
-
-  objectId(object: any) {
-    return Automerge.getObjectId(object);
   }
 
   getValue(path: FieldPath) {
@@ -70,19 +74,8 @@ export class SuperForm<T extends DocType> extends React.Component<SuperFormProps
       return;
     }
 
-    // Otherwise, setState the result of applying the passed command to the document using Automerge
-    const prevDoc = this.state.doc;
-    this.setState(
-      prevState => {
-        const newDoc = Automerge.change(prevState.doc, command);
-        return { doc: newDoc };
-      },
-      () => {
-        console.debug("doc", this.state.doc);
-        console.debug("changes", Automerge.getChanges(prevDoc, this.state.doc));
-        this.props.onChange && this.props.onChange(this.state.doc, this);
-      }
-    );
+    // Otherwise, apply the change using the backend. The backend will call setState via it's onChange handler.
+    this.backend.change(command);
   };
 
   batch = (callback: () => void) => {
@@ -123,29 +116,19 @@ export class SuperForm<T extends DocType> extends React.Component<SuperFormProps
   }
 
   canUndo() {
-    return Automerge.canUndo(this.state.doc);
+    this.backend.canUndo();
   }
 
   canRedo() {
-    return Automerge.canRedo(this.state.doc);
+    this.backend.canRedo();
   }
 
   undo() {
-    this.setState(
-      prevState => ({ doc: Automerge.undo(prevState.doc) }),
-      () => {
-        this.props.onChange && this.props.onChange(this.state.doc, this);
-      }
-    );
+    this.backend.undo();
   }
 
   redo() {
-    this.setState(
-      prevState => ({ doc: Automerge.redo(prevState.doc) }),
-      () => {
-        this.props.onChange && this.props.onChange(this.state.doc, this);
-      }
-    );
+    this.backend.redo();
   }
 
   render() {

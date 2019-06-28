@@ -1,7 +1,7 @@
 import React from "react";
 import { uniq, keyBy, debounce, pick } from "lodash";
 import shortid from "shortid";
-import { Page, SavingNotice } from "../common";
+import { Page, SavingNotice, SavingNoticeState } from "../common";
 import { BudgetForm, BudgetFormValues, BudgetFormLineValue } from "./BudgetForm";
 import gql from "graphql-tag";
 import {
@@ -52,8 +52,8 @@ gql`
     }
   }
 
-  mutation UpdateBudget($id: ID!, $budget: BudgetAttributes!) {
-    updateBudget(id: $id, budget: $budget) {
+  mutation UpdateBudget($id: ID!, $attributes: BudgetAttributes!) {
+    updateBudget(id: $id, attributes: $attributes) {
       budget {
         ...BudgetForEdit
       }
@@ -65,13 +65,8 @@ gql`
   }
 `;
 
-interface EditBudgetPageState {
-  lastSaveAt: null | Date;
-  lastChangeAt: null | Date;
-}
-
-export default class EditBudgetPage extends Page<{}, EditBudgetPageState> {
-  state: EditBudgetPageState = { lastSaveAt: null, lastChangeAt: null };
+export default class EditBudgetPage extends Page<{}, SavingNoticeState> {
+  state: SavingNoticeState = { lastSaveAt: null, lastChangeAt: null };
 
   processLineValueForForm(data: BudgetLineValue): BudgetFormLineValue {
     if (data.__typename == "BudgetLineFixedValue") {
@@ -115,7 +110,7 @@ export default class EditBudgetPage extends Page<{}, EditBudgetPageState> {
       const result = await update({
         variables: {
           id: doc.budget.id,
-          budget: {
+          attributes: {
             budgetLines: doc.budget.lines.map(line => {
               let value: BudgetLineValueAttributes;
               if (line.value.type == "series") {

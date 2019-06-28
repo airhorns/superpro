@@ -85,16 +85,6 @@ export const ExpensePlugin = (_options?: {}): Plugin => {
         return;
       }
 
-      if (
-        key === "Backspace" &&
-        value.selection.isCollapsed &&
-        value.startBlock.type === "expense-item" &&
-        value.selection.start.offset === 0
-      ) {
-        editor.setBlocks("paragraph");
-        return;
-      }
-
       next();
     }
   };

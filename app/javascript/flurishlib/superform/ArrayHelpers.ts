@@ -1,7 +1,6 @@
 import { DocType, FieldPath, Dispatcher } from "./utils";
 import { get } from "lodash";
 import { List } from "automerge";
-import { assert } from "flurishlib";
 
 export type ArrayHelperListFunctions<E> = Pick<List<E>, "push" | "pop" | "shift" | "unshift" | "insertAt" | "deleteAt" | "splice">;
 
@@ -31,11 +30,23 @@ export class ArrayHelpers<T extends DocType, E extends any> implements ArrayHelp
   }
 
   insertAt(index: number, ...args: E[]) {
-    return this.change(list => assert(list.insertAt)(index, ...args));
+    return this.change(list => {
+      if (list.insertAt) {
+        return list.insertAt(index, ...args);
+      } else {
+        return list.splice(index, 0, ...args);
+      }
+    });
   }
 
   deleteAt(index: number) {
-    return this.change(list => assert(list.deleteAt)(index));
+    return this.change(list => {
+      if (list.deleteAt) {
+        return list.deleteAt(index);
+      } else {
+        return list.splice(index, 1);
+      }
+    });
   }
 
   splice(start: number, numToDelete: number, ...insertions: E[]) {

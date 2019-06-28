@@ -109,6 +109,7 @@
     "shortid": "^2.2.14",
     "slate": "^0.47.4",
     "slate-auto-replace": "^0.12.1",
+    "slate-collapse-on-escape": "^0.8.1",
     "slate-drop-or-paste-images": "^0.9.1",
     "slate-hotkeys": "^0.2.9",
     "slate-mark-hotkeys": "^0.2.0",
