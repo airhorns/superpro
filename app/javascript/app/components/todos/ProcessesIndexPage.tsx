@@ -1,37 +1,45 @@
 import React from "react";
-import { Button } from "grommet";
-import { Page } from "../common";
+import { Button, Box, Text } from "grommet";
+import { Page, UserCard, TrashButton } from "../common";
 import { Add } from "../common/FlurishIcons";
 import gql from "graphql-tag";
-import { GetAllProcessTemplatesComponent, CreateNewProcessTemplateComponent, CreateNewProcessTemplateMutationFn } from "app/app-graph";
-import { Spin, mutationSuccessful, toast } from "flurishlib";
+import {
+  GetAllProcessTemplatesComponent,
+  CreateNewProcessTemplateComponent,
+  CreateNewProcessTemplateMutationFn,
+  GetAllProcessTemplatesQuery
+} from "app/app-graph";
+import { Spin, mutationSuccessful, toast, Link, Row, LinkButton } from "flurishlib";
 import { History } from "history";
 import { withRouter, RouteComponentProps } from "react-router";
+import { WaterTable } from "flurishlib/WaterTable";
+import { ArrayElementType } from "app/lib/types";
 
-gql(`
-query GetAllProcessTemplates {
-  processTemplates(first: 30) {
-    nodes {
-      id
-      name
-      creator {
-        fullName
+gql`
+  query GetAllProcessTemplates {
+    processTemplates(first: 30) {
+      nodes {
+        id
+        key: id
+        name
+        creator {
+          ...UserCard
+        }
       }
     }
   }
-}
 
-mutation CreateNewProcessTemplate {
-  createProcessTemplate {
-    processTemplate {
-      id
-    }
-    errors {
-      fullMessage
+  mutation CreateNewProcessTemplate {
+    createProcessTemplate {
+      processTemplate {
+        id
+      }
+      errors {
+        fullMessage
+      }
     }
   }
-}
-`);
+`;
 
 export const createAndVisitProcessTemplate = async (mutate: CreateNewProcessTemplateMutationFn, history: History) => {
   let success = false;
@@ -49,6 +57,8 @@ export const createAndVisitProcessTemplate = async (mutate: CreateNewProcessTemp
     toast.error("There was an error creating a process template. Please try again.");
   }
 };
+
+type ProcessTemplate = ArrayElementType<GetAllProcessTemplatesQuery["processTemplates"]["nodes"]>;
 
 export default withRouter((props: RouteComponentProps) => {
   const [creating, setCreating] = React.useState(false);
@@ -74,7 +84,42 @@ export default withRouter((props: RouteComponentProps) => {
         </CreateNewProcessTemplateComponent>
       }
     >
-      <Page.Load component={GetAllProcessTemplatesComponent}>{data => JSON.stringify(data)}</Page.Load>
+      <Page.Load component={GetAllProcessTemplatesComponent}>
+        {data => (
+          <Box>
+            <WaterTable<ProcessTemplate>
+              columns={[
+                {
+                  header: "Name",
+                  key: "name",
+                  render: processTemplate => <Link to={`/todos/processes/${processTemplate.id}`}>{processTemplate.name}</Link>
+                },
+                {
+                  header: "Creator",
+                  key: "creator",
+                  render: processTemplate => <UserCard user={processTemplate.creator} link />
+                },
+                {
+                  header: "Last Run",
+                  key: "last_run",
+                  render: () => <Text>Never</Text>
+                },
+                {
+                  header: "",
+                  key: "actions",
+                  render: processTemplate => (
+                    <Row gap="small">
+                      <LinkButton to={`/todos/processes/${processTemplate.id}/start`} label="Run Now" />
+                      <TrashButton onClick={() => {}} />
+                    </Row>
+                  )
+                }
+              ]}
+              records={data.processTemplates.nodes}
+            />
+          </Box>
+        )}
+      </Page.Load>
     </Page.Layout>
   );
 });

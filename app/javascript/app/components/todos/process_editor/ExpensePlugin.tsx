@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { Button } from "grommet";
 import { Row } from "flurishlib";
 import { Expense } from "app/components/common/FlurishIcons";
-import { isAuthoringMode } from "./utils";
+import { isExecutionMode } from "./utils";
 
 const ExpenseContainer = styled.div`
   display: flex;
@@ -55,7 +55,7 @@ export class ExpenseItem extends React.Component<RenderBlockProps> {
         <ExpenseLabel incurred={checked} contentEditable={!this.props.readOnly} suppressContentEditableWarning>
           {this.props.children}
         </ExpenseLabel>
-        <Button plain onClick={() => {}} disabled={isAuthoringMode(this.props.editor)} label="Mark as incurred" />
+        <Button plain onClick={() => {}} disabled={!isExecutionMode(this.props.editor)} label="Mark as incurred" />
       </ExpenseContainer>
     );
   }

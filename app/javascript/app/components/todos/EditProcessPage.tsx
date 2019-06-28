@@ -1,7 +1,7 @@
 import React from "react";
 import { Page, HoverEditor, SavingNotice, SavingNoticeState } from "../common";
 import { ProcessEditor } from "./process_editor/ProcessEditor";
-import { Row, mutationSuccessful, toast } from "flurishlib";
+import { Row, mutationSuccessful, toast, LinkButton } from "flurishlib";
 import gql from "graphql-tag";
 import { SuperForm, ObjectBackend } from "flurishlib/superform";
 import { GetProcessTemplateForEditComponent, UpdateProcessTemplateMutationFn, UpdateProcessTemplateComponent } from "app/app-graph";
@@ -56,7 +56,7 @@ export default class extends Page<{ id: string }, SavingNoticeState> {
       if (mutationSuccessful(result)) {
         this.setState({ lastSaveAt: new Date() });
       } else {
-        toast.error("There was an error saving this proces. Please try again.");
+        toast.error("There was an error saving this process. Please try again.");
       }
     },
     1000,
@@ -92,13 +92,19 @@ export default class extends Page<{ id: string }, SavingNoticeState> {
                         </Row>
                       }
                       documentTitle={`Edit Process: ${form.getValue("processTemplate.name")}`}
-                      headerExtra={<SavingNotice lastChangeAt={this.state.lastChangeAt} lastSaveAt={this.state.lastSaveAt} />}
+                      headerExtra={
+                        <Row gap="small">
+                          <SavingNotice lastChangeAt={this.state.lastChangeAt} lastSaveAt={this.state.lastSaveAt} />
+                          <LinkButton to={`/todos/processes/${data.processTemplate.id}/start`} label="Run Now" />
+                        </Row>
+                      }
                       breadcrumbs={["processes"]}
                       padded={false}
                     >
                       <ProcessEditor
+                        autoFocus
                         value={form.getValue("processTemplate.document")}
-                        onChange={value => {
+                        onChange={({ value }: { value: Value }) => {
                           form.setValue("processTemplate.document", value);
                         }}
                       />

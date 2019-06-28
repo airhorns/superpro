@@ -28,6 +28,7 @@ class Account < ApplicationRecord
   has_many :permissioned_users, through: :account_user_permissions, source: :user
   has_many :budgets, inverse_of: :account, dependent: :destroy
   has_many :process_templates, inverse_of: :account, dependent: :destroy
+  has_many :process_executions, inverse_of: :account, dependent: :destroy
 
   belongs_to :creator, class_name: "User", inverse_of: :created_accounts
 end

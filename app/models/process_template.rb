@@ -23,4 +23,5 @@ class ProcessTemplate < ApplicationRecord
   include MutationClientId
 
   belongs_to :creator, class_name: "User", inverse_of: :created_process_templates
+  has_many :process_executions, inverse_of: :process_execution
 end

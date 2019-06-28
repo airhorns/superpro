@@ -534,6 +534,44 @@ ALTER SEQUENCE public.flipper_gates_id_seq OWNED BY public.flipper_gates.id;
 
 
 --
+-- Name: process_executions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.process_executions (
+    id bigint NOT NULL,
+    account_id bigint NOT NULL,
+    creator_id bigint NOT NULL,
+    owner_id bigint NOT NULL,
+    process_template_id bigint,
+    name character varying NOT NULL,
+    document json NOT NULL,
+    started_at timestamp without time zone,
+    discarded_at timestamp without time zone,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: process_executions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.process_executions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: process_executions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.process_executions_id_seq OWNED BY public.process_executions.id;
+
+
+--
 -- Name: process_templates; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -715,6 +753,13 @@ ALTER TABLE ONLY public.flipper_gates ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
+-- Name: process_executions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.process_executions ALTER COLUMN id SET DEFAULT nextval('public.process_executions_id_seq'::regclass);
+
+
+--
 -- Name: process_templates id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -824,6 +869,14 @@ ALTER TABLE ONLY public.flipper_gates
 
 
 --
+-- Name: process_executions process_executions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.process_executions
+    ADD CONSTRAINT process_executions_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: process_templates process_templates_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -926,6 +979,14 @@ CREATE UNIQUE INDEX index_users_on_unlock_token ON public.users USING btree (unl
 
 
 --
+-- Name: process_executions fk_rails_12560d43a1; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.process_executions
+    ADD CONSTRAINT fk_rails_12560d43a1 FOREIGN KEY (owner_id) REFERENCES public.users(id);
+
+
+--
 -- Name: cells fk_rails_14b7e22a0a; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -950,6 +1011,14 @@ ALTER TABLE ONLY public.series
 
 
 --
+-- Name: process_executions fk_rails_501396e88e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.process_executions
+    ADD CONSTRAINT fk_rails_501396e88e FOREIGN KEY (process_template_id) REFERENCES public.process_templates(id);
+
+
+--
 -- Name: account_user_permissions fk_rails_5c34e80f82; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -963,6 +1032,14 @@ ALTER TABLE ONLY public.account_user_permissions
 
 ALTER TABLE ONLY public.account_user_permissions
     ADD CONSTRAINT fk_rails_63fd5df246 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: process_executions fk_rails_69d610f2cd; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.process_executions
+    ADD CONSTRAINT fk_rails_69d610f2cd FOREIGN KEY (account_id) REFERENCES public.accounts(id);
 
 
 --
@@ -987,6 +1064,14 @@ ALTER TABLE ONLY public.budgets
 
 ALTER TABLE ONLY public.budget_lines
     ADD CONSTRAINT fk_rails_788211bd95 FOREIGN KEY (account_id) REFERENCES public.accounts(id);
+
+
+--
+-- Name: process_executions fk_rails_8312e93e59; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.process_executions
+    ADD CONSTRAINT fk_rails_8312e93e59 FOREIGN KEY (creator_id) REFERENCES public.users(id);
 
 
 --
@@ -1091,6 +1176,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190620221343'),
 ('20190624162800'),
 ('20190626154336'),
-('20190628012359');
+('20190628012359'),
+('20190628213439');
 
 

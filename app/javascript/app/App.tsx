@@ -17,6 +17,7 @@ const BudgetReportPage = React.lazy(() => import("./components/budget/BudgetRepo
 const EditBudgetPage = React.lazy(() => import("./components/budget/EditBudgetPage"));
 const ProcessesIndexPage = React.lazy(() => import("./components/todos/ProcessesIndexPage"));
 const EditProcessPage = React.lazy(() => import("./components/todos/EditProcessPage"));
+const StartProcessPage = React.lazy(() => import("./components/todos/StartProcessPage"));
 
 export const FlurishClient = getClient();
 
@@ -42,6 +43,7 @@ export const App = () => {
                           <Route path="/budget/reports/:reportKey" exact component={BudgetReportPage} />
                           <Route path="/todos/processes" exact component={ProcessesIndexPage} />
                           <Route path="/todos/processes/:id" exact component={EditProcessPage} />
+                          <Route path="/todos/processes/:id/start" exact component={StartProcessPage} />
                           <Route component={NotFoundPage} />
                         </Switch>
                       </React.Suspense>

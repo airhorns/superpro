@@ -4,6 +4,7 @@ import { AssertedKeys, assertKeys } from "./utils";
 import { Alert } from "./Alert";
 import { PageLoadSpin } from "./Spin";
 import { Omit } from "type-zoo";
+import { Data } from "slate";
 
 // gql-gen generates SFCs that omit the variables key from the QueryProps then & with a { variables: Variables } that is mandatory or a {variables?: Variables } that isnt in order to better type check the invocations of the component. This makes it real annoying to dereference.
 type GeneratedQueryComponentType<Data, Variables> =
@@ -12,6 +13,8 @@ type GeneratedQueryComponentType<Data, Variables> =
 
 type ComponentDataType<Component> = Component extends GeneratedQueryComponentType<infer Data, any> ? Data : never;
 type ComponentVariablesType<Component> = Component extends GeneratedQueryComponentType<any, infer Variables> ? Variables : never;
+
+export type AutoAssert<Data> = AssertedKeys<Data, keyof Data>;
 
 // type ComponentVariablesType<Component extends GeneratedQueryComponentType<any, any>> = React.ComponentPropsWithRef<Component>["variables"];
 

@@ -1,5 +1,5 @@
 class Mutations::Todos::CreateProcessTemplate < Mutations::BaseMutation
-  argument :process_template, Types::Todos::ProcessTemplateAttributes, required: false
+  argument :attributes, Types::Todos::ProcessTemplateAttributes, required: false
 
   field :process_template, Types::Todos::ProcessTemplateType, null: true
   field :errors, [Types::MutationErrorType], null: true

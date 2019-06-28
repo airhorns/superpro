@@ -3,6 +3,7 @@ import isHotkey from "is-hotkey";
 
 const isBackspace = isHotkey("backspace");
 const isSpace = isHotkey("space");
+const isShiftSpace = isHotkey("shift+space");
 
 export const RichShortcutsPlugin = (_options?: {}): Plugin => {
   const getType = (chars: string) => {
@@ -67,7 +68,9 @@ export const RichShortcutsPlugin = (_options?: {}): Plugin => {
 
   return {
     onKeyDown(event, editor, next) {
-      if (isSpace(event as any)) {
+      // On space or a sloppy shift+space (after doing a symbol on the number row or something like that)
+      // check if the line is a shortcut
+      if (isSpace(event as any) || isShiftSpace(event as any)) {
         return onSpace(event, editor, next);
       }
 

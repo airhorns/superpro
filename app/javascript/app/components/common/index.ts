@@ -12,6 +12,8 @@ export * from "./ScenarioInput";
 export * from "./SavingNotice";
 export * from "./HoverEditor";
 export * from "./CubeChart";
+export * from "./UserAvatar";
+export * from "./UserCard";
 export * from "../../../flurishlib/Link";
 export * from "./DividerHeading";
 export * from "../../../flurishlib/SimpleModal";
