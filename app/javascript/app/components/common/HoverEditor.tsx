@@ -1,8 +1,7 @@
 import React from "react";
 import { TextInput } from "grommet";
-import { Row } from "../../../flurishlib/Row";
 import { EditButton, FadeBox } from ".";
-import { isTouchDevice } from "flurishlib";
+import { isTouchDevice, Row } from "flurishlib";
 
 export interface HoverEditorProps {
   value: string;

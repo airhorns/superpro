@@ -1,7 +1,6 @@
 import React from "react";
-import { Page } from "../common";
+import { Page, HoverEditor } from "../common";
 import { ProcessEditor } from "./process_editor/ProcessEditor";
-import { HoverEditor } from "../common/HoverEditor";
 import { Row } from "flurishlib";
 import gql from "graphql-tag";
 import { SuperForm } from "flurishlib/superform";

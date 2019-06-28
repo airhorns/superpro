@@ -1,6 +1,6 @@
+import { Editor } from "slate";
 import { Plugin } from "slate-react";
 import Hotkeys from "slate-hotkeys";
-import { Editor } from "slate";
 
 export const GlobalHotkeysPlugin = (): Plugin => {
   const functions: { check: (event: Event, editor: Editor) => boolean; handler: Exclude<Plugin["onKeyDown"], undefined> }[] = [

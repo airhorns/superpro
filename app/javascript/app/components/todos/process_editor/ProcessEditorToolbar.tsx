@@ -1,6 +1,5 @@
 import React from "react";
 import { Editor } from "slate-react";
-import { Toolbar, ToolbarButton, ToolbarDivider, ToggleMarkToolbarButton, ToggleBlockToolbarButton } from "./Toolbar";
 import {
   FontSize,
   BulletedList,
@@ -16,6 +15,7 @@ import {
   OrderedList,
   Deadline
 } from "app/components/common/FlurishIcons";
+import { Toolbar, ToolbarButton, ToolbarDivider, ToggleMarkToolbarButton, ToggleBlockToolbarButton } from "./Toolbar";
 
 export class ProcessEditorToolbar extends React.Component<{ editor: Editor }> {
   undo = (event: React.SyntheticEvent) => {

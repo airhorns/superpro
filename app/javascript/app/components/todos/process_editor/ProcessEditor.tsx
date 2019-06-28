@@ -1,8 +1,8 @@
 import React from "react";
 import { Editor } from "slate-react";
 import { Value } from "slate";
-import { Plugins } from "./Plugins";
 import { Box } from "grommet";
+import { Plugins } from "./Plugins";
 import { ProcessSchema } from "./ProcessSchema";
 import { ProcessEditorToolbar } from "./ProcessEditorToolbar";
 

@@ -1,11 +1,11 @@
 import React from "react";
 import { Plugin, RenderBlockProps } from "slate-react";
+import NumberFormat from "react-number-format";
 import styled from "styled-components";
 import { Button } from "grommet";
-import { Expense } from "app/components/common/FlurishIcons";
 import { Row } from "flurishlib";
+import { Expense } from "app/components/common/FlurishIcons";
 import { isAuthoringMode } from "./utils";
-import NumberFormat from "react-number-format";
 
 const ExpenseContainer = styled.div`
   display: flex;
