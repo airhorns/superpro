@@ -2,7 +2,7 @@ import createFlags from "flag";
 
 export interface FlurishFlags {
   "feature.connections": boolean;
-  "feature.tasks": boolean;
+  "feature.todos": boolean;
   "gate.publicSignUps": boolean;
 }
 

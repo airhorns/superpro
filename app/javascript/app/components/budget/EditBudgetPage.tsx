@@ -52,8 +52,8 @@ gql`
     }
   }
 
-  mutation UpdateBudget($budgetId: ID!, $budget: BudgetAttributes!) {
-    updateBudget(budgetId: $budgetId, budget: $budget) {
+  mutation UpdateBudget($id: ID!, $budget: BudgetAttributes!) {
+    updateBudget(id: $id, budget: $budget) {
       budget {
         ...BudgetForEdit
       }
@@ -114,7 +114,7 @@ export default class EditBudgetPage extends Page<{}, EditBudgetPageState> {
 
       const result = await update({
         variables: {
-          budgetId: doc.budget.id,
+          id: doc.budget.id,
           budget: {
             budgetLines: doc.budget.lines.map(line => {
               let value: BudgetLineValueAttributes;

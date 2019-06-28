@@ -1,8 +1,8 @@
 require "test_helper"
 
 UPDATE_BUDGET_MUTATION = <<~QUERY
-  mutation updateBudget($budgetId: ID!, $budget: BudgetAttributes!) {
-    updateBudget(budgetId: $budgetId, budget: $budget) {
+  mutation updateBudget($id: ID!, $budget: BudgetAttributes!) {
+    updateBudget(id: $id, budget: $budget) {
       budget {
         id
         creator {
@@ -44,7 +44,7 @@ class UpdateBudgetIntegrationTest < ActiveSupport::TestCase
 
   test "it can update a budget's name" do
     result = FlurishAppSchema.execute(UPDATE_BUDGET_MUTATION, context: @context, variables: ActionController::Parameters.new({
-                                                                budgetId: @budget.id,
+                                                                id: @budget.id,
                                                                 budget: { "name": "Other budget", budgetLines: [] },
                                                               }))
     assert_no_graphql_errors result
@@ -55,7 +55,7 @@ class UpdateBudgetIntegrationTest < ActiveSupport::TestCase
 
   test "it can create fixed budget lines" do
     result = FlurishAppSchema.execute(UPDATE_BUDGET_MUTATION, context: @context, variables: ActionController::Parameters.new({
-                                                                budgetId: @budget.id,
+                                                                id: @budget.id,
                                                                 budget: { "name": "Other budget", budgetLines: [{
                                                                   id: "nonsense",
                                                                   description: "Foobar",
@@ -84,7 +84,7 @@ class UpdateBudgetIntegrationTest < ActiveSupport::TestCase
   test "it can update a budget's lines with fixed line values" do
     line = @budget.budget_lines.first
     result = FlurishAppSchema.execute(UPDATE_BUDGET_MUTATION, context: @context, variables: ActionController::Parameters.new({
-                                                                budgetId: @budget.id,
+                                                                id: @budget.id,
                                                                 budget: { "name": "Other budget", budgetLines: [{
                                                                   id: line.id,
                                                                   description: line.description,
@@ -112,7 +112,7 @@ class UpdateBudgetIntegrationTest < ActiveSupport::TestCase
 
   test "it can create series budget lines" do
     result = FlurishAppSchema.execute(UPDATE_BUDGET_MUTATION, context: @context, variables: ActionController::Parameters.new({
-                                                                budgetId: @budget.id,
+                                                                id: @budget.id,
                                                                 budget: { "name": "Other budget", budgetLines: [{
                                                                   id: "nonsense",
                                                                   description: "Foobar",
@@ -148,7 +148,7 @@ class UpdateBudgetIntegrationTest < ActiveSupport::TestCase
   test "it can change a budget's lines from fixed to series" do
     line = @budget.budget_lines.first
     result = FlurishAppSchema.execute(UPDATE_BUDGET_MUTATION, context: @context, variables: ActionController::Parameters.new({
-                                                                budgetId: @budget.id,
+                                                                id: @budget.id,
                                                                 budget: { "name": "Other budget", budgetLines: [{
                                                                   id: line.id,
                                                                   description: line.description,
@@ -176,7 +176,7 @@ class UpdateBudgetIntegrationTest < ActiveSupport::TestCase
 
   test "it can create default budget lines with no data added yet" do
     result = FlurishAppSchema.execute(UPDATE_BUDGET_MUTATION, context: @context, variables: ActionController::Parameters.new({
-                                                                budgetId: @budget.id,
+                                                                id: @budget.id,
                                                                 budget: { "name": "Other budget", budgetLines: [{
                                                                   id: "nonsense",
                                                                   description: "",

@@ -10,23 +10,13 @@ import { AppSidebar } from "./components/chrome/AppSidebar";
 import { NotFoundPage } from "./components/chrome/NotFoundPage";
 import { PageLoadSpin } from "../flurishlib";
 
-const HomePage = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "Home" */ "./components/home/HomePage"));
-const Launchpad = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "Home" */ "./components/home/Launchpad"));
-const BudgetReportsIndexPage = React.lazy(() =>
-  import(/* webpackPrefetch: true, webpackChunkName: "Budget" */ "./components/budget/BudgetReportsIndexPage")
-);
-const BudgetReportPage = React.lazy(() =>
-  import(/* webpackPrefetch: true, webpackChunkName: "Budget" */ "./components/budget/BudgetReportPage")
-);
-const EditBudgetPage = React.lazy(() =>
-  import(/* webpackPrefetch: true, webpackChunkName: "Budget" */ "./components/budget/EditBudgetPage")
-);
-const ProcessesIndexPage = React.lazy(() =>
-  import(/* webpackPrefetch: true, webpackChunkName: "Process" */ "./components/tasks/ProcessesIndexPage")
-);
-const EditProcessPage = React.lazy(() =>
-  import(/* webpackPrefetch: true, webpackChunkName: "Process" */ "./components/tasks/EditProcessPage")
-);
+const HomePage = React.lazy(() => import("./components/home/HomePage"));
+const Launchpad = React.lazy(() => import("./components/home/Launchpad"));
+const BudgetReportsIndexPage = React.lazy(() => import("./components/budget/BudgetReportsIndexPage"));
+const BudgetReportPage = React.lazy(() => import("./components/budget/BudgetReportPage"));
+const EditBudgetPage = React.lazy(() => import("./components/budget/EditBudgetPage"));
+const ProcessesIndexPage = React.lazy(() => import("./components/todos/ProcessesIndexPage"));
+const EditProcessPage = React.lazy(() => import("./components/todos/EditProcessPage"));
 
 export const FlurishClient = getClient();
 
@@ -50,8 +40,8 @@ export const App = () => {
                           <Route path="/budget" exact component={EditBudgetPage} />
                           <Route path="/budget/reports" exact component={BudgetReportsIndexPage} />
                           <Route path="/budget/reports/:reportKey" exact component={BudgetReportPage} />
-                          <Route path="/tasks/processes" exact component={ProcessesIndexPage} />
-                          <Route path="/tasks/processes/new" exact component={EditProcessPage} />
+                          <Route path="/todos/processes" exact component={ProcessesIndexPage} />
+                          <Route path="/todos/processes/:id" exact component={EditProcessPage} />
                           <Route component={NotFoundPage} />
                         </Switch>
                       </React.Suspense>

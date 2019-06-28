@@ -7,7 +7,7 @@ import { Row } from "flurishlib";
 const StaticBreadcrumbs = {
   home: { text: "Home", path: "/" },
   budget: { text: "Budget", path: "/budget" },
-  processes: { text: "Processes", path: "/tasks/processes" },
+  processes: { text: "Processes", path: "/todos/processes" },
   settings: { text: "Settings", path: null },
   connectionSettings: { text: "Connections", path: "/settings/connections" }
 };

@@ -4,7 +4,7 @@ import { GetBudgetForReportsComponent } from "app/app-graph";
 import { Reports } from "./BudgetReportPage";
 import { Box, Heading, Text } from "grommet";
 
-export default class BudgetReportsIndexPage extends Page<{ budgetId: string }> {
+export default class BudgetReportsIndexPage extends Page<{}> {
   render() {
     return (
       <Page.Load component={GetBudgetForReportsComponent} require={["budget"]}>

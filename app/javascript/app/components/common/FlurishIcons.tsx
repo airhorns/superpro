@@ -36,7 +36,7 @@ export const FlurishLogo = Launch;
 export const Home = GrommetHome;
 export const Budget = Compare;
 export const Reports = Analytics;
-export const Tasks = CheckboxSelected;
+export const Todos = CheckboxSelected;
 
 // Toolbar & Editor
 export const Undo = GrommetUndo;

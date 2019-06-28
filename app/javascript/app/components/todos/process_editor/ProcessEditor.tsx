@@ -6,7 +6,6 @@ import { Box } from "grommet";
 import { ProcessSchema } from "./ProcessSchema";
 import { ProcessEditorToolbar } from "./ProcessEditorToolbar";
 
-// Create our initial value...
 const initialValue = Value.fromJSON({
   document: {
     data: {
@@ -27,11 +26,14 @@ const initialValue = Value.fromJSON({
   }
 } as any);
 
+export interface ProcessEditorProps {
+  onChange?: (value: Value) => void;
+}
 interface ProcessEditorState {
   value: Value;
 }
 
-export class ProcessEditor extends React.Component<{}, ProcessEditorState> {
+export class ProcessEditor extends React.Component<ProcessEditorProps, ProcessEditorState> {
   state: ProcessEditorState = {
     value: initialValue
   };
@@ -39,8 +41,10 @@ export class ProcessEditor extends React.Component<{}, ProcessEditorState> {
   editorRef: React.RefObject<Editor> = React.createRef();
 
   onChange = ({ value }: { value: Value }) => {
-    // console.debug(value);
-    this.setState({ value });
+    console.debug(value);
+    this.setState({ value }, () => {
+      this.props.onChange && this.props.onChange(this.state.value);
+    });
   };
 
   render() {

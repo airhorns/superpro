@@ -10,8 +10,8 @@ import { GetBudgetProblemSpotsComponent } from "app/app-graph";
 import { DateTime } from "luxon";
 
 gql`
-  query GetBudgetProblemSpots($budgetId: ID!) {
-    budget(budgetId: $budgetId) {
+  query GetBudgetProblemSpots($id: ID!) {
+    budget(id: $id) {
       id
       problemSpots {
         startDate
@@ -117,7 +117,7 @@ export const BudgetProblemSpotReport = (props: { budgetId: string }) => {
         }}
       </CubeChart>
       <Box>
-        <SimpleQuery component={GetBudgetProblemSpotsComponent} variables={{ budgetId: props.budgetId }} require={["budget"]}>
+        <SimpleQuery component={GetBudgetProblemSpotsComponent} variables={{ id: props.budgetId }} require={["budget"]}>
           {data => (
             <>
               <DataTable

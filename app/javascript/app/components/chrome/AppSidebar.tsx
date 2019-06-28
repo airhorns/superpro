@@ -8,7 +8,7 @@ import { UserAvatar } from "../common/UserAvatar";
 import { signOut } from "../../lib/auth";
 import { Settings } from "../../lib/settings";
 import { Row, Flag } from "../../../flurishlib";
-import { Budget, Tasks } from "../common/FlurishIcons";
+import { Budget, Todos } from "../common/FlurishIcons";
 import { NavigationSectionButton, NavigationSubItemButton } from "./Navigation";
 
 gql`
@@ -69,10 +69,10 @@ export const AppSidebar = withRouter(
                 )}
 
                 <NavigationSectionButton path="/launchpad" text="Launchpad" icon={<Launch />} onClick={this.close} />
-                <Flag name={["feature.tasks"]}>
-                  <NavigationSectionButton path="/tasks" text="Tasks" icon={<Tasks />} onClick={this.close}>
-                    <NavigationSubItemButton path="/tasks" exact text="Tasks" onClick={this.close} />
-                    <NavigationSubItemButton path="/tasks/processes" exact text="Processes" onClick={this.close} />
+                <Flag name={["feature.todos"]}>
+                  <NavigationSectionButton path="/todos" text="Todos" icon={<Todos />} onClick={this.close}>
+                    <NavigationSubItemButton path="/todos" exact text="Todos" onClick={this.close} />
+                    <NavigationSubItemButton path="/todos/processes" exact text="Processes" onClick={this.close} />
                   </NavigationSectionButton>
                 </Flag>
                 <NavigationSectionButton path="/budget" text="Budgets" icon={<Budget />} onClick={this.close}>
