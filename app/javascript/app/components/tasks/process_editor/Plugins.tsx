@@ -2,15 +2,19 @@ import { ChecklistPlugin } from "./ChecklistPlugin";
 import PasteLinkify from "slate-paste-linkify";
 import { MarkHotkeys } from "./MarkHotkeysPlugin";
 import { SimpleListsPlugin } from "./SimpleLists";
-import { StagesPlugin } from "./StagesPlugin";
+import { DeadlinesPlugin } from "./DeadlinesPlugin";
 import { BasicFormattingPlugin } from "./BasicFormattingPlugin";
+import { ExpensePlugin } from "./ExpensePlugin";
+import { GlobalHotkeysPlugin } from "./GlobalHotkeysPlugin";
 // import Lists from "@convertkit/slate-lists";
 
 export const Plugins = [
   ChecklistPlugin(),
-  StagesPlugin(),
+  ExpensePlugin(),
+  DeadlinesPlugin(),
   PasteLinkify(),
   MarkHotkeys(),
+  GlobalHotkeysPlugin(),
   BasicFormattingPlugin(),
   SimpleListsPlugin()
   // Lists({

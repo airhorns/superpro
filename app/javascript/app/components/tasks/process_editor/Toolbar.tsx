@@ -16,7 +16,7 @@ export const ToolbarButton = (props: { active: boolean; icon: React.ComponentTyp
 
 export const Toolbar = (props: { children: React.ReactNode }) => {
   return (
-    <Row gap="xsmall" pad="small" round="small" background="light-1" margin={{ bottom: "small" }}>
+    <Row pad="xsmall" gap="xsmall" margin={{ bottom: "small" }} round="small" background="light-1">
       {props.children}
     </Row>
   );
@@ -43,7 +43,12 @@ export class ToggleMarkToolbarButton extends React.Component<{ type: string; ico
   }
 }
 
-export class ToggleBlockToolbarButton extends React.Component<{ type: string; icon: React.ComponentType; editor: Editor }> {
+export class ToggleBlockToolbarButton extends React.Component<{
+  type: string;
+  icon: React.ComponentType;
+  editor: Editor;
+  newBlockData?: any;
+}> {
   hasBlock(type: string) {
     return this.props.editor.value.blocks.some(node => !!(node && node.type === type));
   }
@@ -55,14 +60,15 @@ export class ToggleBlockToolbarButton extends React.Component<{ type: string; ic
     if (this.props.type !== "bulleted-list" && this.props.type !== "numbered-list") {
       const isActive = this.hasBlock(this.props.type);
       const isList = this.hasBlock("list-item");
+      const newBlockProperties = isActive ? DEFAULT_NODE : { type: this.props.type, data: this.props.newBlockData };
 
       if (isList) {
         this.props.editor
-          .setBlocks(isActive ? DEFAULT_NODE : this.props.type)
+          .setBlocks(newBlockProperties)
           .unwrapBlock("bulleted-list")
           .unwrapBlock("numbered-list");
       } else {
-        this.props.editor.setBlocks(isActive ? DEFAULT_NODE : this.props.type);
+        this.props.editor.setBlocks(newBlockProperties);
       }
     } else {
       // Handle the extra wrapping required for list buttons.
@@ -101,6 +107,6 @@ export class ToggleBlockToolbarButton extends React.Component<{ type: string; ic
       }
     }
 
-    return <ToolbarButton active={this.hasBlock(this.props.type)} icon={this.props.icon} onClick={this.onClick} />;
+    return <ToolbarButton active={isActive} icon={this.props.icon} onClick={this.onClick} />;
   }
 }

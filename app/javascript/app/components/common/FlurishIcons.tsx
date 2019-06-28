@@ -26,7 +26,9 @@ import {
   Code as GrommetCode,
   List,
   OrderedList as GrommetOrderedList,
-  Task
+  Task,
+  Currency,
+  Alarm
 } from "grommet-icons";
 
 // Navigation & Root level ideas
@@ -52,6 +54,8 @@ export const BulletedList = List;
 export const OrderedList = GrommetOrderedList;
 export const CheckList = Task;
 export const Link = GrommetLink;
+export const Expense = Currency;
+export const Deadline = Alarm;
 
 // Misc
 export const Previous = GrommetPrevious;

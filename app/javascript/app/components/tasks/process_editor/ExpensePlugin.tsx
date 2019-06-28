@@ -1,11 +1,13 @@
 import React from "react";
 import { Plugin, RenderBlockProps } from "slate-react";
 import styled from "styled-components";
-import { CheckBox } from "grommet";
+import { Button } from "grommet";
+import { Expense } from "app/components/common/FlurishIcons";
 import { Row } from "flurishlib";
 import { isAuthoringMode } from "./utils";
+import NumberFormat from "react-number-format";
 
-const CheckboxContainer = styled.div`
+const ExpenseContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -17,10 +19,11 @@ const CheckboxContainer = styled.div`
   `}
 `;
 
-const CheckboxLabel = styled.span<{ checked: boolean }>`
+const ExpenseLabel = styled.span<{ incurred: boolean }>`
   flex: 1;
   ${props => `
-    opacity: ${props.checked ? 0.666 : 1};
+    opacity: ${props.incurred ? 0.666 : 1};
+    text-decoration: ${props.incurred ? "strikethrough" : "none"};
   `}
 
   &:focus {
@@ -28,7 +31,7 @@ const CheckboxLabel = styled.span<{ checked: boolean }>`
   }
 `;
 
-export class CheckListItem extends React.Component<RenderBlockProps> {
+export class ExpenseItem extends React.Component<RenderBlockProps> {
   onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const checked = event.target.checked;
     const { editor, node } = this.props;
@@ -38,24 +41,32 @@ export class CheckListItem extends React.Component<RenderBlockProps> {
   render() {
     const checked = this.props.node.data.get("checked");
     return (
-      <CheckboxContainer {...this.props.attributes}>
-        <Row contentEditable={false} margin={{ right: "small" }}>
-          <CheckBox checked={checked} onChange={this.onChange} disabled={isAuthoringMode(this.props.editor)} />
+      <ExpenseContainer {...this.props.attributes}>
+        <Row contentEditable={false} margin={{ right: "small" }} gap="xsmall">
+          <Expense />
+          <NumberFormat
+            prefix={"$"}
+            fixedDecimalScale
+            decimalScale={2}
+            value={this.props.node.data.get("amount") || 0}
+            displayType={"text"}
+          />
         </Row>
-        <CheckboxLabel checked={checked} contentEditable={!this.props.readOnly} suppressContentEditableWarning>
+        <ExpenseLabel incurred={checked} contentEditable={!this.props.readOnly} suppressContentEditableWarning>
           {this.props.children}
-        </CheckboxLabel>
-      </CheckboxContainer>
+        </ExpenseLabel>
+        <Button plain onClick={() => {}} disabled={isAuthoringMode(this.props.editor)} label="Mark as incurred" />
+      </ExpenseContainer>
     );
   }
 }
 
-export const ChecklistPlugin = (_options?: {}): Plugin => {
+export const ExpensePlugin = (_options?: {}): Plugin => {
   return {
     renderBlock(props, editor, next) {
       switch (props.node.type) {
-        case "check-list-item":
-          return <CheckListItem {...props} />;
+        case "expense-item":
+          return <ExpenseItem {...props} />;
         default:
           return next();
       }
@@ -64,10 +75,10 @@ export const ChecklistPlugin = (_options?: {}): Plugin => {
       const { value } = editor;
       const key = (event as any).key;
 
-      if (key === "Enter" && value.startBlock.type === "check-list-item") {
+      if (key === "Enter" && value.startBlock.type === "expense-item") {
         // On starting a new line with the enter key, add a new block of the same type that isn't checked below by splitting the current block
         if (value.startText.text.length > 0) {
-          editor.splitBlock().setBlocks({ data: { checked: false } } as any);
+          editor.splitBlock().setBlocks({ data: { incurred: false, amountSubunits: 0 } } as any);
         } else {
           editor.setBlocks("paragraph");
         }
@@ -77,7 +88,7 @@ export const ChecklistPlugin = (_options?: {}): Plugin => {
       if (
         key === "Backspace" &&
         value.selection.isCollapsed &&
-        value.startBlock.type === "check-list-item" &&
+        value.startBlock.type === "expense-item" &&
         value.selection.start.offset === 0
       ) {
         editor.setBlocks("paragraph");

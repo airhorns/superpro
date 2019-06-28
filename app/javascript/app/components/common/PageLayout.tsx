@@ -1,12 +1,13 @@
 import React from "react";
-import { Box, Heading } from "grommet";
+import { Box, Heading, Text } from "grommet";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { Row } from "flurishlib";
 
 const StaticBreadcrumbs = {
   home: { text: "Home", path: "/" },
-  entities: { text: "Entities", path: "/entities" },
+  budget: { text: "Budget", path: "/budget" },
+  processes: { text: "Processes", path: "/tasks/processes" },
   settings: { text: "Settings", path: null },
   connectionSettings: { text: "Connections", path: "/settings/connections" }
 };
@@ -40,7 +41,7 @@ export class PageLayout extends React.Component<PageLayoutProps> {
     fullHeight: false
   };
 
-  breadcrumbs() {
+  renderBreadcrumbs() {
     if (!this.props.breadcrumbs) {
       return;
     }
@@ -64,14 +65,18 @@ export class PageLayout extends React.Component<PageLayoutProps> {
     });
 
     routes.unshift({ path: "/", text: "Home", breadcrumbName: "fixed-home" });
+    const lastIndex = routes.length - 1;
 
-    return {
-      routes,
-      itemRender(route: Route, _params: any, routes: Route[]) {
-        const isLastItem = routes.indexOf(route) === routes.length - 1;
-        return route.path && !isLastItem ? <Link to={route.path}>{route.text}</Link> : <span>{route.text}</span>;
-      }
-    };
+    return (
+      <Row margin={{ top: "xsmall", left: "small" }}>
+        {routes.map((route, index) => (
+          <Row key={index}>
+            <Text size="small">{route.path ? <Link to={route.path}>{route.text}</Link> : route.text}</Text>
+            <Box pad={{ horizontal: "xsmall" }}>{index == lastIndex ? null : <Text size="small">/</Text>}</Box>
+          </Row>
+        ))}
+      </Row>
+    );
   }
 
   componentDidMount() {
@@ -79,17 +84,19 @@ export class PageLayout extends React.Component<PageLayoutProps> {
   }
 
   render() {
+    const breadcrumbs = this.renderBreadcrumbs();
     return (
       <Box flex>
         <Helmet>
           <title>{this.props.documentTitle || this.props.title} - Flurish</title>
         </Helmet>
+        {breadcrumbs}
         <Row
           tag="header"
           background="white"
           align="center"
           justify="between"
-          pad="small"
+          pad={{ horizontal: "small", bottom: "small", top: breadcrumbs ? undefined : "small" }}
           responsive={false}
           style={{ position: "relative" }}
           border={{ color: "light-2", side: "bottom" }}

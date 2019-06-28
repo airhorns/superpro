@@ -1,15 +1,11 @@
-import { isString } from "lodash";
+import { isString, isNumber, isBoolean } from "lodash";
 import { SchemaProperties } from "slate";
 
 export const ProcessSchema: SchemaProperties = {
   document: {
-    nodes: [{ match: { type: "stage" }, min: 1 }]
+    data: { mode: isString }
   },
   blocks: {
-    stage: {
-      data: { title: isString },
-      nodes: [{ match: { object: "block" } }]
-    },
     paragraph: {},
     "heading-one": {},
     "heading-two": {},
@@ -17,6 +13,17 @@ export const ProcessSchema: SchemaProperties = {
     image: {
       isVoid: true
     },
-    "check-list-item": {}
-  }
+    "check-list-item": {},
+    "expense-item": {
+      data: {
+        incurred: isBoolean,
+        amountSubunits: isNumber
+      }
+    },
+    deadline: {
+      nodes: [{ match: { object: "inline" } }, { match: { object: "text" } }],
+      data: { dueDate: () => true }
+    }
+  },
+  inlines: {}
 };
