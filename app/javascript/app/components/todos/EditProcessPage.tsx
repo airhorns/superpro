@@ -1,7 +1,7 @@
 import React from "react";
 import { Page, HoverEditor, SavingNotice, SavingNoticeState } from "../common";
 import { ProcessEditor } from "./process_editor/ProcessEditor";
-import { Row, mutationSuccessful, toast, LinkButton } from "flurishlib";
+import { Row, mutationSuccess, toast, LinkButton } from "flurishlib";
 import gql from "graphql-tag";
 import { SuperForm, ObjectBackend } from "flurishlib/superform";
 import { GetProcessTemplateForEditComponent, UpdateProcessTemplateMutationFn, UpdateProcessTemplateComponent } from "app/app-graph";
@@ -53,7 +53,7 @@ export default class extends Page<{ id: string }, SavingNoticeState> {
           }
         }
       });
-      if (mutationSuccessful(result)) {
+      if (mutationSuccess(result, "updateProcessTemplate")) {
         this.setState({ lastSaveAt: new Date() });
       } else {
         toast.error("There was an error saving this process. Please try again.");
@@ -75,7 +75,16 @@ export default class extends Page<{ id: string }, SavingNoticeState> {
           <UpdateProcessTemplateComponent>
             {update => (
               <SuperForm<ProcessTemplateFormValues>
-                initialValues={{ processTemplate: { ...data.processTemplate, document: Value.fromJSON(data.processTemplate.document) } }}
+                initialValues={{
+                  processTemplate: {
+                    ...data.processTemplate,
+                    document: Value.fromJSON({
+                      object: "value",
+                      document: data.processTemplate.document,
+                      data: { mode: "authoring" }
+                    } as any)
+                  }
+                }}
                 onChange={doc => this.handleChange(update, doc)}
                 backendClass={ObjectBackend}
               >

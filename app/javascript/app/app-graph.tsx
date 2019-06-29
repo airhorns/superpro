@@ -326,6 +326,7 @@ export type ProcessExecution = {
   name: Scalars["String"];
   owner: User;
   processTemplate?: Maybe<ProcessTemplate>;
+  startedAt: Scalars["ISO8601DateTime"];
   updatedAt: Scalars["ISO8601DateTime"];
 };
 
@@ -372,7 +373,9 @@ export type ProcessTemplate = {
   creator: User;
   discardedAt: Scalars["ISO8601DateTime"];
   document: Scalars["JSONScalar"];
+  executionCount: Scalars["Int"];
   id: Scalars["ID"];
+  lastExecution?: Maybe<ProcessExecution>;
   name: Scalars["String"];
   updatedAt: Scalars["ISO8601DateTime"];
 };
@@ -564,6 +567,7 @@ export type GetAllProcessTemplatesQuery = { __typename?: "AppQuery" } & {
     nodes: Array<
       { __typename?: "ProcessTemplate" } & Pick<ProcessTemplate, "id" | "name"> & { key: ProcessTemplate["id"] } & {
           creator: { __typename?: "User" } & UserCardFragment;
+          lastExecution: Maybe<{ __typename?: "ProcessExecution" } & Pick<ProcessExecution, "id" | "startedAt" | "createdAt">>;
         }
     >;
   };
@@ -580,13 +584,42 @@ export type CreateNewProcessTemplateMutation = { __typename?: "AppMutation" } & 
   >;
 };
 
+export type GetProcessExecutionForRunQueryVariables = {
+  id: Scalars["ID"];
+};
+
+export type GetProcessExecutionForRunQuery = { __typename?: "AppQuery" } & {
+  processExecution: Maybe<
+    { __typename?: "ProcessExecution" } & Pick<ProcessExecution, "id" | "name" | "document" | "createdAt" | "updatedAt"> & {
+        owner: { __typename?: "User" } & Pick<User, "id">;
+        processTemplate: Maybe<{ __typename?: "ProcessTemplate" } & Pick<ProcessTemplate, "id" | "name">>;
+      }
+  >;
+  currentUser: { __typename?: "User" } & Pick<User, "id">;
+  users: { __typename?: "UserConnection" } & { nodes: Array<{ __typename?: "User" } & UserCardFragment> };
+};
+
+export type UpdateProcessExecutionMutationVariables = {
+  id: Scalars["ID"];
+  attributes: ProcessExecutionAttributes;
+};
+
+export type UpdateProcessExecutionMutation = { __typename?: "AppMutation" } & {
+  updateProcessExecution: Maybe<
+    { __typename?: "UpdateProcessExecutionPayload" } & {
+      processExecution: Maybe<{ __typename?: "ProcessExecution" } & Pick<ProcessExecution, "id" | "updatedAt">>;
+      errors: Maybe<Array<{ __typename?: "MutationError" } & Pick<MutationError, "fullMessage">>>;
+    }
+  >;
+};
+
 export type GetProcessTemplateForStartQueryVariables = {
   id: Scalars["ID"];
 };
 
 export type GetProcessTemplateForStartQuery = { __typename?: "AppQuery" } & {
   processTemplate: Maybe<
-    { __typename?: "ProcessTemplate" } & Pick<ProcessTemplate, "id" | "name" | "document" | "createdAt" | "updatedAt">
+    { __typename?: "ProcessTemplate" } & Pick<ProcessTemplate, "id" | "name" | "document" | "createdAt" | "updatedAt" | "executionCount">
   >;
   currentUser: { __typename?: "User" } & Pick<User, "id">;
   users: { __typename?: "UserConnection" } & { nodes: Array<{ __typename?: "User" } & UserCardFragment> };
@@ -794,6 +827,11 @@ export const GetAllProcessTemplatesDocument = gql`
         creator {
           ...UserCard
         }
+        lastExecution {
+          id
+          startedAt
+          createdAt
+        }
       }
     }
   }
@@ -836,6 +874,75 @@ export const CreateNewProcessTemplateComponent = (props: CreateNewProcessTemplat
   />
 );
 
+export const GetProcessExecutionForRunDocument = gql`
+  query GetProcessExecutionForRun($id: ID!) {
+    processExecution(id: $id) {
+      id
+      name
+      document
+      owner {
+        id
+      }
+      processTemplate {
+        id
+        name
+      }
+      createdAt
+      updatedAt
+    }
+    currentUser {
+      id
+    }
+    users {
+      nodes {
+        ...UserCard
+      }
+    }
+  }
+  ${UserCardFragmentDoc}
+`;
+export type GetProcessExecutionForRunComponentProps = Omit<
+  ReactApollo.QueryProps<GetProcessExecutionForRunQuery, GetProcessExecutionForRunQueryVariables>,
+  "query"
+> &
+  ({ variables: GetProcessExecutionForRunQueryVariables; skip?: false } | { skip: true });
+
+export const GetProcessExecutionForRunComponent = (props: GetProcessExecutionForRunComponentProps) => (
+  <ReactApollo.Query<GetProcessExecutionForRunQuery, GetProcessExecutionForRunQueryVariables>
+    query={GetProcessExecutionForRunDocument}
+    {...props}
+  />
+);
+
+export const UpdateProcessExecutionDocument = gql`
+  mutation UpdateProcessExecution($id: ID!, $attributes: ProcessExecutionAttributes!) {
+    updateProcessExecution(id: $id, attributes: $attributes) {
+      processExecution {
+        id
+        updatedAt
+      }
+      errors {
+        fullMessage
+      }
+    }
+  }
+`;
+export type UpdateProcessExecutionMutationFn = ReactApollo.MutationFn<
+  UpdateProcessExecutionMutation,
+  UpdateProcessExecutionMutationVariables
+>;
+export type UpdateProcessExecutionComponentProps = Omit<
+  ReactApollo.MutationProps<UpdateProcessExecutionMutation, UpdateProcessExecutionMutationVariables>,
+  "mutation"
+>;
+
+export const UpdateProcessExecutionComponent = (props: UpdateProcessExecutionComponentProps) => (
+  <ReactApollo.Mutation<UpdateProcessExecutionMutation, UpdateProcessExecutionMutationVariables>
+    mutation={UpdateProcessExecutionDocument}
+    {...props}
+  />
+);
+
 export const GetProcessTemplateForStartDocument = gql`
   query GetProcessTemplateForStart($id: ID!) {
     processTemplate(id: $id) {
@@ -844,6 +951,7 @@ export const GetProcessTemplateForStartDocument = gql`
       document
       createdAt
       updatedAt
+      executionCount
     }
     currentUser {
       id

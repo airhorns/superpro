@@ -9,11 +9,12 @@ import {
   CreateNewProcessTemplateMutationFn,
   GetAllProcessTemplatesQuery
 } from "app/app-graph";
-import { Spin, mutationSuccessful, toast, Link, Row, LinkButton } from "flurishlib";
+import { Spin, mutationSuccess, toast, Link, Row, LinkButton } from "flurishlib";
 import { History } from "history";
 import { withRouter, RouteComponentProps } from "react-router";
 import { WaterTable } from "flurishlib/WaterTable";
 import { ArrayElementType } from "app/lib/types";
+import { DateTime } from "luxon";
 
 gql`
   query GetAllProcessTemplates {
@@ -24,6 +25,11 @@ gql`
         name
         creator {
           ...UserCard
+        }
+        lastExecution {
+          id
+          startedAt
+          createdAt
         }
       }
     }
@@ -48,9 +54,10 @@ export const createAndVisitProcessTemplate = async (mutate: CreateNewProcessTemp
     result = await mutate();
   } catch (e) {}
 
-  if (mutationSuccessful(result) && result.data) {
+  const data = mutationSuccess(result, "createProcessTemplate");
+  if (data) {
     success = true;
-    history.push(`/todos/processes/${result.data.createProcessTemplate.processTemplate.id}`);
+    history.push(`/todos/processes/${data.processTemplate.id}`);
   }
 
   if (!success) {
@@ -102,7 +109,22 @@ export default withRouter((props: RouteComponentProps) => {
                 {
                   header: "Last Run",
                   key: "last_run",
-                  render: () => <Text>Never</Text>
+                  render: processTemplate => {
+                    if (processTemplate.lastExecution) {
+                      return (
+                        <>
+                          <Link to={`/todos/processes/run/${processTemplate.lastExecution.id}`}>
+                            {DateTime.fromISO(
+                              processTemplate.lastExecution.startedAt || processTemplate.lastExecution.createdAt
+                            ).toLocaleString(DateTime.DATE_FULL)}
+                          </Link>
+                          {!processTemplate.lastExecution.startedAt && <Text color="status-unknown">(paused)</Text>}
+                        </>
+                      );
+                    } else {
+                      return <Text>Never</Text>;
+                    }
+                  }
                 },
                 {
                   header: "",

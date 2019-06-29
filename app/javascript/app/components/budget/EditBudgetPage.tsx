@@ -13,7 +13,7 @@ import {
   BudgetLineValueAttributes
 } from "app/app-graph";
 import { SuperForm } from "flurishlib/superform";
-import { assert, mutationSuccessful, toast } from "flurishlib";
+import { assert, mutationSuccess, toast } from "flurishlib";
 import { BudgetTimeChart } from "./reports/BudgetTimeChart";
 import { dispatch } from "use-bus";
 import { DateTime } from "luxon";
@@ -136,7 +136,7 @@ export default class EditBudgetPage extends Page<{}, SavingNoticeState> {
           }
         }
       });
-      if (mutationSuccessful(result)) {
+      if (mutationSuccess(result, "updateBudget")) {
         this.setState({ lastSaveAt: new Date() });
         dispatch("budgets:refresh");
       } else {

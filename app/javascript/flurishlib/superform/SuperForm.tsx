@@ -4,6 +4,7 @@ import { FieldPath, DocType } from "./utils";
 import { ArrayHelpers } from "./ArrayHelpers";
 import { SuperFormContext } from ".";
 import { Backend, AutomergeBackend, Command } from "./Backends";
+import { Box } from "grommet";
 
 export interface SuperFormProps<T extends DocType> {
   children: (form: SuperForm<T>) => React.ReactNode;
@@ -116,32 +117,35 @@ export class SuperForm<T extends DocType> extends React.Component<SuperFormProps
   }
 
   canUndo() {
-    this.backend.canUndo();
+    return this.backend.canUndo();
   }
 
   canRedo() {
-    this.backend.canRedo();
+    return this.backend.canRedo();
   }
 
   undo() {
-    this.backend.undo();
+    return this.backend.undo();
   }
 
   redo() {
-    this.backend.redo();
+    return this.backend.redo();
   }
 
   render() {
     return (
       <SuperFormContext.Provider value={this}>
-        <form
+        <Box
+          as="form"
+          flex
+          className="SuperForm"
           onSubmit={e => {
             e.preventDefault();
             this.props.onSubmit && this.props.onSubmit(this.doc, this);
           }}
         >
           {this.props.children(this)}
-        </form>
+        </Box>
       </SuperFormContext.Provider>
     );
   }

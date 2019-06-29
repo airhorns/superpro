@@ -1,5 +1,5 @@
 import React from "react";
-import { Editor } from "slate-react";
+import { Editor, Plugin } from "slate-react";
 import {
   FontSize,
   BulletedList,
@@ -16,6 +16,7 @@ import {
   Deadline
 } from "app/components/common/FlurishIcons";
 import { Toolbar, ToolbarButton, ToolbarDivider, ToggleMarkToolbarButton, ToggleBlockToolbarButton } from "./Toolbar";
+import { Box } from "grommet";
 
 export class ProcessEditorToolbar extends React.Component<{ editor: Editor }> {
   undo = (event: React.SyntheticEvent) => {
@@ -61,3 +62,16 @@ export class ProcessEditorToolbar extends React.Component<{ editor: Editor }> {
     );
   }
 }
+
+export const ProcessEditorToolbarPlugin = (): Plugin => {
+  return {
+    renderEditor(props, editor, next) {
+      return (
+        <Box flex pad="small">
+          <ProcessEditorToolbar editor={editor as any} />
+          {next()}
+        </Box>
+      );
+    }
+  };
+};

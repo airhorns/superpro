@@ -8,9 +8,12 @@ import { BasicFormattingPlugin } from "./BasicFormattingPlugin";
 import { ExpensePlugin } from "./ExpensePlugin";
 import { GlobalHotkeysPlugin } from "./GlobalHotkeysPlugin";
 import { RichShortcutsPlugin } from "./RichShortcutsPlugin";
+import { HideVerboseContentPlugin } from "./HideVerboseContentPlugin";
+import { ProcessEditorToolbarPlugin } from "./ProcessEditorToolbar";
 // import Lists from "@convertkit/slate-lists";
 
 export const Plugins = [
+  HideVerboseContentPlugin(),
   ChecklistPlugin(),
   ExpensePlugin(),
   DeadlinesPlugin(),
@@ -20,7 +23,8 @@ export const Plugins = [
   GlobalHotkeysPlugin(),
   BasicFormattingPlugin(),
   SimpleListsPlugin(),
-  RichShortcutsPlugin()
+  RichShortcutsPlugin(),
+  ProcessEditorToolbarPlugin()
   // Lists({
   //   blocks: {
   //     ordered_list: "ordered-list",

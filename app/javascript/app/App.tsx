@@ -18,6 +18,7 @@ const EditBudgetPage = React.lazy(() => import("./components/budget/EditBudgetPa
 const ProcessesIndexPage = React.lazy(() => import("./components/todos/ProcessesIndexPage"));
 const EditProcessPage = React.lazy(() => import("./components/todos/EditProcessPage"));
 const StartProcessPage = React.lazy(() => import("./components/todos/StartProcessPage"));
+const RunProcessPage = React.lazy(() => import("./components/todos/RunProcessPage"));
 
 export const FlurishClient = getClient();
 
@@ -33,7 +34,7 @@ export const App = () => {
                 <HotkeysContainer>
                   <Box fill direction="row-responsive" id="flurish-root" style={{ width: "100vw", height: "100vh" }}>
                     <AppSidebar />
-                    <Box flex overflow={{ vertical: "auto" }}>
+                    <Box flex overflow={{ vertical: "auto" }} className="App-container">
                       <React.Suspense fallback={<PageLoadSpin />}>
                         <Switch>
                           <Route path="/" exact component={HomePage} />
@@ -44,6 +45,7 @@ export const App = () => {
                           <Route path="/todos/processes" exact component={ProcessesIndexPage} />
                           <Route path="/todos/processes/:id" exact component={EditProcessPage} />
                           <Route path="/todos/processes/:id/start" exact component={StartProcessPage} />
+                          <Route path="/todos/processes/run/:id" exact component={RunProcessPage} />
                           <Route component={NotFoundPage} />
                         </Switch>
                       </React.Suspense>

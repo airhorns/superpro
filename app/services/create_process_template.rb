@@ -1,9 +1,7 @@
 class CreateProcessTemplate
   DEFAULT_DOCUMENT = {
     document: {
-      data: {
-        mode: "authoring",
-      },
+      data: {},
       nodes: [
         {
           object: "block",

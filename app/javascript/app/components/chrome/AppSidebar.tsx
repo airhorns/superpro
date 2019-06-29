@@ -72,7 +72,7 @@ export const AppSidebar = withRouter(
                 <Flag name={["feature.todos"]}>
                   <NavigationSectionButton path="/todos" text="Todos" icon={<Todos />} onClick={this.close}>
                     <NavigationSubItemButton path="/todos" exact text="Todos" onClick={this.close} />
-                    <NavigationSubItemButton path="/todos/processes" exact text="Processes" onClick={this.close} />
+                    <NavigationSubItemButton path="/todos/processes" text="Processes" onClick={this.close} />
                   </NavigationSectionButton>
                 </Flag>
                 <NavigationSectionButton path="/budget" text="Budgets" icon={<Budget />} onClick={this.close}>
@@ -109,7 +109,7 @@ export const AppSidebar = withRouter(
       if (size === "small") {
         return (
           <>
-            <Row justify="center">
+            <Row justify="center" className="AppSidebar-container">
               <Box flex>
                 <Button
                   icon={<Menu />}
@@ -131,7 +131,7 @@ export const AppSidebar = withRouter(
         );
       } else {
         return (
-          <Box fill="vertical" width="small" background="light-2">
+          <Box fill="vertical" width="small" background="light-2" className="AppSidebar-container">
             {this.renderMenu()}
           </Box>
         );

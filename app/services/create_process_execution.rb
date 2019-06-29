@@ -11,8 +11,10 @@ class CreateProcessExecution
       process_execution.assign_attributes(attributes.except(:start_now)) if attributes
       process_execution.started_at = Time.now.utc if attributes[:start_now]
 
-      if process_execution.document.nil? and process_execution.process_template
-        process_execution.document = process_execution.process_template.document
+      if process_execution.process_template
+        if process_execution.document.nil?
+          process_execution.document = process_execution.process_template.document
+        end
       end
 
       process_execution.save

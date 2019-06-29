@@ -1,10 +1,8 @@
-import { isString, isNumber, isBoolean } from "lodash";
+import { isNumber, isBoolean } from "lodash";
 import { SchemaProperties } from "slate";
 
 export const ProcessSchema: SchemaProperties = {
-  document: {
-    data: { mode: isString }
-  },
+  document: {},
   blocks: {
     paragraph: {},
     "heading-one": {},

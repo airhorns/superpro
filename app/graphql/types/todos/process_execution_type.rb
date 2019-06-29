@@ -6,6 +6,7 @@ class Types::Todos::ProcessExecutionType < Types::BaseObject
   field :document, Types::JSONScalar, null: false
   field :process_template, Types::Todos::ProcessTemplateType, null: true
 
+  field :started_at, GraphQL::Types::ISO8601DateTime, null: false
   field :created_at, GraphQL::Types::ISO8601DateTime, null: false
   field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
   field :discarded_at, GraphQL::Types::ISO8601DateTime, null: false

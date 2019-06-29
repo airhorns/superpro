@@ -1,7 +1,7 @@
 import React from "react";
-import { Page } from "../common";
+import { Page, HoverEditor } from "../common";
 import { ProcessEditor } from "./process_editor/ProcessEditor";
-import { Row, mutationSuccessful, toast, AutoAssert } from "flurishlib";
+import { Row, mutationSuccess, toast, AutoAssert } from "flurishlib";
 import gql from "graphql-tag";
 import { SuperForm, ObjectBackend } from "flurishlib/superform";
 import {
@@ -23,6 +23,7 @@ gql`
       document
       createdAt
       updatedAt
+      executionCount
     }
     currentUser {
       id
@@ -52,6 +53,7 @@ interface ProcessExecutionFormValues {
     name: string;
     document: Value;
     ownerId: string;
+    processTemplateId: string;
   };
 }
 
@@ -80,21 +82,25 @@ export default class extends Page<{ id: string }, StartProcessPageState> {
       });
     } catch (e) {}
 
-    if (mutationSuccessful(result) && result.data && result.data.processExecution.id) {
+    this.setState({ saving: false });
+
+    let data = mutationSuccess(result, "createProcessExecution");
+    if (data) {
+      this.props.history.push(`/todos/processes/run/${data.processExecution.id}`);
     } else {
       toast.error("There was an error saving this process. Please try again.");
     }
-    this.setState({ saving: false });
   };
 
   processDataForForm(data: AutoAssert<GetProcessTemplateForStartQuery>) {
     return {
       processExecution: {
-        name: data.processTemplate.name,
+        name: `${data.processTemplate.name} #${data.processTemplate.executionCount}`,
+        processTemplateId: data.processTemplate.id,
         document: Value.fromJSON({
-          ...data.processTemplate.document,
+          object: "value",
           document: {
-            ...data.processTemplate.document.document,
+            ...data.processTemplate.document,
             data: { mode: "starting" }
           }
         }),
@@ -113,8 +119,16 @@ export default class extends Page<{ id: string }, StartProcessPageState> {
                 {form => {
                   return (
                     <Page.Layout
-                      title={<Row gap="small">Start Process: {data.processTemplate.name}</Row>}
-                      documentTitle={`Start Process: ${data.processTemplate.name}`}
+                      title={
+                        <Row gap="small">
+                          Start Process:
+                          <HoverEditor
+                            value={form.getValue("processExecution.name")}
+                            onChange={e => form.setValue("processExecution.name", e.target.value)}
+                          />
+                        </Row>
+                      }
+                      documentTitle={`Start Process: ${form.getValue("processExecution.name")}`}
                       headerExtra={
                         <Row gap="small">
                           <Button
