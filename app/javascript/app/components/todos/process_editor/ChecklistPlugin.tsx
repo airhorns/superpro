@@ -3,8 +3,10 @@ import { Plugin, RenderBlockProps } from "slate-react";
 import styled from "styled-components";
 import { CheckBox } from "grommet";
 import { Row } from "flurishlib";
-import { isAuthoringMode } from "./utils";
+import { isAuthoringMode, isExecutionMode } from "./utils";
 import isHotkey from "is-hotkey";
+import { AvatarSelect } from "./AvatarSelect";
+import { ProcessEditorContext } from "./ProcessEditor";
 
 const CheckboxContainer = styled.div`
   display: flex;
@@ -22,6 +24,7 @@ const CheckboxLabel = styled.span<{ checked: boolean }>`
   flex: 1;
   ${props => `
     opacity: ${props.checked ? 0.666 : 1};
+    text-decoration: ${props.checked ? "line-through" : "none"};
   `}
 
   &:focus {
@@ -35,7 +38,7 @@ export class CheckListItem extends React.Component<RenderBlockProps> {
   onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const checked = event.target.checked;
     const { editor, node } = this.props;
-    editor.setNodeByKey(node.key, { data: { checked } } as any);
+    editor.setNodeByKey(node.key, { type: node.type, data: node.data.set("checked", checked) });
   };
 
   render() {
@@ -48,6 +51,25 @@ export class CheckListItem extends React.Component<RenderBlockProps> {
         <CheckboxLabel checked={checked} contentEditable={!this.props.readOnly} suppressContentEditableWarning>
           {this.props.children}
         </CheckboxLabel>
+        {isExecutionMode(this.props.editor) && (
+          <Row contentEditable={false}>
+            <ProcessEditorContext.Consumer>
+              {context => (
+                <AvatarSelect
+                  value={this.props.node.data.get("ownerId")}
+                  users={context.users}
+                  onChange={ownerId => {
+                    const node = this.props.node;
+                    this.props.editor.setNodeByKey(node.key, {
+                      type: node.type,
+                      data: node.data.set("ownerId", ownerId)
+                    });
+                  }}
+                />
+              )}
+            </ProcessEditorContext.Consumer>
+          </Row>
+        )}
       </CheckboxContainer>
     );
   }

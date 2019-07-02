@@ -736,20 +736,6 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@convertkit/slate-keymap@^0.1.8":
-  version "0.1.8"
-  resolved "https://registry.yarnpkg.com/@convertkit/slate-keymap/-/slate-keymap-0.1.8.tgz#a99fe0923c78c69166480a124a750b3342e49250"
-  integrity sha512-7KV/rsNvCHWNOt/9k7D2uwV3wAm9QMGs/iY+0eAY0IXzCoLEq2oZLjsUJkJfPLXP6yGSAPukkKtPRgoVQCMmZw==
-  dependencies:
-    is-hotkey "^0.1.4"
-
-"@convertkit/slate-lists@^0.2.3":
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/@convertkit/slate-lists/-/slate-lists-0.2.3.tgz#415f63f9557f684982c67c8f1e029d067020bc0f"
-  integrity sha512-AZnqNKtfxtBy0rAjgT2TDZ+KhipGx21k7Ht4MIQSmKETiNk4dUOhi2UIhfZY96Kv78MNCEbuVIgF1nfgoxxTTg==
-  dependencies:
-    "@convertkit/slate-keymap" "^0.1.8"
-
 "@csstools/convert-colors@^1.4.0":
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/@csstools/convert-colors/-/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"

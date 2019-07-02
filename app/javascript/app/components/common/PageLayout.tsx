@@ -86,7 +86,7 @@ export class PageLayout extends React.Component<PageLayoutProps> {
   render() {
     const breadcrumbs = this.renderBreadcrumbs();
     return (
-      <Box flex className="PageLayout-container">
+      <Box flex="grow" className="PageLayout-container">
         <Helmet>
           <title>{this.props.documentTitle || this.props.title} - Flurish</title>
         </Helmet>
@@ -107,7 +107,7 @@ export class PageLayout extends React.Component<PageLayoutProps> {
           </Heading>
           <Row>{this.props.headerExtra}</Row>
         </Row>
-        <Box flex pad={this.props.padded ? "medium" : undefined} className="PageLayout-content">
+        <Box flex="grow" pad={this.props.padded ? "medium" : undefined} className="PageLayout-content">
           {this.props.children}
         </Box>
       </Box>

@@ -6,16 +6,13 @@ class Types::Identity::UserType < Types::BaseObject
   field :locked, Boolean, null: false
   field :confirmed, Boolean, null: false
 
+  field :involved_process_executions, Types::Todos::ProcessExecutionType.connection_type, null: false
+
   field :created_at, GraphQL::Types::ISO8601DateTime, null: false
   field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
 
-  field :preferences, Types::Identity::UserPreferencesType, null: false
   field :accounts, [Types::Identity::AccountType], null: false
   field :auth_area_url, String, null: false
-
-  def preferences
-    { sidebar_expanded: false }
-  end
 
   def accounts
     object.permissioned_accounts.kept

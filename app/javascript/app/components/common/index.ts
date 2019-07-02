@@ -16,4 +16,5 @@ export * from "./UserAvatar";
 export * from "./UserCard";
 export * from "../../../flurishlib/Link";
 export * from "./DividerHeading";
+export * from "./ListPageCard";
 export * from "../../../flurishlib/SimpleModal";

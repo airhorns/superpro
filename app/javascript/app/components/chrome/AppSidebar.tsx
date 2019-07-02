@@ -16,9 +16,6 @@ gql`
     currentUser {
       email
       fullName
-      preferences {
-        sidebarExpanded
-      }
       authAreaUrl
     }
   }
@@ -71,7 +68,7 @@ export const AppSidebar = withRouter(
                 <NavigationSectionButton path="/launchpad" text="Launchpad" icon={<Launch />} onClick={this.close} />
                 <Flag name={["feature.todos"]}>
                   <NavigationSectionButton path="/todos" text="Todos" icon={<Todos />} onClick={this.close}>
-                    <NavigationSubItemButton path="/todos" exact text="Todos" onClick={this.close} />
+                    <NavigationSubItemButton path="/todos" exact text="My Todos" onClick={this.close} />
                     <NavigationSubItemButton path="/todos/processes" text="Processes" onClick={this.close} />
                   </NavigationSectionButton>
                 </Flag>

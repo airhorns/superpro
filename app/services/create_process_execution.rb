@@ -5,25 +5,16 @@ class CreateProcessExecution
   end
 
   def create(attributes = nil)
-    process_execution = @account.process_executions.build(name: "New Process Execution", creator: @user, owner: @user)
+    process_execution = @account.process_executions.build(name: "New Process Execution", creator: @user)
 
-    success = ProcessExecution.transaction do
-      process_execution.assign_attributes(attributes.except(:start_now)) if attributes
-      process_execution.started_at = Time.now.utc if attributes[:start_now]
-
-      if process_execution.process_template
-        if process_execution.document.nil?
-          process_execution.document = process_execution.process_template.document
-        end
-      end
-
-      process_execution.save
+    if attributes.delete(:start_now)
+      attributes[:started_at] = Time.now.utc
     end
 
-    if success
-      return process_execution, nil
-    else
-      return nil, process_execution.errors
+    if attributes[:process_template_id] && !attributes[:document]
+      attributes[:document] = @account.process_templates.find(attributes[:process_template_id]).document
     end
+
+    return UpdateProcessExecution.new(@account, @user).update(process_execution, attributes)
   end
 end

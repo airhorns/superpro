@@ -34,13 +34,13 @@ export const BasicFormattingPlugin = (): Plugin => {
           return <NiceBlockQuote {...props.attributes}>{props.children}</NiceBlockQuote>;
         case "heading-one":
           return (
-            <NiceHeading level="2" {...props.attributes}>
+            <NiceHeading level="3" {...props.attributes}>
               {props.children}
             </NiceHeading>
           );
         case "heading-two":
           return (
-            <NiceHeading level="3" {...props.attributes}>
+            <NiceHeading level="4" {...props.attributes}>
               {props.children}
             </NiceHeading>
           );

@@ -1,18 +1,8 @@
 import React from "react";
-import { Box } from "grommet";
-import { FieldBox, Select } from "flurishlib/superform";
-import { UserCard, UserCardProps } from "../common";
+import { Box, Button } from "grommet";
 
-export const ProcessExecutionForm = (props: { users: UserCardProps["user"][] }) => (
+export const ProcessExecutionForm = (props: {}) => (
   <Box pad="small">
-    <FieldBox label="Owner" path="processExecution.ownerId">
-      <Select
-        path="processExecution.ownerId"
-        options={props.users.map(user => ({
-          value: user.id,
-          label: <UserCard user={user} />
-        }))}
-      ></Select>
-    </FieldBox>
+    <Button>Assign All</Button>
   </Box>
 );

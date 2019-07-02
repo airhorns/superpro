@@ -16,7 +16,6 @@
   "dependencies": {
     "@babel/core": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
-    "@convertkit/slate-lists": "^0.2.3",
     "@cubejs-client/core": "^0.10.0",
     "@cubejs-client/react": "^0.10.0",
     "@graphql-codegen/add": "^1.0.0",

@@ -534,6 +534,39 @@ ALTER SEQUENCE public.flipper_gates_id_seq OWNED BY public.flipper_gates.id;
 
 
 --
+-- Name: process_execution_involved_users; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.process_execution_involved_users (
+    id bigint NOT NULL,
+    account_id bigint NOT NULL,
+    process_execution_id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: process_execution_involved_users_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.process_execution_involved_users_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: process_execution_involved_users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.process_execution_involved_users_id_seq OWNED BY public.process_execution_involved_users.id;
+
+
+--
 -- Name: process_executions; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -541,7 +574,6 @@ CREATE TABLE public.process_executions (
     id bigint NOT NULL,
     account_id bigint NOT NULL,
     creator_id bigint NOT NULL,
-    owner_id bigint NOT NULL,
     process_template_id bigint,
     name character varying NOT NULL,
     document json NOT NULL,
@@ -753,6 +785,13 @@ ALTER TABLE ONLY public.flipper_gates ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
+-- Name: process_execution_involved_users id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.process_execution_involved_users ALTER COLUMN id SET DEFAULT nextval('public.process_execution_involved_users_id_seq'::regclass);
+
+
+--
 -- Name: process_executions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -869,6 +908,14 @@ ALTER TABLE ONLY public.flipper_gates
 
 
 --
+-- Name: process_execution_involved_users process_execution_involved_users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.process_execution_involved_users
+    ADD CONSTRAINT process_execution_involved_users_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: process_executions process_executions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -979,14 +1026,6 @@ CREATE UNIQUE INDEX index_users_on_unlock_token ON public.users USING btree (unl
 
 
 --
--- Name: process_executions fk_rails_12560d43a1; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.process_executions
-    ADD CONSTRAINT fk_rails_12560d43a1 FOREIGN KEY (owner_id) REFERENCES public.users(id);
-
-
---
 -- Name: cells fk_rails_14b7e22a0a; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1000,6 +1039,14 @@ ALTER TABLE ONLY public.cells
 
 ALTER TABLE ONLY public.budget_lines
     ADD CONSTRAINT fk_rails_2f9acf8ea6 FOREIGN KEY (series_id) REFERENCES public.series(id);
+
+
+--
+-- Name: process_execution_involved_users fk_rails_3486d0e969; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.process_execution_involved_users
+    ADD CONSTRAINT fk_rails_3486d0e969 FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 --
@@ -1123,6 +1170,22 @@ ALTER TABLE ONLY public.budget_line_scenarios
 
 
 --
+-- Name: process_execution_involved_users fk_rails_b923e3df1e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.process_execution_involved_users
+    ADD CONSTRAINT fk_rails_b923e3df1e FOREIGN KEY (account_id) REFERENCES public.accounts(id);
+
+
+--
+-- Name: process_execution_involved_users fk_rails_b9507c7210; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.process_execution_involved_users
+    ADD CONSTRAINT fk_rails_b9507c7210 FOREIGN KEY (process_execution_id) REFERENCES public.process_executions(id);
+
+
+--
 -- Name: budget_lines fk_rails_bb40e0ae9f; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1177,6 +1240,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190624162800'),
 ('20190626154336'),
 ('20190628012359'),
-('20190628213439');
+('20190628213439'),
+('20190702165742');
 
 

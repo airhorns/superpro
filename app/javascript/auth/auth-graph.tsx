@@ -13,6 +13,8 @@ export type Scalars = {
   Float: number,
   /** An ISO 8601-encoded datetime */
   ISO8601DateTime: string,
+  /** Untyped JSON output useful for bags of values who's keys or types can't be predicted ahead of time. */
+  JSONScalar: any,
   /** Represents textual data as UTF-8 character sequences. This type is most often
    * used by GraphQL to represent free-form human-readable text.
  */
@@ -79,6 +81,7 @@ export type DiscardAccountPayload = {
 
 
 
+
 /** Error object describing a reason why a mutation was unsuccessful, specific to a particular field. */
 export type MutationError = {
   __typename?: 'MutationError',
@@ -94,6 +97,65 @@ export type MutationError = {
   relativeField: Scalars['String'],
 };
 
+/** Information about pagination in a connection. */
+export type PageInfo = {
+  __typename?: 'PageInfo',
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']>,
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean'],
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean'],
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']>,
+};
+
+export type ProcessExecution = {
+  __typename?: 'ProcessExecution',
+  createdAt: Scalars['ISO8601DateTime'],
+  creator: User,
+  discardedAt: Scalars['ISO8601DateTime'],
+  document: Scalars['JSONScalar'],
+  id: Scalars['ID'],
+  name: Scalars['String'],
+  processTemplate?: Maybe<ProcessTemplate>,
+  startedAt: Scalars['ISO8601DateTime'],
+  updatedAt: Scalars['ISO8601DateTime'],
+};
+
+/** The connection type for ProcessExecution. */
+export type ProcessExecutionConnection = {
+  __typename?: 'ProcessExecutionConnection',
+  /** A list of edges. */
+  edges: Array<ProcessExecutionEdge>,
+  /** A list of nodes. */
+  nodes: Array<ProcessExecution>,
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo,
+};
+
+/** An edge in a connection. */
+export type ProcessExecutionEdge = {
+  __typename?: 'ProcessExecutionEdge',
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'],
+  /** The item at the end of the edge. */
+  node?: Maybe<ProcessExecution>,
+};
+
+export type ProcessTemplate = {
+  __typename?: 'ProcessTemplate',
+  createdAt: Scalars['ISO8601DateTime'],
+  creator: User,
+  discardedAt: Scalars['ISO8601DateTime'],
+  document: Scalars['JSONScalar'],
+  executionCount: Scalars['Int'],
+  id: Scalars['ID'],
+  lastExecution?: Maybe<ProcessExecution>,
+  name: Scalars['String'],
+  updatedAt: Scalars['ISO8601DateTime'],
+};
+
 export type User = {
   __typename?: 'User',
   accounts: Array<Account>,
@@ -103,14 +165,17 @@ export type User = {
   email: Scalars['String'],
   fullName: Scalars['String'],
   id: Scalars['ID'],
+  involvedProcessExecutions: ProcessExecutionConnection,
   locked: Scalars['Boolean'],
-  preferences: UserPreferences,
   updatedAt: Scalars['ISO8601DateTime'],
 };
 
-export type UserPreferences = {
-  __typename?: 'UserPreferences',
-  sidebarExpanded: Scalars['Boolean'],
+
+export type UserInvolvedProcessExecutionsArgs = {
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
 };
 export type AllAccountsQueryVariables = {};
 

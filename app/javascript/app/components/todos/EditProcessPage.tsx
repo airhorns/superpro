@@ -17,6 +17,7 @@ gql`
       createdAt
       updatedAt
     }
+    ...ContextForProcessEditor
   }
 
   mutation UpdateProcessTemplate($id: ID!, $attributes: ProcessTemplateAttributes!) {
@@ -35,7 +36,7 @@ gql`
 interface ProcessTemplateFormValues {
   processTemplate: {
     name: string;
-    document: Value;
+    value: Value;
   };
 }
 
@@ -49,7 +50,7 @@ export default class extends Page<{ id: string }, SavingNoticeState> {
           id: this.props.match.params.id,
           attributes: {
             name: doc.processTemplate.name,
-            document: doc.processTemplate.document.toJSON()
+            document: doc.processTemplate.value.document.toJSON()
           }
         }
       });
@@ -78,7 +79,7 @@ export default class extends Page<{ id: string }, SavingNoticeState> {
                 initialValues={{
                   processTemplate: {
                     ...data.processTemplate,
-                    document: Value.fromJSON({
+                    value: Value.fromJSON({
                       object: "value",
                       document: data.processTemplate.document,
                       data: { mode: "authoring" }
@@ -112,9 +113,10 @@ export default class extends Page<{ id: string }, SavingNoticeState> {
                     >
                       <ProcessEditor
                         autoFocus
-                        value={form.getValue("processTemplate.document")}
+                        users={data.users.nodes}
+                        value={form.getValue("processTemplate.value")}
                         onChange={({ value }: { value: Value }) => {
-                          form.setValue("processTemplate.document", value);
+                          form.setValue("processTemplate.value", value);
                         }}
                       />
                     </Page.Layout>

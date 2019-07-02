@@ -1,4 +1,4 @@
-import { isNumber, isBoolean } from "lodash";
+import { isNumber, isNull, isString, isBoolean, isUndefined } from "lodash";
 import { SchemaProperties } from "slate";
 
 export const ProcessSchema: SchemaProperties = {
@@ -11,7 +11,12 @@ export const ProcessSchema: SchemaProperties = {
     image: {
       isVoid: true
     },
-    "check-list-item": {},
+    "check-list-item": {
+      data: {
+        checked: value => isUndefined(value) || isBoolean(value),
+        ownerId: value => isUndefined(value) || isNull(value) || isString(value)
+      }
+    },
     "expense-item": {
       data: {
         incurred: isBoolean,

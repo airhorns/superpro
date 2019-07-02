@@ -1,10 +1,10 @@
 import React from "react";
 import { compact } from "lodash";
-import { Page, SavingNoticeState, SavingNotice, UserCard, HoverEditor } from "../common";
+import { Page, SavingNoticeState, SavingNotice, HoverEditor } from "../common";
 import { ProcessEditor } from "./process_editor/ProcessEditor";
 import { mutationSuccess, toast, AutoAssert, Row } from "flurishlib";
 import gql from "graphql-tag";
-import { SuperForm, ObjectBackend, FieldBox, Select } from "flurishlib/superform";
+import { SuperForm, ObjectBackend } from "flurishlib/superform";
 import {
   GetProcessExecutionForRunComponent,
   UpdateProcessExecutionComponent,
@@ -13,7 +13,6 @@ import {
 } from "app/app-graph";
 import { Value } from "slate";
 import { debounce } from "lodash";
-import { Box, CheckBox } from "grommet";
 
 gql`
   query GetProcessExecutionForRun($id: ID!) {
@@ -21,9 +20,6 @@ gql`
       id
       name
       document
-      owner {
-        id
-      }
       processTemplate {
         id
         name
@@ -31,14 +27,7 @@ gql`
       createdAt
       updatedAt
     }
-    currentUser {
-      id
-    }
-    users {
-      nodes {
-        ...UserCard
-      }
-    }
+    ...ContextForProcessEditor
   }
 
   mutation UpdateProcessExecution($id: ID!, $attributes: ProcessExecutionAttributes!) {
@@ -57,17 +46,12 @@ gql`
 interface ProcessExecutionFormValues {
   processExecution: {
     name: string;
-    document: Value;
-    ownerId: string;
+    value: Value;
   };
 }
 
-interface RunProcessPageState extends SavingNoticeState {
-  showVerboseContent: boolean;
-}
-
-export default class extends Page<{ id: string }, RunProcessPageState> {
-  state: RunProcessPageState = { lastSaveAt: null, lastChangeAt: null, showVerboseContent: false };
+export default class extends Page<{ id: string }, SavingNoticeState> {
+  state: SavingNoticeState = { lastSaveAt: null, lastChangeAt: null };
 
   debouncedSave = debounce(
     async (doc: ProcessExecutionFormValues, update: UpdateProcessExecutionMutationFn) => {
@@ -75,7 +59,7 @@ export default class extends Page<{ id: string }, RunProcessPageState> {
         variables: {
           id: this.props.match.params.id,
           attributes: {
-            document: doc.processExecution.document.toJSON()
+            document: doc.processExecution.value.document.toJSON()
           }
         }
       });
@@ -98,12 +82,11 @@ export default class extends Page<{ id: string }, RunProcessPageState> {
     return {
       processExecution: {
         name: data.processExecution.name,
-        document: Value.fromJSON({
+        value: Value.fromJSON({
           object: "value",
           document: data.processExecution.document,
-          data: { mode: "configuration", showVerboseContent: this.state.showVerboseContent } as any
-        }),
-        ownerId: data.processExecution.owner && data.processExecution.owner.id
+          data: { mode: "configuration" } as any
+        })
       }
     };
   }
@@ -142,29 +125,11 @@ export default class extends Page<{ id: string }, RunProcessPageState> {
                       ])}
                       padded={false}
                     >
-                      <Box pad="small">
-                        <FieldBox label="Owner" path="processExecution.ownerId">
-                          <Select
-                            path="processExecution.ownerId"
-                            options={data.users.nodes.map(user => ({
-                              value: user.id,
-                              label: <UserCard user={user} />
-                            }))}
-                          ></Select>
-                        </FieldBox>
-                        <CheckBox
-                          label="Show Instructions"
-                          toggle
-                          checked={this.state.showVerboseContent}
-                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                            this.setState({ showVerboseContent: e.target.checked });
-                          }}
-                        />
-                      </Box>
                       <ProcessEditor
-                        value={form.getValue("processExecution.document")}
+                        users={data.users.nodes}
+                        value={form.getValue("processExecution.value")}
                         onChange={({ value }: { value: Value }) => {
-                          form.setValue("processExecution.document", value);
+                          form.setValue("processExecution.value", value);
                         }}
                         autoFocus={false}
                       />

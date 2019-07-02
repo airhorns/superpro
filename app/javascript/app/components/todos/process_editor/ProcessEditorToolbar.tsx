@@ -17,6 +17,7 @@ import {
 } from "app/components/common/FlurishIcons";
 import { Toolbar, ToolbarButton, ToolbarDivider, ToggleMarkToolbarButton, ToggleBlockToolbarButton } from "./Toolbar";
 import { Box } from "grommet";
+import { isUndefined } from "util";
 
 export class ProcessEditorToolbar extends React.Component<{ editor: Editor }> {
   undo = (event: React.SyntheticEvent) => {
@@ -58,6 +59,7 @@ export class ProcessEditorToolbar extends React.Component<{ editor: Editor }> {
           newBlockData={{ amountSubunits: 0, incurred: false }}
         />
         <ToolbarButton active={false} icon={Deadline} onClick={this.addDeadline} />
+        <ToolbarDivider />
       </Toolbar>
     );
   }
@@ -66,9 +68,12 @@ export class ProcessEditorToolbar extends React.Component<{ editor: Editor }> {
 export const ProcessEditorToolbarPlugin = (): Plugin => {
   return {
     renderEditor(props, editor, next) {
+      let showToolbar = editor.value.data.get("showToolbar");
+      if (isUndefined(showToolbar)) showToolbar = true;
+
       return (
         <Box flex pad="small">
-          <ProcessEditorToolbar editor={editor as any} />
+          {showToolbar && <ProcessEditorToolbar editor={editor as any} />}
           {next()}
         </Box>
       );

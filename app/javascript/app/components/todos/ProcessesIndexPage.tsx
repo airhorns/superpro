@@ -1,13 +1,15 @@
 import React from "react";
 import { Button, Box, Text } from "grommet";
-import { Page, UserCard, TrashButton } from "../common";
+import { Page, UserCard, MutationTrashButton } from "../common";
 import { Add } from "../common/FlurishIcons";
 import gql from "graphql-tag";
 import {
   GetAllProcessTemplatesComponent,
   CreateNewProcessTemplateComponent,
   CreateNewProcessTemplateMutationFn,
-  GetAllProcessTemplatesQuery
+  GetAllProcessTemplatesQuery,
+  DiscardProcessTemplateComponent,
+  GetAllProcessTemplatesDocument
 } from "app/app-graph";
 import { Spin, mutationSuccess, toast, Link, Row, LinkButton } from "flurishlib";
 import { History } from "history";
@@ -39,6 +41,18 @@ gql`
     createProcessTemplate {
       processTemplate {
         id
+      }
+      errors {
+        fullMessage
+      }
+    }
+  }
+
+  mutation DiscardProcessTemplate($id: ID!) {
+    discardProcessTemplate(id: $id) {
+      processTemplate {
+        id
+        discardedAt
       }
       errors {
         fullMessage
@@ -132,7 +146,14 @@ export default withRouter((props: RouteComponentProps) => {
                   render: processTemplate => (
                     <Row gap="small">
                       <LinkButton to={`/todos/processes/${processTemplate.id}/start`} label="Run Now" />
-                      <TrashButton onClick={() => {}} />
+                      <MutationTrashButton
+                        mutationComponent={DiscardProcessTemplateComponent}
+                        mutationProps={{
+                          variables: { id: processTemplate.id },
+                          refetchQueries: [{ query: GetAllProcessTemplatesDocument }]
+                        }}
+                        resourceName="process template"
+                      />
                     </Row>
                   )
                 }

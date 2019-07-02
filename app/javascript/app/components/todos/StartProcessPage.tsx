@@ -13,7 +13,6 @@ import {
 } from "app/app-graph";
 import { Value } from "slate";
 import { Button } from "grommet";
-import { ProcessExecutionForm } from "./ProcessExecutionForm";
 
 gql`
   query GetProcessTemplateForStart($id: ID!) {
@@ -25,14 +24,7 @@ gql`
       updatedAt
       executionCount
     }
-    currentUser {
-      id
-    }
-    users {
-      nodes {
-        ...UserCard
-      }
-    }
+    ...ContextForProcessEditor
   }
 
   mutation StartProcessExecution($attributes: ProcessExecutionAttributes!) {
@@ -51,8 +43,7 @@ gql`
 interface ProcessExecutionFormValues {
   processExecution: {
     name: string;
-    document: Value;
-    ownerId: string;
+    value: Value;
     processTemplateId: string;
   };
 }
@@ -74,9 +65,10 @@ export default class extends Page<{ id: string }, StartProcessPageState> {
       result = await update({
         variables: {
           attributes: {
-            ...form.processExecution,
-            ...extra,
-            document: form.processExecution.document.toJSON()
+            name: form.processExecution.name,
+            processTemplateId: form.processExecution.processTemplateId,
+            document: form.processExecution.value.document.toJSON(),
+            ...extra
           }
         }
       });
@@ -97,14 +89,13 @@ export default class extends Page<{ id: string }, StartProcessPageState> {
       processExecution: {
         name: `${data.processTemplate.name} #${data.processTemplate.executionCount}`,
         processTemplateId: data.processTemplate.id,
-        document: Value.fromJSON({
+        value: Value.fromJSON({
           object: "value",
           document: {
             ...data.processTemplate.document,
             data: { mode: "starting" }
           }
-        }),
-        ownerId: data.currentUser.id
+        })
       }
     };
   }
@@ -149,12 +140,12 @@ export default class extends Page<{ id: string }, StartProcessPageState> {
                       breadcrumbs={["processes", { text: data.processTemplate.name, path: `/todos/processes/${data.processTemplate.id}` }]}
                       padded={false}
                     >
-                      <ProcessExecutionForm users={data.users.nodes} />
                       <ProcessEditor
                         readOnly={this.state.saving}
-                        value={form.getValue("processExecution.document")}
+                        users={data.users.nodes}
+                        value={form.getValue("processExecution.value")}
                         onChange={({ value }: { value: Value }) => {
-                          form.setValue("processExecution.document", value);
+                          form.setValue("processExecution.value", value);
                         }}
                         autoFocus={false}
                       />

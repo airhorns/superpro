@@ -46,7 +46,8 @@ class User < ApplicationRecord
   has_many :created_process_executions, foreign_key: :creator_id, inverse_of: :creator, class_name: "ProcessExecution", dependent: :restrict_with_exception
 
   # Todos
-  has_many :owned_process_executions, foreign_key: :owner_id, inverse_of: :owner, class_name: "ProcessExecution", dependent: :restrict_with_exception
+  has_many :process_execution_involved_users, dependent: :restrict_with_exception
+  has_many :involved_process_executions, through: :process_execution_involved_users, source: :process_execution
 
   # Auth
   has_many :account_user_permissions, inverse_of: :user, dependent: :destroy

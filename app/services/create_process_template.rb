@@ -1,20 +1,35 @@
 class CreateProcessTemplate
+  EMPTY_DOCUMENT = {
+    object: "document",
+    data: {},
+    nodes: [
+      {
+        object: "block",
+        type: "paragraph",
+        nodes: [
+          {
+            object: "text",
+            text: "",
+          },
+        ],
+      },
+    ],
+  }
   DEFAULT_DOCUMENT = {
-    document: {
-      data: {},
-      nodes: [
-        {
-          object: "block",
-          type: "paragraph",
-          nodes: [
-            {
-              object: "text",
-              text: "<TBD>",
-            },
-          ],
-        },
-      ],
-    },
+    object: "document",
+    data: {},
+    nodes: [
+      {
+        object: "block",
+        type: "paragraph",
+        nodes: [
+          {
+            object: "text",
+            text: "<TBD>",
+          },
+        ],
+      },
+    ],
   }
 
   def initialize(account, user)
@@ -23,7 +38,7 @@ class CreateProcessTemplate
   end
 
   def create(attributes = nil)
-    process_template = @account.process_templates.build(name: "New Process Template", document: DEFAULT_DOCUMENT, creator: @user)
+    process_template = @account.process_templates.build(name: "New Process", document: DEFAULT_DOCUMENT, creator: @user)
 
     success = ProcessTemplate.transaction do
       process_template.assign_attributes(attributes) if attributes
