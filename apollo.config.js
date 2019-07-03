@@ -2,12 +2,8 @@ module.exports = {
   client: {
     service: {
       name: "flurish",
-      url: "https://ggt.dev/edit/graphql",
-      headers: {
-        "x-trusted-dev-client": "yes"
-      },
-      skipSSLValidation: true
+      localSchemaFile: "./tmp/app-schema.graphql"
     },
-    includes: ['./app/javascript/edit/**/*.{ts,tsx}']
+    includes: ["./app/javascript/app/**/*.{ts,tsx}"]
   }
 };

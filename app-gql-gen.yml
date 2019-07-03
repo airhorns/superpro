@@ -23,3 +23,6 @@ generates:
     plugins:
       - add: "// THIS IS A GENERATED FILE! You shouldn't edit it manually. Regenerate it using yarn `generate-graphql`."
       - fragment-matcher
+  tmp/app-schema.graphql:
+    plugins:
+      - schema-ast
