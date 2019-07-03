@@ -107,7 +107,7 @@ export default class extends Page<{ id: string }, SavingNoticeState> {
                     <Page.Layout
                       title={
                         <Row gap="small">
-                          Process:
+                          Running Process:
                           <HoverEditor
                             value={form.getValue("processExecution.name")}
                             onChange={e => form.setValue("processExecution.name", e.target.value)}

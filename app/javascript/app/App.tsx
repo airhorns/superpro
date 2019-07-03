@@ -19,7 +19,7 @@ const TodosIndexPage = React.lazy(() => import("./components/todos/TodosIndexPag
 const ProcessesIndexPage = React.lazy(() => import("./components/todos/ProcessesIndexPage"));
 const EditProcessPage = React.lazy(() => import("./components/todos/EditProcessPage"));
 const StartProcessPage = React.lazy(() => import("./components/todos/StartProcessPage"));
-const RunProcessPage = React.lazy(() => import("./components/todos/RunProcessPage"));
+const RunProcessPage = React.lazy(() => import("./components/todos/RunningProcessPage"));
 
 export const FlurishClient = getClient();
 
