@@ -28,7 +28,7 @@ gem 'xxhash'
 
 # Performance & Infrastructure
 gem 'active_record_query_trace'
-gem 'analytics-ruby', '~> 2.0.0', require: 'segment/analytics'
+gem 'analytics-ruby', '~> 2.2.7', require: 'segment/analytics'
 gem "annotate"
 gem 'ar_transaction_changes'
 gem 'bcrypt', '~> 3.1.7'
