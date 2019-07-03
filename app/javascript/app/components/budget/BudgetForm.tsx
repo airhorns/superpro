@@ -65,12 +65,12 @@ const updateSortOrders = (list: BudgetFormLine[]) => {
   }
 };
 
-const linesForSection = (doc: BudgetFormValues, sectionId: string) => {
+const linesForSection = (doc: BudgetFormValues, sectionId: string, valueType: BudgetFormLine["value"]["type"]) => {
   let list: BudgetFormLine[] = [];
   // Use a for loop here because .forEach or map or other nice things currently have a bug in automerge
   // where they don't return mutable proxies but isntead frozen objects which can't be mutated. Darn.
   for (let line of doc.budget.lines) {
-    if (line.sectionId == sectionId) {
+    if (line.sectionId == sectionId && line.value.type == valueType) {
       list.push(line);
     }
   }
@@ -90,8 +90,9 @@ export class BudgetForm extends React.Component<{ form: SuperForm<BudgetFormValu
       if (!result.destination) {
         return;
       }
+      const valueType = result.type == "SERIES-LINES" ? "series" : "fixed";
 
-      const newSourceList = linesForSection(doc, result.source.droppableId);
+      const newSourceList = linesForSection(doc, result.source.droppableId, valueType);
       const item = assert(newSourceList.splice(result.source.index, 1)[0]);
       item.sectionId = result.destination.droppableId;
 
@@ -100,7 +101,7 @@ export class BudgetForm extends React.Component<{ form: SuperForm<BudgetFormValu
         newSourceList.splice(result.destination.index, 0, item);
       } else {
         // Moving into new section
-        const newDestinationList = linesForSection(doc, result.destination.droppableId);
+        const newDestinationList = linesForSection(doc, result.destination.droppableId, valueType);
         newDestinationList.splice(result.destination.index, 0, item);
         updateSortOrders(newDestinationList);
       }

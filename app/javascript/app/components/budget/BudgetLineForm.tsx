@@ -8,7 +8,6 @@ import { DragHandle } from "../common/SuperproIcons";
 import { SuperForm, Input } from "superlib/superform";
 import { RecurrenceSelect } from "./RecurrenceSelect";
 import { LineValueStyleSelect } from "./LineValueStyleSelect";
-import { BudgetLineSeriesCells } from "./BudgetLineSeriesCells";
 
 export interface BudgetLineFormProps {
   linesIndex: number;
@@ -81,7 +80,6 @@ export class BudgetLineForm extends React.Component<BudgetLineFormProps, BudgetL
                 </FadeBox>
               </Box>
             </Row>
-            {value.type == "series" && <BudgetLineSeriesCells path={`${lineFieldKey}.value`} />}
           </>
         )}
       </Draggable>
