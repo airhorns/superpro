@@ -14,9 +14,11 @@ export const DeadlineContainer = (props: RenderBlockProps) => {
   const [showForm, setShowForm] = React.useState(false);
   const showDeadline = !isAuthoringMode(props.editor);
   const dueDate = props.node.data.get("dueDate");
+  const dueDateTime = dueDate && DateTime.fromISO(dueDate);
+  const textStyle = { textDecoration: dueDateTime && dueDateTime < DateTime.local() ? "line-through" : "none" };
 
   return (
-    <DividerHeading>
+    <DividerHeading style={textStyle}>
       <Deadline />
       <div {...props.attributes}>{props.children}</div>
       {showDeadline && (
@@ -41,7 +43,7 @@ export const DeadlineContainer = (props: RenderBlockProps) => {
           >
             <Box width="small" align="center">
               <TextComponent weight="normal" color={dueDate ? undefined : "brand"}>
-                {(dueDate && DateTime.fromISO(dueDate).toLocaleString(DateTime.DATE_FULL)) || "not set"}
+                {(dueDateTime && dueDateTime.toLocaleString(DateTime.DATE_FULL)) || "not set"}
               </TextComponent>
             </Box>
           </DropButton>

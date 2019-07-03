@@ -7,6 +7,8 @@ import { isAuthoringMode, isExecutionMode } from "./utils";
 import isHotkey from "is-hotkey";
 import { AvatarSelect } from "./AvatarSelect";
 import { ProcessEditorContext } from "./ProcessEditor";
+import { Block } from "slate";
+import { List } from "immutable";
 
 const CheckboxContainer = styled.div`
   display: flex;
@@ -99,6 +101,21 @@ export const ChecklistPlugin = (_options?: {}): Plugin => {
       }
 
       next();
+    },
+    commands: {
+      markAllTodosCheckedState(editor, value = true) {
+        const todos = editor.value.document.filterDescendants(node => node.object == "block" && node.type == "check-list-item") as List<
+          Block
+        >;
+
+        todos.forEach(todo => {
+          if (todo) {
+            editor = editor.setNodeByKey(todo.key, { data: todo.data.set("checked", value) } as any);
+          }
+        });
+
+        return editor;
+      }
     }
   };
 };

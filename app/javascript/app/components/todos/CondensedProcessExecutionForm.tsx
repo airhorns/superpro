@@ -12,7 +12,9 @@ import {
 } from "app/app-graph";
 import { UserCardProps, SavingNoticeState, SavingNotice, ListPageCard } from "../common";
 import { ProcessEditor } from "./process_editor/ProcessEditor";
-import { Heading } from "grommet";
+import { Heading, Anchor } from "grommet";
+import { Editor } from "slate-react";
+import pluralize from "pluralize";
 
 gql`
   fragment CondensedProcessExecutionForm on ProcessExecution {
@@ -47,6 +49,7 @@ interface CondensedProcessExecutionFormValues {
 
 export class CondensedProcessExecutionForm extends React.Component<CondensedProcessExecutionFormProps, SavingNoticeState> {
   state: SavingNoticeState = { lastSaveAt: null, lastChangeAt: null };
+  editorRef: React.RefObject<Editor> = React.createRef();
 
   debouncedSave = debounce(
     async (form: CondensedProcessExecutionFormValues, update: UpdateProcessExecutionTodosPageMutationFn) => {
@@ -101,31 +104,39 @@ export class CondensedProcessExecutionForm extends React.Component<CondensedProc
             backendClass={ObjectBackend}
             onChange={form => this.handleChange(form, update)}
           >
-            {form => (
-              <ListPageCard
-                heading={
-                  <>
-                    <Heading level="3">
-                      <Link to={`/todos/processes/run/${this.props.processExecution.id}`}>{this.props.processExecution.name}</Link>
-                    </Heading>
-                    <SavingNotice lastChangeAt={this.state.lastChangeAt} lastSaveAt={this.state.lastSaveAt} />
-                  </>
-                }
-              >
-                <ProcessEditor
-                  users={this.props.users}
-                  value={form.getValue("processExecution.value")}
-                  onChange={({ value }: { value: Value }) => {
-                    form.setValue("processExecution.value", value);
-                  }}
-                  autoFocus={false}
-                />
-                <Row margin="xsmall" justify="center" gap="small">
-                  <Link to={`/todos/processes/run/${this.props.processExecution.id}`}>See all details</Link>
-                  <Link to={`#`}>Mark all as done</Link>
-                </Row>
-              </ListPageCard>
-            )}
+            {form => {
+              const unrenderedDeadlineCount = (this.editorRef.current && this.editorRef.current.query("unrenderedDeadlineCount")) || 0;
+              return (
+                <ListPageCard
+                  heading={
+                    <>
+                      <Heading level="3">
+                        <Link to={`/todos/processes/run/${this.props.processExecution.id}`}>{this.props.processExecution.name}</Link>
+                      </Heading>
+                      <SavingNotice lastChangeAt={this.state.lastChangeAt} lastSaveAt={this.state.lastSaveAt} />
+                    </>
+                  }
+                >
+                  <ProcessEditor
+                    users={this.props.users}
+                    value={form.getValue("processExecution.value")}
+                    onChange={({ value }: { value: Value }) => {
+                      form.setValue("processExecution.value", value);
+                    }}
+                    autoFocus={false}
+                    editorRef={this.editorRef}
+                  />
+                  <Row margin={{ bottom: "small" }} justify="center" gap="small">
+                    {unrenderedDeadlineCount > 0 &&
+                      `plus ${unrenderedDeadlineCount} more ${pluralize("deadline", unrenderedDeadlineCount)}`}
+                    <Link to={`/todos/processes/run/${this.props.processExecution.id}`}>See all details</Link>
+                    <Anchor onClick={() => this.editorRef.current && this.editorRef.current.command("markAllTodosCheckedState", true)}>
+                      Mark all as done
+                    </Anchor>
+                  </Row>
+                </ListPageCard>
+              );
+            }}
           </SuperForm>
         )}
       </UpdateProcessExecutionTodosPageComponent>

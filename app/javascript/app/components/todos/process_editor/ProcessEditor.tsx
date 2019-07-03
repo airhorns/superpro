@@ -25,10 +25,10 @@ export interface ProcessEditorContextData {
 
 export const ProcessEditorContext = React.createContext<ProcessEditorContextData>({} as any);
 
-export const ProcessEditor = (props: EditorProps & ProcessEditorContextData) => {
+export const ProcessEditor = (props: EditorProps & ProcessEditorContextData & { editorRef?: React.Ref<Editor> }) => {
   return (
     <ProcessEditorContext.Provider value={props}>
-      <Editor spellCheck schema={ProcessSchema} plugins={Plugins} {...props} />
+      <Editor ref={props.editorRef} spellCheck schema={ProcessSchema} plugins={Plugins} {...props} />
     </ProcessEditorContext.Provider>
   );
 };
