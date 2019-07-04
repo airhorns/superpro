@@ -10,7 +10,7 @@ import { StyledDataGridRow, StyledDataGridCell } from "./sheet/StyledDataGrid";
 import { DefaultCellMonths } from "./SeriesLinesSheet";
 import { SheetCell } from "./sheet/SheetCell";
 
-export const SheetRow = (props: { line: BudgetFormLine; rowIndex: number; linesIndex: number }) => {
+export const SeriesLineSheetRow = (props: { line: BudgetFormLine; rowIndex: number; linesIndex: number }) => {
   const form = useSuperForm<BudgetFormValues>();
   const [hovered, setHovered] = React.useState(false);
   const showIcons = isTouchDevice() || hovered;
@@ -19,8 +19,9 @@ export const SheetRow = (props: { line: BudgetFormLine; rowIndex: number; linesI
 
   return (
     <Draggable draggableId={props.line.id} index={props.line.sortOrder}>
-      {provided => (
+      {(provided, snapshot) => (
         <StyledDataGridRow
+          dragging={snapshot.isDragging}
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
           ref={provided.innerRef as any}
@@ -51,7 +52,7 @@ export const SheetRow = (props: { line: BudgetFormLine; rowIndex: number; linesI
             <SheetCell row={props.rowIndex} column={index + 1} key={index}>
               {({ editing, inputProps }) => (
                 <NumberInput
-                  plain
+                  plain={editing ? true : undefined}
                   autoFocus
                   path={`${lineFieldKey}.value.cells.${dateTime.valueOf()}.amountScenarios.default`}
                   prefix={"$"}

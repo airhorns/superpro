@@ -45,8 +45,16 @@ export const StyledDataGrid = styled.table`
   ${genericStyles};
 `;
 
-export const StyledDataGridRow = styled.tr`
-  display: contents;
+export const StyledDataGridRow = styled.tr<{ dragging?: boolean }>`
+  ${props =>
+    props.dragging
+      ? `
+    display: table;
+    background: ${props.theme.global.colors["light-3"]};
+  `
+      : `
+      display: contents;
+  `}
 `;
 
 export const StyledDataGridBody = styled.tbody`

@@ -3,7 +3,7 @@ import { Draggable } from "react-beautiful-dnd";
 import { TrashButton, FadeBox, ScenarioInput } from "../common";
 import { Box } from "grommet";
 import { Row, shallowSubsetEqual, shallowEqual, isTouchDevice } from "superlib";
-import { BudgetFormLine, BudgetFormValues, BudgetFormLineValue } from "./BudgetForm";
+import { BudgetFormLine, BudgetFormValues } from "./BudgetForm";
 import { DragHandle } from "../common/SuperproIcons";
 import { SuperForm, Input } from "superlib/superform";
 import { RecurrenceSelect } from "./RecurrenceSelect";
@@ -34,7 +34,6 @@ export class BudgetLineForm extends React.Component<BudgetLineFormProps, BudgetL
     const showIcons = isTouchDevice() || this.state.hovered;
     const lineFieldKey = `budget.lines.${this.props.linesIndex}`;
     const lineHelpers = this.props.form.arrayHelpers("budget.lines");
-    const value = this.props.form.getValue(lineFieldKey + ".value") as BudgetFormLineValue;
 
     return (
       <Draggable draggableId={this.props.line.id} index={this.props.line.sortOrder}>
@@ -61,18 +60,18 @@ export class BudgetLineForm extends React.Component<BudgetLineFormProps, BudgetL
               <Box width="265px">
                 <LineValueStyleSelect path={`${lineFieldKey}.value`} />
               </Box>
-              <Box width="small">{value.type == "fixed" && <RecurrenceSelect path={`${lineFieldKey}.value.recurrenceRules`} />}</Box>
               <Box width="small">
-                {value.type == "fixed" && (
-                  <ScenarioInput
-                    path={`${lineFieldKey}.value.amountScenarios`}
-                    prefix={"$"}
-                    fixedDecimalScale
-                    decimalScale={2}
-                    storeAsSubunits
-                    placeholder="Line amount"
-                  />
-                )}
+                <RecurrenceSelect path={`${lineFieldKey}.value.recurrenceRules`} />
+              </Box>
+              <Box width="small">
+                <ScenarioInput
+                  path={`${lineFieldKey}.value.amountScenarios`}
+                  prefix={"$"}
+                  fixedDecimalScale
+                  decimalScale={2}
+                  storeAsSubunits
+                  placeholder="Line amount"
+                />
               </Box>
               <Box>
                 <FadeBox visible={showIcons}>

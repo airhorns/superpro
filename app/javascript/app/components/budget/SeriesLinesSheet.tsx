@@ -5,7 +5,7 @@ import { DateTime } from "luxon";
 import { range } from "lodash";
 import { LineIndexTuple } from "./BudgetFormSection";
 import { StyledDataGridHeader, StyledDataGridBody, StyledDataGridRow, StyledDataGridHeaderCell } from "./sheet/StyledDataGrid";
-import { SheetRow } from "./SeriesLinesSheetRow";
+import { SeriesLineSheetRow } from "./SeriesLinesSheetRow";
 import { Sheet } from "./sheet/Sheet";
 
 export const DefaultCellMonths = memoizeOne(() => {
@@ -32,14 +32,15 @@ class SheetHeader extends React.PureComponent<{}> {
   }
 }
 
-export const SeriesLinesSheet = (props: { lines: LineIndexTuple[] }) => (
+export const SeriesLinesSheet = (props: { lines: LineIndexTuple[]; children?: React.ReactNode }) => (
   <Box overflow={{ horizontal: "auto" }} pad="small">
     <Sheet>
       <SheetHeader />
       <StyledDataGridBody>
         {props.lines.map(([line, lineIndex], rowIndex) => (
-          <SheetRow key={line.id} line={line} linesIndex={lineIndex} rowIndex={rowIndex} />
+          <SeriesLineSheetRow key={line.id} line={line} linesIndex={lineIndex} rowIndex={rowIndex} />
         ))}
+        {props.children}
       </StyledDataGridBody>
     </Sheet>
   </Box>

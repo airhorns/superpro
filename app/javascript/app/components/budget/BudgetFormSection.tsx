@@ -63,7 +63,7 @@ export const BudgetFormSection = (props: { section: BudgetFormSectionValues; ind
           </FadeBox>
         </Row>
       </Heading>
-      <Droppable droppableId={props.section.id} type="FORM-LINES" direction="vertical">
+      <Droppable droppableId={`${props.section.id}___fixed-lines`} type="FIXED-LINES" direction="vertical">
         {(provided, snapshot) => (
           <Box ref={provided.innerRef as any} background={snapshot.isDraggingOver ? "light-1" : "white"} {...provided.droppableProps}>
             <Box>
@@ -75,16 +75,15 @@ export const BudgetFormSection = (props: { section: BudgetFormSectionValues; ind
                   <Text color="status-unknown">Add a line...</Text>
                 </Row>
               )}
+              {provided.placeholder}
             </Box>
-            {provided.placeholder}
           </Box>
         )}
       </Droppable>
-      <Droppable droppableId={props.section.id} type="SERIES-LINES" direction="vertical">
+      <Droppable droppableId={`${props.section.id}___series-lines`} type="SERIES-LINES" direction="vertical">
         {(provided, snapshot) => (
           <Box ref={provided.innerRef as any} background={snapshot.isDraggingOver ? "light-1" : "white"} {...provided.droppableProps}>
-            {seriesLinesForSection.length > 0 && <SeriesLinesSheet lines={seriesLinesForSection} />}
-            {provided.placeholder}
+            {<SeriesLinesSheet lines={seriesLinesForSection}>{provided.placeholder}</SeriesLinesSheet>}
           </Box>
         )}
       </Droppable>

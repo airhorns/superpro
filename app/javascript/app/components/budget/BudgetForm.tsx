@@ -78,6 +78,8 @@ const linesForSection = (doc: BudgetFormValues, sectionId: string, valueType: Bu
   return sortBy(list, line => line.sortOrder);
 };
 
+const sectionIdForDroppableId = (droppableId: string) => droppableId.replace(/___.*$/, "");
+
 export class BudgetForm extends React.Component<{ form: SuperForm<BudgetFormValues> }> {
   onDragStart = () => {
     if (window.navigator.vibrate) {
@@ -90,22 +92,43 @@ export class BudgetForm extends React.Component<{ form: SuperForm<BudgetFormValu
       if (!result.destination) {
         return;
       }
-      const valueType = result.type == "SERIES-LINES" ? "series" : "fixed";
 
-      const newSourceList = linesForSection(doc, result.source.droppableId, valueType);
-      const item = assert(newSourceList.splice(result.source.index, 1)[0]);
-      item.sectionId = result.destination.droppableId;
+      let valueType: BudgetFormLine["value"]["type"];
+      switch (result.type) {
+        case "SERIES-LINES": {
+          valueType = "series";
+          break;
+        }
+        case "FIXED-LINES": {
+          valueType = "fixed";
+          break;
+        }
+        default: {
+          throw new Error(`Unknown droppable result type ${result.type}`);
+        }
+      }
 
+      const sourceSectionId = sectionIdForDroppableId(result.source.droppableId);
+      const destinationSectionId = sectionIdForDroppableId(result.destination.droppableId);
+
+      const newSourceList = linesForSection(doc, sourceSectionId, valueType);
+      let newDestinationList;
       if (result.destination.droppableId == result.source.droppableId) {
         // Moving within the same section
-        newSourceList.splice(result.destination.index, 0, item);
+        newDestinationList = newSourceList;
       } else {
-        // Moving into new section
-        const newDestinationList = linesForSection(doc, result.destination.droppableId, valueType);
-        newDestinationList.splice(result.destination.index, 0, item);
+        // Moving into a new section
+        newDestinationList = linesForSection(doc, destinationSectionId, valueType);
+      }
+
+      const item = assert(newSourceList.splice(result.source.index, 1)[0]);
+      item.sectionId = destinationSectionId;
+      newDestinationList.splice(result.destination.index, 0, item);
+
+      updateSortOrders(newSourceList);
+      if (result.destination.droppableId !== result.source.droppableId) {
         updateSortOrders(newDestinationList);
       }
-      updateSortOrders(newSourceList);
     });
   };
 
