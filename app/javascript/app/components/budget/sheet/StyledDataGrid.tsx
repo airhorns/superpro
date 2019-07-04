@@ -65,8 +65,9 @@ export const StyledDataGridHeader = styled.thead`
   display: contents;
 `;
 
-export const StyledDataGridHeaderCell = styled.th`
-  border-bottom: 2px solid ${props => props.theme.global.colors["dark-2"]};
+export const StyledDataGridHeaderCell = styled.th<{ primary?: boolean }>`
+  border-bottom: 1px solid ${props => props.theme.global.colors["dark-2"]};
+  font-weight: ${props => (props.primary ? "bold" : "normal")};
 `;
 
 export const StyledDataGridCell = styled.td<{ editing?: boolean; selected?: boolean }>`

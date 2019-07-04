@@ -21,7 +21,9 @@ class SheetHeader extends React.PureComponent<{}> {
       <StyledDataGridHeader>
         <StyledDataGridRow>
           <StyledDataGridHeaderCell key="draghandle" />
-          <StyledDataGridHeaderCell key="name">Name</StyledDataGridHeaderCell>
+          <StyledDataGridHeaderCell key="description" primary>
+            Description
+          </StyledDataGridHeaderCell>
           {DefaultCellMonths().map(col => (
             <StyledDataGridHeaderCell key={col.toISO()}>{col.toFormat("MMM yyyy")}</StyledDataGridHeaderCell>
           ))}
