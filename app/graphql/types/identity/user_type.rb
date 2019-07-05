@@ -18,6 +18,10 @@ class Types::Identity::UserType < Types::BaseObject
     object.permissioned_accounts.kept
   end
 
+  def involved_process_executions
+    object.involved_process_executions.kept
+  end
+
   def auth_area_url
     Rails.application.routes.url_helpers.auth_root_url
   end

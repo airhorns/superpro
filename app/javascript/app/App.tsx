@@ -18,9 +18,9 @@ const EditBudgetPage = React.lazy(() => import("./components/budget/EditBudgetPa
 const TodosIndexPage = React.lazy(() => import("./components/todos/TodosIndexPage"));
 const ProcessRunsIndexPage = React.lazy(() => import("./components/todos/ProcessRunsIndexPage"));
 const ProcessDocsIndexPage = React.lazy(() => import("./components/todos/ProcessDocsIndexPage"));
-const EditProcessPage = React.lazy(() => import("./components/todos/EditProcessDocPage"));
+const EditProcessDocPage = React.lazy(() => import("./components/todos/EditProcessDocPage"));
 const StartProcessPage = React.lazy(() => import("./components/todos/StartProcessPage"));
-const RunProcessPage = React.lazy(() => import("./components/todos/EditProcessRunPage"));
+const EditProcessRunPage = React.lazy(() => import("./components/todos/EditProcessRunPage"));
 
 export const FlurishClient = getClient();
 
@@ -46,10 +46,10 @@ export const App = () => {
                           <Route path="/budget/reports/:reportKey" exact component={BudgetReportPage} />
                           <Route path="/todos" exact component={TodosIndexPage} />
                           <Route path="/todos/process/docs" exact component={ProcessDocsIndexPage} />
-                          <Route path="/todos/process/docs/:id" exact component={EditProcessPage} />
+                          <Route path="/todos/process/docs/:id" exact component={EditProcessDocPage} />
                           <Route path="/todos/process/docs/:id/start" exact component={StartProcessPage} />
                           <Route path="/todos/process/runs" exact component={ProcessRunsIndexPage} />
-                          <Route path="/todos/process/runs/:id" exact component={RunProcessPage} />
+                          <Route path="/todos/process/runs/:id" exact component={EditProcessRunPage} />
                           <Route component={NotFoundPage} />
                         </Switch>
                       </React.Suspense>

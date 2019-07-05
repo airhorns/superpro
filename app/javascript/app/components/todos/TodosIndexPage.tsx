@@ -27,7 +27,7 @@ export default (_props: {}) => {
     <Page.Layout title="My Todos" padded={false}>
       <Page.Load component={GetMyTodosComponent}>
         {data => (
-          <Box background="light-1">
+          <Box flex background="light-1">
             <Scratchpad />
             {data.currentUser.involvedProcessExecutions.nodes.map(processExecution => (
               <Box key={processExecution.id}>

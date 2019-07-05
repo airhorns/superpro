@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -ex
+set -x
 bundle exec rufo app config lib test
 bundle exec rubocop -a
 yarn run lintfix
