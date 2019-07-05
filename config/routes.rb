@@ -1,11 +1,11 @@
-require "sidekiq/web"
+require "que/web"
 
 Rails.application.routes.draw do
   health_check_routes
 
   constraints host: Rails.configuration.x.domains.admin do
     constraints AdminAuthConstraint.new do
-      mount Sidekiq::Web, at: "/sidekiq"
+      mount Que::Web, at: "/que"
       mount Flipper::UI.app(Flipper) => "/flipper"
     end
 

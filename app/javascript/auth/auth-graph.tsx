@@ -112,14 +112,19 @@ export type PageInfo = {
 
 export type ProcessExecution = {
   __typename?: 'ProcessExecution',
+  closedTodoCount: Scalars['Int'],
+  closestFutureDeadline?: Maybe<Scalars['ISO8601DateTime']>,
   createdAt: Scalars['ISO8601DateTime'],
   creator: User,
   discardedAt: Scalars['ISO8601DateTime'],
   document: Scalars['JSONScalar'],
   id: Scalars['ID'],
+  involvedUsers: Array<User>,
   name: Scalars['String'],
+  openTodoCount: Scalars['Int'],
   processTemplate?: Maybe<ProcessTemplate>,
-  startedAt: Scalars['ISO8601DateTime'],
+  startedAt?: Maybe<Scalars['ISO8601DateTime']>,
+  totalTodoCount: Scalars['Int'],
   updatedAt: Scalars['ISO8601DateTime'],
 };
 
@@ -214,7 +219,7 @@ export type AllAccountsComponentProps = Omit<ReactApollo.QueryProps<AllAccountsQ
     export const AllAccountsComponent = (props: AllAccountsComponentProps) => (
       <ReactApollo.Query<AllAccountsQuery, AllAccountsQueryVariables> query={AllAccountsDocument} {...props} />
     );
-    
+
 export const DiscardAccountDocument = gql`
     mutation DiscardAccount($id: ID!) {
   discardAccount(id: $id) {
@@ -236,7 +241,7 @@ export type DiscardAccountComponentProps = Omit<ReactApollo.MutationProps<Discar
     export const DiscardAccountComponent = (props: DiscardAccountComponentProps) => (
       <ReactApollo.Mutation<DiscardAccountMutation, DiscardAccountMutationVariables> mutation={DiscardAccountDocument} {...props} />
     );
-    
+
 export const NewAccountDocument = gql`
     mutation NewAccount($account: AccountAttributes!) {
   createAccount(account: $account) {
@@ -261,4 +266,3 @@ export type NewAccountComponentProps = Omit<ReactApollo.MutationProps<NewAccount
     export const NewAccountComponent = (props: NewAccountComponentProps) => (
       <ReactApollo.Mutation<NewAccountMutation, NewAccountMutationVariables> mutation={NewAccountDocument} {...props} />
     );
-    

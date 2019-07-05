@@ -5,7 +5,8 @@ class CreateProcessExecution
   end
 
   def create(attributes = nil)
-    process_execution = @account.process_executions.build(name: "New Process Execution", creator: @user)
+    attributes ||= { document: CreateProcessTemplate::DEFAULT_DOCUMENT }
+    process_execution = @account.process_executions.build(name: "New Process Run", creator: @user)
 
     if attributes.delete(:start_now)
       attributes[:started_at] = Time.now.utc

@@ -45,12 +45,14 @@ gem 'jwt'
 gem "lru_redux"
 gem "marginalia"
 gem "oj"
+gem "que", github: "chanks/que", ref: "5ddddd5ebac6153d7a683ef08c86bced8e03fb51"
+gem "que-scheduler", github: "hlascelles/que-scheduler", branch: "que-1.0-compatibility"
+gem 'que-web'
 gem 'redis', '~> 4.0'
 gem 'request_store'
 gem "safely"
 gem "scenic"
 gem "sentry-raven"
-gem 'sidekiq'
 gem 'silencer'
 
 # Admin
@@ -75,13 +77,14 @@ group :development do
   gem 'rubocop'
   gem 'rubocop-performance'
   gem 'rubocop-rails'
-  gem 'solargraph'
+  # gem 'solargraph'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'web-console', github: 'rails/web-console'
 end
 
 group :test do
+  gem 'timecop'
   gem 'minitest-ci', require: !ENV['CI'].nil?
   gem 'mocha'
   gem 'vcr'

@@ -1,24 +1,27 @@
 import React from "react";
 import { compact } from "lodash";
+import { Box, Button, Anchor, Text } from "grommet";
+import { Value } from "slate";
+import { debounce } from "lodash";
+import { DateTime } from "luxon";
 import { Page, SavingNoticeState, SavingNotice, HoverEditor } from "../common";
 import { ProcessEditor } from "./process_editor/ProcessEditor";
-import { mutationSuccess, toast, AutoAssert, Row } from "flurishlib";
+import { mutationSuccess, toast, AutoAssert, Row, ISO8601DateString } from "flurishlib";
 import gql from "graphql-tag";
 import { SuperForm, ObjectBackend } from "flurishlib/superform";
 import {
-  GetProcessExecutionForRunComponent,
+  GetProcessExecutionForEditComponent,
   UpdateProcessExecutionComponent,
   UpdateProcessExecutionMutationFn,
-  GetProcessExecutionForRunQuery
+  GetProcessExecutionForEditQuery
 } from "app/app-graph";
-import { Value } from "slate";
-import { debounce } from "lodash";
 
 gql`
-  query GetProcessExecutionForRun($id: ID!) {
+  query GetProcessExecutionForEdit($id: ID!) {
     processExecution(id: $id) {
       id
       name
+      startedAt
       document
       processTemplate {
         id
@@ -46,6 +49,7 @@ gql`
 interface ProcessExecutionFormValues {
   processExecution: {
     name: string;
+    startedAt: ISO8601DateString | null | undefined;
     value: Value;
   };
 }
@@ -66,7 +70,7 @@ export default class extends Page<{ id: string }, SavingNoticeState> {
       if (mutationSuccess(result, "updateProcessExecution")) {
         this.setState({ lastSaveAt: new Date() });
       } else {
-        toast.error("There was an error saving this process. Please try again.");
+        toast.error("There was an error saving this process run. Please try again.");
       }
     },
     1000,
@@ -78,10 +82,11 @@ export default class extends Page<{ id: string }, SavingNoticeState> {
     this.debouncedSave(form, update);
   };
 
-  processDataForForm(data: AutoAssert<GetProcessExecutionForRunQuery>) {
+  processDataForForm(data: AutoAssert<GetProcessExecutionForEditQuery>) {
     return {
       processExecution: {
         name: data.processExecution.name,
+        startedAt: data.processExecution.startedAt,
         value: Value.fromJSON({
           object: "value",
           document: data.processExecution.document,
@@ -93,7 +98,11 @@ export default class extends Page<{ id: string }, SavingNoticeState> {
 
   render() {
     return (
-      <Page.Load component={GetProcessExecutionForRunComponent} variables={{ id: this.props.match.params.id }}>
+      <Page.Load
+        component={GetProcessExecutionForEditComponent}
+        variables={{ id: this.props.match.params.id }}
+        require={["processExecution"]}
+      >
         {data => (
           <UpdateProcessExecutionComponent>
             {update => (
@@ -103,24 +112,46 @@ export default class extends Page<{ id: string }, SavingNoticeState> {
                 onChange={doc => this.handleChange(update, doc)}
               >
                 {form => {
+                  const startedAt = form.getValue("processExecution.startedAt");
                   return (
                     <Page.Layout
                       title={
+                        <Box>
+                          <Row gap="small">
+                            Process Run:
+                            <HoverEditor
+                              value={form.getValue("processExecution.name")}
+                              onChange={e => form.setValue("processExecution.name", e.target.value)}
+                            />
+                          </Row>
+                          {startedAt && (
+                            <Text size="small">
+                              Started at: {DateTime.fromISO(startedAt).toLocaleString(DateTime.DATETIME_FULL)}
+                              &nbsp;
+                              <Anchor onClick={() => form.setValue("processExecution.startedAt", null)}>Return to draft</Anchor>
+                            </Text>
+                          )}
+                        </Box>
+                      }
+                      documentTitle={`Process Run: ${form.getValue("processExecution.name")}`}
+                      headerExtra={
                         <Row gap="small">
-                          Running Process:
-                          <HoverEditor
-                            value={form.getValue("processExecution.name")}
-                            onChange={e => form.setValue("processExecution.name", e.target.value)}
-                          />
+                          <SavingNotice lastChangeAt={this.state.lastChangeAt} lastSaveAt={this.state.lastSaveAt} />
+                          {!startedAt && (
+                            <Button
+                              type="submit"
+                              label="Start Now"
+                              primary
+                              onClick={() => form.setValue("processExecution.startedAt", DateTime.local().toISO())}
+                            />
+                          )}
                         </Row>
                       }
-                      documentTitle={`Start Process: ${form.getValue("processExecution.name")}`}
-                      headerExtra={<SavingNotice lastChangeAt={this.state.lastChangeAt} lastSaveAt={this.state.lastSaveAt} />}
                       breadcrumbs={compact([
-                        "processes",
+                        "processRuns",
                         data.processExecution.processTemplate && {
                           text: data.processExecution.processTemplate.name,
-                          path: `/todos/processes/${data.processExecution.processTemplate.id}`
+                          path: `/todos/process/docs/${data.processExecution.processTemplate.id}`
                         }
                       ])}
                       padded={false}

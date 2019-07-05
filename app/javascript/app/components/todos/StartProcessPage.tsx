@@ -78,7 +78,7 @@ export default class extends Page<{ id: string }, StartProcessPageState> {
 
     let data = mutationSuccess(result, "createProcessExecution");
     if (data) {
-      this.props.history.push(`/todos/processes/run/${data.processExecution.id}`);
+      this.props.history.push(`/todos/process/runs/${data.processExecution.id}`);
     } else {
       toast.error("There was an error saving this process. Please try again.");
     }
@@ -102,7 +102,11 @@ export default class extends Page<{ id: string }, StartProcessPageState> {
 
   render() {
     return (
-      <Page.Load component={GetProcessTemplateForStartComponent} variables={{ id: this.props.match.params.id }}>
+      <Page.Load
+        component={GetProcessTemplateForStartComponent}
+        variables={{ id: this.props.match.params.id }}
+        require={["processTemplate"]}
+      >
         {data => (
           <StartProcessExecutionComponent>
             {update => (
@@ -137,7 +141,10 @@ export default class extends Page<{ id: string }, StartProcessPageState> {
                           />
                         </Row>
                       }
-                      breadcrumbs={["processes", { text: data.processTemplate.name, path: `/todos/processes/${data.processTemplate.id}` }]}
+                      breadcrumbs={[
+                        "processDocs",
+                        { text: data.processTemplate.name, path: `/todos/process/docs/${data.processTemplate.id}` }
+                      ]}
                       padded={false}
                     >
                       <ProcessEditor

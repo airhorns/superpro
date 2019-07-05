@@ -1,4 +1,23 @@
 GIT
+  remote: https://github.com/chanks/que.git
+  revision: 5ddddd5ebac6153d7a683ef08c86bced8e03fb51
+  ref: 5ddddd5ebac6153d7a683ef08c86bced8e03fb51
+  specs:
+    que (1.0.0.beta3)
+
+GIT
+  remote: https://github.com/hlascelles/que-scheduler.git
+  revision: c5b6a8a85cac0e0154217e1d192a38794b094382
+  branch: que-1.0-compatibility
+  specs:
+    que-scheduler (3.2.2)
+      activesupport (>= 4.0)
+      backports (~> 3.10)
+      fugit (~> 1.1, >= 1.1.8)
+      hashie (~> 3)
+      que (> 0.10)
+
+GIT
   remote: https://github.com/plataformatec/devise.git
   revision: 19045a483dd09526200f011380e502c618a777c1
   specs:
@@ -89,7 +108,7 @@ GEM
     ast (2.4.0)
     autoprefixer-rails (9.6.0)
       execjs
-    backport (1.1.1)
+    backports (3.15.0)
     bcrypt (3.1.13)
     bindex (0.7.0)
     bootsnap (1.4.4)
@@ -102,7 +121,6 @@ GEM
     coderay (1.1.2)
     colorize (0.8.1)
     concurrent-ruby (1.1.5)
-    connection_pool (2.2.2)
     crass (1.0.4)
     declarative (0.0.10)
     declarative-option (0.1.0)
@@ -115,6 +133,8 @@ GEM
     equatable (0.6.1)
     erubi (1.8.0)
     erubis (2.7.0)
+    et-orbi (1.2.1)
+      tzinfo
     execjs (2.7.0)
     factory_bot (5.0.2)
       activesupport (>= 4.2.0)
@@ -143,6 +163,9 @@ GEM
       flipper (~> 0.16.2)
       rack (>= 1.4, < 3)
       rack-protection (>= 1.5.3, < 2.1.0)
+    fugit (1.2.2)
+      et-orbi (~> 1.1, >= 1.1.8)
+      raabro (~> 1.1)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     google-api-client (0.30.4)
@@ -182,7 +205,6 @@ GEM
     health_check (3.0.0)
       railties (>= 5.0)
     hiredis (0.6.3)
-    htmlentities (4.3.4)
     http (3.3.0)
       addressable (~> 2.3)
       http-cookie (~> 1.0)
@@ -212,7 +234,6 @@ GEM
       activerecord
       kaminari-core (= 1.1.1)
     kaminari-core (1.1.1)
-    kramdown (1.17.0)
     kubeclient (4.4.0)
       http (~> 3.0)
       recursive-open-struct (~> 1.0, >= 1.0.4)
@@ -269,6 +290,7 @@ GEM
     multi_json (1.13.1)
     multi_xml (0.6.0)
     multipart-post (2.1.1)
+    mustermann (1.0.3)
     netrc (0.11.0)
     nio4r (2.3.1)
     nokogiri (1.10.3)
@@ -309,6 +331,11 @@ GEM
     public_suffix (3.1.1)
     puma (4.0.0)
       nio4r (~> 2.0)
+    que-web (0.8.0)
+      erubis
+      que (~> 1.0.0.beta3)
+      sinatra
+    raabro (1.1.6)
     rack (2.0.7)
     rack-cors (1.0.3)
     rack-protection (2.0.5)
@@ -368,8 +395,6 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     retriable (3.1.2)
-    reverse_markdown (1.1.0)
-      nokogiri
     rrule (0.4.2)
       activesupport (>= 4.1)
     rubocop (0.72.0)
@@ -404,29 +429,17 @@ GEM
       railties (>= 4.0.0)
     sentry-raven (2.9.0)
       faraday (>= 0.7.6, < 1.0)
-    sidekiq (5.2.7)
-      connection_pool (~> 2.2, >= 2.2.2)
-      rack (>= 1.5.0)
-      rack-protection (>= 1.5.0)
-      redis (>= 3.3.5, < 5)
     signet (0.11.0)
       addressable (~> 2.3)
       faraday (~> 0.9)
       jwt (>= 1.5, < 3.0)
       multi_json (~> 1.10)
     silencer (1.0.1)
-    solargraph (0.34.2)
-      backport (~> 1.1)
-      bundler (>= 1.17.2)
-      htmlentities (~> 4.3, >= 4.3.4)
-      jaro_winkler (~> 1.5)
-      kramdown (~> 1.16)
-      parser (~> 2.3)
-      reverse_markdown (~> 1.0, >= 1.0.5)
-      rubocop (~> 0.52)
-      thor (~> 0.19, >= 0.19.4)
+    sinatra (2.0.5)
+      mustermann (~> 1.0)
+      rack (~> 2.0)
+      rack-protection (= 2.0.5)
       tilt (~> 2.0)
-      yard (~> 0.9)
     spring (2.1.0)
     spring-watcher-listen (2.0.1)
       listen (>= 2.7, < 4.0)
@@ -448,6 +461,7 @@ GEM
     thor (0.20.3)
     thread_safe (0.3.6)
     tilt (2.0.9)
+    timecop (0.9.1)
     to_regexp (0.2.1)
     trestle (0.8.12)
       activemodel (>= 4.2.0)
@@ -487,7 +501,6 @@ GEM
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.4)
     xxhash (0.4.0)
-    yard (0.9.20)
     zeitwerk (2.1.8)
 
 PLATFORMS
@@ -532,6 +545,9 @@ DEPENDENCIES
   pry
   pry-byebug
   puma (~> 4.0)
+  que!
+  que-scheduler!
+  que-web
   rack-cors
   rails (= 6.0.0.rc1)
   rails-i18n
@@ -547,12 +563,11 @@ DEPENDENCIES
   safely
   scenic
   sentry-raven
-  sidekiq
   silencer
-  solargraph
   spring
   spring-watcher-listen (~> 2.0.0)
   subprocess
+  timecop
   trestle
   trestle-omniauth
   vcr

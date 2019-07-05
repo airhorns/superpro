@@ -19,11 +19,11 @@ spec:
           args:
             - bundle
             - exec
-            - sidekiq
-            - -c
-            - "25"
+            - que
             - -q
             - default
+            - -q
+            - mailers
           env: <%= partial 'rails_environment' %>
           resources: {}
           securityContext:

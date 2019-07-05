@@ -23,7 +23,7 @@ export default class HomePage extends Page {
           <Paragraph>Welcome to Flurish! Let&apos;s get started.</Paragraph>
           <Row gap="medium">
             <StartCard title="Create a Budget" destination="/budget" />
-            <StartCard title="Start a Process" destination="/todos/processes/new" />
+            <StartCard title="Start a Process" destination="/todos/process/docs/new" />
           </Row>
         </Box>
       </Page.Layout>

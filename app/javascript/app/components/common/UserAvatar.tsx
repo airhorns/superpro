@@ -3,7 +3,7 @@ import Gravatar from "react-gravatar";
 import "./user-avatar.scss";
 
 export interface UserAvatarProps {
-  user: { email: string; fullName: string };
+  user: { id: string; email: string; fullName: string };
   size?: number;
 }
 

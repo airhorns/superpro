@@ -17,6 +17,7 @@ gql`
       email
       fullName
       authAreaUrl
+      ...UserCard
     }
   }
 `;
@@ -69,7 +70,8 @@ export const AppSidebar = withRouter(
                 <Flag name={["feature.todos"]}>
                   <NavigationSectionButton path="/todos" text="Todos" icon={<Todos />} onClick={this.close}>
                     <NavigationSubItemButton path="/todos" exact text="My Todos" onClick={this.close} />
-                    <NavigationSubItemButton path="/todos/processes" text="Processes" onClick={this.close} />
+                    <NavigationSubItemButton path="/todos/process/runs" text="Process Runs" onClick={this.close} />
+                    <NavigationSubItemButton path="/todos/process/docs" text="Process Docs" onClick={this.close} />
                   </NavigationSectionButton>
                 </Flag>
                 <NavigationSectionButton path="/budget" text="Budgets" icon={<Budget />} onClick={this.close}>

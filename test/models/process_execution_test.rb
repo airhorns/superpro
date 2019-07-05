@@ -2,16 +2,20 @@
 #
 # Table name: process_executions
 #
-#  id                  :bigint(8)        not null, primary key
-#  discarded_at        :datetime
-#  document            :json             not null
-#  name                :string           not null
-#  started_at          :datetime
-#  created_at          :datetime         not null
-#  updated_at          :datetime         not null
-#  account_id          :bigint(8)        not null
-#  creator_id          :bigint(8)        not null
-#  process_template_id :bigint(8)
+#  id                      :bigint(8)        not null, primary key
+#  closed_todo_count       :integer          default(0), not null
+#  closest_future_deadline :datetime
+#  discarded_at            :datetime
+#  document                :json             not null
+#  name                    :string           not null
+#  open_todo_count         :integer          default(0), not null
+#  started_at              :datetime
+#  total_todo_count        :integer          default(0), not null
+#  created_at              :datetime         not null
+#  updated_at              :datetime         not null
+#  account_id              :bigint(8)        not null
+#  creator_id              :bigint(8)        not null
+#  process_template_id     :bigint(8)
 #
 # Foreign Keys
 #

@@ -71,7 +71,7 @@ export const createAndVisitProcessTemplate = async (mutate: CreateNewProcessTemp
   const data = mutationSuccess(result, "createProcessTemplate");
   if (data) {
     success = true;
-    history.push(`/todos/processes/${data.processTemplate.id}`);
+    history.push(`/todos/process/docs/${data.processTemplate.id}`);
   }
 
   if (!success) {
@@ -86,12 +86,12 @@ export default withRouter((props: RouteComponentProps) => {
 
   return (
     <Page.Layout
-      title="Processes"
+      title="Process Docs"
       headerExtra={
         <CreateNewProcessTemplateComponent>
           {mutate => (
             <Button
-              label="New Process"
+              label="New Process Doc"
               disabled={creating}
               icon={creating ? <Spin width={32} height={32} /> : <Add />}
               onClick={async (event: React.MouseEvent) => {
@@ -113,7 +113,7 @@ export default withRouter((props: RouteComponentProps) => {
                 {
                   header: "Name",
                   key: "name",
-                  render: processTemplate => <Link to={`/todos/processes/${processTemplate.id}`}>{processTemplate.name}</Link>
+                  render: processTemplate => <Link to={`/todos/process/docs/${processTemplate.id}`}>{processTemplate.name}</Link>
                 },
                 {
                   header: "Creator",
@@ -127,7 +127,7 @@ export default withRouter((props: RouteComponentProps) => {
                     if (processTemplate.lastExecution) {
                       return (
                         <>
-                          <Link to={`/todos/processes/run/${processTemplate.lastExecution.id}`}>
+                          <Link to={`/todos/process/runs/${processTemplate.lastExecution.id}`}>
                             {DateTime.fromISO(
                               processTemplate.lastExecution.startedAt || processTemplate.lastExecution.createdAt
                             ).toLocaleString(DateTime.DATE_FULL)}
@@ -145,7 +145,7 @@ export default withRouter((props: RouteComponentProps) => {
                   key: "actions",
                   render: processTemplate => (
                     <Row gap="small">
-                      <LinkButton to={`/todos/processes/${processTemplate.id}/start`} label="Run Now" />
+                      <LinkButton to={`/todos/process/docs/${processTemplate.id}/start`} label="Run Now" />
                       <MutationTrashButton
                         mutationComponent={DiscardProcessTemplateComponent}
                         mutationProps={{

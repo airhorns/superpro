@@ -71,7 +71,11 @@ export default class extends Page<{ id: string }, SavingNoticeState> {
 
   render() {
     return (
-      <Page.Load component={GetProcessTemplateForEditComponent} variables={{ id: this.props.match.params.id }}>
+      <Page.Load
+        component={GetProcessTemplateForEditComponent}
+        variables={{ id: this.props.match.params.id }}
+        require={["processTemplate"]}
+      >
         {data => (
           <UpdateProcessTemplateComponent>
             {update => (
@@ -94,21 +98,21 @@ export default class extends Page<{ id: string }, SavingNoticeState> {
                     <Page.Layout
                       title={
                         <Row gap="small">
-                          Edit Process:
+                          Edit Process Doc:
                           <HoverEditor
                             value={form.getValue("processTemplate.name")}
                             onChange={e => form.setValue("processTemplate.name", e.target.value)}
                           />
                         </Row>
                       }
-                      documentTitle={`Edit Process: ${form.getValue("processTemplate.name")}`}
+                      documentTitle={`Edit Process Doc: ${form.getValue("processTemplate.name")}`}
                       headerExtra={
                         <Row gap="small">
                           <SavingNotice lastChangeAt={this.state.lastChangeAt} lastSaveAt={this.state.lastSaveAt} />
-                          <LinkButton to={`/todos/processes/${data.processTemplate.id}/start`} label="Run Now" />
+                          <LinkButton to={`/todos/process/docs/${data.processTemplate.id}/start`} label="Run Now" />
                         </Row>
                       }
-                      breadcrumbs={["processes"]}
+                      breadcrumbs={["processDocs"]}
                       padded={false}
                     >
                       <ProcessEditor

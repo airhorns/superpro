@@ -111,7 +111,7 @@ export class CondensedProcessExecutionForm extends React.Component<CondensedProc
                   heading={
                     <>
                       <Heading level="3">
-                        <Link to={`/todos/processes/run/${this.props.processExecution.id}`}>{this.props.processExecution.name}</Link>
+                        <Link to={`/todos/process/runs/${this.props.processExecution.id}`}>{this.props.processExecution.name}</Link>
                       </Heading>
                       <SavingNotice lastChangeAt={this.state.lastChangeAt} lastSaveAt={this.state.lastSaveAt} />
                     </>
@@ -129,7 +129,7 @@ export class CondensedProcessExecutionForm extends React.Component<CondensedProc
                   <Row margin={{ bottom: "small" }} justify="center" gap="small">
                     {unrenderedDeadlineCount > 0 &&
                       `plus ${unrenderedDeadlineCount} more ${pluralize("deadline", unrenderedDeadlineCount)}`}
-                    <Link to={`/todos/processes/run/${this.props.processExecution.id}`}>See all details</Link>
+                    <Link to={`/todos/process/runs/${this.props.processExecution.id}`}>See all details</Link>
                     <Anchor onClick={() => this.editorRef.current && this.editorRef.current.command("markAllTodosCheckedState", true)}>
                       Mark all as done
                     </Anchor>

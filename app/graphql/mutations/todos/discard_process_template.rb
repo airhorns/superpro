@@ -1,7 +1,7 @@
 class Mutations::Todos::DiscardProcessTemplate < Mutations::BaseMutation
   argument :id, GraphQL::Types::ID, required: true
 
-  field :process_template, Types::Todos::ProcessExecutionType, null: true
+  field :process_template, Types::Todos::ProcessTemplateType, null: true
   field :errors, [Types::MutationErrorType], null: true
 
   def resolve(id:)

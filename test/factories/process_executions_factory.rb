@@ -4,6 +4,8 @@ FactoryBot.define do
     association :creator, factory: :user
     name { "Example Process Execution" }
     document { CreateProcessTemplate::EMPTY_DOCUMENT.to_json }
+    closest_future_deadline { nil }
+
     started_at { nil }
     discarded_at { nil }
   end
