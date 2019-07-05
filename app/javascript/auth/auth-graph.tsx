@@ -219,7 +219,7 @@ export type AllAccountsComponentProps = Omit<ReactApollo.QueryProps<AllAccountsQ
     export const AllAccountsComponent = (props: AllAccountsComponentProps) => (
       <ReactApollo.Query<AllAccountsQuery, AllAccountsQueryVariables> query={AllAccountsDocument} {...props} />
     );
-
+    
 export const DiscardAccountDocument = gql`
     mutation DiscardAccount($id: ID!) {
   discardAccount(id: $id) {
@@ -241,7 +241,7 @@ export type DiscardAccountComponentProps = Omit<ReactApollo.MutationProps<Discar
     export const DiscardAccountComponent = (props: DiscardAccountComponentProps) => (
       <ReactApollo.Mutation<DiscardAccountMutation, DiscardAccountMutationVariables> mutation={DiscardAccountDocument} {...props} />
     );
-
+    
 export const NewAccountDocument = gql`
     mutation NewAccount($account: AccountAttributes!) {
   createAccount(account: $account) {
@@ -266,3 +266,4 @@ export type NewAccountComponentProps = Omit<ReactApollo.MutationProps<NewAccount
     export const NewAccountComponent = (props: NewAccountComponentProps) => (
       <ReactApollo.Mutation<NewAccountMutation, NewAccountMutationVariables> mutation={NewAccountDocument} {...props} />
     );
+    

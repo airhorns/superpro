@@ -16,8 +16,14 @@ import {
   Deadline
 } from "app/components/common/FlurishIcons";
 import { Toolbar, ToolbarButton, ToolbarDivider, ToggleMarkToolbarButton, ToggleBlockToolbarButton } from "./Toolbar";
-import { Box } from "grommet";
+import { Box, Button } from "grommet";
 import { isUndefined } from "util";
+import { isExecutionMode } from "./utils";
+
+export const CondensedTodosToggleButton = (props: { editor: Editor }) => {
+  const text = props.editor.value.data.get("showOnlyCondensedTodos") ? "Show Instructions" : "Hide Instructions";
+  return <Button plain label={text} onClick={() => props.editor.command("toggleShowOnlyCondensedTodos")} />;
+};
 
 export class ProcessEditorToolbar extends React.Component<{ editor: Editor }> {
   undo = (event: React.SyntheticEvent) => {
@@ -60,6 +66,7 @@ export class ProcessEditorToolbar extends React.Component<{ editor: Editor }> {
         />
         <ToolbarButton active={false} icon={Deadline} onClick={this.addDeadline} />
         <ToolbarDivider />
+        {isExecutionMode(this.props.editor) && <CondensedTodosToggleButton editor={this.props.editor} />}
       </Toolbar>
     );
   }
@@ -73,7 +80,7 @@ export const ProcessEditorToolbarPlugin = (): Plugin => {
 
       return (
         <Box flex pad="small">
-          {showToolbar && <ProcessEditorToolbar editor={editor as any} />}
+          {showToolbar && <ProcessEditorToolbar editor={(editor as unknown) as Editor} />}
           {next()}
         </Box>
       );

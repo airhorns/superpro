@@ -10,6 +10,7 @@ import { GlobalHotkeysPlugin } from "./GlobalHotkeysPlugin";
 import { RichShortcutsPlugin } from "./RichShortcutsPlugin";
 import { CondensedTodosPlugin } from "./CondensedTodosPlugin";
 import { ProcessEditorToolbarPlugin } from "./ProcessEditorToolbar";
+import { RerenderPlugin } from "./RerenderPlugin";
 
 export const Plugins = [
   CondensedTodosPlugin(),
@@ -23,5 +24,6 @@ export const Plugins = [
   BasicFormattingPlugin(),
   SimpleListsPlugin(),
   RichShortcutsPlugin(),
-  ProcessEditorToolbarPlugin()
+  ProcessEditorToolbarPlugin(),
+  RerenderPlugin()
 ];

@@ -26,6 +26,12 @@ export const CondensedTodosPlugin = (): Plugin => {
         return null;
       }
     },
+    commands: {
+      toggleShowOnlyCondensedTodos(editor) {
+        (editor as any).setData({ showOnlyCondensedTodos: !editor.value.data.get("showOnlyCondensedTodos") }).rerenderAll();
+        return editor;
+      }
+    },
     queries: {
       condensedRenderRange: editor => {
         const cached = RenderRangeCache.get(editor.value.document);
