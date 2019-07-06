@@ -11,7 +11,7 @@ import {
   UpdateProcessExecutionTodosPageMutationFn
 } from "app/app-graph";
 import { UserCardProps, SavingNoticeState, SavingNotice, ListPageCard } from "../common";
-import { ProcessEditor } from "./process_editor/ProcessEditor";
+import { TodoEditor } from "./todo_editor/TodoEditor";
 import { Heading, Anchor } from "grommet";
 import { Editor } from "slate-react";
 import pluralize from "pluralize";
@@ -77,11 +77,9 @@ export class CondensedProcessExecutionForm extends React.Component<CondensedProc
       processExecution: {
         value: Value.fromJSON({
           object: "value",
-          document: {
-            ...this.props.processExecution.document,
-            data: { mode: "starting" }
-          },
+          document: this.props.processExecution.document,
           data: {
+            mode: "execution",
             showToolbar: false,
             showOnlyCondensedTodos: true
           }
@@ -117,7 +115,7 @@ export class CondensedProcessExecutionForm extends React.Component<CondensedProc
                     </>
                   }
                 >
-                  <ProcessEditor
+                  <TodoEditor
                     users={this.props.users}
                     value={form.getValue("processExecution.value")}
                     onChange={({ value }: { value: Value }) => {

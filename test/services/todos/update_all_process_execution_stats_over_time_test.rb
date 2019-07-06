@@ -1,6 +1,6 @@
 require "test_helper"
 
-class UpdateAllProcessExecutionStatsOverTimeTest < ActiveSupport::TestCase
+class Todos::UpdateAllProcessExecutionStatsOverTimeTest < ActiveSupport::TestCase
   test "updates process executions with past closest_future_dates to their next closest future date" do
     execution_with_past_date = create(:process_execution)
     Timecop.freeze(Time.now.utc - 8.days) do
@@ -12,7 +12,7 @@ class UpdateAllProcessExecutionStatsOverTimeTest < ActiveSupport::TestCase
     assert execution_with_past_date.closest_future_deadline < Time.now.utc
     assert execution_with_future_date.closest_future_deadline > Time.now.utc
 
-    UpdateAllProcessExecutionStatsOverTime.new.update_stats
+    Todos::UpdateAllProcessExecutionStatsOverTime.new.update_stats
     execution_with_past_date.reload
     execution_with_future_date.reload
 

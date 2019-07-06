@@ -82,7 +82,7 @@ export default class EditBudgetPage extends Page<{}, SavingNoticeState> {
         cells: keyBy(data.cells.map(cell => pick(cell, "dateTime", "amountScenarios")), cell => DateTime.fromISO(cell.dateTime).valueOf())
       };
     }
-    throw new Error(`unknown value type for form ${data.type}`);
+    throw new Error(`unknown value type for form`);
   }
 
   processDataForForm(data: Exclude<GetBudgetForEditQuery["budget"], null>): BudgetFormValues["budget"] {

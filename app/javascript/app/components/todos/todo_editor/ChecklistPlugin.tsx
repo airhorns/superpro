@@ -3,10 +3,10 @@ import { Plugin, RenderBlockProps } from "slate-react";
 import styled from "styled-components";
 import { CheckBox } from "grommet";
 import { Row } from "flurishlib";
-import { isAuthoringMode, isExecutionMode } from "./utils";
+import { isTemplateMode, isFullEditingMode } from "./utils";
 import isHotkey from "is-hotkey";
 import { AvatarSelect } from "./AvatarSelect";
-import { ProcessEditorContext } from "./ProcessEditor";
+import { TodoEditorContext } from "./TodoEditor";
 import { Block } from "slate";
 import { List } from "immutable";
 
@@ -48,14 +48,14 @@ export class CheckListItem extends React.Component<RenderBlockProps> {
     return (
       <CheckboxContainer {...this.props.attributes}>
         <Row contentEditable={false} margin={{ right: "small" }}>
-          <CheckBox checked={checked} onChange={this.onChange} disabled={isAuthoringMode(this.props.editor)} />
+          <CheckBox checked={checked} onChange={this.onChange} disabled={isTemplateMode(this.props.editor)} />
         </Row>
         <CheckboxLabel checked={checked} contentEditable={!this.props.readOnly} suppressContentEditableWarning>
           {this.props.children}
         </CheckboxLabel>
-        {isExecutionMode(this.props.editor) && (
+        {isFullEditingMode(this.props.editor) && (
           <Row contentEditable={false}>
-            <ProcessEditorContext.Consumer>
+            <TodoEditorContext.Consumer>
               {context => (
                 <AvatarSelect
                   value={this.props.node.data.get("ownerId")}
@@ -69,7 +69,7 @@ export class CheckListItem extends React.Component<RenderBlockProps> {
                   }}
                 />
               )}
-            </ProcessEditorContext.Consumer>
+            </TodoEditorContext.Consumer>
           </Row>
         )}
       </CheckboxContainer>

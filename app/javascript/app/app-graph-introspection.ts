@@ -17,6 +17,18 @@ const result: IntrospectionResultData = {
     types: [
       {
         kind: "UNION",
+        name: "TodoFeedItemSourceUnion",
+        possibleTypes: [
+          {
+            name: "ProcessExecution"
+          },
+          {
+            name: "Scratchpad"
+          }
+        ]
+      },
+      {
+        kind: "UNION",
         name: "BudgetLineValue",
         possibleTypes: [
           {

@@ -44,6 +44,7 @@ class User < ApplicationRecord
   has_many :created_series, foreign_key: :creator_id, inverse_of: :creator, class_name: "Series", dependent: :restrict_with_exception
   has_many :created_process_templates, foreign_key: :creator_id, inverse_of: :creator, class_name: "ProcessTemplate", dependent: :restrict_with_exception
   has_many :created_process_executions, foreign_key: :creator_id, inverse_of: :creator, class_name: "ProcessExecution", dependent: :restrict_with_exception
+  has_many :created_scratch_pads, foreign_key: :creator_id, inverse_of: :creator, class_name: "Scratchpad", dependent: :restrict_with_exception
 
   # Todos
   has_many :process_execution_involved_users, dependent: :restrict_with_exception

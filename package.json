@@ -5,8 +5,6 @@
   "scripts": {
     "debug-test": "node --inspect-brk node_modules/.bin/jest --runInBand",
     "generate-graphql": "gql-gen --config app-gql-gen.yml && gql-gen --config auth-gql-gen.yml",
-    "generate-state-docs": "ts-node --files -P tsconfig.server.json app/javascript/server/writeDefaultStateDocuments.ts",
-    "generate-fixtures": "ts-node --files -P tsconfig.server.json app/javascript/server/writeScopeFixtures.ts",
     "lint": "tsc --noEmit && prettier --check \"app/javascript/**/*.{js,ts,tsx}\" && eslint --ext js,ts,tsx app/javascript",
     "lintfix": "prettier --write \"app/javascript/**/*.{js,ts,tsx}\" && eslint --ext js,ts,tsx --fix app/javascript",
     "test": "jest",
@@ -91,6 +89,7 @@
     "query-string": "^6.6.0",
     "react": "^16.7.0",
     "react-apollo": "^2.4.1",
+    "react-apollo-hooks": "^0.4.5",
     "react-beautiful-dnd": "^11.0.3",
     "react-display-name": "^0.2.4",
     "react-dom": "^16.7.0",

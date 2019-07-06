@@ -9,7 +9,7 @@ import { ExpensePlugin } from "./ExpensePlugin";
 import { GlobalHotkeysPlugin } from "./GlobalHotkeysPlugin";
 import { RichShortcutsPlugin } from "./RichShortcutsPlugin";
 import { CondensedTodosPlugin } from "./CondensedTodosPlugin";
-import { ProcessEditorToolbarPlugin } from "./ProcessEditorToolbar";
+import { TodoEditorToolbarPlugin } from "./TodoEditorToolbar";
 import { RerenderPlugin } from "./RerenderPlugin";
 
 export const Plugins = [
@@ -24,6 +24,6 @@ export const Plugins = [
   BasicFormattingPlugin(),
   SimpleListsPlugin(),
   RichShortcutsPlugin(),
-  ProcessEditorToolbarPlugin(),
+  TodoEditorToolbarPlugin(),
   RerenderPlugin()
 ];

@@ -161,6 +161,81 @@ export type ProcessTemplate = {
   updatedAt: Scalars['ISO8601DateTime'],
 };
 
+export type Scratchpad = {
+  __typename?: 'Scratchpad',
+  accessMode: ScratchpadAccessModeEnum,
+  closedTodoCount: Scalars['Int'],
+  closestFutureDeadline?: Maybe<Scalars['ISO8601DateTime']>,
+  createdAt: Scalars['ISO8601DateTime'],
+  creator: User,
+  discardedAt: Scalars['ISO8601DateTime'],
+  document: Scalars['JSONScalar'],
+  id: Scalars['ID'],
+  name: Scalars['String'],
+  openTodoCount: Scalars['Int'],
+  totalTodoCount: Scalars['Int'],
+  updatedAt: Scalars['ISO8601DateTime'],
+};
+
+export const enum ScratchpadAccessModeEnum {
+  /** All members of the account can view and edit this scratchpad */
+  Public = 'PUBLIC',
+  /** Only the creator of the scratchpad can view and edit it with no exceptions. */
+  Private = 'PRIVATE'
+};
+
+/** The connection type for Scratchpad. */
+export type ScratchpadConnection = {
+  __typename?: 'ScratchpadConnection',
+  /** A list of edges. */
+  edges: Array<ScratchpadEdge>,
+  /** A list of nodes. */
+  nodes: Array<Scratchpad>,
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo,
+};
+
+/** An edge in a connection. */
+export type ScratchpadEdge = {
+  __typename?: 'ScratchpadEdge',
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'],
+  /** The item at the end of the edge. */
+  node?: Maybe<Scratchpad>,
+};
+
+export type TodoFeedItem = {
+  __typename?: 'TodoFeedItem',
+  createdAt: Scalars['ISO8601DateTime'],
+  creator: User,
+  id: Scalars['ID'],
+  todoSource: TodoFeedItemSourceUnion,
+  updatedAt: Scalars['ISO8601DateTime'],
+};
+
+/** The connection type for TodoFeedItem. */
+export type TodoFeedItemConnection = {
+  __typename?: 'TodoFeedItemConnection',
+  /** A list of edges. */
+  edges: Array<TodoFeedItemEdge>,
+  /** A list of nodes. */
+  nodes: Array<TodoFeedItem>,
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo,
+};
+
+/** An edge in a connection. */
+export type TodoFeedItemEdge = {
+  __typename?: 'TodoFeedItemEdge',
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'],
+  /** The item at the end of the edge. */
+  node?: Maybe<TodoFeedItem>,
+};
+
+/** Objects which create entries in the todo feed */
+export type TodoFeedItemSourceUnion = ProcessExecution | Scratchpad;
+
 export type User = {
   __typename?: 'User',
   accounts: Array<Account>,
@@ -172,11 +247,29 @@ export type User = {
   id: Scalars['ID'],
   involvedProcessExecutions: ProcessExecutionConnection,
   locked: Scalars['Boolean'],
+  scratchpads: ScratchpadConnection,
+  todoFeedItems: TodoFeedItemConnection,
   updatedAt: Scalars['ISO8601DateTime'],
 };
 
 
 export type UserInvolvedProcessExecutionsArgs = {
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type UserScratchpadsArgs = {
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type UserTodoFeedItemsArgs = {
   after?: Maybe<Scalars['String']>,
   before?: Maybe<Scalars['String']>,
   first?: Maybe<Scalars['Int']>,
