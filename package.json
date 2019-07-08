@@ -83,7 +83,7 @@
     "immutable": "^3.8.2",
     "is-hotkey": "^0.1.4",
     "lodash": "^4.17.11",
-    "luxon": "^1.16.0",
+    "luxon": "^1.16.1",
     "memoize-one": "^5.0.4",
     "path-to-regexp": "^3.0.0",
     "pluralize": "^8.0.0",
