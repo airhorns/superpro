@@ -1,4 +1,4 @@
-import _ from "lodash";
+import { omit } from "lodash";
 import React from "react";
 import { Route, Redirect, RouteProps, RouteComponentProps } from "react-router";
 import { Settings } from "../lib/settings";
@@ -6,7 +6,7 @@ import { Settings } from "../lib/settings";
 export const PrivateRoute = (routeProps: RouteProps & { component: React.ComponentType<RouteComponentProps<any>> }) => {
   return (
     <Route
-      {..._.omit(routeProps, "component")}
+      {...omit(routeProps, "component")}
       render={props =>
         Settings.signedIn ? (
           <routeProps.component {...props} />

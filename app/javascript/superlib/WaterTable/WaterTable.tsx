@@ -1,5 +1,5 @@
 import React from "react";
-import _ from "lodash";
+import { omit } from "lodash";
 import { Header } from "./Header";
 import { Body } from "./Body";
 import { StyledDataTable } from "./StyledDataTable";
@@ -44,7 +44,7 @@ export const WaterTable = class WaterTable<Record extends WaterTableRecord> exte
 
   render() {
     return (
-      <StyledDataTable {..._.omit(this.props, ["alignSelf", "gridArea", "margin", "columns", "records", "size", "theme", "children"])}>
+      <StyledDataTable {...omit(this.props, ["alignSelf", "gridArea", "margin", "columns", "records", "size", "theme", "children"])}>
         <Header columns={this.props.columns} size={this.props.size} sortState={this.props.sortState} onSort={this.handleSort} />
         <Body columns={this.props.columns} records={this.props.records} size={this.props.size} emptyContent={this.props.emptyContent} />
       </StyledDataTable>

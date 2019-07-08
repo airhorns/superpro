@@ -1,4 +1,4 @@
-import _ from "lodash";
+import { isUndefined } from "lodash";
 import React from "react";
 import { StyledDataTableBody, StyledDataTableRow } from "./StyledDataTable";
 import { WaterTableColumnSpec, WaterTableRecord, GrommetGlobalSize } from "./types";
@@ -16,7 +16,7 @@ export class Body<Record extends WaterTableRecord> extends React.Component<BodyP
     return (
       <StyledDataTableBody size={this.props.size}>
         {this.props.records.map((record, index) => (
-          <StyledDataTableRow key={_.isUndefined(record.key) ? `index-${index}` : `record-${record.key}`} size={this.props.size}>
+          <StyledDataTableRow key={isUndefined(record.key) ? `index-${index}` : `record-${record.key}`} size={this.props.size}>
             {this.props.columns.map(column => {
               let content = column.render(record, index);
               return (

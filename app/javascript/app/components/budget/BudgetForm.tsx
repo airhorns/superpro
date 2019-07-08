@@ -75,7 +75,7 @@ const linesForSection = (doc: BudgetFormValues, sectionId: string, valueType: Bu
     }
   }
 
-  return sortBy(list, line => line.sortOrder);
+  return sortBy(list, "sortOrder");
 };
 
 const sectionIdForDroppableId = (droppableId: string) => droppableId.replace(/___.*$/, "");

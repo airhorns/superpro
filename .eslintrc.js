@@ -3,8 +3,14 @@ module.exports = {
   parserOptions: {
     project: __dirname + "/tsconfig.json"
   },
-  plugins: ["@typescript-eslint", "react-hooks"],
-  extends: ["plugin:@typescript-eslint/recommended", "prettier", "prettier/@typescript-eslint", "plugin:react/recommended"],
+  plugins: ["@typescript-eslint", "react-hooks", "lodash"],
+  extends: [
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    "prettier/@typescript-eslint",
+    "plugin:react/recommended",
+    "plugin:lodash/recommended"
+  ],
   rules: {
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/explicit-member-accessibility": "off",
@@ -18,7 +24,16 @@ module.exports = {
     ],
     "react/display-name": "off",
     "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn"
+    "react-hooks/exhaustive-deps": "warn",
+    "lodash/import-scope": ["error", "member"],
+    "lodash/prefer-lodash-method": "off",
+    "lodash/prefer-noop": "off",
+    "lodash/prefer-is-nil": "off",
+    "lodash/prefer-constant": "off",
+    "lodash/prefer-get": "off",
+    "lodash/prefer-set": "off",
+    "lodash/prefer-lodash-typecheck": "warn",
+    "lodash/matches-prop-shorthand": "warn"
   },
   settings: {
     react: {

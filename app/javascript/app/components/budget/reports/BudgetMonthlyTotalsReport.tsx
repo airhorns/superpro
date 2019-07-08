@@ -37,7 +37,7 @@ export const BudgetMonthlyTotalsReport = (props: { budgetId: string }) => {
       {resultSet => {
         let data = resultSet.pivot({ x: ["Budgets.lineName", "Budgets.section"], y: ["Budgets.timestamp"] });
         data = flatMap(
-          Object.entries(groupBy(data, (datum: any) => datum.xValues[1])).map(([section, group]) => {
+          Object.entries(groupBy(data, "xValues[1]")).map(([section, group]) => {
             const yValuesSums = group[0].yValuesArray.map((yValueTuple: any, index: number) => [
               yValueTuple[0],
               sumBy(group, (item: any) => parseInt(item.yValuesArray[index][1] || 0, 10))

@@ -24,7 +24,7 @@ export const MarkHotkeys = (opts: { ignoreIn?: NodeMatcher; onlyIn?: NodeMatcher
   const onlyIn = opts.onlyIn && normalizeMatcher(opts.onlyIn);
 
   const normalizedHotkeys = Object.entries(KEYS_TO_MARKS).map(([key, mark]) => ({
-    triggerFn: isHotkey(key.indexOf("+") === -1 ? `mod+${key}` : key),
+    triggerFn: isHotkey(key.includes("+") ? `mod+${key}` : key),
     mark
   }));
 

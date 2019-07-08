@@ -1,4 +1,4 @@
-import _ from "lodash";
+import { isUndefined } from "lodash";
 import React from "react";
 import { Box, BoxProps, Text, FormField } from "grommet";
 import { DocType, useSuperForm } from "../superform";
@@ -14,7 +14,7 @@ export interface FieldBoxProps {
 
 export const FieldBox = <T extends DocType>(props: FieldBoxProps) => {
   const form = useSuperForm<T>();
-  const showErrorMessages = _.isUndefined(props.showErrorMessages) ? true : props.showErrorMessages;
+  const showErrorMessages = isUndefined(props.showErrorMessages) ? true : props.showErrorMessages;
   const error = form.getError(props.path); // someday this should be actually implemented on the form object
 
   if (props.label) {

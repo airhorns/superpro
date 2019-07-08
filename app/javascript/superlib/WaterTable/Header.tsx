@@ -1,4 +1,4 @@
-import _ from "lodash";
+import { omit, isString } from "lodash";
 import React from "react";
 import { Text, Box, Button, TableCell, BoxProps } from "grommet";
 import { StyledDataTableHeader, StyledDataTableRow } from "./StyledDataTable";
@@ -50,9 +50,9 @@ export class Header<Record extends WaterTableRecord> extends React.Component<Hea
                   }
 
                   let content = (
-                    <Box align={alignmentForColumn(column)} direction="row" {..._.omit(dataTableContextTheme, ["background", "border"])}>
+                    <Box align={alignmentForColumn(column)} direction="row" {...omit(dataTableContextTheme, ["background", "border"])}>
                       {icon}
-                      {_.isString(column.header) ? <Text weight="bold">{column.header}</Text> : column.header}
+                      {isString(column.header) ? <Text weight="bold">{column.header}</Text> : column.header}
                     </Box>
                   );
 

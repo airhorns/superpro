@@ -4,7 +4,6 @@ import EventEmitter from "eventemitter3";
 import { SheetKeys, isUnknownHotkey } from "./SheetKeys";
 import { SheetSelection, Coordinates, moveCoordinates, clampCoordinates } from "./Selection";
 import { useSuperForm } from "superlib/superform";
-import { Cell } from "recharts";
 
 export type SheetUpdateCallback = (event: { version: number }) => void;
 export const SheetContext = React.createContext<SuperSheet>(null as any);

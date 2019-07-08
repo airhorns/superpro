@@ -22,8 +22,7 @@ export interface SelectProps<Option extends SelectOptionType> extends FieldProps
   filterOption?: ReactSelectProps<Option>["filterOption"];
 }
 
-export const optionForValue = (options: SelectOptionType[], value: SelectOptionType["value"]) =>
-  find(options, (option: SelectOptionType) => option.value === value);
+export const optionForValue = (options: SelectOptionType[], value: SelectOptionType["value"]) => find(options, { value: value });
 
 export const Select = <T extends DocType, Option extends SelectOptionType = SelectOptionType>(props: SelectProps<Option>) => {
   const form = useSuperForm<T>();

@@ -1,5 +1,5 @@
 import React from "react";
-import _, { capitalize } from "lodash";
+import { omit, capitalize } from "lodash";
 import { Button, ButtonProps } from "grommet";
 import { Trash } from "./SuperproIcons";
 import { IconProps } from "grommet-icons";
@@ -8,7 +8,7 @@ import { MutationProps } from "react-apollo";
 
 export type TrashButtonProps = ButtonProps & { size?: IconProps["size"] };
 export const TrashButton = (props: TrashButtonProps) => (
-  <Button {..._.omit(props, ["size"])} hoverIndicator plain={false} color="status-critical" icon={<Trash size={props.size} />} />
+  <Button {...omit(props, ["size"])} hoverIndicator plain={false} color="status-critical" icon={<Trash size={props.size} />} />
 );
 
 export interface MutationTrashButtonProps<P extends Omit<MutationProps<any, any>, "mutation">> extends TrashButtonProps {
