@@ -4,9 +4,8 @@ import { Box } from "grommet";
 import { DateTime } from "luxon";
 import { range } from "lodash";
 import { LineIndexTuple } from "./BudgetFormSection";
-import { StyledDataGridHeader, StyledDataGridBody, StyledDataGridRow, StyledDataGridHeaderCell } from "./sheet/StyledDataGrid";
+import { SuperSheet, StyledDataGridHeader, StyledDataGridBody, StyledDataGridRow, StyledDataGridHeaderCell } from "flurishlib/supersheet";
 import { SeriesLineSheetRow } from "./SeriesLinesSheetRow";
-import { Sheet } from "./sheet/Sheet";
 
 export const DefaultCellMonths = memoizeOne(() => {
   const now = DateTime.local();
@@ -36,7 +35,7 @@ class SheetHeader extends React.PureComponent<{}> {
 
 export const SeriesLinesSheet = (props: { lines: LineIndexTuple[]; children?: React.ReactNode }) => (
   <Box overflow={{ horizontal: "auto" }} pad="small">
-    <Sheet>
+    <SuperSheet>
       <SheetHeader />
       <StyledDataGridBody>
         {props.lines.map(([line, lineIndex], rowIndex) => (
@@ -44,6 +43,6 @@ export const SeriesLinesSheet = (props: { lines: LineIndexTuple[]; children?: Re
         ))}
         {props.children}
       </StyledDataGridBody>
-    </Sheet>
+    </SuperSheet>
   </Box>
 );

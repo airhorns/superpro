@@ -1,14 +1,12 @@
 import React from "react";
-import { Text } from "grommet";
 import { Draggable } from "react-beautiful-dnd";
 import { isTouchDevice } from "flurishlib";
-import { Input, NumberInput, useSuperForm } from "flurishlib/superform";
+import { useSuperForm } from "flurishlib/superform";
 import { FadeBox, TrashButton } from "app/components/common";
 import { DragHandle } from "app/components/common/FlurishIcons";
 import { BudgetFormValues, BudgetFormLine } from "./BudgetForm";
-import { StyledDataGridRow, StyledDataGridCell } from "./sheet/StyledDataGrid";
+import { TextSheetCell, NumberSheetCell, StyledDataGridRow, StaticSheetCell } from "flurishlib/supersheet";
 import { DefaultCellMonths } from "./SeriesLinesSheet";
-import { SheetCell } from "./sheet/SheetCell";
 
 export const SeriesLineSheetRow = (props: { line: BudgetFormLine; rowIndex: number; linesIndex: number }) => {
   const form = useSuperForm<BudgetFormValues>();
@@ -28,49 +26,29 @@ export const SeriesLineSheetRow = (props: { line: BudgetFormLine; rowIndex: numb
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          <StyledDataGridCell key="draghandle">
+          <StaticSheetCell key="draghandle">
             <FadeBox visible={showIcons}>
               <DragHandle color="light-5" />
             </FadeBox>
-          </StyledDataGridCell>
-          <SheetCell row={props.rowIndex} column={0} key="name">
-            {({ editing, inputProps }) => {
-              const path = `${lineFieldKey}.description`;
-              const value = form.getValue(path);
-              if (editing) {
-                return <Input autoFocus path={path} placeholder="Line description" plain {...inputProps} />;
-              } else {
-                if (value) {
-                  return <Text>{form.getValue(path)}</Text>;
-                } else {
-                  return <Text color="status-unknown">Line description</Text>;
-                }
-              }
-            }}
-          </SheetCell>
+          </StaticSheetCell>
+          <TextSheetCell row={props.rowIndex} column={0} path={`${lineFieldKey}.description`} placeholder="Line description" />
           {DefaultCellMonths().map((dateTime, index) => (
-            <SheetCell row={props.rowIndex} column={index + 1} key={index}>
-              {({ editing, inputProps }) => (
-                <NumberInput
-                  plain={editing ? true : undefined}
-                  autoFocus
-                  path={`${lineFieldKey}.value.cells.${dateTime.valueOf()}.amountScenarios.default`}
-                  prefix={"$"}
-                  fixedDecimalScale
-                  decimalScale={2}
-                  storeAsSubunits
-                  style={{ padding: "0px" }}
-                  displayType={editing ? "input" : "text"}
-                  {...inputProps}
-                />
-              )}
-            </SheetCell>
+            <NumberSheetCell
+              row={props.rowIndex}
+              column={index + 1}
+              key={index}
+              path={`${lineFieldKey}.value.cells.${dateTime.valueOf()}.amountScenarios.default`}
+              prefix={"$"}
+              fixedDecimalScale
+              decimalScale={2}
+              storeAsSubunits
+            />
           ))}
-          <StyledDataGridCell key="actions">
+          <StaticSheetCell key="actions">
             <FadeBox visible={showIcons}>
               <TrashButton size="small" onClick={() => lineHelpers.deleteAt(props.linesIndex)} />
             </FadeBox>
-          </StyledDataGridCell>
+          </StaticSheetCell>
         </StyledDataGridRow>
       )}
     </Draggable>

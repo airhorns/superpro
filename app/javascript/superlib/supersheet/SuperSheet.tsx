@@ -1,11 +1,13 @@
 import React from "react";
 import { StyledDataGrid, StyledDataGridContainer } from "./StyledDataGrid";
 import EventEmitter from "eventemitter3";
-import { SheetKeys } from "./SheetKeys";
+import { SheetKeys, isUnknownHotkey } from "./SheetKeys";
 import { SheetSelection, Coordinates, moveCoordinates, clampCoordinates } from "./Selection";
+import { useSuperForm } from "flurishlib/superform";
+import { Cell } from "recharts";
 
 export type SheetUpdateCallback = (event: { version: number }) => void;
-export const SheetContext = React.createContext<Sheet>(null as any);
+export const SheetContext = React.createContext<SuperSheet>(null as any);
 
 export const useSheet = () => {
   const sheet = React.useContext(SheetContext);
@@ -17,8 +19,9 @@ export const useSheet = () => {
   return sheet;
 };
 
-export const useCell = <E extends HTMLElement>(row: number, column: number, ref: React.MutableRefObject<E | null>) => {
+export const useCell = <E extends HTMLElement>(registration: CellRegistration) => {
   const sheet = useSheet();
+  const form = useSuperForm<any>();
   const [sheetVersion, setSheetVersion] = React.useState<number>(0);
 
   React.useEffect(() => {
@@ -26,20 +29,28 @@ export const useCell = <E extends HTMLElement>(row: number, column: number, ref:
       setSheetVersion(event.version);
     };
 
-    sheet.registerCell(row, column, ref, sheetUpdated);
+    sheet.registerCell(registration, sheetUpdated);
 
     return () => {
-      sheet.unregisterCell(row, column, sheetUpdated);
+      sheet.unregisterCell(registration, sheetUpdated);
     };
   });
 
   return {
     sheet,
     sheetVersion,
-    editing: sheet.isEditing(row, column),
-    selected: sheet.isSelected(row, column)
+    form,
+    editing: sheet.isEditing(registration.row, registration.column),
+    selected: sheet.isSelected(registration.row, registration.column)
   };
 };
+
+interface CellRegistration {
+  ref: React.MutableRefObject<any>;
+  path: string | string[];
+  row: number;
+  column: number;
+}
 
 interface SheetState {
   selection: null | SheetSelection;
@@ -47,12 +58,10 @@ interface SheetState {
   version: number;
 }
 
-export class Sheet extends React.Component<{}, SheetState> {
+export class SuperSheet extends React.Component<{}, SheetState> {
   state: SheetState = { selection: null, edit: null, version: 0 };
   updates = new EventEmitter();
-  cells: Map<number, Map<number, React.MutableRefObject<any>>> = new Map();
-  rowNumbers = new Set<number>();
-  columnNumbers = new Set<number>();
+  cells: Map<number, Map<number, CellRegistration>> = new Map();
   containerRef: React.RefObject<HTMLDivElement> = React.createRef();
 
   isSelected(row: number, column: number) {
@@ -78,6 +87,12 @@ export class Sheet extends React.Component<{}, SheetState> {
       console.debug("sheet event: keyDown", action);
       action[1].action(this);
       event.preventDefault();
+    }
+
+    // If the key pressed is not a keyboard shortcut and is a letter, number, or puncutation mark
+    // it's intended for the data in the cell. Set the value of the form to that data.
+    if (this.state.selection && !isUnknownHotkey(event as any)) {
+      console.debug("sheet event: keyDown, edit passthrough", event);
     }
   };
 
@@ -124,10 +139,7 @@ export class Sheet extends React.Component<{}, SheetState> {
   }
 
   moveSelectionTo(start: Coordinates, end: Coordinates) {
-    const rowMin = Math.min(...Array.from(this.rowNumbers));
-    const rowMax = Math.max(...Array.from(this.rowNumbers));
-    const colMin = Math.min(...Array.from(this.columnNumbers));
-    const colMax = Math.max(...Array.from(this.columnNumbers));
+    const { rowMin, rowMax, colMin, colMax } = this.dimensions();
 
     return this.focusContainer().update(
       {
@@ -156,34 +168,54 @@ export class Sheet extends React.Component<{}, SheetState> {
     return this;
   }
 
-  registerCell(row: number, column: number, ref: React.MutableRefObject<any>, updateCallback: SheetUpdateCallback) {
-    this.updates.on("update", updateCallback);
-    let cellRow = this.cells.get(row);
-    if (!cellRow) {
-      cellRow = new Map<number, React.MutableRefObject<any>>();
-      this.cells.set(row, cellRow);
+  dimensions() {
+    const rowMin = Math.min(...Array.from(this.cells.keys()));
+    const rowMax = Math.max(...Array.from(this.cells.keys()));
+    const firstRow = this.cells.get(0);
+    let colMin;
+    let colMax;
+    if (firstRow) {
+      colMin = Math.min(...Array.from(firstRow.keys()));
+      colMax = Math.max(...Array.from(firstRow.keys()));
+    } else {
+      colMin = 0;
+      colMax = 0;
     }
-    cellRow.set(column, ref);
 
-    this.rowNumbers.add(row);
-    this.columnNumbers.add(column);
+    return {
+      rowMin,
+      rowMax,
+      colMin,
+      colMax
+    };
   }
 
-  unregisterCell(row: number, column: number, updateCallback: SheetUpdateCallback) {
-    this.updates.off("update", updateCallback);
-    let cellRow = this.cells.get(row);
-    if (cellRow) {
-      cellRow.delete(column);
+  registerCell(registration: CellRegistration, updateCallback: SheetUpdateCallback) {
+    this.updates.on("update", updateCallback);
+    let cellRow = this.cells.get(registration.row);
+    if (!cellRow) {
+      cellRow = new Map<number, CellRegistration>();
+      this.cells.set(registration.row, cellRow);
     }
-    this.rowNumbers.delete(row);
-    this.columnNumbers.delete(column);
+    cellRow.set(registration.column, registration);
+  }
+
+  unregisterCell(registration: CellRegistration, updateCallback: SheetUpdateCallback) {
+    this.updates.off("update", updateCallback);
+    let cellRow = this.cells.get(registration.row);
+    if (cellRow) {
+      cellRow.delete(registration.column);
+    }
   }
 
   getSelectedCellRef() {
     if (!this.state.selection) return;
     const cellRow = this.cells.get(this.state.selection.start.row);
     if (cellRow) {
-      return cellRow.get(this.state.selection.start.column);
+      const registration = cellRow.get(this.state.selection.start.column);
+      if (registration) {
+        return registration.ref;
+      }
     }
   }
 

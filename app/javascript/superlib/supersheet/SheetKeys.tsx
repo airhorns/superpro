@@ -1,11 +1,10 @@
 import isHotkey from "is-hotkey";
-import { Sheet } from "./Sheet";
-import { Hotkeys } from "flurishlib";
+import { SuperSheet } from "./SuperSheet";
 
 export interface SheetKeyAction {
   availableDuringEdit: boolean;
   check: (event: KeyboardEvent) => boolean;
-  action: (sheet: Sheet) => void;
+  action: (sheet: SuperSheet) => void;
 }
 
 export const SheetKeys: { [key: string]: SheetKeyAction } = {
@@ -56,7 +55,6 @@ export const SheetKeys: { [key: string]: SheetKeyAction } = {
 };
 
 const isMod = isHotkey("cmd");
-const isShift = isHotkey("shift");
 const isControl = isHotkey("control");
 const isOpt = isHotkey("opt");
-export const isUnknownHotkey = (event: KeyboardEvent) => isMod(event) || isShift(event) || isControl(event) || isOpt(event);
+export const isUnknownHotkey = (event: KeyboardEvent) => isMod(event) || isControl(event) || isOpt(event);
