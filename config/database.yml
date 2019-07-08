@@ -5,22 +5,22 @@ default: &default
 
 development:
   <<: *default
-  database: flurish_development
-  username: flurish
+  database: superpro_development
+  username: superpro
   host: localhost
   port: 5432
 
 test:
   <<: *default
-  database: flurish_test
-  username: flurish
+  database: superpro_test
+  username: superpro
   host: localhost
   port: 5432
 
 integration_test:
   <<: *default
-  database: flurish_integration_test
-  username: flurish
+  database: superpro_integration_test
+  username: superpro
   host: localhost
   port: 5432
 

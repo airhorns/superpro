@@ -1,9 +1,9 @@
 import React from "react";
 import _, { capitalize } from "lodash";
 import { Button, ButtonProps } from "grommet";
-import { Trash } from "./FlurishIcons";
+import { Trash } from "./SuperproIcons";
 import { IconProps } from "grommet-icons";
-import { toast } from "flurishlib";
+import { toast } from "superlib";
 import { MutationProps } from "react-apollo";
 
 export type TrashButtonProps = ButtonProps & { size?: IconProps["size"] };

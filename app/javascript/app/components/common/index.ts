@@ -1,4 +1,4 @@
-if ((window as any).FLURISH_ENTRYPOINT != "app") {
+if ((window as any).SUPERPRO_ENTRYPOINT != "app") {
   throw new Error("Edit scope code being required outside of edit code! Other bundles shouldn't include this stuff!");
 }
 
@@ -14,7 +14,7 @@ export * from "./HoverEditor";
 export * from "./CubeChart";
 export * from "./UserAvatar";
 export * from "./UserCard";
-export * from "../../../flurishlib/Link";
+export * from "../../../superlib/Link";
 export * from "./DividerHeading";
 export * from "./ListPageCard";
-export * from "../../../flurishlib/SimpleModal";
+export * from "../../../superlib/SimpleModal";

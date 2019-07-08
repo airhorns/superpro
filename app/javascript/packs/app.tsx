@@ -1,4 +1,4 @@
-import "../flurishlib/polyfills";
+import "../superlib/polyfills";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { SettingsBag, SettingsContext } from "../app/lib/settings";

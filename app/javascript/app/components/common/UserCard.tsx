@@ -2,7 +2,7 @@ import React from "react";
 import gql from "graphql-tag";
 import { Text } from "grommet";
 import { UserAvatar } from "./UserAvatar";
-import { Row, Link } from "flurishlib";
+import { Row, Link } from "superlib";
 
 gql`
   fragment UserCard on User {

@@ -9,11 +9,11 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-body-size: 10M
 spec:
   tls:
-    - secretName: fluri.sh-production
+    - secretName: superpro.io-production
       hosts:
-        - app.fluri.sh
+        - app.superpro.io
   rules:
-    - host: app.fluri.sh
+    - host: app.superpro.io
       http:
         paths:
           - backend:
@@ -30,11 +30,11 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-body-size: 10M
 spec:
   tls:
-    - secretName: admin.fluri.sh-production
+    - secretName: admin.superpro.io-production
       hosts:
-        - admin.fluri.sh
+        - admin.superpro.io
   rules:
-    - host: admin.fluri.sh
+    - host: admin.superpro.io
       http:
         paths:
           - backend:

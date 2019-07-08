@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Heading, Text } from "grommet";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
-import { Row } from "flurishlib";
+import { Row } from "superlib";
 
 const StaticBreadcrumbs = {
   home: { text: "Home", path: "/" },
@@ -90,7 +90,7 @@ export class PageLayout extends React.Component<PageLayoutProps> {
     return (
       <Box flex className="PageLayout-container" overflow={{ vertical: this.props.scrolly ? "auto" : "hidden" }}>
         <Helmet>
-          <title>{this.props.documentTitle || this.props.title} - Flurish</title>
+          <title>{this.props.documentTitle || this.props.title} - Superpro</title>
         </Helmet>
         {breadcrumbs}
         <Row

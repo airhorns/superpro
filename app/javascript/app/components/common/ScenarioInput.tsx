@@ -2,10 +2,10 @@ import React from "react";
 import { sortBy, some, capitalize, pickBy, isUndefined, isNull } from "lodash";
 import { Box, Button, DropButton, Text } from "grommet";
 import { controlBorderStyle } from "grommet/utils/styles";
-import { DocType, useSuperForm, NumberInputProps, NumberInput, pathToName } from "flurishlib/superform";
-import { Row } from "flurishlib";
+import { DocType, useSuperForm, NumberInputProps, NumberInput, pathToName } from "superlib/superform";
+import { Row } from "superlib";
 import styled from "styled-components";
-import { FormClose } from "./FlurishIcons";
+import { FormClose } from "./SuperproIcons";
 
 const ControlRow = styled(Row)<{ plain?: boolean }>`
   ${props => !props.plain && controlBorderStyle};

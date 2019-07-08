@@ -8,16 +8,16 @@ local:
 
 gcs_production:
   service: GCS
-  project: omp-core
-  bucket: flurish-core-attachments
+  project: superpro-production
+  bucket: superpro-core-attachments
   credentials:
     type: "service_account"
-    project_id: "omp-core"
-    private_key_id: "9b7824ef876d3185fd704a25ba6b2d3d6891ec62"
-    client_email: "core-production@omp-core.iam.gserviceaccount.com"
-    client_id: "100670567629311180822"
+    project_id: "superpro-production"
+    private_key_id: "f5c00195d906bae1368fcdb213eaf2b88d664254"
+    client_email: "production-core-rails-app@superpro-production.iam.gserviceaccount.com"
+    client_id: "101954945301823871655"
     auth_uri: "https://accounts.google.com/o/oauth2/auth"
     token_uri: "https://oauth2.googleapis.com/token"
     auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs"
-    client_x509_cert_url: "https://www.googleapis.com/robot/v1/metadata/x509/core-production%40omp-core.iam.gserviceaccount.com"
-    private_key: "<%= ENV['FLURISH_CORE_PRODUCTION_GCS_PRIVATE_KEY'] %>"
+    client_x509_cert_url: "https://www.googleapis.com/robot/v1/metadata/x509/production-core-rails-app%40superpro-production.iam.gserviceaccount.com"
+    private_key: "<%= ENV['SUPERPRO_CORE_PRODUCTION_GCS_PRIVATE_KEY'] %>"

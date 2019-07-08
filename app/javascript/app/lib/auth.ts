@@ -1,5 +1,5 @@
-import { authClient } from "../../flurishlib/axios";
-import { toast } from "../../flurishlib";
+import { authClient } from "../../superlib/axios";
+import { toast } from "../../superlib";
 
 export const signOut = async () => {
   try {

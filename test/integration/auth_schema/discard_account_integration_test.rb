@@ -24,7 +24,7 @@ class DiscardAccountIntegrationTest < ActiveSupport::TestCase
   end
 
   test "it can discard an account" do
-    result = FlurishAuthSchema.execute(DISCARD_ACCOUNT_MUTATION, context: @context, variables: { accountId: @account.id })
+    result = SuperproAuthSchema.execute(DISCARD_ACCOUNT_MUTATION, context: @context, variables: { accountId: @account.id })
     assert_no_graphql_errors result
     assert_nil result["data"]["discardAccount"]["errors"]
 

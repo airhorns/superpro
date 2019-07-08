@@ -1,7 +1,7 @@
 import React from "react";
 import { Grommet, Text } from "grommet";
 import { ToastConsumer, ToastProvider } from "react-toast-notifications";
-import { FlurishGrommetTheme } from "./FlurishTheme";
+import { SuperproGrommetTheme } from "./SuperproTheme";
 
 export interface ToastProps {
   appearance: "success" | "error" | "warning" | "info";
@@ -29,9 +29,9 @@ export const toast: {
 } = {
   _toast: {},
   add: (message, props, callback) => {
-    message = <Grommet theme={FlurishGrommetTheme}>{message}</Grommet>;
+    message = <Grommet theme={SuperproGrommetTheme}>{message}</Grommet>;
     if (props && props.children) {
-      props.children = <Grommet theme={FlurishGrommetTheme}>{props.children}</Grommet>;
+      props.children = <Grommet theme={SuperproGrommetTheme}>{props.children}</Grommet>;
     }
 
     toast._toast.add(message, props, callback);

@@ -3,8 +3,8 @@ import { find, isEqual } from "lodash";
 import ReactSelect from "react-select";
 import { ValueType } from "react-select/lib/types";
 import RRule, { RRuleSet } from "rrule";
-import { FieldPath, useSuperForm, pathToName, pathToClassName } from "flurishlib/superform";
-import { isArrayOptionType, FlurishReactSelectTheme } from "flurishlib";
+import { FieldPath, useSuperForm, pathToName, pathToClassName } from "superlib/superform";
+import { isArrayOptionType, SuperproReactSelectTheme } from "superlib";
 import { RecurrenceSelectCustomForm } from "./RecurrenceSelectCustomForm";
 import { serializeRRuleSet, SerializedRRuleSet, deserializeRRuleSet } from "app/lib/rrules";
 
@@ -107,7 +107,7 @@ export const RecurrenceSelect = (props: RecurrenceSelectProps) => {
       <ReactSelect<RecurrenceSelectOptionType>
         name={pathToName(props.path)}
         className={`RecurrenceSelect RecurrenceSelect-${pathToClassName(props.path)}`}
-        theme={FlurishReactSelectTheme}
+        theme={SuperproReactSelectTheme}
         value={selectedOption}
         options={groupedOptions}
         isSearchable={false}

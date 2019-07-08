@@ -1,7 +1,7 @@
 import _ from "lodash";
 import React from "react";
 import { Box, BoxProps, Text, FormField } from "grommet";
-import { DocType, useSuperForm } from ".";
+import { DocType, useSuperForm } from "../superform";
 
 export interface FieldBoxProps {
   path: string;

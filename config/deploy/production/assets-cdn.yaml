@@ -37,11 +37,11 @@ metadata:
     kubernetes.io/ingress.class: gce
 spec:
   tls:
-    - secretName: assets.fluri.sh-production
+    - secretName: assets.superpro.io-production
       hosts:
-        - assets.fluri.sh
+        - assets.superpro.io
   rules:
-    - host: assets.fluri.sh
+    - host: assets.superpro.io
       http:
         paths:
           - backend:

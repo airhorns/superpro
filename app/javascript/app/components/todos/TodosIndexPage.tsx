@@ -13,8 +13,8 @@ import {
 import { Box, Button } from "grommet";
 import { CondensedProcessExecutionForm } from "./CondensedProcessExecutionForm";
 import { ScratchpadForm } from "./ScratchpadForm";
-import { Add } from "../common/FlurishIcons";
-import { mutationSuccess, toast, SimpleQuery, Spin, RelayConnectionQueryUpdater, assert } from "flurishlib";
+import { Add } from "../common/SuperproIcons";
+import { mutationSuccess, toast, SimpleQuery, Spin, RelayConnectionQueryUpdater, assert } from "superlib";
 import { DateTime } from "luxon";
 import { UserAvatarList } from "../common/UserAvatarList";
 

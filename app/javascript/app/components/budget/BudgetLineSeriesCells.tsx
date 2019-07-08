@@ -1,10 +1,10 @@
 import React from "react";
-import { Row } from "flurishlib";
+import { Row } from "superlib";
 import { range } from "lodash";
 import memoizeOne from "memoize-one";
 import { Box, Text } from "grommet";
 import { DateTime } from "luxon";
-import { NumberInput } from "flurishlib/superform";
+import { NumberInput } from "superlib/superform";
 
 const DefaultCellMonths = memoizeOne(() => {
   const now = DateTime.local();

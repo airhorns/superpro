@@ -10,5 +10,5 @@ integration_test:
   api_url: https://cube-docker-compose.ggt.dev/cubejs-api/v1
   api_secret: testdevelopmentapisecret
 production:
-  api_url: https://cube.fluri.sh/cubejs-api/v1
+  api_url: https://cube.superpro.io/cubejs-api/v1
   api_secret: <%= ENV['CUBEJS_API_SECRET'] %>

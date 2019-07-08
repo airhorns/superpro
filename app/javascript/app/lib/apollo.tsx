@@ -5,7 +5,7 @@ import { onError } from "apollo-link-error";
 import { ApolloLink } from "apollo-link";
 import { Settings } from "./settings";
 import introspectionResult from "../app-graph-introspection";
-import { csrfToken } from "../../flurishlib";
+import { csrfToken } from "../../superlib";
 
 export const getClient = () =>
   new ApolloClient({

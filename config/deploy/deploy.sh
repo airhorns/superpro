@@ -3,7 +3,7 @@
 set -ex
 export KUBECONFIG=${HOME}/.kube/config
 export ENVIRONMENT=production
-export CLUSTER="gke_omp-core_us-central1-a_beta"
+export CLUSTER="gke_superpro-production_us-central1-a_alpha"
 
 GIT_SHA=$(git rev-parse HEAD)
 export REVISION=${REVISION:-$GIT_SHA}

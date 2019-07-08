@@ -7,8 +7,8 @@ import { SiderInfoComponent } from "../../app-graph";
 import { UserAvatar } from "../common/UserAvatar";
 import { signOut } from "../../lib/auth";
 import { Settings } from "../../lib/settings";
-import { Row, Flag } from "../../../flurishlib";
-import { Budget, Todos } from "../common/FlurishIcons";
+import { Row, Flag } from "../../../superlib";
+import { Budget, Todos } from "../common/SuperproIcons";
 import { NavigationSectionButton, NavigationSubItemButton } from "./Navigation";
 
 gql`
@@ -38,7 +38,7 @@ export const AppSidebar = withRouter(
     renderLogo() {
       return (
         <Box flex={false}>
-          <Heading level="2">Flurish</Heading>
+          <Heading level="2">Superpro</Heading>
         </Box>
       );
     }

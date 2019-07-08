@@ -5,8 +5,8 @@ import pluralize from "pluralize";
 import { Box, Heading, RadioButtonGroup, Text, Button } from "grommet";
 import { SerializedRRuleSet } from "app/lib/rrules";
 import { SimpleModalOverlay } from "../common";
-import { SuperForm, NumberInput, Select, SuperDatePicker } from "flurishlib/superform";
-import { Row, ISO8601DateString } from "flurishlib";
+import { SuperForm, NumberInput, Select, SuperDatePicker } from "superlib/superform";
+import { Row, ISO8601DateString } from "superlib";
 
 export interface RecurrenceSelectCustomFormProps {
   value: SerializedRRuleSet | undefined;

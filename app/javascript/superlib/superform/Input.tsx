@@ -2,7 +2,7 @@ import React from "react";
 import { TextInput as GrommetTextInput, TextInputProps as GrommetTextInputProps } from "grommet";
 import { Omit } from "type-zoo/types";
 import { FieldProps, DocType, pathToName, propsForGrommetComponent } from "./utils";
-import { useSuperForm } from ".";
+import { useSuperForm } from "../superform";
 
 type AcceptedGrommetTextInputProps = Omit<GrommetTextInputProps, "name" | "value">;
 

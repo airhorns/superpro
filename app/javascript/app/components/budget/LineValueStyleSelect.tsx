@@ -2,13 +2,13 @@ import React from "react";
 import ReactSelect from "react-select";
 import { compact } from "lodash";
 import { ValueType } from "react-select/lib/types";
-import { useSuperForm, pathToName } from "flurishlib/superform";
+import { useSuperForm, pathToName } from "superlib/superform";
 import { BudgetFormValues } from "./BudgetForm";
-import { FlurishReactSelectTheme, isArrayOptionType, ISO8601DateString } from "flurishlib";
+import { SuperproReactSelectTheme, isArrayOptionType, ISO8601DateString } from "superlib";
 import { DateTime } from "luxon";
 import { Drop, Box, Calendar, Button } from "grommet";
 import { setLineAsFixedValueType, setLineAsSeriesValueType } from "./commands";
-import { FormClose } from "../common/FlurishIcons";
+import { FormClose } from "../common/SuperproIcons";
 
 interface LineValueStyleOptionType {
   value: string;
@@ -79,7 +79,7 @@ export const LineValueStyleSelect = (props: LineValueStyleSelectProps) => {
     <Box ref={ref}>
       <ReactSelect<LineValueStyleOptionType>
         name={pathToName(props.path)}
-        theme={FlurishReactSelectTheme}
+        theme={SuperproReactSelectTheme}
         value={selectedOption}
         options={compact([selectedOption, showTodayOption && TodayFixedOption, NewFixedDateOption, showSeriesOption && SeriesOption])}
         isSearchable={false}

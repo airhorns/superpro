@@ -3,8 +3,8 @@ import { find } from "lodash";
 import ReactSelect from "react-select";
 import { Box, Drop, Button } from "grommet";
 import { UserCardProps, UserAvatar, UserCard } from "app/components/common";
-import { Question } from "app/components/common/FlurishIcons";
-import { FlurishReactSelectTheme, isArrayOptionType } from "flurishlib";
+import { Question } from "app/components/common/SuperproIcons";
+import { SuperproReactSelectTheme, isArrayOptionType } from "superlib";
 import { ValueType } from "react-select/lib/types";
 
 export interface AvatarSelectProps {
@@ -42,7 +42,7 @@ export const AvatarSelect = (props: AvatarSelectProps) => {
         <Drop onClickOutside={() => setOpen(true)} onEsc={() => setOpen(false)} overflow="visible" target={buttonRef.current}>
           <Box>
             <ReactSelect
-              theme={FlurishReactSelectTheme}
+              theme={SuperproReactSelectTheme}
               value={selectedOption}
               styles={{ container: provided => ({ ...provided, minWidth: 250 }) }}
               options={options}

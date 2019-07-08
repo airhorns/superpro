@@ -3,7 +3,7 @@ require "faker"
 Rails.logger = ActiveSupport::Logger.new(STDOUT)
 Rails.logger.info("Starting seed")
 
-user = User.new(full_name: "Smart Developer", email: "dev@fluri.sh", password: "developer", password_confirmation: "developer")
+user = User.new(full_name: "Smart Developer", email: "dev@superpro.io", password: "developer", password_confirmation: "developer")
 user.skip_confirmation!
 user.save!
 

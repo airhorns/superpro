@@ -1,9 +1,9 @@
 import * as React from "react";
-import { authClient } from "../../flurishlib/axios";
-import { Alert } from "../../flurishlib/Alert";
+import { authClient } from "../../superlib/axios";
+import { Alert } from "../../superlib/Alert";
 import { Heading, Button, Box } from "grommet";
 import { PageBox } from "./PageBox";
-import { SuperForm, Input, FieldBox } from "flurishlib/superform";
+import { SuperForm, Input, FieldBox } from "superlib/superform";
 
 interface LoginFormValues {
   email: string;
@@ -38,7 +38,7 @@ export class LoginPage extends React.Component<{}, LoginPageState> {
     return (
       <PageBox documentTitle="Login">
         <Box pad="small">
-          <Heading>Login to Flurish</Heading>
+          <Heading>Login to Superpro</Heading>
         </Box>
         {this.state.message && <Alert type="error" message={this.state.message} />}
         <SuperForm<LoginFormValues>

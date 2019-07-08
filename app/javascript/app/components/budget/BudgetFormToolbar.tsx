@@ -1,9 +1,9 @@
 import React from "react";
-import { useSuperForm } from "flurishlib/superform";
+import { useSuperForm } from "superlib/superform";
 import { Button } from "grommet";
-import { Row, Hotkey, Hotkeys } from "flurishlib";
+import { Row, Hotkey, Hotkeys } from "superlib";
 import { BudgetFormValues } from "./BudgetForm";
-import { Undo, Redo } from "../common/FlurishIcons";
+import { Undo, Redo } from "../common/SuperproIcons";
 import { BudgetFormNewSectionModal } from "./BudgetFormNewSectionList";
 
 export const BudgetFormToolbar = (_props: {}) => {

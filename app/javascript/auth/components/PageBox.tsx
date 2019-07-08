@@ -10,7 +10,7 @@ export const PageBox = (props: { children: React.ReactNode; documentTitle?: stri
   return (
     <Box fill background="light-2" align="center" justify="center">
       <Helmet>
-        <title>{props.documentTitle || "Home"} - Flurish</title>
+        <title>{props.documentTitle || "Home"} - Superpro</title>
       </Helmet>
       <Box width="large" pad="medium" background="white" elevation="small">
         {props.children}

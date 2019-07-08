@@ -5,7 +5,7 @@ import { DefaultBudgetTimeChartRange, DefaultTimeTickFormatter, DefaultTimeLabel
 import { CubeChart } from "../../common";
 import { ThemeContext, DataTable, Box, Text } from "grommet";
 import { lighten } from "polished";
-import { SimpleQuery } from "flurishlib";
+import { SimpleQuery } from "superlib";
 import { GetBudgetProblemSpotsComponent } from "app/app-graph";
 import { DateTime } from "luxon";
 

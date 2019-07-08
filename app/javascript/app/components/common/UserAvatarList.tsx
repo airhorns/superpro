@@ -1,5 +1,5 @@
 import React from "react";
-import { Row } from "flurishlib";
+import { Row } from "superlib";
 import { UserAvatar, UserAvatarProps } from "./UserAvatar";
 
 export const UserAvatarList = (props: { users: UserAvatarProps["user"][]; size?: UserAvatarProps["size"] }) => {

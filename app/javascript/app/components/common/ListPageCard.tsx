@@ -1,6 +1,6 @@
 import React from "react";
 import { Box } from "grommet";
-import { Row } from "flurishlib";
+import { Row } from "superlib";
 
 export const ListPageCard = (props: { heading?: React.ReactNode; children: React.ReactNode }) => (
   <Box background="white">

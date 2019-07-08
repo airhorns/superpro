@@ -1,5 +1,5 @@
 import React from "react";
-import { Row } from "flurishlib";
+import { Row } from "superlib";
 import { Button, ButtonProps, Box, Text } from "grommet";
 import { Editor } from "slate-react";
 import { IconProps } from "grommet-icons";

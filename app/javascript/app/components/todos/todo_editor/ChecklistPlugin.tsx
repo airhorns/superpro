@@ -2,7 +2,7 @@ import React from "react";
 import { Plugin, RenderBlockProps } from "slate-react";
 import styled from "styled-components";
 import { CheckBox } from "grommet";
-import { Row } from "flurishlib";
+import { Row } from "superlib";
 import { isTemplateMode, isFullEditingMode } from "./utils";
 import isHotkey from "is-hotkey";
 import { AvatarSelect } from "./AvatarSelect";

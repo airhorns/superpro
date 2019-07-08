@@ -4,10 +4,10 @@ import { Box, Heading, Anchor, Paragraph, Button, Menu } from "grommet";
 import gql from "graphql-tag";
 import { AllAccountsComponent, DiscardAccountComponent, AllAccountsDocument } from "../auth-graph";
 import { PageBox } from "./PageBox";
-import { SimpleQuery } from "../../flurishlib/SimpleQuery";
-import { Row } from "../../flurishlib/Row";
-import { toast, formatDate } from "../../flurishlib";
-import { Trash, Edit } from "app/components/common/FlurishIcons";
+import { SimpleQuery } from "../../superlib/SimpleQuery";
+import { Row } from "../../superlib/Row";
+import { toast, formatDate } from "../../superlib";
+import { Trash, Edit } from "app/components/common/SuperproIcons";
 
 gql`
   query AllAccounts {

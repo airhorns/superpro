@@ -10,4 +10,4 @@ integration_test:
 production:
   adapter: redis
   url: <%= ENV["REDIS_URL"] %>
-  channel_prefix: flurish_production
+  channel_prefix: superpro_production

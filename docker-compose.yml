@@ -29,8 +29,8 @@ services:
       - postgres-data:/var/lib/postgresql/data:delegated
     restart: on-failure
     environment:
-      POSTGRES_USER: flurish
-      POSTGRES_DB: flurish
+      POSTGRES_USER: superpro
+      POSTGRES_DB: superpro
 
   redis:
     image: redis:4-alpine
@@ -42,7 +42,7 @@ services:
     command: redis-server --appendonly yes
 
   cubeserver:
-    image: gcr.io/omp-core/cubeserver:e0b678a8c4458eaddabe6486410e1fa31a7f0f4a
+    image: gcr.io/superpro-production/cubeserver:e0b678a8c4458eaddabe6486410e1fa31a7f0f4a
     ports:
       - 4001:4000
     restart: on-failure
@@ -50,7 +50,7 @@ services:
       NODE_ENV: development
       CUBEJS_DB_HOST: postgres
       CUBEJS_DB_TYPE: postgres
-      CUBEJS_DB_NAME: flurish_development
-      CUBEJS_DB_USER: flurish
+      CUBEJS_DB_NAME: superpro_development
+      CUBEJS_DB_USER: superpro
       CUBEJS_API_SECRET: testdevelopmentapisecret
       REDIS_URL: redis://redis:6379/0

@@ -39,7 +39,7 @@ class ScratchpadIntegrationTest < ActiveSupport::TestCase
   end
 
   test "it can create and update scratchpad" do
-    result = FlurishAppSchema.execute(CREATE_SCRATCHPAD_MUTATION, context: @context)
+    result = SuperproAppSchema.execute(CREATE_SCRATCHPAD_MUTATION, context: @context)
     assert_no_graphql_errors result
     assert_nil result["data"]["createScratchpad"]["errors"]
     assert_not_nil result["data"]["createScratchpad"]["scratchpad"]["id"]
@@ -49,25 +49,25 @@ class ScratchpadIntegrationTest < ActiveSupport::TestCase
     assert_not_nil scratchpad.document
     assert_not_nil scratchpad.name
 
-    result = FlurishAppSchema.execute(UPDATE_SCRATCHPAD_MUTATION, context: @context, variables: ActionController::Parameters.new({
-                                                                    id: scratchpad.id.to_s,
-                                                                    attributes: { document: {
-                                                                      object: "document",
-                                                                      data: {},
-                                                                      nodes: [
-                                                                        {
-                                                                          object: "block",
-                                                                          type: "heading-one",
-                                                                          nodes: [
-                                                                            {
-                                                                              object: "text",
-                                                                              text: "A new title",
-                                                                            },
-                                                                          ],
-                                                                        },
-                                                                      ],
-                                                                    } },
-                                                                  }))
+    result = SuperproAppSchema.execute(UPDATE_SCRATCHPAD_MUTATION, context: @context, variables: ActionController::Parameters.new({
+                                                                     id: scratchpad.id.to_s,
+                                                                     attributes: { document: {
+                                                                       object: "document",
+                                                                       data: {},
+                                                                       nodes: [
+                                                                         {
+                                                                           object: "block",
+                                                                           type: "heading-one",
+                                                                           nodes: [
+                                                                             {
+                                                                               object: "text",
+                                                                               text: "A new title",
+                                                                             },
+                                                                           ],
+                                                                         },
+                                                                       ],
+                                                                     } },
+                                                                   }))
     assert_no_graphql_errors result
     assert_nil result["data"]["updateScratchpad"]["errors"]
     scratchpad.reload

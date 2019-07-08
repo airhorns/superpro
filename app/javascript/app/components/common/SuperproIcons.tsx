@@ -32,7 +32,7 @@ import {
 } from "grommet-icons";
 
 // Navigation & Root level ideas
-export const FlurishLogo = Launch;
+export const SuperproLogo = Launch;
 export const Home = GrommetHome;
 export const Budget = Compare;
 export const Reports = Analytics;

@@ -59,7 +59,7 @@ module.exports = {
 
   // A set of global variables that need to be available in all test environments
   globals: {
-    FLURISH_ENTRYPOINT: "app"
+    SUPERPRO_ENTRYPOINT: "app"
   },
 
   // An array of directory names to be searched recursively up from the requiring module's location
@@ -113,7 +113,7 @@ module.exports = {
   // restoreMocks: false,
 
   // The root directory that Jest should scan for tests and modules within
-  rootDir: "app/javascript",
+  rootDir: "app/javascript"
 
   // A list of paths to directories that Jest should use to search for files in
   // roots: [

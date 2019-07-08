@@ -1,6 +1,6 @@
 import React from "react";
 import Dinero from "dinero.js";
-import { FlurishFlags } from "flurishlib";
+import { SuperproFlags } from "superlib";
 
 export interface SettingsBag {
   accountId: number;
@@ -16,7 +16,7 @@ export interface SettingsBag {
     symbol: string;
     exponent: number;
   };
-  flags: FlurishFlags;
+  flags: SuperproFlags;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-object-literal-type-assertion

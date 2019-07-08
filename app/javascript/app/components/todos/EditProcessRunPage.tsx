@@ -6,9 +6,9 @@ import { debounce } from "lodash";
 import { DateTime } from "luxon";
 import { Page, SavingNoticeState, SavingNotice, HoverEditor } from "../common";
 import { TodoEditor } from "./todo_editor/TodoEditor";
-import { mutationSuccess, toast, AutoAssert, Row, ISO8601DateString } from "flurishlib";
+import { mutationSuccess, toast, AutoAssert, Row, ISO8601DateString } from "superlib";
 import gql from "graphql-tag";
-import { SuperForm, ObjectBackend } from "flurishlib/superform";
+import { SuperForm, ObjectBackend } from "superlib/superform";
 import {
   GetProcessExecutionForEditComponent,
   UpdateProcessExecutionComponent,

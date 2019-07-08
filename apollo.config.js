@@ -1,7 +1,7 @@
 module.exports = {
   client: {
     service: {
-      name: "flurish",
+      name: "superpro",
       localSchemaFile: "./tmp/app-schema.graphql"
     },
     includes: ["./app/javascript/app/**/*.{ts,tsx}"]

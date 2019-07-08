@@ -12,8 +12,8 @@ import {
   BudgetLineValue,
   BudgetLineValueAttributes
 } from "app/app-graph";
-import { SuperForm } from "flurishlib/superform";
-import { assert, mutationSuccess, toast } from "flurishlib";
+import { SuperForm } from "superlib/superform";
+import { assert, mutationSuccess, toast } from "superlib";
 import { BudgetTimeChart } from "./reports/BudgetTimeChart";
 import { dispatch } from "use-bus";
 import { DateTime } from "luxon";

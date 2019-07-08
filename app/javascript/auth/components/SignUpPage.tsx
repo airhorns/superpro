@@ -2,9 +2,9 @@ import * as React from "react";
 import { RouteComponentProps } from "react-router";
 import { Heading, Box, Button } from "grommet";
 import { PageBox } from "./PageBox";
-import { SuperForm, FieldBox, Input } from "flurishlib/superform";
-import { authClient } from "flurishlib/axios";
-import { Alert, applyResponseErrors } from "flurishlib";
+import { SuperForm, FieldBox, Input } from "superlib/superform";
+import { authClient } from "superlib/axios";
+import { Alert, applyResponseErrors } from "superlib";
 
 interface SignUpFormValues {
   user: {
@@ -49,7 +49,7 @@ export default class SignUpPage extends React.Component<RouteComponentProps, Sig
   public render() {
     return (
       <PageBox documentTitle="Sign Up">
-        <Heading level="1">Sign Up for Flurish</Heading>
+        <Heading level="1">Sign Up for Superpro</Heading>
         {this.state.message && <Alert type="error" message={this.state.message} />}
         <SuperForm<SignUpFormValues>
           initialValues={{ user: { mutation_client_id: "user" }, account: { mutation_client_id: "account" } }} // eslint-disable-line

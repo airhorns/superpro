@@ -17,7 +17,7 @@ Rails.application.configure do
   config.action_controller.perform_caching = true
 
   config.cache_store = :redis_cache_store, { url: "redis://localhost:6379/2" }
-  config.session_store :cache_store, key: "flurish_integration_test_sessions"
+  config.session_store :cache_store, key: "superpro_integration_test_sessions"
 
   # Raise exceptions instead of rendering exception templates.
   config.action_dispatch.show_exceptions = false

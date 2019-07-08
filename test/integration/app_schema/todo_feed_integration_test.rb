@@ -25,7 +25,7 @@ class TodoFeedIntegrationTest < ActiveSupport::TestCase
   end
 
   test "it can get the list of todo feed items for a user" do
-    result = FlurishAppSchema.execute(GET_TODO_FEED_QUERY, context: @context)
+    result = SuperproAppSchema.execute(GET_TODO_FEED_QUERY, context: @context)
     assert_no_graphql_errors result
     assert_equal 6, result["data"]["currentUser"]["todoFeedItems"]["nodes"].size
   end

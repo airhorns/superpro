@@ -1,7 +1,7 @@
 import React from "react";
 import { FieldProps, DocType } from "./utils";
-import { useSuperForm } from ".";
-import { DatePicker, DatePickerProps } from "flurishlib/DatePicker";
+import { useSuperForm } from "../superform";
+import { DatePicker, DatePickerProps } from "superlib/DatePicker";
 import { Omit } from "type-zoo/types";
 
 export interface SuperDatePickerProps extends FieldProps, Omit<DatePickerProps, "value"> {}

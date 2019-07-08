@@ -14,7 +14,7 @@ import {
   BlockQuote,
   OrderedList,
   Deadline
-} from "app/components/common/FlurishIcons";
+} from "app/components/common/SuperproIcons";
 import { Toolbar, ToolbarButton, ToolbarDivider, ToggleMarkToolbarButton, ToggleBlockToolbarButton } from "./Toolbar";
 import { Box, Button } from "grommet";
 import { isUndefined } from "util";

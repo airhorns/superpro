@@ -2,53 +2,53 @@
 apiVersion: certmanager.k8s.io/v1alpha1
 kind: Certificate
 metadata:
-  name: fluri.sh-production
+  name: superpro.io-production
 spec:
-  secretName: fluri.sh-production
+  secretName: superpro.io-production
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
   dnsNames:
-    - "app.fluri.sh"
+    - "app.superpro.io"
   acme:
     config:
       - dns01:
           provider: gke-clouddns
         domains:
-          - "app.fluri.sh"
+          - "app.superpro.io"
 ---
 apiVersion: certmanager.k8s.io/v1alpha1
 kind: Certificate
 metadata:
-  name: admin.fluri.sh-production
+  name: admin.superpro.io-production
 spec:
-  secretName: admin.fluri.sh-production
+  secretName: admin.superpro.io-production
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
   dnsNames:
-    - "admin.fluri.sh"
+    - "admin.superpro.io"
   acme:
     config:
       - dns01:
           provider: gke-clouddns
         domains:
-          - "admin.fluri.sh"
+          - "admin.superpro.io"
 ---
 apiVersion: certmanager.k8s.io/v1alpha1
 kind: Certificate
 metadata:
-  name: assets.fluri.sh-production
+  name: assets.superpro.io-production
 spec:
-  secretName: assets.fluri.sh-production
+  secretName: assets.superpro.io-production
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
   dnsNames:
-    - "assets.fluri.sh"
+    - "assets.superpro.io"
   acme:
     config:
       - dns01:
           provider: gke-clouddns
         domains:
-          - "assets.fluri.sh"
+          - "assets.superpro.io"

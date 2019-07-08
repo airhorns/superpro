@@ -1,9 +1,9 @@
 import React from "react";
 import { Page, HoverEditor } from "../common";
 import { TodoEditor } from "./todo_editor/TodoEditor";
-import { Row, mutationSuccess, toast, AutoAssert } from "flurishlib";
+import { Row, mutationSuccess, toast, AutoAssert } from "superlib";
 import gql from "graphql-tag";
-import { SuperForm, ObjectBackend } from "flurishlib/superform";
+import { SuperForm, ObjectBackend } from "superlib/superform";
 import {
   GetProcessTemplateForStartComponent,
   StartProcessExecutionComponent,

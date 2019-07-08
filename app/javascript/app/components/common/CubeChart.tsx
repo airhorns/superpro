@@ -1,6 +1,6 @@
 import React from "react";
 import { ResponsiveContainer } from "recharts";
-import { PageLoadSpin } from "flurishlib";
+import { PageLoadSpin } from "superlib";
 import { CubeQuery } from "../../lib/cubejs";
 import useBus from "use-bus";
 

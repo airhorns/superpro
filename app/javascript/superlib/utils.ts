@@ -97,14 +97,14 @@ export const shallowSubsetEqual = (keys: string[], objA: any, objB: any): boolea
   return true;
 };
 
-export interface FlurishStyleGraphQLError {
+export interface SuperproStyleGraphQLError {
   field: string;
   relativeField: string;
   mutationClientId?: string;
   message: string;
 }
 
-export interface FlurishStyleRESTError {
+export interface SuperproStyleRESTError {
   field: string;
   relative_field: string;
   mutation_client_id?: string;
@@ -132,21 +132,21 @@ export const mutationSuccess = <Result extends FetchResult<Shape>, Shape = Fetch
 };
 
 export const applyResponseErrors = <T extends DocType>(
-  errors: (FlurishStyleGraphQLError | FlurishStyleRESTError)[],
+  errors: (SuperproStyleGraphQLError | SuperproStyleRESTError)[],
   form: SuperForm<T>
 ) => {
   const errorsObject: SuperFormErrors<T> = {};
   errors.forEach(error => {
-    if ((error as FlurishStyleGraphQLError).mutationClientId) {
+    if ((error as SuperproStyleGraphQLError).mutationClientId) {
       set(
         errorsObject,
-        `${(error as FlurishStyleGraphQLError).mutationClientId}.${(error as FlurishStyleGraphQLError).relativeField}`,
+        `${(error as SuperproStyleGraphQLError).mutationClientId}.${(error as SuperproStyleGraphQLError).relativeField}`,
         error.message
       );
-    } else if ((error as FlurishStyleRESTError).mutation_client_id) {
+    } else if ((error as SuperproStyleRESTError).mutation_client_id) {
       set(
         errorsObject,
-        `${(error as FlurishStyleRESTError).mutation_client_id}.${(error as FlurishStyleRESTError).relative_field}`,
+        `${(error as SuperproStyleRESTError).mutation_client_id}.${(error as SuperproStyleRESTError).relative_field}`,
         error.message
       );
     } else {

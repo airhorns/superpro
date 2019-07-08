@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Heading } from "grommet";
-import { Row } from "../../../flurishlib";
+import { Row } from "../../../superlib";
 
 export interface DividerProps {
   style?: JSX.IntrinsicElements["div"]["style"];

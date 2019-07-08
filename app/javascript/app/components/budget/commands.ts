@@ -1,5 +1,5 @@
-import { ISO8601DateString } from "flurishlib";
-import { SuperForm } from "flurishlib/superform";
+import { ISO8601DateString } from "superlib";
+import { SuperForm } from "superlib/superform";
 import { BudgetFormValues, BudgetFormLineSeriesValue } from "./BudgetForm";
 
 export const setLineAsFixedValueType = (form: SuperForm<BudgetFormValues>, linePath: string, occursAt: ISO8601DateString) => {

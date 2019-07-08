@@ -5,7 +5,7 @@ describe("Logins", function() {
 
   it("can log in", function() {
     cy.visit("/");
-    cy.get("#email").type("cypress@fluri.sh")
+    cy.get("#email").type("cypress@superpro.io")
     cy.get("#password").type("incorrect")
 
     cy.get("[data-test-id=login-submit]").click()
@@ -13,6 +13,6 @@ describe("Logins", function() {
 
     cy.get("#password").clear().type("secrets")
     cy.get("[data-test-id=login-submit]").click()
-    cy.contains("Flurish")
+    cy.contains("Superpro")
   });
 });

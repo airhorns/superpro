@@ -2,7 +2,7 @@ import React from "react";
 import { isUndefined } from "lodash";
 import { RouteComponentProps, withRouter, matchPath } from "react-router";
 import { ButtonProps, Button, Text, Box } from "grommet";
-import { Row } from "flurishlib";
+import { Row } from "superlib";
 
 interface NavigationSectionButtonProps extends RouteComponentProps<{}> {
   onClick?: (e: React.SyntheticEvent) => void;

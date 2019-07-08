@@ -1,4 +1,4 @@
-# Flurish definition of the base connection in order to customize it.
+# Superpro definition of the base connection in order to customize it.
 # Makes the `edges` and `nodes` fields non-nullable, and the contents of the array nonullable as well.
 class Types::BaseRelayConnectionType < Types::BaseObject
   field_class(GraphQL::Types::Relay::BaseField)

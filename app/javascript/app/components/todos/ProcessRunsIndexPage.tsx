@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Box, Text } from "grommet";
 import { Page, MutationTrashButton } from "../common";
-import { Add, CheckList, Deadline } from "../common/FlurishIcons";
+import { Add, CheckList, Deadline } from "../common/SuperproIcons";
 import gql from "graphql-tag";
 import {
   GetAllProcessExecutionsComponent,
@@ -11,10 +11,10 @@ import {
   DiscardProcessExecutionComponent,
   GetAllProcessExecutionsDocument
 } from "app/app-graph";
-import { Spin, mutationSuccess, toast, Link, Row } from "flurishlib";
+import { Spin, mutationSuccess, toast, Link, Row } from "superlib";
 import { History } from "history";
 import { withRouter, RouteComponentProps } from "react-router";
-import { WaterTable } from "flurishlib/WaterTable";
+import { WaterTable } from "superlib/WaterTable";
 import { ArrayElementType } from "app/lib/types";
 import { UserAvatarList } from "../common/UserAvatarList";
 import { DateTime } from "luxon";

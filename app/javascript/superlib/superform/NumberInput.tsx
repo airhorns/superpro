@@ -2,7 +2,7 @@ import React from "react";
 import { isUndefined, isNumber } from "lodash";
 import { DocType, pathToName, propsForGrommetComponent } from "./utils";
 import { TextInput as GrommetTextInput } from "grommet";
-import { useSuperForm } from ".";
+import { useSuperForm } from "../superform";
 import { InputProps } from "./Input";
 import NumberFormat, { NumberFormatProps } from "react-number-format";
 

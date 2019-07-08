@@ -13,7 +13,7 @@ module Auth
       context = {
         current_user: current_user,
       }
-      result = FlurishAuthSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
+      result = SuperproAuthSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
       render json: result
     rescue => e
       raise e unless Rails.env.development?

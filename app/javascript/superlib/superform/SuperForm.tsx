@@ -2,7 +2,7 @@ import { get, set, toPath } from "lodash";
 import React from "react";
 import { FieldPath, DocType } from "./utils";
 import { ArrayHelpers } from "./ArrayHelpers";
-import { SuperFormContext } from ".";
+import { SuperFormContext } from "../superform";
 import { Backend, AutomergeBackend, Command } from "./Backends";
 import { Box } from "grommet";
 

@@ -57,7 +57,7 @@ Rails.application.configure do
   config.force_ssl = true
 
   config.cache_store = :redis_cache_store, { url: "redis://localhost:6379/0" }
-  config.session_store :cache_store, key: "flurish_dev_sessions"
+  config.session_store :cache_store, key: "superpro_dev_sessions"
 
   config.after_initialize do
     Bullet.enable = true

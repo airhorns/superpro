@@ -8,7 +8,7 @@ class TestSupportController < ActionController::Base
   end
 
   def clean
-    Flurish::Application.load_tasks
+    Superpro::Application.load_tasks
     Rake::Task["db:truncate_all"].invoke
     Rake::Task["db:truncate_all"].reenable
     render json: { success: true }

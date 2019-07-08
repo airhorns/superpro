@@ -1,9 +1,9 @@
 import React from "react";
 import { Page, HoverEditor, SavingNotice, SavingNoticeState } from "../common";
 import { TodoEditor } from "./todo_editor/TodoEditor";
-import { Row, mutationSuccess, toast, LinkButton } from "flurishlib";
+import { Row, mutationSuccess, toast, LinkButton } from "superlib";
 import gql from "graphql-tag";
-import { SuperForm, ObjectBackend } from "flurishlib/superform";
+import { SuperForm, ObjectBackend } from "superlib/superform";
 import { GetProcessTemplateForEditComponent, UpdateProcessTemplateMutationFn, UpdateProcessTemplateComponent } from "app/app-graph";
 import { Value } from "slate";
 import { debounce } from "lodash";

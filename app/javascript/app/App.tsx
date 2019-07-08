@@ -3,13 +3,13 @@ import { ApolloProvider } from "react-apollo";
 import { ApolloProvider as ApolloHooksProvider } from "react-apollo-hooks";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { getClient } from "./lib/apollo";
-import { FlurishGrommetTheme, SentryErrorBoundary, FlurishGlobalStyle, SegmentIdentify, HotkeysContainer } from "../flurishlib";
+import { SuperproGrommetTheme, SentryErrorBoundary, SuperproGlobalStyle, SegmentIdentify, HotkeysContainer } from "../superlib";
 import { Grommet, Box } from "grommet";
 import { Settings } from "./lib/settings";
-import { ToastContainer, FlagsProvider } from "../flurishlib";
+import { ToastContainer, FlagsProvider } from "../superlib";
 import { AppSidebar } from "./components/chrome/AppSidebar";
 import { NotFoundPage } from "./components/chrome/NotFoundPage";
-import { PageLoadSpin } from "../flurishlib";
+import { PageLoadSpin } from "../superlib";
 
 const HomePage = React.lazy(() => import("./components/home/HomePage"));
 const Launchpad = React.lazy(() => import("./components/home/Launchpad"));
@@ -23,20 +23,20 @@ const EditProcessDocPage = React.lazy(() => import("./components/todos/EditProce
 const StartProcessPage = React.lazy(() => import("./components/todos/StartProcessPage"));
 const EditProcessRunPage = React.lazy(() => import("./components/todos/EditProcessRunPage"));
 
-export const FlurishClient = getClient();
+export const SuperproClient = getClient();
 
 export const App = () => {
   const app = (
     <SegmentIdentify>
       <FlagsProvider flags={Settings.flags}>
-        <ApolloProvider client={FlurishClient}>
-          <ApolloHooksProvider client={FlurishClient}>
-            <Grommet full theme={FlurishGrommetTheme}>
-              <FlurishGlobalStyle />
+        <ApolloProvider client={SuperproClient}>
+          <ApolloHooksProvider client={SuperproClient}>
+            <Grommet full theme={SuperproGrommetTheme}>
+              <SuperproGlobalStyle />
               <Router basename={Settings.baseUrl}>
                 <ToastContainer>
                   <HotkeysContainer>
-                    <Box fill direction="row-responsive" id="flurish-root">
+                    <Box fill direction="row-responsive" id="superpro-root">
                       <AppSidebar />
                       <React.Suspense fallback={<PageLoadSpin />}>
                         <Switch>

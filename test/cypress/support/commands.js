@@ -5,7 +5,7 @@ Cypress.Commands.add("cleanServer", () => cy.request({
   failOnStatusCode: true
 }))
 
-Cypress.Commands.add("login", (email = "cypress@fluri.sh") => cy.request({
+Cypress.Commands.add("login", (email = "cypress@superpro.io") => cy.request({
   method: 'POST',
   url: "/test_support/force_login",
   body: {email},

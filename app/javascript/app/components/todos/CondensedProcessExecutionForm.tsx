@@ -3,8 +3,8 @@ import gql from "graphql-tag";
 import { Value } from "slate";
 import memoizeOne from "memoize-one";
 import { debounce } from "lodash";
-import { mutationSuccess, toast, Link, Row } from "flurishlib";
-import { SuperForm, ObjectBackend } from "flurishlib/superform";
+import { mutationSuccess, toast, Link, Row } from "superlib";
+import { SuperForm, ObjectBackend } from "superlib/superform";
 import {
   UpdateProcessExecutionTodosPageComponent,
   CondensedProcessExecutionFormFragment,

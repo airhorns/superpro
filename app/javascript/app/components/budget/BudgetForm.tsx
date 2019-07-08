@@ -1,9 +1,9 @@
 import React from "react";
 import { sortBy } from "lodash";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
-import { assert, ISO8601DateString } from "flurishlib";
+import { assert, ISO8601DateString } from "superlib";
 import { BudgetFormSection } from "./BudgetFormSection";
-import { SuperForm } from "flurishlib/superform";
+import { SuperForm } from "superlib/superform";
 import { BudgetFormNewSectionList } from "./BudgetFormNewSectionList";
 import { SerializedRRuleSet } from "app/lib/rrules";
 import { DateTime } from "luxon";

@@ -25,7 +25,7 @@ class CreateAccountIntegrationTest < ActiveSupport::TestCase
   end
 
   test "it can create a new account without attributes" do
-    result = FlurishAuthSchema.execute(CREATE_ACCOUNT_MUTATION, context: @context, variables: { account: { name: "A new account" } })
+    result = SuperproAuthSchema.execute(CREATE_ACCOUNT_MUTATION, context: @context, variables: { account: { name: "A new account" } })
     assert_no_graphql_errors result
     assert_nil result["data"]["createAccount"]["errors"]
 

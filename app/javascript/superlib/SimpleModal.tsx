@@ -1,7 +1,7 @@
 import { isUndefined, isFunction } from "lodash";
 import React from "react";
 import { Box, Button, ButtonProps, Layer } from "grommet";
-import { FormClose } from "../app/components/common/FlurishIcons";
+import { FormClose } from "../app/components/common/SuperproIcons";
 
 export interface SimpleModalProps {
   children?: React.ReactNode | React.ReactNode[] | ((setShow: (state: boolean) => void) => React.ReactNode);

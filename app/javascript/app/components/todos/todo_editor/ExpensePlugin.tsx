@@ -3,8 +3,8 @@ import { Plugin, RenderBlockProps } from "slate-react";
 import NumberFormat from "react-number-format";
 import styled from "styled-components";
 import { Button } from "grommet";
-import { Row } from "flurishlib";
-import { Expense } from "app/components/common/FlurishIcons";
+import { Row } from "superlib";
+import { Expense } from "app/components/common/SuperproIcons";
 import { isExecutionMode } from "./utils";
 
 const ExpenseContainer = styled.div`

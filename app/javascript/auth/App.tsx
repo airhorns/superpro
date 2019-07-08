@@ -2,13 +2,13 @@ import * as React from "react";
 import { Grommet } from "grommet";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { ApolloProvider } from "react-apollo";
-import { FlurishGrommetTheme, FlurishGlobalStyle } from "../flurishlib/FlurishTheme";
+import { SuperproGrommetTheme, SuperproGlobalStyle } from "../superlib/SuperproTheme";
 import { NotFoundPage } from "./components/NotFoundPage";
 import { LoginPage } from "./components/LoginPage";
 import { Settings } from "./lib/settings";
 import { client } from "./lib/apollo";
 import { PrivateRoute } from "./components/PrivateRoute";
-import { SentryErrorBoundary, FlagsProvider, PageLoadSpin, ToastContainer, SegmentIdentify } from "../flurishlib";
+import { SentryErrorBoundary, FlagsProvider, PageLoadSpin, ToastContainer, SegmentIdentify } from "../superlib";
 
 const HomePage = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "Auth" */ "./components/HomePage"));
 const SignUpPage = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "Auth" */ "./components/SignUpPage"));
@@ -19,8 +19,8 @@ export class App extends React.Component {
     const app = (
       <SegmentIdentify>
         <FlagsProvider flags={Settings.flags}>
-          <Grommet full theme={FlurishGrommetTheme}>
-            <FlurishGlobalStyle />
+          <Grommet full theme={SuperproGrommetTheme}>
+            <SuperproGlobalStyle />
             <ApolloProvider client={client}>
               <ToastContainer>
                 <Router basename={Settings.baseUrl}>

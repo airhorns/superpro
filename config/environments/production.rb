@@ -15,7 +15,7 @@ Rails.application.configure do
   config.action_controller.perform_caching = true
 
   config.cache_store = :redis_cache_store, { driver: :hiredis, url: ENV.fetch("REDIS_URL") }
-  config.session_store :cache_store, key: "flurish_production_sessions"
+  config.session_store :cache_store, key: "superpro_production_sessions"
 
   # We use ejson instead of the master key
   config.require_master_key = false
@@ -45,7 +45,7 @@ Rails.application.configure do
 
   # Use a real queuing backend for Active Job (and separate queues per environment).
   config.active_job.queue_adapter = :que
-  config.active_job.queue_name_prefix = "flurish_production"
+  config.active_job.queue_name_prefix = "superpro_production"
 
   config.action_mailer.perform_caching = false
   config.action_mailer.smtp_settings = {
@@ -81,8 +81,8 @@ Rails.application.configure do
   # Don't run yarn for prod commands since it can change whats installed depending on the environment, and we're in docker where it shouldn't matter.
   config.webpacker.check_yarn_integrity = false
 
-  config.x.domains.app = "app.fluri.sh"
-  config.x.domains.admin = "admin.fluri.sh"
-  config.action_controller.asset_host = "assets.fluri.sh"
+  config.x.domains.app = "app.superpro.io"
+  config.x.domains.admin = "admin.superpro.io"
+  config.action_controller.asset_host = "assets.superpro.io"
   config.action_mailer.default_url_options = { host: config.x.domains.app, protocol: "https" }
 end

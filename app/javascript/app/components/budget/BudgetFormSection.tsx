@@ -2,12 +2,12 @@ import React from "react";
 import { sortBy } from "lodash";
 import { BudgetFormSectionValues, BudgetFormValues, EmptyLine, BudgetFormLine } from "./BudgetForm";
 import { Heading, Box, Text } from "grommet";
-import { Row, isTouchDevice } from "flurishlib";
+import { Row, isTouchDevice } from "superlib";
 import { FadeBox, AddButton, EditButton, TrashButton } from "../common";
 import shortid from "shortid";
 import { Droppable } from "react-beautiful-dnd";
 import { BudgetLineForm } from "./BudgetLineForm";
-import { useSuperForm, Input } from "flurishlib/superform";
+import { useSuperForm, Input } from "superlib/superform";
 
 type LineIndexTuple = [BudgetFormLine, number];
 

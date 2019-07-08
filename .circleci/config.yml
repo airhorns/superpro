@@ -11,12 +11,12 @@ jobs:
       - checkout
       - run:
           name: Build docker container
-          command: docker build -t gcr.io/omp-core/core:$CIRCLE_SHA1 .
+          command: docker build -t gcr.io/superpro-production/core:$CIRCLE_SHA1 .
       - gcp-cli/install
       - gcp-cli/initialize
       - run:
           name: Push docker container
-          command: gcloud auth configure-docker && docker push gcr.io/omp-core/core:$CIRCLE_SHA1
+          command: gcloud auth configure-docker && docker push gcr.io/superpro-production/core:$CIRCLE_SHA1
 
   lint_javascript:
     docker:
@@ -74,8 +74,8 @@ jobs:
           REDIS_URL: redis://localhost:6379/1
       - image: circleci/postgres:11
         environment:
-          POSTGRES_USER: flurish
-          POSTGRES_DB: flurish_test
+          POSTGRES_USER: superpro
+          POSTGRES_DB: superpro_test
       - image: circleci/redis:4-alpine
     working_directory: ~/repo
     steps:
@@ -182,7 +182,7 @@ jobs:
           name: Configure gcloud k8s context
           command: |
             sudo apt-get install kubectl
-            gcloud container clusters get-credentials beta
+            gcloud container clusters get-credentials alpha
       - run:
           name: Deploy
           command: config/deploy/deploy.sh
@@ -192,14 +192,14 @@ workflows:
   build_test_push:
     jobs:
       - build_docker:
-          context: flurish-gke
+          context: superpro-gke
       - test_cypress
       - test_ruby
       - test_javascript
       - lint_ruby
       - lint_javascript
       - deploy:
-          context: flurish-gke
+          context: superpro-gke
           requires:
             - test_ruby
             - lint_ruby

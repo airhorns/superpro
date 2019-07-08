@@ -4,8 +4,8 @@ import { Heading, Button } from "grommet";
 import gql from "graphql-tag";
 import { NewAccountComponent, AccountAttributes, NewAccountMutationFn } from "../auth-graph";
 import { PageBox } from "./PageBox";
-import { toast, applyResponseErrors } from "../../flurishlib";
-import { SuperForm, Input, FieldBox } from "flurishlib/superform";
+import { toast, applyResponseErrors } from "../../superlib";
+import { SuperForm, Input, FieldBox } from "superlib/superform";
 
 gql`
   mutation NewAccount($account: AccountAttributes!) {
