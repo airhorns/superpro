@@ -19,6 +19,7 @@ const EditBudgetPage = React.lazy(() => import("./components/budget/EditBudgetPa
 const TodosIndexPage = React.lazy(() => import("./components/todos/TodosIndexPage"));
 const ProcessRunsIndexPage = React.lazy(() => import("./components/todos/ProcessRunsIndexPage"));
 const ProcessDocsIndexPage = React.lazy(() => import("./components/todos/ProcessDocsIndexPage"));
+const CreateProcessDocPage = React.lazy(() => import("./components/todos/CreateProcessDocPage"));
 const EditProcessDocPage = React.lazy(() => import("./components/todos/EditProcessDocPage"));
 const StartProcessPage = React.lazy(() => import("./components/todos/StartProcessPage"));
 const EditProcessRunPage = React.lazy(() => import("./components/todos/EditProcessRunPage"));
@@ -47,6 +48,7 @@ export const App = () => {
                           <Route path="/budget/reports/:reportKey" exact component={BudgetReportPage} />
                           <Route path="/todos" exact component={TodosIndexPage} />
                           <Route path="/todos/process/docs" exact component={ProcessDocsIndexPage} />
+                          <Route path="/todos/process/docs/new" exact component={CreateProcessDocPage} />
                           <Route path="/todos/process/docs/:id" exact component={EditProcessDocPage} />
                           <Route path="/todos/process/docs/:id/start" exact component={StartProcessPage} />
                           <Route path="/todos/process/runs" exact component={ProcessRunsIndexPage} />

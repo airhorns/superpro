@@ -1,19 +1,15 @@
 import React from "react";
-import { Button, Box, Text } from "grommet";
+import { Box, Text } from "grommet";
 import { Page, UserCard, MutationTrashButton } from "../common";
 import { Add } from "../common/SuperproIcons";
 import gql from "graphql-tag";
 import {
   GetAllProcessTemplatesComponent,
-  CreateNewProcessTemplateComponent,
-  CreateNewProcessTemplateMutationFn,
   GetAllProcessTemplatesQuery,
   DiscardProcessTemplateComponent,
   GetAllProcessTemplatesDocument
 } from "app/app-graph";
-import { Spin, mutationSuccess, toast, Link, Row, LinkButton } from "superlib";
-import { History } from "history";
-import { withRouter, RouteComponentProps } from "react-router";
+import { Link, Row, LinkButton } from "superlib";
 import { WaterTable } from "superlib/WaterTable";
 import { ArrayElementType } from "app/lib/types";
 import { DateTime } from "luxon";
@@ -37,17 +33,6 @@ gql`
     }
   }
 
-  mutation CreateNewProcessTemplate {
-    createProcessTemplate {
-      processTemplate {
-        id
-      }
-      errors {
-        fullMessage
-      }
-    }
-  }
-
   mutation DiscardProcessTemplate($id: ID!) {
     discardProcessTemplate(id: $id) {
       processTemplate {
@@ -61,50 +46,11 @@ gql`
   }
 `;
 
-export const createAndVisitProcessTemplate = async (mutate: CreateNewProcessTemplateMutationFn, history: History) => {
-  let success = false;
-  let result;
-  try {
-    result = await mutate();
-  } catch (e) {}
-
-  const data = mutationSuccess(result, "createProcessTemplate");
-  if (data) {
-    success = true;
-    history.push(`/todos/process/docs/${data.processTemplate.id}`);
-  }
-
-  if (!success) {
-    toast.error("There was an error creating a process template. Please try again.");
-  }
-};
-
 type ProcessTemplate = ArrayElementType<GetAllProcessTemplatesQuery["processTemplates"]["nodes"]>;
 
-export default withRouter((props: RouteComponentProps) => {
-  const [creating, setCreating] = React.useState(false);
-
+export default () => {
   return (
-    <Page.Layout
-      title="Process Docs"
-      headerExtra={
-        <CreateNewProcessTemplateComponent>
-          {mutate => (
-            <Button
-              label="New Process Doc"
-              disabled={creating}
-              icon={creating ? <Spin width={32} height={32} /> : <Add />}
-              onClick={async (event: React.MouseEvent) => {
-                event.preventDefault();
-                setCreating(true);
-                await createAndVisitProcessTemplate(mutate, props.history);
-                setCreating(false);
-              }}
-            />
-          )}
-        </CreateNewProcessTemplateComponent>
-      }
-    >
+    <Page.Layout title="Process Docs" headerExtra={<LinkButton icon={<Add />} label="New Process Doc" to="/todos/process/docs/new" />}>
       <Page.Load component={GetAllProcessTemplatesComponent}>
         {data => (
           <Box>
@@ -165,4 +111,4 @@ export default withRouter((props: RouteComponentProps) => {
       </Page.Load>
     </Page.Layout>
   );
-});
+};

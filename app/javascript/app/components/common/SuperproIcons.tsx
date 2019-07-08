@@ -28,7 +28,8 @@ import {
   OrderedList as GrommetOrderedList,
   Task,
   Currency,
-  Alarm
+  Alarm,
+  TextWrap
 } from "grommet-icons";
 
 // Navigation & Root level ideas
@@ -37,6 +38,7 @@ export const Home = GrommetHome;
 export const Budget = Compare;
 export const Reports = Analytics;
 export const Todos = CheckboxSelected;
+export const Process = TextWrap;
 
 // Toolbar & Editor
 export const Undo = GrommetUndo;

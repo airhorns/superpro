@@ -8,12 +8,12 @@ import { Data } from "slate";
 import { QueryResult } from "react-apollo";
 
 // gql-gen generates SFCs that omit the variables key from the QueryProps then & with a { variables: Variables } that is mandatory or a {variables?: Variables } that isnt in order to better type check the invocations of the component. This makes it real annoying to dereference.
-type GeneratedQueryComponentType<Data, Variables> =
+export type GeneratedQueryComponentType<Data, Variables> =
   | React.ComponentType<Omit<ReactApollo.QueryProps<Data, Variables>, "query" | "variables"> & { variables?: Variables }>
   | React.ComponentType<Omit<ReactApollo.QueryProps<Data, Variables>, "query" | "variables"> & { variables: Variables }>;
 
-type ComponentDataType<Component> = Component extends GeneratedQueryComponentType<infer Data, any> ? Data : never;
-type ComponentVariablesType<Component> = Component extends GeneratedQueryComponentType<any, infer Variables> ? Variables : never;
+export type ComponentDataType<Component> = Component extends GeneratedQueryComponentType<infer Data, any> ? Data : never;
+export type ComponentVariablesType<Component> = Component extends GeneratedQueryComponentType<any, infer Variables> ? Variables : never;
 
 export type AutoAssert<Data> = AssertedKeys<Data, keyof Data>;
 
