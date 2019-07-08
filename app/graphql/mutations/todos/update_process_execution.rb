@@ -7,7 +7,7 @@ class Mutations::Todos::UpdateProcessExecution < Mutations::BaseMutation
 
   def resolve(id:, attributes:)
     process_execution = context[:current_account].process_executions.kept.find(id)
-    result, errors = ::UpdateProcessExecution.new(context[:current_account], context[:current_user]).update(process_execution, attributes.to_h)
+    result, errors = Todos::UpdateProcessExecution.new(context[:current_account], context[:current_user]).update(process_execution, attributes.to_h)
     { process_execution: result, errors: Types::MutationErrorType.format_errors_object(errors) }
   end
 end

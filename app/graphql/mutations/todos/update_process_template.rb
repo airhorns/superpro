@@ -7,7 +7,7 @@ class Mutations::Todos::UpdateProcessTemplate < Mutations::BaseMutation
 
   def resolve(id:, attributes:)
     process_template = context[:current_account].process_templates.kept.find(id)
-    result, errors = ::UpdateProcessTemplate.new(context[:current_account], context[:current_user]).update(process_template, attributes.to_h)
+    result, errors = Todos::UpdateProcessTemplate.new(context[:current_account], context[:current_user]).update(process_template, attributes.to_h)
     { process_template: result, errors: Types::MutationErrorType.format_errors_object(errors) }
   end
 end

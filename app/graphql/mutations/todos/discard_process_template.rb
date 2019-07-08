@@ -6,7 +6,7 @@ class Mutations::Todos::DiscardProcessTemplate < Mutations::BaseMutation
 
   def resolve(id:)
     process_template = context[:current_account].process_templates.kept.find(id)
-    result, errors = ::DiscardProcessTemplate.new(context[:current_account], context[:current_user]).discard(process_template)
+    result, errors = Todos::DiscardProcessTemplate.new(context[:current_account], context[:current_user]).discard(process_template)
     { process_template: result, errors: Types::MutationErrorType.format_errors_object(errors) }
   end
 end

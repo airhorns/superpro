@@ -1,11 +1,11 @@
-class CreateProcessExecution
+class Todos::CreateProcessExecution
   def initialize(account, user)
     @account = account
     @user = user
   end
 
   def create(attributes = nil)
-    attributes ||= { document: CreateProcessTemplate::DEFAULT_DOCUMENT }
+    attributes ||= { document: Todos::CreateProcessTemplate::DEFAULT_DOCUMENT }
     process_execution = @account.process_executions.build(name: "New Process Run", creator: @user)
 
     if attributes.delete(:start_now)
@@ -16,6 +16,6 @@ class CreateProcessExecution
       attributes[:document] = @account.process_templates.find(attributes[:process_template_id]).document
     end
 
-    return UpdateProcessExecution.new(@account, @user).update(process_execution, attributes)
+    return Todos::UpdateProcessExecution.new(@account, @user).update(process_execution, attributes)
   end
 end

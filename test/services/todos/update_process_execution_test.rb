@@ -1,10 +1,10 @@
 require "test_helper"
 
-class UpdateProcessExecutionTest < ActiveSupport::TestCase
+class Todos::UpdateProcessExecutionTest < ActiveSupport::TestCase
   setup do
     @account = create(:account)
     @user = @account.permissioned_users.first
-    @updater = ::UpdateProcessExecution.new(@account, @user)
+    @updater = Todos::UpdateProcessExecution.new(@account, @user)
     @execution = create(:process_execution, account: @account, creator: @user)
   end
 
@@ -41,7 +41,7 @@ class UpdateProcessExecutionTest < ActiveSupport::TestCase
   end
 
   test "it returns errors if the process execution is invalid" do
-    result, errors = @updater.update(@execution, { name: nil, document: CreateProcessTemplate::EMPTY_DOCUMENT })
+    result, errors = @updater.update(@execution, { name: nil, document: Todos::CreateProcessTemplate::EMPTY_DOCUMENT })
 
     assert_not_nil errors
     assert_nil result

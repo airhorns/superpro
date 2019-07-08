@@ -1,4 +1,4 @@
-class CreateAccount
+class Identity::CreateAccount
   def initialize(creator)
     @creator = creator
   end

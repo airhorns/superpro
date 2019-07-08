@@ -5,7 +5,7 @@ class Mutations::Identity::CreateAccount < Mutations::BaseMutation
   field :errors, [Types::MutationErrorType], null: true
 
   def resolve(account:)
-    result, errors = ::CreateAccount.new(context[:current_user]).create(account.to_h)
+    result, errors = Identity::CreateAccount.new(context[:current_user]).create(account.to_h)
 
     { account: result, errors: Types::MutationErrorType.format_errors_object(errors) }
   end

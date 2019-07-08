@@ -23,40 +23,40 @@ class Todos::UpdateAllProcessExecutionStatsOverTimeTest < ActiveSupport::TestCas
   private
 
   def setup_document(execution)
-    UpdateProcessExecution.new(execution.account, execution.creator).update(execution, document: {
-                                                                                         object: "document",
-                                                                                         data: {},
-                                                                                         nodes: [
-                                                                                           {
-                                                                                             object: "block",
-                                                                                             type: "paragraph",
-                                                                                             nodes: [
-                                                                                               {
-                                                                                                 object: "block",
-                                                                                                 type: "deadline",
-                                                                                                 data: {
-                                                                                                   dueDate: (Time.now.utc - 10.days),
+    Todos::UpdateProcessExecution.new(execution.account, execution.creator).update(execution, document: {
+                                                                                                object: "document",
+                                                                                                data: {},
+                                                                                                nodes: [
+                                                                                                  {
+                                                                                                    object: "block",
+                                                                                                    type: "paragraph",
+                                                                                                    nodes: [
+                                                                                                      {
+                                                                                                        object: "block",
+                                                                                                        type: "deadline",
+                                                                                                        data: {
+                                                                                                          dueDate: (Time.now.utc - 10.days),
 
-                                                                                                 },
-                                                                                               },
-                                                                                               {
-                                                                                                 object: "block",
-                                                                                                 type: "deadline",
-                                                                                                 data: {
-                                                                                                   dueDate: (Time.now.utc + 2.days),
-                                                                                                 },
-                                                                                               },
-                                                                                               {
-                                                                                                 object: "block",
-                                                                                                 type: "deadline",
-                                                                                                 data: {
-                                                                                                   dueDate: (Time.now.utc + 10.days),
-                                                                                                 },
-                                                                                               },
-                                                                                             ],
-                                                                                           },
-                                                                                         ],
-                                                                                       })
+                                                                                                        },
+                                                                                                      },
+                                                                                                      {
+                                                                                                        object: "block",
+                                                                                                        type: "deadline",
+                                                                                                        data: {
+                                                                                                          dueDate: (Time.now.utc + 2.days),
+                                                                                                        },
+                                                                                                      },
+                                                                                                      {
+                                                                                                        object: "block",
+                                                                                                        type: "deadline",
+                                                                                                        data: {
+                                                                                                          dueDate: (Time.now.utc + 10.days),
+                                                                                                        },
+                                                                                                      },
+                                                                                                    ],
+                                                                                                  },
+                                                                                                ],
+                                                                                              })
     execution.reload
   end
 end

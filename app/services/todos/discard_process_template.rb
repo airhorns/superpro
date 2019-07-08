@@ -1,13 +1,13 @@
-class UpdateProcessTemplate
+class Todos::DiscardProcessTemplate
   def initialize(account, user)
     @account = account
     @user = user
   end
 
-  def update(process_template, attributes)
+  def discard(process_template)
     success = ProcessTemplate.transaction do
-      process_template.assign_attributes(attributes)
-      process_template.save
+      process_template.discard
+      true
     end
 
     if success

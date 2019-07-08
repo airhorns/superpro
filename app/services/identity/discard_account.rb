@@ -1,4 +1,4 @@
-class DiscardAccount
+class Identity::DiscardAccount
   def initialize(user)
     @user = user
   end

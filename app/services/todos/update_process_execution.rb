@@ -1,13 +1,14 @@
-class DiscardProcessExecution
+class Todos::UpdateProcessExecution
   def initialize(account, user)
     @account = account
     @user = user
   end
 
-  def discard(process_execution)
+  def update(process_execution, attributes)
     success = ProcessExecution.transaction do
-      process_execution.discard
-      true
+      process_execution.assign_attributes(attributes)
+      Todos::StatsTracker.track_all(process_execution)
+      process_execution.save
     end
 
     if success

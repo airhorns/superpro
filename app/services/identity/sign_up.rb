@@ -1,4 +1,4 @@
-class SignUp
+class Identity::SignUp
   def create_user_and_account(attributes)
     new_user = User.new(attributes[:user])
     new_account = nil
@@ -10,7 +10,7 @@ class SignUp
         errors = new_user.errors
         raise ActiveRecord::Rollback
       end
-      new_account, errors = CreateAccount.new(new_user).create(attributes[:account])
+      new_account, errors = Identity::CreateAccount.new(new_user).create(attributes[:account])
 
       if errors
         raise ActiveRecord::Rollback

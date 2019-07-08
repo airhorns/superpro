@@ -5,7 +5,7 @@ class Mutations::Todos::CreateProcessTemplate < Mutations::BaseMutation
   field :errors, [Types::MutationErrorType], null: true
 
   def resolve(attributes: nil)
-    result, errors = ::CreateProcessTemplate.new(context[:current_account], context[:current_user]).create(attributes.try(:to_h))
+    result, errors = Todos::CreateProcessTemplate.new(context[:current_account], context[:current_user]).create(attributes.try(:to_h))
     { process_template: result, errors: Types::MutationErrorType.format_errors_object(errors) }
   end
 end

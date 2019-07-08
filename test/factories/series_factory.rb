@@ -38,7 +38,7 @@ FactoryBot.define do
 
     after(:build) do |series, evaluator|
       cells = []
-      UpdateBudget::SCENARIO_KEYS.each do |key|
+      Budgets::UpdateBudget::SCENARIO_KEYS.each do |key|
         cells += build_list(evaluator.cell_factory, 5, account: series.account, series: series, scenario: key, **evaluator.cell_options)
       end
       series.cells = cells

@@ -1,4 +1,4 @@
-class UpdateBudget
+class Budgets::UpdateBudget
   SCENARIO_KEYS = ["default", "optimistic", "pessimistic"].freeze
 
   def initialize(user)

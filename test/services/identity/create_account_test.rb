@@ -1,9 +1,9 @@
 require "test_helper"
 
-class CreateAccountTest < ActiveSupport::TestCase
+class Identity::CreateAccountTest < ActiveSupport::TestCase
   setup do
     @user = create(:user)
-    @creator = ::CreateAccount.new(@user)
+    @creator = Identity::CreateAccount.new(@user)
   end
 
   test "it creates an account" do

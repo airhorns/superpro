@@ -1,4 +1,4 @@
-class CreateProcessTemplate
+class Todos::CreateProcessTemplate
   EMPTY_DOCUMENT = {
     object: "document",
     data: {},

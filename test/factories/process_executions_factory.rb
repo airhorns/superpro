@@ -3,7 +3,7 @@ FactoryBot.define do
     association :account
     association :creator, factory: :user
     name { "Example Process Execution" }
-    document { CreateProcessTemplate::EMPTY_DOCUMENT.to_json }
+    document { Todos::CreateProcessTemplate::EMPTY_DOCUMENT.to_json }
     closest_future_deadline { nil }
 
     started_at { nil }
