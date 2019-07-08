@@ -29,6 +29,17 @@ class Account < ApplicationRecord
   has_many :budgets, inverse_of: :account, dependent: :destroy
   has_many :process_templates, inverse_of: :account, dependent: :destroy
   has_many :process_executions, inverse_of: :account, dependent: :destroy
+  has_many :scratchpads, inverse_of: :account, dependent: :destroy do
+    def for_user(user)
+      where("access_mode = 'public' OR (access_mode = 'private' AND scratchpads.creator_id = ?)", user.id)
+    end
+  end
+
+  has_many :todo_feed_items, inverse_of: :account do # rubocop:disable Rails/HasManyOrHasOneDependent
+    def for_user(user)
+      where("access_mode = 'public' OR (access_mode = 'private' AND creator_id = ?)", user.id)
+    end
+  end
 
   belongs_to :creator, class_name: "User", inverse_of: :created_accounts
 end

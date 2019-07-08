@@ -6,13 +6,13 @@ import isHotkey from "is-hotkey";
 
 import { DividerHeading } from "app/components/common";
 import { Deadline } from "app/components/common/FlurishIcons";
-import { isAuthoringMode } from "./utils";
+import { isTemplateMode } from "./utils";
 import { DatePicker, Row } from "flurishlib";
 import { DateTime } from "luxon";
 
 export const DeadlineContainer = (props: RenderBlockProps) => {
   const [showForm, setShowForm] = React.useState(false);
-  const showDeadline = !isAuthoringMode(props.editor);
+  const showDeadline = !isTemplateMode(props.editor);
   const dueDate = props.node.data.get("dueDate");
   const dueDateTime = dueDate && DateTime.fromISO(dueDate);
   const textStyle = { textDecoration: dueDateTime && dueDateTime < DateTime.local() ? "line-through" : "none" };

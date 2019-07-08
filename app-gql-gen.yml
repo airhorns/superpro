@@ -16,8 +16,9 @@ generates:
       scalars:
         ISO8601DateTime: string
         RecurrenceRuleString: string
+      nonOptionalTypename: true
       withHOC: false
-      withHooks: false
+      withHooks: true
       constEnums: true
   app/javascript/app/app-graph-introspection.ts:
     plugins:

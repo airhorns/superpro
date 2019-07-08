@@ -1,7 +1,7 @@
 import { isNumber, isNull, isString, isBoolean, isUndefined } from "lodash";
 import { SchemaProperties } from "slate";
 
-export const ProcessSchema: SchemaProperties = {
+export const TodoSchema: SchemaProperties = {
   document: {},
   blocks: {
     paragraph: {},

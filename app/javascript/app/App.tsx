@@ -1,5 +1,6 @@
 import React from "react";
 import { ApolloProvider } from "react-apollo";
+import { ApolloProvider as ApolloHooksProvider } from "react-apollo-hooks";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { getClient } from "./lib/apollo";
 import { FlurishGrommetTheme, SentryErrorBoundary, FlurishGlobalStyle, SegmentIdentify, HotkeysContainer } from "../flurishlib";
@@ -29,14 +30,14 @@ export const App = () => {
     <SegmentIdentify>
       <FlagsProvider flags={Settings.flags}>
         <ApolloProvider client={FlurishClient}>
-          <Grommet theme={FlurishGrommetTheme}>
-            <FlurishGlobalStyle />
-            <Router basename={Settings.baseUrl}>
-              <ToastContainer>
-                <HotkeysContainer>
-                  <Box fill direction="row-responsive" id="flurish-root" style={{ width: "100vw", height: "100vh" }}>
-                    <AppSidebar />
-                    <Box flex overflow={{ vertical: "auto" }} className="App-container">
+          <ApolloHooksProvider client={FlurishClient}>
+            <Grommet full theme={FlurishGrommetTheme}>
+              <FlurishGlobalStyle />
+              <Router basename={Settings.baseUrl}>
+                <ToastContainer>
+                  <HotkeysContainer>
+                    <Box fill direction="row-responsive" id="flurish-root">
+                      <AppSidebar />
                       <React.Suspense fallback={<PageLoadSpin />}>
                         <Switch>
                           <Route path="/" exact component={HomePage} />
@@ -54,11 +55,11 @@ export const App = () => {
                         </Switch>
                       </React.Suspense>
                     </Box>
-                  </Box>
-                </HotkeysContainer>
-              </ToastContainer>
-            </Router>
-          </Grommet>
+                  </HotkeysContainer>
+                </ToastContainer>
+              </Router>
+            </Grommet>
+          </ApolloHooksProvider>
         </ApolloProvider>
       </FlagsProvider>
     </SegmentIdentify>

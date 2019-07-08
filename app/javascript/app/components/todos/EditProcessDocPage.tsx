@@ -1,6 +1,6 @@
 import React from "react";
 import { Page, HoverEditor, SavingNotice, SavingNoticeState } from "../common";
-import { ProcessEditor } from "./process_editor/ProcessEditor";
+import { TodoEditor } from "./todo_editor/TodoEditor";
 import { Row, mutationSuccess, toast, LinkButton } from "flurishlib";
 import gql from "graphql-tag";
 import { SuperForm, ObjectBackend } from "flurishlib/superform";
@@ -17,7 +17,7 @@ gql`
       createdAt
       updatedAt
     }
-    ...ContextForProcessEditor
+    ...ContextForTodoEditor
   }
 
   mutation UpdateProcessTemplate($id: ID!, $attributes: ProcessTemplateAttributes!) {
@@ -86,7 +86,7 @@ export default class extends Page<{ id: string }, SavingNoticeState> {
                     value: Value.fromJSON({
                       object: "value",
                       document: data.processTemplate.document,
-                      data: { mode: "authoring" }
+                      data: { mode: "template" }
                     } as any)
                   }
                 }}
@@ -115,7 +115,7 @@ export default class extends Page<{ id: string }, SavingNoticeState> {
                       breadcrumbs={["processDocs"]}
                       padded={false}
                     >
-                      <ProcessEditor
+                      <TodoEditor
                         autoFocus
                         users={data.users.nodes}
                         value={form.getValue("processTemplate.value")}

@@ -1,6 +1,6 @@
 import React from "react";
 import { Page, HoverEditor } from "../common";
-import { ProcessEditor } from "./process_editor/ProcessEditor";
+import { TodoEditor } from "./todo_editor/TodoEditor";
 import { Row, mutationSuccess, toast, AutoAssert } from "flurishlib";
 import gql from "graphql-tag";
 import { SuperForm, ObjectBackend } from "flurishlib/superform";
@@ -24,7 +24,7 @@ gql`
       updatedAt
       executionCount
     }
-    ...ContextForProcessEditor
+    ...ContextForTodoEditor
   }
 
   mutation StartProcessExecution($attributes: ProcessExecutionAttributes!) {
@@ -147,7 +147,7 @@ export default class extends Page<{ id: string }, StartProcessPageState> {
                       ]}
                       padded={false}
                     >
-                      <ProcessEditor
+                      <TodoEditor
                         readOnly={this.state.saving}
                         users={data.users.nodes}
                         value={form.getValue("processExecution.value")}

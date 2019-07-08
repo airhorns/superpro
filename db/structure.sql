@@ -934,6 +934,46 @@ CREATE TABLE public.schema_migrations (
 
 
 --
+-- Name: scratchpads; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.scratchpads (
+    id bigint NOT NULL,
+    account_id bigint NOT NULL,
+    creator_id bigint NOT NULL,
+    name character varying NOT NULL,
+    document json NOT NULL,
+    open_todo_count integer DEFAULT 0 NOT NULL,
+    closed_todo_count integer DEFAULT 0 NOT NULL,
+    total_todo_count integer DEFAULT 0 NOT NULL,
+    access_mode character varying NOT NULL,
+    closest_future_deadline timestamp without time zone,
+    discarded_at timestamp without time zone,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: scratchpads_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.scratchpads_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: scratchpads_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.scratchpads_id_seq OWNED BY public.scratchpads.id;
+
+
+--
 -- Name: series_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -950,6 +990,38 @@ CREATE SEQUENCE public.series_id_seq
 --
 
 ALTER SEQUENCE public.series_id_seq OWNED BY public.series.id;
+
+
+--
+-- Name: todo_feed_items; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.todo_feed_items AS
+ SELECT concat('process_execution-', process_executions.id) AS id,
+    process_executions.account_id,
+    'public'::character varying AS access_mode,
+    process_executions.creator_id,
+    process_executions.name,
+    'ProcessExecution'::text AS todo_source_type,
+    process_executions.id AS todo_source_id,
+    process_executions.created_at,
+    process_executions.updated_at,
+    process_executions.started_at
+   FROM public.process_executions
+  WHERE ((process_executions.started_at IS NOT NULL) AND (process_executions.discarded_at IS NULL))
+UNION
+ SELECT concat('scratchpad-', scratchpads.id) AS id,
+    scratchpads.account_id,
+    scratchpads.access_mode,
+    scratchpads.creator_id,
+    scratchpads.name,
+    'Scratchpad'::text AS todo_source_type,
+    scratchpads.id AS todo_source_id,
+    scratchpads.created_at,
+    scratchpads.updated_at,
+    scratchpads.created_at AS started_at
+   FROM public.scratchpads
+  WHERE (scratchpads.discarded_at IS NULL);
 
 
 --
@@ -1096,6 +1168,13 @@ ALTER TABLE ONLY public.process_templates ALTER COLUMN id SET DEFAULT nextval('p
 --
 
 ALTER TABLE ONLY public.que_jobs ALTER COLUMN id SET DEFAULT nextval('public.que_jobs_id_seq'::regclass);
+
+
+--
+-- Name: scratchpads id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.scratchpads ALTER COLUMN id SET DEFAULT nextval('public.scratchpads_id_seq'::regclass);
 
 
 --
@@ -1262,6 +1341,14 @@ ALTER TABLE ONLY public.que_values
 
 ALTER TABLE ONLY public.schema_migrations
     ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
+
+
+--
+-- Name: scratchpads scratchpads_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.scratchpads
+    ADD CONSTRAINT scratchpads_pkey PRIMARY KEY (id);
 
 
 --
@@ -1550,6 +1637,14 @@ ALTER TABLE ONLY public.process_templates
 
 
 --
+-- Name: scratchpads fk_rails_b513679b53; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.scratchpads
+    ADD CONSTRAINT fk_rails_b513679b53 FOREIGN KEY (account_id) REFERENCES public.accounts(id);
+
+
+--
 -- Name: budget_line_scenarios fk_rails_b67a79b20d; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1587,6 +1682,14 @@ ALTER TABLE ONLY public.budget_lines
 
 ALTER TABLE ONLY public.accounts
     ADD CONSTRAINT fk_rails_c0b1e2d9f4 FOREIGN KEY (creator_id) REFERENCES public.users(id);
+
+
+--
+-- Name: scratchpads fk_rails_c608ce4b4c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.scratchpads
+    ADD CONSTRAINT fk_rails_c608ce4b4c FOREIGN KEY (creator_id) REFERENCES public.users(id);
 
 
 --
@@ -1640,6 +1743,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190702165742'),
 ('20190704185645'),
 ('20190705135949'),
-('20190705140825');
+('20190705140825'),
+('20190705173411'),
+('20190705180821');
 
 

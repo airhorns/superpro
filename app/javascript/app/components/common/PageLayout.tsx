@@ -28,6 +28,7 @@ export interface PageLayoutProps {
   title: React.ReactNode;
   documentTitle?: string;
   padded?: boolean;
+  scrolly?: boolean;
   headerExtra?: React.ReactNode;
   breadcrumbs?: Breadcrumb[];
 }
@@ -39,7 +40,7 @@ function isCustomCrumb(crumb: Breadcrumb): crumb is BreadcrumbDescriptor {
 export class PageLayout extends React.Component<PageLayoutProps> {
   static defaultProps = {
     padded: true,
-    fullHeight: false
+    scrolly: true
   };
 
   renderBreadcrumbs() {
@@ -87,7 +88,7 @@ export class PageLayout extends React.Component<PageLayoutProps> {
   render() {
     const breadcrumbs = this.renderBreadcrumbs();
     return (
-      <Box flex="grow" className="PageLayout-container">
+      <Box flex className="PageLayout-container" overflow={{ vertical: this.props.scrolly ? "auto" : "hidden" }}>
         <Helmet>
           <title>{this.props.documentTitle || this.props.title} - Flurish</title>
         </Helmet>
@@ -102,13 +103,14 @@ export class PageLayout extends React.Component<PageLayoutProps> {
           style={{ position: "relative" }}
           border={{ color: "light-2", side: "bottom" }}
           className="PageLayout-header"
+          flex={false}
         >
           <Heading level={"3"} margin="xsmall">
             {this.props.title}
           </Heading>
           <Row>{this.props.headerExtra}</Row>
         </Row>
-        <Box flex="grow" pad={this.props.padded ? "medium" : undefined} className="PageLayout-content">
+        <Box flex pad={this.props.padded ? "medium" : undefined} className="PageLayout-content">
           {this.props.children}
         </Box>
       </Box>

@@ -1,5 +1,15 @@
 # README
 
+### Dev Cheatsheet
+
+- `yarn generate-graphql`: Generate TypeScript queries and components for all client side GraphQL queries in the codebase
+- `bin/lintfix`: Automatically format all Ruby and TypeScript code to match linter specifications
+- `bin/lint`: Check if all Ruby and TypeScript code matches linter rules
+- `bin/rails db:truncate db:seed`: Reset the database to a fresh, development friendly state. Destructive but recreates a bunch of useful test data
+- `bin/rails test`: Run all Ruby tests
+- `bin/yarn test`: Run all TypeScript tests
+- `bin/yarn open-cypress`: Open interactive end-to-end test runner, [Cypress](https://www.cypress.io/)
+
 ### Dev Setup
 
 Install homebrew deps for your host:
@@ -28,7 +38,3 @@ Setup DB:
     bin/rails db:setup
 
 And you're off to the races!
-
-### Handy Dev Scripts
-
-- `bin/rake db:truncate db:seed`: Reset the database to a fresh, development friendly state. Destructive but recreates a bunch of useful test data

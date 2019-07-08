@@ -2,6 +2,7 @@
 import gql from "graphql-tag";
 import * as React from "react";
 import * as ReactApollo from "react-apollo";
+import * as ReactApolloHooks from "react-apollo-hooks";
 export type Maybe<T> = T | null;
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 /** All built-in and custom scalars, mapped to their actual values */
@@ -26,7 +27,7 @@ export type Scalars = {
 };
 
 export type Account = {
-  __typename?: "Account";
+  __typename: "Account";
   appUrl: Scalars["String"];
   createdAt: Scalars["ISO8601DateTime"];
   creator: User;
@@ -38,14 +39,16 @@ export type Account = {
 };
 
 export type AppMutation = {
-  __typename?: "AppMutation";
+  __typename: "AppMutation";
   createProcessExecution?: Maybe<CreateProcessExecutionPayload>;
   createProcessTemplate?: Maybe<CreateProcessTemplatePayload>;
+  createScratchpad?: Maybe<CreateScratchpadPayload>;
   discardProcessExecution?: Maybe<DiscardProcessExecutionPayload>;
   discardProcessTemplate?: Maybe<DiscardProcessTemplatePayload>;
   updateBudget?: Maybe<UpdateBudgetPayload>;
   updateProcessExecution?: Maybe<UpdateProcessExecutionPayload>;
   updateProcessTemplate?: Maybe<UpdateProcessTemplatePayload>;
+  updateScratchpad?: Maybe<UpdateScratchpadPayload>;
 };
 
 export type AppMutationCreateProcessExecutionArgs = {
@@ -54,6 +57,10 @@ export type AppMutationCreateProcessExecutionArgs = {
 
 export type AppMutationCreateProcessTemplateArgs = {
   attributes?: Maybe<ProcessTemplateAttributes>;
+};
+
+export type AppMutationCreateScratchpadArgs = {
+  attributes?: Maybe<ScratchpadAttributes>;
 };
 
 export type AppMutationDiscardProcessExecutionArgs = {
@@ -79,8 +86,13 @@ export type AppMutationUpdateProcessTemplateArgs = {
   attributes: ProcessTemplateAttributes;
 };
 
+export type AppMutationUpdateScratchpadArgs = {
+  id: Scalars["ID"];
+  attributes: ScratchpadAttributes;
+};
+
 export type AppQuery = {
-  __typename?: "AppQuery";
+  __typename: "AppQuery";
   /** Find a budget by ID */
   budget?: Maybe<Budget>;
   /** Fetch all budgets in the system */
@@ -99,6 +111,10 @@ export type AppQuery = {
   processTemplate?: Maybe<ProcessTemplate>;
   /** Get all the process templates */
   processTemplates: ProcessTemplateConnection;
+  /** Find a scratchpad by ID */
+  scratchpad?: Maybe<Scratchpad>;
+  /** Get all the scratchpads for the current user */
+  scratchpads: ScratchpadConnection;
   /** Get all the active users in the current account */
   users: UserConnection;
 };
@@ -136,6 +152,17 @@ export type AppQueryProcessTemplatesArgs = {
   last?: Maybe<Scalars["Int"]>;
 };
 
+export type AppQueryScratchpadArgs = {
+  id: Scalars["ID"];
+};
+
+export type AppQueryScratchpadsArgs = {
+  after?: Maybe<Scalars["String"]>;
+  before?: Maybe<Scalars["String"]>;
+  first?: Maybe<Scalars["Int"]>;
+  last?: Maybe<Scalars["Int"]>;
+};
+
 export type AppQueryUsersArgs = {
   after?: Maybe<Scalars["String"]>;
   before?: Maybe<Scalars["String"]>;
@@ -144,7 +171,7 @@ export type AppQueryUsersArgs = {
 };
 
 export type Budget = {
-  __typename?: "Budget";
+  __typename: "Budget";
   budgetLines: Array<BudgetLine>;
   createdAt: Scalars["ISO8601DateTime"];
   creator: User;
@@ -169,7 +196,7 @@ export type BudgetAttributes = {
 
 /** The connection type for Budget. */
 export type BudgetConnection = {
-  __typename?: "BudgetConnection";
+  __typename: "BudgetConnection";
   /** A list of edges. */
   edges: Array<BudgetEdge>;
   /** A list of nodes. */
@@ -180,7 +207,7 @@ export type BudgetConnection = {
 
 /** An edge in a connection. */
 export type BudgetEdge = {
-  __typename?: "BudgetEdge";
+  __typename: "BudgetEdge";
   /** A cursor for use in pagination. */
   cursor: Scalars["String"];
   /** The item at the end of the edge. */
@@ -188,7 +215,7 @@ export type BudgetEdge = {
 };
 
 export type BudgetLine = {
-  __typename?: "BudgetLine";
+  __typename: "BudgetLine";
   amount: Money;
   budget: Budget;
   createdAt: Scalars["ISO8601DateTime"];
@@ -215,7 +242,7 @@ export type BudgetLineAttributes = {
 };
 
 export type BudgetLineFixedValue = {
-  __typename?: "BudgetLineFixedValue";
+  __typename: "BudgetLineFixedValue";
   amountScenarios: Scalars["JSONScalar"];
   occursAt: Scalars["ISO8601DateTime"];
   recurrenceRules?: Maybe<Array<Scalars["RecurrenceRuleString"]>>;
@@ -223,7 +250,7 @@ export type BudgetLineFixedValue = {
 };
 
 export type BudgetLineSeriesCell = {
-  __typename?: "BudgetLineSeriesCell";
+  __typename: "BudgetLineSeriesCell";
   amountScenarios: Scalars["JSONScalar"];
   dateTime: Scalars["ISO8601DateTime"];
 };
@@ -238,7 +265,7 @@ export type BudgetLineSeriesCellAttributes = {
 };
 
 export type BudgetLineSeriesValue = {
-  __typename?: "BudgetLineSeriesValue";
+  __typename: "BudgetLineSeriesValue";
   cells: Array<BudgetLineSeriesCell>;
   type: Scalars["String"];
 };
@@ -259,7 +286,7 @@ export type BudgetLineValueAttributes = {
 };
 
 export type BudgetProblemSpot = {
-  __typename?: "BudgetProblemSpot";
+  __typename: "BudgetProblemSpot";
   endDate: Scalars["ISO8601DateTime"];
   minCashOnHand: Money;
   scenario: Scalars["String"];
@@ -269,20 +296,27 @@ export type BudgetProblemSpot = {
 
 /** Autogenerated return type of CreateProcessExecution */
 export type CreateProcessExecutionPayload = {
-  __typename?: "CreateProcessExecutionPayload";
+  __typename: "CreateProcessExecutionPayload";
   errors?: Maybe<Array<MutationError>>;
   processExecution?: Maybe<ProcessExecution>;
 };
 
 /** Autogenerated return type of CreateProcessTemplate */
 export type CreateProcessTemplatePayload = {
-  __typename?: "CreateProcessTemplatePayload";
+  __typename: "CreateProcessTemplatePayload";
   errors?: Maybe<Array<MutationError>>;
   processTemplate?: Maybe<ProcessTemplate>;
 };
 
+/** Autogenerated return type of CreateScratchpad */
+export type CreateScratchpadPayload = {
+  __typename: "CreateScratchpadPayload";
+  errors?: Maybe<Array<MutationError>>;
+  scratchpad?: Maybe<Scratchpad>;
+};
+
 export type Currency = {
-  __typename?: "Currency";
+  __typename: "Currency";
   decimalMark: Scalars["String"];
   isoCode: Scalars["String"];
   name: Scalars["String"];
@@ -293,20 +327,20 @@ export type Currency = {
 
 /** Autogenerated return type of DiscardProcessExecution */
 export type DiscardProcessExecutionPayload = {
-  __typename?: "DiscardProcessExecutionPayload";
+  __typename: "DiscardProcessExecutionPayload";
   errors?: Maybe<Array<MutationError>>;
   processExecution?: Maybe<ProcessExecution>;
 };
 
 /** Autogenerated return type of DiscardProcessTemplate */
 export type DiscardProcessTemplatePayload = {
-  __typename?: "DiscardProcessTemplatePayload";
+  __typename: "DiscardProcessTemplatePayload";
   errors?: Maybe<Array<MutationError>>;
   processTemplate?: Maybe<ProcessTemplate>;
 };
 
 export type Money = {
-  __typename?: "Money";
+  __typename: "Money";
   currency: Currency;
   formatted: Scalars["String"];
   fractional: Scalars["Int"];
@@ -314,7 +348,7 @@ export type Money = {
 
 /** Error object describing a reason why a mutation was unsuccessful, specific to a particular field. */
 export type MutationError = {
-  __typename?: "MutationError";
+  __typename: "MutationError";
   /** The absolute name of the field relative to the root object that caused this error */
   field: Scalars["String"];
   /** Error message about the field with the field's name in it, like "title can't be blank" */
@@ -329,7 +363,7 @@ export type MutationError = {
 
 /** Information about pagination in a connection. */
 export type PageInfo = {
-  __typename?: "PageInfo";
+  __typename: "PageInfo";
   /** When paginating forwards, the cursor to continue. */
   endCursor?: Maybe<Scalars["String"]>;
   /** When paginating forwards, are there more items? */
@@ -341,7 +375,7 @@ export type PageInfo = {
 };
 
 export type ProcessExecution = {
-  __typename?: "ProcessExecution";
+  __typename: "ProcessExecution";
   closedTodoCount: Scalars["Int"];
   closestFutureDeadline?: Maybe<Scalars["ISO8601DateTime"]>;
   createdAt: Scalars["ISO8601DateTime"];
@@ -376,7 +410,7 @@ export type ProcessExecutionAttributes = {
 
 /** The connection type for ProcessExecution. */
 export type ProcessExecutionConnection = {
-  __typename?: "ProcessExecutionConnection";
+  __typename: "ProcessExecutionConnection";
   /** A list of edges. */
   edges: Array<ProcessExecutionEdge>;
   /** A list of nodes. */
@@ -387,7 +421,7 @@ export type ProcessExecutionConnection = {
 
 /** An edge in a connection. */
 export type ProcessExecutionEdge = {
-  __typename?: "ProcessExecutionEdge";
+  __typename: "ProcessExecutionEdge";
   /** A cursor for use in pagination. */
   cursor: Scalars["String"];
   /** The item at the end of the edge. */
@@ -395,7 +429,7 @@ export type ProcessExecutionEdge = {
 };
 
 export type ProcessTemplate = {
-  __typename?: "ProcessTemplate";
+  __typename: "ProcessTemplate";
   createdAt: Scalars["ISO8601DateTime"];
   creator: User;
   discardedAt: Scalars["ISO8601DateTime"];
@@ -421,7 +455,7 @@ export type ProcessTemplateAttributes = {
 
 /** The connection type for ProcessTemplate. */
 export type ProcessTemplateConnection = {
-  __typename?: "ProcessTemplateConnection";
+  __typename: "ProcessTemplateConnection";
   /** A list of edges. */
   edges: Array<ProcessTemplateEdge>;
   /** A list of nodes. */
@@ -432,36 +466,128 @@ export type ProcessTemplateConnection = {
 
 /** An edge in a connection. */
 export type ProcessTemplateEdge = {
-  __typename?: "ProcessTemplateEdge";
+  __typename: "ProcessTemplateEdge";
   /** A cursor for use in pagination. */
   cursor: Scalars["String"];
   /** The item at the end of the edge. */
   node?: Maybe<ProcessTemplate>;
 };
 
+export type Scratchpad = {
+  __typename: "Scratchpad";
+  accessMode: ScratchpadAccessModeEnum;
+  closedTodoCount: Scalars["Int"];
+  closestFutureDeadline?: Maybe<Scalars["ISO8601DateTime"]>;
+  createdAt: Scalars["ISO8601DateTime"];
+  creator: User;
+  discardedAt: Scalars["ISO8601DateTime"];
+  document: Scalars["JSONScalar"];
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  openTodoCount: Scalars["Int"];
+  totalTodoCount: Scalars["Int"];
+  updatedAt: Scalars["ISO8601DateTime"];
+};
+
+export const enum ScratchpadAccessModeEnum {
+  /** All members of the account can view and edit this scratchpad */
+  Public = "PUBLIC",
+  /** Only the creator of the scratchpad can view and edit it with no exceptions. */
+  Private = "PRIVATE"
+}
+
+/** Attributes for creating or updating a scratchpad */
+export type ScratchpadAttributes = {
+  /** An opaque identifier that will appear on objects created/updated because of
+   * this attributes hash, or on errors from it being invalid.
+   */
+  mutationClientId?: Maybe<Scalars["MutationClientId"]>;
+  /** Opaque JSON document powering the document editor for the scratchpad */
+  document?: Maybe<Scalars["JSONScalar"]>;
+};
+
+/** The connection type for Scratchpad. */
+export type ScratchpadConnection = {
+  __typename: "ScratchpadConnection";
+  /** A list of edges. */
+  edges: Array<ScratchpadEdge>;
+  /** A list of nodes. */
+  nodes: Array<Scratchpad>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+};
+
+/** An edge in a connection. */
+export type ScratchpadEdge = {
+  __typename: "ScratchpadEdge";
+  /** A cursor for use in pagination. */
+  cursor: Scalars["String"];
+  /** The item at the end of the edge. */
+  node?: Maybe<Scratchpad>;
+};
+
+export type TodoFeedItem = {
+  __typename: "TodoFeedItem";
+  createdAt: Scalars["ISO8601DateTime"];
+  creator: User;
+  id: Scalars["ID"];
+  todoSource: TodoFeedItemSourceUnion;
+  updatedAt: Scalars["ISO8601DateTime"];
+};
+
+/** The connection type for TodoFeedItem. */
+export type TodoFeedItemConnection = {
+  __typename: "TodoFeedItemConnection";
+  /** A list of edges. */
+  edges: Array<TodoFeedItemEdge>;
+  /** A list of nodes. */
+  nodes: Array<TodoFeedItem>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+};
+
+/** An edge in a connection. */
+export type TodoFeedItemEdge = {
+  __typename: "TodoFeedItemEdge";
+  /** A cursor for use in pagination. */
+  cursor: Scalars["String"];
+  /** The item at the end of the edge. */
+  node?: Maybe<TodoFeedItem>;
+};
+
+/** Objects which create entries in the todo feed */
+export type TodoFeedItemSourceUnion = ProcessExecution | Scratchpad;
+
 /** Autogenerated return type of UpdateBudget */
 export type UpdateBudgetPayload = {
-  __typename?: "UpdateBudgetPayload";
+  __typename: "UpdateBudgetPayload";
   budget?: Maybe<Budget>;
   errors?: Maybe<Array<MutationError>>;
 };
 
 /** Autogenerated return type of UpdateProcessExecution */
 export type UpdateProcessExecutionPayload = {
-  __typename?: "UpdateProcessExecutionPayload";
+  __typename: "UpdateProcessExecutionPayload";
   errors?: Maybe<Array<MutationError>>;
   processExecution?: Maybe<ProcessExecution>;
 };
 
 /** Autogenerated return type of UpdateProcessTemplate */
 export type UpdateProcessTemplatePayload = {
-  __typename?: "UpdateProcessTemplatePayload";
+  __typename: "UpdateProcessTemplatePayload";
   errors?: Maybe<Array<MutationError>>;
   processTemplate?: Maybe<ProcessTemplate>;
 };
 
+/** Autogenerated return type of UpdateScratchpad */
+export type UpdateScratchpadPayload = {
+  __typename: "UpdateScratchpadPayload";
+  errors?: Maybe<Array<MutationError>>;
+  scratchpad?: Maybe<Scratchpad>;
+};
+
 export type User = {
-  __typename?: "User";
+  __typename: "User";
   accounts: Array<Account>;
   authAreaUrl: Scalars["String"];
   confirmed: Scalars["Boolean"];
@@ -471,6 +597,8 @@ export type User = {
   id: Scalars["ID"];
   involvedProcessExecutions: ProcessExecutionConnection;
   locked: Scalars["Boolean"];
+  scratchpads: ScratchpadConnection;
+  todoFeedItems: TodoFeedItemConnection;
   updatedAt: Scalars["ISO8601DateTime"];
 };
 
@@ -481,9 +609,23 @@ export type UserInvolvedProcessExecutionsArgs = {
   last?: Maybe<Scalars["Int"]>;
 };
 
+export type UserScratchpadsArgs = {
+  after?: Maybe<Scalars["String"]>;
+  before?: Maybe<Scalars["String"]>;
+  first?: Maybe<Scalars["Int"]>;
+  last?: Maybe<Scalars["Int"]>;
+};
+
+export type UserTodoFeedItemsArgs = {
+  after?: Maybe<Scalars["String"]>;
+  before?: Maybe<Scalars["String"]>;
+  first?: Maybe<Scalars["Int"]>;
+  last?: Maybe<Scalars["Int"]>;
+};
+
 /** The connection type for User. */
 export type UserConnection = {
-  __typename?: "UserConnection";
+  __typename: "UserConnection";
   /** A list of edges. */
   edges: Array<UserEdge>;
   /** A list of nodes. */
@@ -494,7 +636,7 @@ export type UserConnection = {
 
 /** An edge in a connection. */
 export type UserEdge = {
-  __typename?: "UserEdge";
+  __typename: "UserEdge";
   /** A cursor for use in pagination. */
   cursor: Scalars["String"];
   /** The item at the end of the edge. */
@@ -502,20 +644,20 @@ export type UserEdge = {
 };
 export type GetBudgetForReportsQueryVariables = {};
 
-export type GetBudgetForReportsQuery = { __typename?: "AppQuery" } & {
-  budget: { __typename?: "Budget" } & Pick<Budget, "id" | "name" | "sections">;
+export type GetBudgetForReportsQuery = { __typename: "AppQuery" } & {
+  budget: { __typename: "Budget" } & Pick<Budget, "id" | "name" | "sections">;
 };
 
-export type BudgetForEditFragment = { __typename?: "Budget" } & Pick<Budget, "id" | "name"> & {
+export type BudgetForEditFragment = { __typename: "Budget" } & Pick<Budget, "id" | "name"> & {
     budgetLines: Array<
-      { __typename?: "BudgetLine" } & Pick<BudgetLine, "id" | "description" | "section" | "sortOrder"> & {
+      { __typename: "BudgetLine" } & Pick<BudgetLine, "id" | "description" | "section" | "sortOrder"> & {
           value:
-            | ({ __typename?: "BudgetLineFixedValue" } & Pick<
+            | ({ __typename: "BudgetLineFixedValue" } & Pick<
                 BudgetLineFixedValue,
                 "type" | "occursAt" | "recurrenceRules" | "amountScenarios"
               >)
-            | ({ __typename?: "BudgetLineSeriesValue" } & Pick<BudgetLineSeriesValue, "type"> & {
-                  cells: Array<{ __typename?: "BudgetLineSeriesCell" } & Pick<BudgetLineSeriesCell, "dateTime" | "amountScenarios">>;
+            | ({ __typename: "BudgetLineSeriesValue" } & Pick<BudgetLineSeriesValue, "type"> & {
+                  cells: Array<{ __typename: "BudgetLineSeriesCell" } & Pick<BudgetLineSeriesCell, "dateTime" | "amountScenarios">>;
                 });
         }
     >;
@@ -523,18 +665,18 @@ export type BudgetForEditFragment = { __typename?: "Budget" } & Pick<Budget, "id
 
 export type GetBudgetForEditQueryVariables = {};
 
-export type GetBudgetForEditQuery = { __typename?: "AppQuery" } & { budget: { __typename?: "Budget" } & BudgetForEditFragment };
+export type GetBudgetForEditQuery = { __typename: "AppQuery" } & { budget: { __typename: "Budget" } & BudgetForEditFragment };
 
 export type UpdateBudgetMutationVariables = {
   id: Scalars["ID"];
   attributes: BudgetAttributes;
 };
 
-export type UpdateBudgetMutation = { __typename?: "AppMutation" } & {
+export type UpdateBudgetMutation = { __typename: "AppMutation" } & {
   updateBudget: Maybe<
-    { __typename?: "UpdateBudgetPayload" } & {
-      budget: Maybe<{ __typename?: "Budget" } & BudgetForEditFragment>;
-      errors: Maybe<Array<{ __typename?: "MutationError" } & Pick<MutationError, "field" | "fullMessage">>>;
+    { __typename: "UpdateBudgetPayload" } & {
+      budget: Maybe<{ __typename: "Budget" } & BudgetForEditFragment>;
+      errors: Maybe<Array<{ __typename: "MutationError" } & Pick<MutationError, "field" | "fullMessage">>>;
     }
   >;
 };
@@ -543,12 +685,12 @@ export type GetBudgetProblemSpotsQueryVariables = {
   id: Scalars["ID"];
 };
 
-export type GetBudgetProblemSpotsQuery = { __typename?: "AppQuery" } & {
+export type GetBudgetProblemSpotsQuery = { __typename: "AppQuery" } & {
   budget: Maybe<
-    { __typename?: "Budget" } & Pick<Budget, "id"> & {
+    { __typename: "Budget" } & Pick<Budget, "id"> & {
         problemSpots: Array<
-          { __typename?: "BudgetProblemSpot" } & Pick<BudgetProblemSpot, "startDate" | "endDate"> & {
-              minCashOnHand: { __typename?: "Money" } & Pick<Money, "formatted">;
+          { __typename: "BudgetProblemSpot" } & Pick<BudgetProblemSpot, "startDate" | "endDate"> & {
+              minCashOnHand: { __typename: "Money" } & Pick<Money, "formatted">;
             }
         >;
       }
@@ -557,27 +699,24 @@ export type GetBudgetProblemSpotsQuery = { __typename?: "AppQuery" } & {
 
 export type SiderInfoQueryVariables = {};
 
-export type SiderInfoQuery = { __typename?: "AppQuery" } & {
-  currentUser: { __typename?: "User" } & Pick<User, "email" | "fullName" | "authAreaUrl"> & UserCardFragment;
+export type SiderInfoQuery = { __typename: "AppQuery" } & {
+  currentUser: { __typename: "User" } & Pick<User, "email" | "fullName" | "authAreaUrl"> & UserCardFragment;
 };
 
-export type UserCardFragment = { __typename?: "User" } & Pick<User, "id" | "email" | "fullName">;
+export type UserCardFragment = { __typename: "User" } & Pick<User, "id" | "email" | "fullName">;
 
-export type CondensedProcessExecutionFormFragment = { __typename?: "ProcessExecution" } & Pick<
-  ProcessExecution,
-  "id" | "document" | "name"
->;
+export type CondensedProcessExecutionFormFragment = { __typename: "ProcessExecution" } & Pick<ProcessExecution, "id" | "document" | "name">;
 
 export type UpdateProcessExecutionTodosPageMutationVariables = {
   id: Scalars["ID"];
   attributes: ProcessExecutionAttributes;
 };
 
-export type UpdateProcessExecutionTodosPageMutation = { __typename?: "AppMutation" } & {
+export type UpdateProcessExecutionTodosPageMutation = { __typename: "AppMutation" } & {
   updateProcessExecution: Maybe<
-    { __typename?: "UpdateProcessExecutionPayload" } & {
-      processExecution: Maybe<{ __typename?: "ProcessExecution" } & Pick<ProcessExecution, "id" | "updatedAt">>;
-      errors: Maybe<Array<{ __typename?: "MutationError" } & Pick<MutationError, "fullMessage">>>;
+    { __typename: "UpdateProcessExecutionPayload" } & {
+      processExecution: Maybe<{ __typename: "ProcessExecution" } & Pick<ProcessExecution, "id" | "updatedAt">>;
+      errors: Maybe<Array<{ __typename: "MutationError" } & Pick<MutationError, "fullMessage">>>;
     }
   >;
 };
@@ -586,22 +725,20 @@ export type GetProcessTemplateForEditQueryVariables = {
   id: Scalars["ID"];
 };
 
-export type GetProcessTemplateForEditQuery = { __typename?: "AppQuery" } & {
-  processTemplate: Maybe<
-    { __typename?: "ProcessTemplate" } & Pick<ProcessTemplate, "id" | "name" | "document" | "createdAt" | "updatedAt">
-  >;
-} & ContextForProcessEditorFragment;
+export type GetProcessTemplateForEditQuery = { __typename: "AppQuery" } & {
+  processTemplate: Maybe<{ __typename: "ProcessTemplate" } & Pick<ProcessTemplate, "id" | "name" | "document" | "createdAt" | "updatedAt">>;
+} & ContextForTodoEditorFragment;
 
 export type UpdateProcessTemplateMutationVariables = {
   id: Scalars["ID"];
   attributes: ProcessTemplateAttributes;
 };
 
-export type UpdateProcessTemplateMutation = { __typename?: "AppMutation" } & {
+export type UpdateProcessTemplateMutation = { __typename: "AppMutation" } & {
   updateProcessTemplate: Maybe<
-    { __typename?: "UpdateProcessTemplatePayload" } & {
-      processTemplate: Maybe<{ __typename?: "ProcessTemplate" } & Pick<ProcessTemplate, "id" | "updatedAt">>;
-      errors: Maybe<Array<{ __typename?: "MutationError" } & Pick<MutationError, "fullMessage">>>;
+    { __typename: "UpdateProcessTemplatePayload" } & {
+      processTemplate: Maybe<{ __typename: "ProcessTemplate" } & Pick<ProcessTemplate, "id" | "updatedAt">>;
+      errors: Maybe<Array<{ __typename: "MutationError" } & Pick<MutationError, "fullMessage">>>;
     }
   >;
 };
@@ -610,41 +747,36 @@ export type GetProcessExecutionForEditQueryVariables = {
   id: Scalars["ID"];
 };
 
-export type GetProcessExecutionForEditQuery = { __typename?: "AppQuery" } & {
+export type GetProcessExecutionForEditQuery = { __typename: "AppQuery" } & {
   processExecution: Maybe<
-    { __typename?: "ProcessExecution" } & Pick<ProcessExecution, "id" | "name" | "startedAt" | "document" | "createdAt" | "updatedAt"> & {
-        processTemplate: Maybe<{ __typename?: "ProcessTemplate" } & Pick<ProcessTemplate, "id" | "name">>;
+    { __typename: "ProcessExecution" } & Pick<ProcessExecution, "id" | "name" | "startedAt" | "document" | "createdAt" | "updatedAt"> & {
+        processTemplate: Maybe<{ __typename: "ProcessTemplate" } & Pick<ProcessTemplate, "id" | "name">>;
       }
   >;
-} & ContextForProcessEditorFragment;
+} & ContextForTodoEditorFragment;
 
 export type UpdateProcessExecutionMutationVariables = {
   id: Scalars["ID"];
   attributes: ProcessExecutionAttributes;
 };
 
-export type UpdateProcessExecutionMutation = { __typename?: "AppMutation" } & {
+export type UpdateProcessExecutionMutation = { __typename: "AppMutation" } & {
   updateProcessExecution: Maybe<
-    { __typename?: "UpdateProcessExecutionPayload" } & {
-      processExecution: Maybe<{ __typename?: "ProcessExecution" } & Pick<ProcessExecution, "id" | "updatedAt">>;
-      errors: Maybe<Array<{ __typename?: "MutationError" } & Pick<MutationError, "fullMessage">>>;
+    { __typename: "UpdateProcessExecutionPayload" } & {
+      processExecution: Maybe<{ __typename: "ProcessExecution" } & Pick<ProcessExecution, "id" | "updatedAt">>;
+      errors: Maybe<Array<{ __typename: "MutationError" } & Pick<MutationError, "fullMessage">>>;
     }
   >;
 };
 
-export type ContextForProcessEditorFragment = { __typename?: "AppQuery" } & {
-  users: { __typename?: "UserConnection" } & { nodes: Array<{ __typename?: "User" } & UserCardFragment> };
-  currentUser: { __typename?: "User" } & Pick<User, "id">;
-};
-
 export type GetAllProcessTemplatesQueryVariables = {};
 
-export type GetAllProcessTemplatesQuery = { __typename?: "AppQuery" } & {
-  processTemplates: { __typename?: "ProcessTemplateConnection" } & {
+export type GetAllProcessTemplatesQuery = { __typename: "AppQuery" } & {
+  processTemplates: { __typename: "ProcessTemplateConnection" } & {
     nodes: Array<
-      { __typename?: "ProcessTemplate" } & Pick<ProcessTemplate, "id" | "name"> & { key: ProcessTemplate["id"] } & {
-          creator: { __typename?: "User" } & UserCardFragment;
-          lastExecution: Maybe<{ __typename?: "ProcessExecution" } & Pick<ProcessExecution, "id" | "startedAt" | "createdAt">>;
+      { __typename: "ProcessTemplate" } & Pick<ProcessTemplate, "id" | "name"> & { key: ProcessTemplate["id"] } & {
+          creator: { __typename: "User" } & UserCardFragment;
+          lastExecution: Maybe<{ __typename: "ProcessExecution" } & Pick<ProcessExecution, "id" | "startedAt" | "createdAt">>;
         }
     >;
   };
@@ -652,11 +784,11 @@ export type GetAllProcessTemplatesQuery = { __typename?: "AppQuery" } & {
 
 export type CreateNewProcessTemplateMutationVariables = {};
 
-export type CreateNewProcessTemplateMutation = { __typename?: "AppMutation" } & {
+export type CreateNewProcessTemplateMutation = { __typename: "AppMutation" } & {
   createProcessTemplate: Maybe<
-    { __typename?: "CreateProcessTemplatePayload" } & {
-      processTemplate: Maybe<{ __typename?: "ProcessTemplate" } & Pick<ProcessTemplate, "id">>;
-      errors: Maybe<Array<{ __typename?: "MutationError" } & Pick<MutationError, "fullMessage">>>;
+    { __typename: "CreateProcessTemplatePayload" } & {
+      processTemplate: Maybe<{ __typename: "ProcessTemplate" } & Pick<ProcessTemplate, "id">>;
+      errors: Maybe<Array<{ __typename: "MutationError" } & Pick<MutationError, "fullMessage">>>;
     }
   >;
 };
@@ -665,35 +797,35 @@ export type DiscardProcessTemplateMutationVariables = {
   id: Scalars["ID"];
 };
 
-export type DiscardProcessTemplateMutation = { __typename?: "AppMutation" } & {
+export type DiscardProcessTemplateMutation = { __typename: "AppMutation" } & {
   discardProcessTemplate: Maybe<
-    { __typename?: "DiscardProcessTemplatePayload" } & {
-      processTemplate: Maybe<{ __typename?: "ProcessTemplate" } & Pick<ProcessTemplate, "id" | "discardedAt">>;
-      errors: Maybe<Array<{ __typename?: "MutationError" } & Pick<MutationError, "fullMessage">>>;
+    { __typename: "DiscardProcessTemplatePayload" } & {
+      processTemplate: Maybe<{ __typename: "ProcessTemplate" } & Pick<ProcessTemplate, "id" | "discardedAt">>;
+      errors: Maybe<Array<{ __typename: "MutationError" } & Pick<MutationError, "fullMessage">>>;
     }
   >;
 };
 
 export type GetAllProcessExecutionsQueryVariables = {};
 
-export type GetAllProcessExecutionsQuery = { __typename?: "AppQuery" } & {
-  processExecutions: { __typename?: "ProcessExecutionConnection" } & {
+export type GetAllProcessExecutionsQuery = { __typename: "AppQuery" } & {
+  processExecutions: { __typename: "ProcessExecutionConnection" } & {
     nodes: Array<
-      { __typename?: "ProcessExecution" } & Pick<
+      { __typename: "ProcessExecution" } & Pick<
         ProcessExecution,
         "id" | "name" | "startedAt" | "openTodoCount" | "closedTodoCount" | "totalTodoCount" | "closestFutureDeadline"
-      > & { key: ProcessExecution["id"] } & { involvedUsers: Array<{ __typename?: "User" } & UserCardFragment> }
+      > & { key: ProcessExecution["id"] } & { involvedUsers: Array<{ __typename: "User" } & UserCardFragment> }
     >;
   };
 };
 
 export type CreateNewProcessExecutionMutationVariables = {};
 
-export type CreateNewProcessExecutionMutation = { __typename?: "AppMutation" } & {
+export type CreateNewProcessExecutionMutation = { __typename: "AppMutation" } & {
   createProcessExecution: Maybe<
-    { __typename?: "CreateProcessExecutionPayload" } & {
-      processExecution: Maybe<{ __typename?: "ProcessExecution" } & Pick<ProcessExecution, "id">>;
-      errors: Maybe<Array<{ __typename?: "MutationError" } & Pick<MutationError, "fullMessage">>>;
+    { __typename: "CreateProcessExecutionPayload" } & {
+      processExecution: Maybe<{ __typename: "ProcessExecution" } & Pick<ProcessExecution, "id">>;
+      errors: Maybe<Array<{ __typename: "MutationError" } & Pick<MutationError, "fullMessage">>>;
     }
   >;
 };
@@ -702,11 +834,27 @@ export type DiscardProcessExecutionMutationVariables = {
   id: Scalars["ID"];
 };
 
-export type DiscardProcessExecutionMutation = { __typename?: "AppMutation" } & {
+export type DiscardProcessExecutionMutation = { __typename: "AppMutation" } & {
   discardProcessExecution: Maybe<
-    { __typename?: "DiscardProcessExecutionPayload" } & {
-      processExecution: Maybe<{ __typename?: "ProcessExecution" } & Pick<ProcessExecution, "id" | "discardedAt">>;
-      errors: Maybe<Array<{ __typename?: "MutationError" } & Pick<MutationError, "fullMessage">>>;
+    { __typename: "DiscardProcessExecutionPayload" } & {
+      processExecution: Maybe<{ __typename: "ProcessExecution" } & Pick<ProcessExecution, "id" | "discardedAt">>;
+      errors: Maybe<Array<{ __typename: "MutationError" } & Pick<MutationError, "fullMessage">>>;
+    }
+  >;
+};
+
+export type ScratchpadFormFragment = { __typename: "Scratchpad" } & Pick<Scratchpad, "id" | "document" | "accessMode">;
+
+export type UpdateScratchpadFromFormMutationVariables = {
+  id: Scalars["ID"];
+  attributes: ScratchpadAttributes;
+};
+
+export type UpdateScratchpadFromFormMutation = { __typename: "AppMutation" } & {
+  updateScratchpad: Maybe<
+    { __typename: "UpdateScratchpadPayload" } & {
+      scratchpad: Maybe<{ __typename: "Scratchpad" } & Pick<Scratchpad, "id" | "name" | "updatedAt">>;
+      errors: Maybe<Array<{ __typename: "MutationError" } & Pick<MutationError, "fullMessage">>>;
     }
   >;
 };
@@ -715,34 +863,81 @@ export type GetProcessTemplateForStartQueryVariables = {
   id: Scalars["ID"];
 };
 
-export type GetProcessTemplateForStartQuery = { __typename?: "AppQuery" } & {
+export type GetProcessTemplateForStartQuery = { __typename: "AppQuery" } & {
   processTemplate: Maybe<
-    { __typename?: "ProcessTemplate" } & Pick<ProcessTemplate, "id" | "name" | "document" | "createdAt" | "updatedAt" | "executionCount">
+    { __typename: "ProcessTemplate" } & Pick<ProcessTemplate, "id" | "name" | "document" | "createdAt" | "updatedAt" | "executionCount">
   >;
-} & ContextForProcessEditorFragment;
+} & ContextForTodoEditorFragment;
 
 export type StartProcessExecutionMutationVariables = {
   attributes: ProcessExecutionAttributes;
 };
 
-export type StartProcessExecutionMutation = { __typename?: "AppMutation" } & {
+export type StartProcessExecutionMutation = { __typename: "AppMutation" } & {
   createProcessExecution: Maybe<
-    { __typename?: "CreateProcessExecutionPayload" } & {
-      processExecution: Maybe<{ __typename?: "ProcessExecution" } & Pick<ProcessExecution, "id" | "updatedAt">>;
-      errors: Maybe<Array<{ __typename?: "MutationError" } & Pick<MutationError, "fullMessage">>>;
+    { __typename: "CreateProcessExecutionPayload" } & {
+      processExecution: Maybe<{ __typename: "ProcessExecution" } & Pick<ProcessExecution, "id" | "updatedAt">>;
+      errors: Maybe<Array<{ __typename: "MutationError" } & Pick<MutationError, "fullMessage">>>;
     }
   >;
 };
 
-export type GetMyTodosQueryVariables = {};
+export type ContextForTodoEditorFragment = { __typename: "AppQuery" } & {
+  users: { __typename: "UserConnection" } & { nodes: Array<{ __typename: "User" } & UserCardFragment> };
+  currentUser: { __typename: "User" } & Pick<User, "id">;
+};
 
-export type GetMyTodosQuery = { __typename?: "AppQuery" } & {
-  currentUser: { __typename?: "User" } & Pick<User, "id"> & {
-      involvedProcessExecutions: { __typename?: "ProcessExecutionConnection" } & {
-        nodes: Array<{ __typename?: "ProcessExecution" } & Pick<ProcessExecution, "id" | "name"> & CondensedProcessExecutionFormFragment>;
+export type GetMyTodosQueryVariables = {
+  after?: Maybe<Scalars["String"]>;
+};
+
+export type GetMyTodosQuery = { __typename: "AppQuery" } & {
+  currentUser: { __typename: "User" } & Pick<User, "id"> & {
+      todoFeedItems: { __typename: "TodoFeedItemConnection" } & {
+        pageInfo: { __typename: "PageInfo" } & Pick<PageInfo, "endCursor" | "hasNextPage">;
+        edges: Array<
+          { __typename: "TodoFeedItemEdge" } & {
+            node: Maybe<
+              { __typename: "TodoFeedItem" } & Pick<TodoFeedItem, "id" | "updatedAt"> & {
+                  todoSource:
+                    | ({ __typename: "ProcessExecution" } & Pick<ProcessExecution, "id" | "name"> & {
+                          involvedUsers: Array<{ __typename: "User" } & UserCardFragment>;
+                        })
+                    | ({ __typename: "Scratchpad" } & Pick<Scratchpad, "id" | "name">);
+                }
+            >;
+          }
+        >;
       };
     };
-} & ContextForProcessEditorFragment;
+} & ContextForTodoEditorFragment;
+
+export type GetProcessExecutionForTodosQueryVariables = {
+  id: Scalars["ID"];
+};
+
+export type GetProcessExecutionForTodosQuery = { __typename: "AppQuery" } & {
+  processExecution: Maybe<{ __typename: "ProcessExecution" } & Pick<ProcessExecution, "name"> & CondensedProcessExecutionFormFragment>;
+};
+
+export type GetScratchpadForTodosQueryVariables = {
+  id: Scalars["ID"];
+};
+
+export type GetScratchpadForTodosQuery = { __typename: "AppQuery" } & {
+  scratchpad: Maybe<{ __typename: "Scratchpad" } & Pick<Scratchpad, "id"> & ScratchpadFormFragment>;
+};
+
+export type CreateNewScratchpadMutationVariables = {};
+
+export type CreateNewScratchpadMutation = { __typename: "AppMutation" } & {
+  createScratchpad: Maybe<
+    { __typename: "CreateScratchpadPayload" } & {
+      scratchpad: Maybe<{ __typename: "Scratchpad" } & Pick<Scratchpad, "id"> & ScratchpadFormFragment>;
+      errors: Maybe<Array<{ __typename: "MutationError" } & Pick<MutationError, "fullMessage">>>;
+    }
+  >;
+};
 export const BudgetForEditFragmentDoc = gql`
   fragment BudgetForEdit on Budget {
     id
@@ -778,6 +973,13 @@ export const CondensedProcessExecutionFormFragmentDoc = gql`
     name
   }
 `;
+export const ScratchpadFormFragmentDoc = gql`
+  fragment ScratchpadForm on Scratchpad {
+    id
+    document
+    accessMode
+  }
+`;
 export const UserCardFragmentDoc = gql`
   fragment UserCard on User {
     id
@@ -785,8 +987,8 @@ export const UserCardFragmentDoc = gql`
     fullName
   }
 `;
-export const ContextForProcessEditorFragmentDoc = gql`
-  fragment ContextForProcessEditor on AppQuery {
+export const ContextForTodoEditorFragmentDoc = gql`
+  fragment ContextForTodoEditor on AppQuery {
     users {
       nodes {
         ...UserCard
@@ -816,6 +1018,9 @@ export const GetBudgetForReportsComponent = (props: GetBudgetForReportsComponent
   <ReactApollo.Query<GetBudgetForReportsQuery, GetBudgetForReportsQueryVariables> query={GetBudgetForReportsDocument} {...props} />
 );
 
+export function useGetBudgetForReportsQuery(baseOptions?: ReactApolloHooks.QueryHookOptions<GetBudgetForReportsQueryVariables>) {
+  return ReactApolloHooks.useQuery<GetBudgetForReportsQuery, GetBudgetForReportsQueryVariables>(GetBudgetForReportsDocument, baseOptions);
+}
 export const GetBudgetForEditDocument = gql`
   query GetBudgetForEdit {
     budget: defaultBudget {
@@ -830,6 +1035,9 @@ export const GetBudgetForEditComponent = (props: GetBudgetForEditComponentProps)
   <ReactApollo.Query<GetBudgetForEditQuery, GetBudgetForEditQueryVariables> query={GetBudgetForEditDocument} {...props} />
 );
 
+export function useGetBudgetForEditQuery(baseOptions?: ReactApolloHooks.QueryHookOptions<GetBudgetForEditQueryVariables>) {
+  return ReactApolloHooks.useQuery<GetBudgetForEditQuery, GetBudgetForEditQueryVariables>(GetBudgetForEditDocument, baseOptions);
+}
 export const UpdateBudgetDocument = gql`
   mutation UpdateBudget($id: ID!, $attributes: BudgetAttributes!) {
     updateBudget(id: $id, attributes: $attributes) {
@@ -851,6 +1059,11 @@ export const UpdateBudgetComponent = (props: UpdateBudgetComponentProps) => (
   <ReactApollo.Mutation<UpdateBudgetMutation, UpdateBudgetMutationVariables> mutation={UpdateBudgetDocument} {...props} />
 );
 
+export function useUpdateBudgetMutation(
+  baseOptions?: ReactApolloHooks.MutationHookOptions<UpdateBudgetMutation, UpdateBudgetMutationVariables>
+) {
+  return ReactApolloHooks.useMutation<UpdateBudgetMutation, UpdateBudgetMutationVariables>(UpdateBudgetDocument, baseOptions);
+}
 export const GetBudgetProblemSpotsDocument = gql`
   query GetBudgetProblemSpots($id: ID!) {
     budget(id: $id) {
@@ -875,6 +1088,12 @@ export const GetBudgetProblemSpotsComponent = (props: GetBudgetProblemSpotsCompo
   <ReactApollo.Query<GetBudgetProblemSpotsQuery, GetBudgetProblemSpotsQueryVariables> query={GetBudgetProblemSpotsDocument} {...props} />
 );
 
+export function useGetBudgetProblemSpotsQuery(baseOptions?: ReactApolloHooks.QueryHookOptions<GetBudgetProblemSpotsQueryVariables>) {
+  return ReactApolloHooks.useQuery<GetBudgetProblemSpotsQuery, GetBudgetProblemSpotsQueryVariables>(
+    GetBudgetProblemSpotsDocument,
+    baseOptions
+  );
+}
 export const SiderInfoDocument = gql`
   query SiderInfo {
     currentUser {
@@ -892,6 +1111,9 @@ export const SiderInfoComponent = (props: SiderInfoComponentProps) => (
   <ReactApollo.Query<SiderInfoQuery, SiderInfoQueryVariables> query={SiderInfoDocument} {...props} />
 );
 
+export function useSiderInfoQuery(baseOptions?: ReactApolloHooks.QueryHookOptions<SiderInfoQueryVariables>) {
+  return ReactApolloHooks.useQuery<SiderInfoQuery, SiderInfoQueryVariables>(SiderInfoDocument, baseOptions);
+}
 export const UpdateProcessExecutionTodosPageDocument = gql`
   mutation UpdateProcessExecutionTodosPage($id: ID!, $attributes: ProcessExecutionAttributes!) {
     updateProcessExecution(id: $id, attributes: $attributes) {
@@ -921,6 +1143,17 @@ export const UpdateProcessExecutionTodosPageComponent = (props: UpdateProcessExe
   />
 );
 
+export function useUpdateProcessExecutionTodosPageMutation(
+  baseOptions?: ReactApolloHooks.MutationHookOptions<
+    UpdateProcessExecutionTodosPageMutation,
+    UpdateProcessExecutionTodosPageMutationVariables
+  >
+) {
+  return ReactApolloHooks.useMutation<UpdateProcessExecutionTodosPageMutation, UpdateProcessExecutionTodosPageMutationVariables>(
+    UpdateProcessExecutionTodosPageDocument,
+    baseOptions
+  );
+}
 export const GetProcessTemplateForEditDocument = gql`
   query GetProcessTemplateForEdit($id: ID!) {
     processTemplate(id: $id) {
@@ -930,9 +1163,9 @@ export const GetProcessTemplateForEditDocument = gql`
       createdAt
       updatedAt
     }
-    ...ContextForProcessEditor
+    ...ContextForTodoEditor
   }
-  ${ContextForProcessEditorFragmentDoc}
+  ${ContextForTodoEditorFragmentDoc}
 `;
 export type GetProcessTemplateForEditComponentProps = Omit<
   ReactApollo.QueryProps<GetProcessTemplateForEditQuery, GetProcessTemplateForEditQueryVariables>,
@@ -947,6 +1180,14 @@ export const GetProcessTemplateForEditComponent = (props: GetProcessTemplateForE
   />
 );
 
+export function useGetProcessTemplateForEditQuery(
+  baseOptions?: ReactApolloHooks.QueryHookOptions<GetProcessTemplateForEditQueryVariables>
+) {
+  return ReactApolloHooks.useQuery<GetProcessTemplateForEditQuery, GetProcessTemplateForEditQueryVariables>(
+    GetProcessTemplateForEditDocument,
+    baseOptions
+  );
+}
 export const UpdateProcessTemplateDocument = gql`
   mutation UpdateProcessTemplate($id: ID!, $attributes: ProcessTemplateAttributes!) {
     updateProcessTemplate(id: $id, attributes: $attributes) {
@@ -973,6 +1214,14 @@ export const UpdateProcessTemplateComponent = (props: UpdateProcessTemplateCompo
   />
 );
 
+export function useUpdateProcessTemplateMutation(
+  baseOptions?: ReactApolloHooks.MutationHookOptions<UpdateProcessTemplateMutation, UpdateProcessTemplateMutationVariables>
+) {
+  return ReactApolloHooks.useMutation<UpdateProcessTemplateMutation, UpdateProcessTemplateMutationVariables>(
+    UpdateProcessTemplateDocument,
+    baseOptions
+  );
+}
 export const GetProcessExecutionForEditDocument = gql`
   query GetProcessExecutionForEdit($id: ID!) {
     processExecution(id: $id) {
@@ -987,9 +1236,9 @@ export const GetProcessExecutionForEditDocument = gql`
       createdAt
       updatedAt
     }
-    ...ContextForProcessEditor
+    ...ContextForTodoEditor
   }
-  ${ContextForProcessEditorFragmentDoc}
+  ${ContextForTodoEditorFragmentDoc}
 `;
 export type GetProcessExecutionForEditComponentProps = Omit<
   ReactApollo.QueryProps<GetProcessExecutionForEditQuery, GetProcessExecutionForEditQueryVariables>,
@@ -1004,6 +1253,14 @@ export const GetProcessExecutionForEditComponent = (props: GetProcessExecutionFo
   />
 );
 
+export function useGetProcessExecutionForEditQuery(
+  baseOptions?: ReactApolloHooks.QueryHookOptions<GetProcessExecutionForEditQueryVariables>
+) {
+  return ReactApolloHooks.useQuery<GetProcessExecutionForEditQuery, GetProcessExecutionForEditQueryVariables>(
+    GetProcessExecutionForEditDocument,
+    baseOptions
+  );
+}
 export const UpdateProcessExecutionDocument = gql`
   mutation UpdateProcessExecution($id: ID!, $attributes: ProcessExecutionAttributes!) {
     updateProcessExecution(id: $id, attributes: $attributes) {
@@ -1033,6 +1290,14 @@ export const UpdateProcessExecutionComponent = (props: UpdateProcessExecutionCom
   />
 );
 
+export function useUpdateProcessExecutionMutation(
+  baseOptions?: ReactApolloHooks.MutationHookOptions<UpdateProcessExecutionMutation, UpdateProcessExecutionMutationVariables>
+) {
+  return ReactApolloHooks.useMutation<UpdateProcessExecutionMutation, UpdateProcessExecutionMutationVariables>(
+    UpdateProcessExecutionDocument,
+    baseOptions
+  );
+}
 export const GetAllProcessTemplatesDocument = gql`
   query GetAllProcessTemplates {
     processTemplates(first: 30) {
@@ -1062,6 +1327,12 @@ export const GetAllProcessTemplatesComponent = (props: GetAllProcessTemplatesCom
   <ReactApollo.Query<GetAllProcessTemplatesQuery, GetAllProcessTemplatesQueryVariables> query={GetAllProcessTemplatesDocument} {...props} />
 );
 
+export function useGetAllProcessTemplatesQuery(baseOptions?: ReactApolloHooks.QueryHookOptions<GetAllProcessTemplatesQueryVariables>) {
+  return ReactApolloHooks.useQuery<GetAllProcessTemplatesQuery, GetAllProcessTemplatesQueryVariables>(
+    GetAllProcessTemplatesDocument,
+    baseOptions
+  );
+}
 export const CreateNewProcessTemplateDocument = gql`
   mutation CreateNewProcessTemplate {
     createProcessTemplate {
@@ -1090,6 +1361,14 @@ export const CreateNewProcessTemplateComponent = (props: CreateNewProcessTemplat
   />
 );
 
+export function useCreateNewProcessTemplateMutation(
+  baseOptions?: ReactApolloHooks.MutationHookOptions<CreateNewProcessTemplateMutation, CreateNewProcessTemplateMutationVariables>
+) {
+  return ReactApolloHooks.useMutation<CreateNewProcessTemplateMutation, CreateNewProcessTemplateMutationVariables>(
+    CreateNewProcessTemplateDocument,
+    baseOptions
+  );
+}
 export const DiscardProcessTemplateDocument = gql`
   mutation DiscardProcessTemplate($id: ID!) {
     discardProcessTemplate(id: $id) {
@@ -1119,6 +1398,14 @@ export const DiscardProcessTemplateComponent = (props: DiscardProcessTemplateCom
   />
 );
 
+export function useDiscardProcessTemplateMutation(
+  baseOptions?: ReactApolloHooks.MutationHookOptions<DiscardProcessTemplateMutation, DiscardProcessTemplateMutationVariables>
+) {
+  return ReactApolloHooks.useMutation<DiscardProcessTemplateMutation, DiscardProcessTemplateMutationVariables>(
+    DiscardProcessTemplateDocument,
+    baseOptions
+  );
+}
 export const GetAllProcessExecutionsDocument = gql`
   query GetAllProcessExecutions {
     processExecutions(first: 30) {
@@ -1151,6 +1438,12 @@ export const GetAllProcessExecutionsComponent = (props: GetAllProcessExecutionsC
   />
 );
 
+export function useGetAllProcessExecutionsQuery(baseOptions?: ReactApolloHooks.QueryHookOptions<GetAllProcessExecutionsQueryVariables>) {
+  return ReactApolloHooks.useQuery<GetAllProcessExecutionsQuery, GetAllProcessExecutionsQueryVariables>(
+    GetAllProcessExecutionsDocument,
+    baseOptions
+  );
+}
 export const CreateNewProcessExecutionDocument = gql`
   mutation CreateNewProcessExecution {
     createProcessExecution {
@@ -1179,6 +1472,14 @@ export const CreateNewProcessExecutionComponent = (props: CreateNewProcessExecut
   />
 );
 
+export function useCreateNewProcessExecutionMutation(
+  baseOptions?: ReactApolloHooks.MutationHookOptions<CreateNewProcessExecutionMutation, CreateNewProcessExecutionMutationVariables>
+) {
+  return ReactApolloHooks.useMutation<CreateNewProcessExecutionMutation, CreateNewProcessExecutionMutationVariables>(
+    CreateNewProcessExecutionDocument,
+    baseOptions
+  );
+}
 export const DiscardProcessExecutionDocument = gql`
   mutation DiscardProcessExecution($id: ID!) {
     discardProcessExecution(id: $id) {
@@ -1208,6 +1509,52 @@ export const DiscardProcessExecutionComponent = (props: DiscardProcessExecutionC
   />
 );
 
+export function useDiscardProcessExecutionMutation(
+  baseOptions?: ReactApolloHooks.MutationHookOptions<DiscardProcessExecutionMutation, DiscardProcessExecutionMutationVariables>
+) {
+  return ReactApolloHooks.useMutation<DiscardProcessExecutionMutation, DiscardProcessExecutionMutationVariables>(
+    DiscardProcessExecutionDocument,
+    baseOptions
+  );
+}
+export const UpdateScratchpadFromFormDocument = gql`
+  mutation UpdateScratchpadFromForm($id: ID!, $attributes: ScratchpadAttributes!) {
+    updateScratchpad(id: $id, attributes: $attributes) {
+      scratchpad {
+        id
+        name
+        updatedAt
+      }
+      errors {
+        fullMessage
+      }
+    }
+  }
+`;
+export type UpdateScratchpadFromFormMutationFn = ReactApollo.MutationFn<
+  UpdateScratchpadFromFormMutation,
+  UpdateScratchpadFromFormMutationVariables
+>;
+export type UpdateScratchpadFromFormComponentProps = Omit<
+  ReactApollo.MutationProps<UpdateScratchpadFromFormMutation, UpdateScratchpadFromFormMutationVariables>,
+  "mutation"
+>;
+
+export const UpdateScratchpadFromFormComponent = (props: UpdateScratchpadFromFormComponentProps) => (
+  <ReactApollo.Mutation<UpdateScratchpadFromFormMutation, UpdateScratchpadFromFormMutationVariables>
+    mutation={UpdateScratchpadFromFormDocument}
+    {...props}
+  />
+);
+
+export function useUpdateScratchpadFromFormMutation(
+  baseOptions?: ReactApolloHooks.MutationHookOptions<UpdateScratchpadFromFormMutation, UpdateScratchpadFromFormMutationVariables>
+) {
+  return ReactApolloHooks.useMutation<UpdateScratchpadFromFormMutation, UpdateScratchpadFromFormMutationVariables>(
+    UpdateScratchpadFromFormDocument,
+    baseOptions
+  );
+}
 export const GetProcessTemplateForStartDocument = gql`
   query GetProcessTemplateForStart($id: ID!) {
     processTemplate(id: $id) {
@@ -1218,9 +1565,9 @@ export const GetProcessTemplateForStartDocument = gql`
       updatedAt
       executionCount
     }
-    ...ContextForProcessEditor
+    ...ContextForTodoEditor
   }
-  ${ContextForProcessEditorFragmentDoc}
+  ${ContextForTodoEditorFragmentDoc}
 `;
 export type GetProcessTemplateForStartComponentProps = Omit<
   ReactApollo.QueryProps<GetProcessTemplateForStartQuery, GetProcessTemplateForStartQueryVariables>,
@@ -1235,6 +1582,14 @@ export const GetProcessTemplateForStartComponent = (props: GetProcessTemplateFor
   />
 );
 
+export function useGetProcessTemplateForStartQuery(
+  baseOptions?: ReactApolloHooks.QueryHookOptions<GetProcessTemplateForStartQueryVariables>
+) {
+  return ReactApolloHooks.useQuery<GetProcessTemplateForStartQuery, GetProcessTemplateForStartQueryVariables>(
+    GetProcessTemplateForStartDocument,
+    baseOptions
+  );
+}
 export const StartProcessExecutionDocument = gql`
   mutation StartProcessExecution($attributes: ProcessExecutionAttributes!) {
     createProcessExecution(attributes: $attributes) {
@@ -1261,25 +1616,146 @@ export const StartProcessExecutionComponent = (props: StartProcessExecutionCompo
   />
 );
 
+export function useStartProcessExecutionMutation(
+  baseOptions?: ReactApolloHooks.MutationHookOptions<StartProcessExecutionMutation, StartProcessExecutionMutationVariables>
+) {
+  return ReactApolloHooks.useMutation<StartProcessExecutionMutation, StartProcessExecutionMutationVariables>(
+    StartProcessExecutionDocument,
+    baseOptions
+  );
+}
 export const GetMyTodosDocument = gql`
-  query GetMyTodos {
+  query GetMyTodos($after: String) {
     currentUser {
       id
-      involvedProcessExecutions {
-        nodes {
-          id
-          name
-          ...CondensedProcessExecutionForm
+      todoFeedItems(first: 30, after: $after) {
+        pageInfo {
+          endCursor
+          hasNextPage
+        }
+        edges {
+          node {
+            id
+            updatedAt
+            todoSource {
+              __typename
+              ... on ProcessExecution {
+                id
+                name
+                involvedUsers {
+                  ...UserCard
+                }
+              }
+              ... on Scratchpad {
+                id
+                name
+              }
+            }
+          }
         }
       }
     }
-    ...ContextForProcessEditor
+    ...ContextForTodoEditor
   }
-  ${CondensedProcessExecutionFormFragmentDoc}
-  ${ContextForProcessEditorFragmentDoc}
+  ${UserCardFragmentDoc}
+  ${ContextForTodoEditorFragmentDoc}
 `;
 export type GetMyTodosComponentProps = Omit<ReactApollo.QueryProps<GetMyTodosQuery, GetMyTodosQueryVariables>, "query">;
 
 export const GetMyTodosComponent = (props: GetMyTodosComponentProps) => (
   <ReactApollo.Query<GetMyTodosQuery, GetMyTodosQueryVariables> query={GetMyTodosDocument} {...props} />
 );
+
+export function useGetMyTodosQuery(baseOptions?: ReactApolloHooks.QueryHookOptions<GetMyTodosQueryVariables>) {
+  return ReactApolloHooks.useQuery<GetMyTodosQuery, GetMyTodosQueryVariables>(GetMyTodosDocument, baseOptions);
+}
+export const GetProcessExecutionForTodosDocument = gql`
+  query GetProcessExecutionForTodos($id: ID!) {
+    processExecution(id: $id) {
+      name
+      ...CondensedProcessExecutionForm
+    }
+  }
+  ${CondensedProcessExecutionFormFragmentDoc}
+`;
+export type GetProcessExecutionForTodosComponentProps = Omit<
+  ReactApollo.QueryProps<GetProcessExecutionForTodosQuery, GetProcessExecutionForTodosQueryVariables>,
+  "query"
+> &
+  ({ variables: GetProcessExecutionForTodosQueryVariables; skip?: false } | { skip: true });
+
+export const GetProcessExecutionForTodosComponent = (props: GetProcessExecutionForTodosComponentProps) => (
+  <ReactApollo.Query<GetProcessExecutionForTodosQuery, GetProcessExecutionForTodosQueryVariables>
+    query={GetProcessExecutionForTodosDocument}
+    {...props}
+  />
+);
+
+export function useGetProcessExecutionForTodosQuery(
+  baseOptions?: ReactApolloHooks.QueryHookOptions<GetProcessExecutionForTodosQueryVariables>
+) {
+  return ReactApolloHooks.useQuery<GetProcessExecutionForTodosQuery, GetProcessExecutionForTodosQueryVariables>(
+    GetProcessExecutionForTodosDocument,
+    baseOptions
+  );
+}
+export const GetScratchpadForTodosDocument = gql`
+  query GetScratchpadForTodos($id: ID!) {
+    scratchpad(id: $id) {
+      id
+      ...ScratchpadForm
+    }
+  }
+  ${ScratchpadFormFragmentDoc}
+`;
+export type GetScratchpadForTodosComponentProps = Omit<
+  ReactApollo.QueryProps<GetScratchpadForTodosQuery, GetScratchpadForTodosQueryVariables>,
+  "query"
+> &
+  ({ variables: GetScratchpadForTodosQueryVariables; skip?: false } | { skip: true });
+
+export const GetScratchpadForTodosComponent = (props: GetScratchpadForTodosComponentProps) => (
+  <ReactApollo.Query<GetScratchpadForTodosQuery, GetScratchpadForTodosQueryVariables> query={GetScratchpadForTodosDocument} {...props} />
+);
+
+export function useGetScratchpadForTodosQuery(baseOptions?: ReactApolloHooks.QueryHookOptions<GetScratchpadForTodosQueryVariables>) {
+  return ReactApolloHooks.useQuery<GetScratchpadForTodosQuery, GetScratchpadForTodosQueryVariables>(
+    GetScratchpadForTodosDocument,
+    baseOptions
+  );
+}
+export const CreateNewScratchpadDocument = gql`
+  mutation CreateNewScratchpad {
+    createScratchpad {
+      scratchpad {
+        id
+        ...ScratchpadForm
+      }
+      errors {
+        fullMessage
+      }
+    }
+  }
+  ${ScratchpadFormFragmentDoc}
+`;
+export type CreateNewScratchpadMutationFn = ReactApollo.MutationFn<CreateNewScratchpadMutation, CreateNewScratchpadMutationVariables>;
+export type CreateNewScratchpadComponentProps = Omit<
+  ReactApollo.MutationProps<CreateNewScratchpadMutation, CreateNewScratchpadMutationVariables>,
+  "mutation"
+>;
+
+export const CreateNewScratchpadComponent = (props: CreateNewScratchpadComponentProps) => (
+  <ReactApollo.Mutation<CreateNewScratchpadMutation, CreateNewScratchpadMutationVariables>
+    mutation={CreateNewScratchpadDocument}
+    {...props}
+  />
+);
+
+export function useCreateNewScratchpadMutation(
+  baseOptions?: ReactApolloHooks.MutationHookOptions<CreateNewScratchpadMutation, CreateNewScratchpadMutationVariables>
+) {
+  return ReactApolloHooks.useMutation<CreateNewScratchpadMutation, CreateNewScratchpadMutationVariables>(
+    CreateNewScratchpadDocument,
+    baseOptions
+  );
+}

@@ -5,7 +5,7 @@ import { Value } from "slate";
 import { debounce } from "lodash";
 import { DateTime } from "luxon";
 import { Page, SavingNoticeState, SavingNotice, HoverEditor } from "../common";
-import { ProcessEditor } from "./process_editor/ProcessEditor";
+import { TodoEditor } from "./todo_editor/TodoEditor";
 import { mutationSuccess, toast, AutoAssert, Row, ISO8601DateString } from "flurishlib";
 import gql from "graphql-tag";
 import { SuperForm, ObjectBackend } from "flurishlib/superform";
@@ -30,7 +30,7 @@ gql`
       createdAt
       updatedAt
     }
-    ...ContextForProcessEditor
+    ...ContextForTodoEditor
   }
 
   mutation UpdateProcessExecution($id: ID!, $attributes: ProcessExecutionAttributes!) {
@@ -90,7 +90,10 @@ export default class extends Page<{ id: string }, SavingNoticeState> {
         value: Value.fromJSON({
           object: "value",
           document: data.processExecution.document,
-          data: { mode: "configuration" } as any
+          data: {
+            mode: "execution",
+            showToolbar: true
+          } as any
         })
       }
     };
@@ -156,7 +159,7 @@ export default class extends Page<{ id: string }, SavingNoticeState> {
                       ])}
                       padded={false}
                     >
-                      <ProcessEditor
+                      <TodoEditor
                         users={data.users.nodes}
                         value={form.getValue("processExecution.value")}
                         onChange={({ value }: { value: Value }) => {

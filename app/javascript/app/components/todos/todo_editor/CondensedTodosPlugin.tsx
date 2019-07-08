@@ -28,7 +28,9 @@ export const CondensedTodosPlugin = (): Plugin => {
     },
     commands: {
       toggleShowOnlyCondensedTodos(editor) {
-        (editor as any).setData({ showOnlyCondensedTodos: !editor.value.data.get("showOnlyCondensedTodos") }).rerenderAll();
+        (editor as any)
+          .setData(editor.value.data.set("showOnlyCondensedTodos", !editor.value.data.get("showOnlyCondensedTodos")))
+          .rerenderAll();
         return editor;
       }
     },
