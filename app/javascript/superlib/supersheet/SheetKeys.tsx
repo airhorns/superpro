@@ -36,6 +36,20 @@ export const SheetKeys: { [key: string]: SheetKeyAction } = {
       sheet.moveSelectionDelta(1, 0);
     }
   },
+  tabRight: {
+    availableDuringEdit: true,
+    check: isHotkey("tab"),
+    action: sheet => {
+      sheet.moveSelectionDelta(0, 1);
+    }
+  },
+  tabLeft: {
+    availableDuringEdit: true,
+    check: isHotkey("shift+tab"),
+    action: sheet => {
+      sheet.moveSelectionDelta(0, -1);
+    }
+  },
   toggleEditing: {
     availableDuringEdit: true,
     check: isHotkey("enter"),

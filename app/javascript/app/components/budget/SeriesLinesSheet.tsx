@@ -4,7 +4,7 @@ import { Box } from "grommet";
 import { DateTime } from "luxon";
 import { range } from "lodash";
 import { LineIndexTuple } from "./BudgetFormSection";
-import { SuperSheet, StyledDataGridHeader, StyledDataGridBody, StyledDataGridRow, StyledDataGridHeaderCell } from "flurishlib/supersheet";
+import { SuperSheet, StyledDataGridHeader, StyledDataGridBody, StyledDataGridRow, StyledDataGridHeaderCell } from "superlib/supersheet";
 import { SeriesLineSheetRow } from "./SeriesLinesSheetRow";
 
 export const DefaultCellMonths = memoizeOne(() => {

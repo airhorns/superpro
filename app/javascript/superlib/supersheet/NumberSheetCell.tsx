@@ -1,7 +1,7 @@
 import React from "react";
 import { StyledDataGridCell } from "./StyledDataGrid";
 import { useCell } from "./SuperSheet";
-import { NumberInputProps, NumberInput } from "flurishlib/superform";
+import { NumberInputProps, NumberInput } from "superlib/superform";
 
 export interface NumberSheetCellProps extends NumberInputProps {
   row: number;
@@ -10,7 +10,18 @@ export interface NumberSheetCellProps extends NumberInputProps {
 
 export const NumberSheetCell = (props: NumberSheetCellProps) => {
   const ref = React.useRef<HTMLTableDataCellElement>(null);
-  const { sheet, editing, selected } = useCell({ row: props.row, column: props.column, path: props.path, ref });
+  const { sheet, editing, selected, form } = useCell({
+    row: props.row,
+    column: props.column,
+    path: props.path,
+    ref,
+    handleKeyDown(event) {
+      if (event.key.match(/^[0-9]$/)) {
+        form.setValue(props.path, "");
+        sheet.startEdit();
+      }
+    }
+  });
 
   return (
     <StyledDataGridCell

@@ -3,7 +3,7 @@ import { StyledDataGrid, StyledDataGridContainer } from "./StyledDataGrid";
 import EventEmitter from "eventemitter3";
 import { SheetKeys, isUnknownHotkey } from "./SheetKeys";
 import { SheetSelection, Coordinates, moveCoordinates, clampCoordinates } from "./Selection";
-import { useSuperForm } from "flurishlib/superform";
+import { useSuperForm } from "superlib/superform";
 import { Cell } from "recharts";
 
 export type SheetUpdateCallback = (event: { version: number }) => void;
@@ -50,6 +50,7 @@ interface CellRegistration {
   path: string | string[];
   row: number;
   column: number;
+  handleKeyDown: (event: KeyboardEvent) => void;
 }
 
 interface SheetState {
@@ -91,8 +92,12 @@ export class SuperSheet extends React.Component<{}, SheetState> {
 
     // If the key pressed is not a keyboard shortcut and is a letter, number, or puncutation mark
     // it's intended for the data in the cell. Set the value of the form to that data.
-    if (this.state.selection && !isUnknownHotkey(event as any)) {
+    if (!this.state.edit && this.state.selection && !isUnknownHotkey(event as any)) {
       console.debug("sheet event: keyDown, edit passthrough", event);
+      const registration = this.getSelectedCellRegistration();
+      if (registration) {
+        registration.handleKeyDown(event as any);
+      }
     }
   };
 
@@ -150,9 +155,9 @@ export class SuperSheet extends React.Component<{}, SheetState> {
         edit: null
       },
       () => {
-        const cellRef = this.getSelectedCellRef();
-        if (cellRef && cellRef.current) {
-          cellRef.current.scrollIntoView({ inline: "center" });
+        const registration = this.getSelectedCellRegistration();
+        if (registration && registration.ref.current) {
+          registration.ref.current.scrollIntoView({ inline: "center" });
         }
       }
     );
@@ -208,14 +213,11 @@ export class SuperSheet extends React.Component<{}, SheetState> {
     }
   }
 
-  getSelectedCellRef() {
+  getSelectedCellRegistration() {
     if (!this.state.selection) return;
     const cellRow = this.cells.get(this.state.selection.start.row);
     if (cellRow) {
-      const registration = cellRow.get(this.state.selection.start.column);
-      if (registration) {
-        return registration.ref;
-      }
+      return cellRow.get(this.state.selection.start.column);
     }
   }
 

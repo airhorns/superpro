@@ -1,11 +1,11 @@
 import React from "react";
 import { Draggable } from "react-beautiful-dnd";
-import { isTouchDevice } from "flurishlib";
-import { useSuperForm } from "flurishlib/superform";
+import { isTouchDevice } from "superlib";
+import { useSuperForm } from "superlib/superform";
 import { FadeBox, TrashButton } from "app/components/common";
-import { DragHandle } from "app/components/common/FlurishIcons";
+import { DragHandle } from "app/components/common/SuperproIcons";
 import { BudgetFormValues, BudgetFormLine } from "./BudgetForm";
-import { TextSheetCell, NumberSheetCell, StyledDataGridRow, StaticSheetCell } from "flurishlib/supersheet";
+import { TextSheetCell, NumberSheetCell, StyledDataGridRow, StaticSheetCell } from "superlib/supersheet";
 import { DefaultCellMonths } from "./SeriesLinesSheet";
 
 export const SeriesLineSheetRow = (props: { line: BudgetFormLine; rowIndex: number; linesIndex: number }) => {
