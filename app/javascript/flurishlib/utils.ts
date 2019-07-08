@@ -1,4 +1,4 @@
-import { set, isUndefined, isNull, isFunction, isArray } from "lodash";
+import { get, set, isUndefined, isNull, isFunction, isArray, toPath, cloneDeep } from "lodash";
 import memoizeOne from "memoize-one";
 import { DateTime } from "luxon";
 import { FetchResult } from "react-apollo";
@@ -155,3 +155,25 @@ export const applyResponseErrors = <T extends DocType>(
   });
   form.setErrors(errorsObject);
 };
+
+export const RelayConnectionQueryUpdater = memoizeOne((connectionName: string) => (previousResult: any, { fetchMoreResult }: any) => {
+  const path = toPath(connectionName);
+  const fetchMoreConnection = get(fetchMoreResult, path);
+  const previousConnection = get(previousResult, path);
+  const newEdges = fetchMoreConnection.edges;
+  const pageInfo = fetchMoreConnection.pageInfo;
+
+  return newEdges.length
+    ? set(
+        cloneDeep(previousResult),
+        connectionName,
+        // Put the new nodes at the end of the list and update `pageInfo`
+        // so we have the new `endCursor` and `hasNextPage` values
+        {
+          __typename: previousConnection.__typename,
+          edges: [...previousConnection.edges, ...newEdges],
+          pageInfo
+        }
+      )
+    : previousResult;
+});

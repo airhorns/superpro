@@ -29,7 +29,7 @@ class Types::Identity::UserType < Types::BaseObject
   end
 
   def todo_feed_items
-    context[:current_account].todo_feed_items.for_user(context[:current_user])
+    context[:current_account].todo_feed_items.for_user(context[:current_user]).order("updated_at DESC")
   end
 
   def auth_area_url

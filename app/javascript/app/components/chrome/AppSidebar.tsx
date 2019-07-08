@@ -130,7 +130,7 @@ export const AppSidebar = withRouter(
         );
       } else {
         return (
-          <Box fill="vertical" width="small" background="light-2" className="AppSidebar-container">
+          <Box fill="vertical" width="small" flex={false} background="light-2" className="AppSidebar-container">
             {this.renderMenu()}
           </Box>
         );

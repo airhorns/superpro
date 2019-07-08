@@ -887,19 +887,26 @@ export type ContextForTodoEditorFragment = { __typename: "AppQuery" } & {
   currentUser: { __typename: "User" } & Pick<User, "id">;
 };
 
-export type GetMyTodosQueryVariables = {};
+export type GetMyTodosQueryVariables = {
+  after?: Maybe<Scalars["String"]>;
+};
 
 export type GetMyTodosQuery = { __typename: "AppQuery" } & {
   currentUser: { __typename: "User" } & Pick<User, "id"> & {
       todoFeedItems: { __typename: "TodoFeedItemConnection" } & {
-        nodes: Array<
-          { __typename: "TodoFeedItem" } & Pick<TodoFeedItem, "id" | "updatedAt"> & {
-              todoSource:
-                | ({ __typename: "ProcessExecution" } & Pick<ProcessExecution, "id" | "name"> & {
-                      involvedUsers: Array<{ __typename: "User" } & UserCardFragment>;
-                    })
-                | ({ __typename: "Scratchpad" } & Pick<Scratchpad, "id" | "name">);
-            }
+        pageInfo: { __typename: "PageInfo" } & Pick<PageInfo, "endCursor" | "hasNextPage">;
+        edges: Array<
+          { __typename: "TodoFeedItemEdge" } & {
+            node: Maybe<
+              { __typename: "TodoFeedItem" } & Pick<TodoFeedItem, "id" | "updatedAt"> & {
+                  todoSource:
+                    | ({ __typename: "ProcessExecution" } & Pick<ProcessExecution, "id" | "name"> & {
+                          involvedUsers: Array<{ __typename: "User" } & UserCardFragment>;
+                        })
+                    | ({ __typename: "Scratchpad" } & Pick<Scratchpad, "id" | "name">);
+                }
+            >;
+          }
         >;
       };
     };
@@ -1618,25 +1625,31 @@ export function useStartProcessExecutionMutation(
   );
 }
 export const GetMyTodosDocument = gql`
-  query GetMyTodos {
+  query GetMyTodos($after: String) {
     currentUser {
       id
-      todoFeedItems {
-        nodes {
-          id
-          updatedAt
-          todoSource {
-            __typename
-            ... on ProcessExecution {
-              id
-              name
-              involvedUsers {
-                ...UserCard
+      todoFeedItems(first: 30, after: $after) {
+        pageInfo {
+          endCursor
+          hasNextPage
+        }
+        edges {
+          node {
+            id
+            updatedAt
+            todoSource {
+              __typename
+              ... on ProcessExecution {
+                id
+                name
+                involvedUsers {
+                  ...UserCard
+                }
               }
-            }
-            ... on Scratchpad {
-              id
-              name
+              ... on Scratchpad {
+                id
+                name
+              }
             }
           }
         }

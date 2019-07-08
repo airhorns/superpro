@@ -31,31 +31,29 @@ export const App = () => {
       <FlagsProvider flags={Settings.flags}>
         <ApolloProvider client={FlurishClient}>
           <ApolloHooksProvider client={FlurishClient}>
-            <Grommet theme={FlurishGrommetTheme}>
+            <Grommet full theme={FlurishGrommetTheme}>
               <FlurishGlobalStyle />
               <Router basename={Settings.baseUrl}>
                 <ToastContainer>
                   <HotkeysContainer>
-                    <Box fill direction="row-responsive" id="flurish-root" style={{ width: "100vw", height: "100vh" }}>
+                    <Box fill direction="row-responsive" id="flurish-root">
                       <AppSidebar />
-                      <Box flex overflow={{ vertical: "auto" }} className="App-container">
-                        <React.Suspense fallback={<PageLoadSpin />}>
-                          <Switch>
-                            <Route path="/" exact component={HomePage} />
-                            <Route path="/launchpad" exact component={Launchpad} />
-                            <Route path="/budget" exact component={EditBudgetPage} />
-                            <Route path="/budget/reports" exact component={BudgetReportsIndexPage} />
-                            <Route path="/budget/reports/:reportKey" exact component={BudgetReportPage} />
-                            <Route path="/todos" exact component={TodosIndexPage} />
-                            <Route path="/todos/process/docs" exact component={ProcessDocsIndexPage} />
-                            <Route path="/todos/process/docs/:id" exact component={EditProcessDocPage} />
-                            <Route path="/todos/process/docs/:id/start" exact component={StartProcessPage} />
-                            <Route path="/todos/process/runs" exact component={ProcessRunsIndexPage} />
-                            <Route path="/todos/process/runs/:id" exact component={EditProcessRunPage} />
-                            <Route component={NotFoundPage} />
-                          </Switch>
-                        </React.Suspense>
-                      </Box>
+                      <React.Suspense fallback={<PageLoadSpin />}>
+                        <Switch>
+                          <Route path="/" exact component={HomePage} />
+                          <Route path="/launchpad" exact component={Launchpad} />
+                          <Route path="/budget" exact component={EditBudgetPage} />
+                          <Route path="/budget/reports" exact component={BudgetReportsIndexPage} />
+                          <Route path="/budget/reports/:reportKey" exact component={BudgetReportPage} />
+                          <Route path="/todos" exact component={TodosIndexPage} />
+                          <Route path="/todos/process/docs" exact component={ProcessDocsIndexPage} />
+                          <Route path="/todos/process/docs/:id" exact component={EditProcessDocPage} />
+                          <Route path="/todos/process/docs/:id/start" exact component={StartProcessPage} />
+                          <Route path="/todos/process/runs" exact component={ProcessRunsIndexPage} />
+                          <Route path="/todos/process/runs/:id" exact component={EditProcessRunPage} />
+                          <Route component={NotFoundPage} />
+                        </Switch>
+                      </React.Suspense>
                     </Box>
                   </HotkeysContainer>
                 </ToastContainer>

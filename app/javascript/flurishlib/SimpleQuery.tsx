@@ -5,6 +5,7 @@ import { Alert } from "./Alert";
 import { PageLoadSpin } from "./Spin";
 import { Omit } from "type-zoo";
 import { Data } from "slate";
+import { QueryResult } from "react-apollo";
 
 // gql-gen generates SFCs that omit the variables key from the QueryProps then & with a { variables: Variables } that is mandatory or a {variables?: Variables } that isnt in order to better type check the invocations of the component. This makes it real annoying to dereference.
 type GeneratedQueryComponentType<Data, Variables> =
@@ -26,7 +27,7 @@ export interface SimpleQueryProps<
 > extends Omit<ReactApollo.QueryProps<Data, Variables>, "children" | "query" | "variables"> {
   component: Component;
   variables?: Variables;
-  children?: (result: AssertedKeys<Data, RequiredKeys>) => React.ReactNode;
+  children?: (data: AssertedKeys<Data, RequiredKeys>, result: QueryResult<Data, Variables>) => React.ReactNode;
   require?: RequiredKeys[]; // properties to ensure are present in the returned data. If they aren't, render a 404
 }
 
@@ -61,7 +62,7 @@ export class SimpleQuery<
       return <Alert message="Data Not Found" type="error" />;
     }
 
-    return this.props.children && this.props.children(data);
+    return this.props.children && this.props.children(data, result);
   };
 
   render() {

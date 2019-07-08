@@ -1,6 +1,7 @@
 import React from "react";
 import gql from "graphql-tag";
-import { Text } from "grommet";
+import { Text, Grid } from "grommet";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { Page } from "../common";
 import {
   GetMyTodosComponent,
@@ -13,30 +14,36 @@ import { Box, Button } from "grommet";
 import { CondensedProcessExecutionForm } from "./CondensedProcessExecutionForm";
 import { ScratchpadForm } from "./ScratchpadForm";
 import { Add } from "../common/FlurishIcons";
-import { mutationSuccess, toast, SimpleQuery } from "flurishlib";
+import { mutationSuccess, toast, SimpleQuery, Spin, RelayConnectionQueryUpdater, assert } from "flurishlib";
 import { DateTime } from "luxon";
 import { UserAvatarList } from "../common/UserAvatarList";
 
 gql`
-  query GetMyTodos {
+  query GetMyTodos($after: String) {
     currentUser {
       id
-      todoFeedItems {
-        nodes {
-          id
-          updatedAt
-          todoSource {
-            __typename
-            ... on ProcessExecution {
-              id
-              name
-              involvedUsers {
-                ...UserCard
+      todoFeedItems(first: 30, after: $after) {
+        pageInfo {
+          endCursor
+          hasNextPage
+        }
+        edges {
+          node {
+            id
+            updatedAt
+            todoSource {
+              __typename
+              ... on ProcessExecution {
+                id
+                name
+                involvedUsers {
+                  ...UserCard
+                }
               }
-            }
-            ... on Scratchpad {
-              id
-              name
+              ... on Scratchpad {
+                id
+                name
+              }
             }
           }
         }
@@ -82,6 +89,7 @@ export default (_props: {}) => {
     <Page.Layout
       title="My Todos"
       padded={false}
+      scrolly={false}
       headerExtra={
         <Button
           icon={<Add />}
@@ -108,54 +116,98 @@ export default (_props: {}) => {
       <Page.Load
         component={GetMyTodosComponent}
         onCompleted={indexData =>
-          indexData.currentUser.todoFeedItems.nodes.length > 0 && setSelectedItem(indexData.currentUser.todoFeedItems.nodes[0].todoSource)
+          indexData.currentUser.todoFeedItems.edges.length > 0 &&
+          !selectedItem &&
+          setSelectedItem(assert(indexData.currentUser.todoFeedItems.edges[0].node).todoSource)
         }
       >
-        {indexData => (
-          <Box direction="row" flex background="light-1">
-            <Box width="small" border={{ side: "right", color: "light-3" }}>
-              {indexData.currentUser.todoFeedItems.nodes.map(feedItem => (
-                <Box
-                  key={feedItem.id}
-                  background={{
-                    color:
-                      selectedItem && feedItem.todoSource.__typename == selectedItem.__typename && feedItem.todoSource.id == selectedItem.id
-                        ? "white"
-                        : undefined
-                  }}
-                >
-                  <Button
-                    onClick={() => setSelectedItem({ __typename: feedItem.todoSource.__typename, id: feedItem.todoSource.id })}
-                    hoverIndicator
-                  >
-                    <Box pad="small" border={{ side: "bottom", color: "light-3" }}>
-                      <Text>{feedItem.todoSource.name}</Text>
-                      <Text size="small">{DateTime.fromISO(feedItem.updatedAt).toLocaleString(DateTime.DATETIME_MED)}</Text>
-                      {feedItem.todoSource.__typename == "ProcessExecution" && (
-                        <UserAvatarList users={feedItem.todoSource.involvedUsers} size={32} />
-                      )}
+        {(indexData, result) => (
+          <Grid
+            fill
+            rows={["flex"]}
+            columns={["small", "flex"]}
+            areas={[{ name: "feed", start: [0, 0], end: [0, 0] }, { name: "editor", start: [1, 0], end: [1, 0] }]}
+          >
+            <Box gridArea="feed" border={{ side: "right", color: "light-3" }}>
+              <Box overflow={{ vertical: "auto" }} id="todo-feed-infinite-scroll">
+                <InfiniteScroll
+                  dataLength={indexData.currentUser.todoFeedItems.edges.length}
+                  scrollableTarget="todo-feed-infinite-scroll"
+                  next={() =>
+                    result.fetchMore({
+                      variables: { after: indexData.currentUser.todoFeedItems.pageInfo.endCursor },
+                      updateQuery: RelayConnectionQueryUpdater("currentUser.todoFeedItems")
+                    })
+                  }
+                  hasMore={indexData.currentUser.todoFeedItems.pageInfo.hasNextPage}
+                  loader={
+                    <Box align="center">
+                      <Spin />
                     </Box>
-                  </Button>
-                </Box>
-              ))}
-            </Box>
-            <Box flex background="light-1">
-              {selectedItem && selectedItem.__typename == "ProcessExecution" && (
-                <SimpleQuery
-                  component={GetProcessExecutionForTodosComponent}
-                  require={["processExecution"]}
-                  variables={{ id: selectedItem.id }}
+                  }
+                  endMessage={
+                    <Box align="center" pad="xsmall">
+                      <Text color="status-unknown">No more todos.</Text>
+                    </Box>
+                  }
                 >
-                  {data => <CondensedProcessExecutionForm processExecution={data.processExecution} users={indexData.users.nodes} />}
-                </SimpleQuery>
-              )}
-              {selectedItem && selectedItem.__typename == "Scratchpad" && (
-                <SimpleQuery component={GetScratchpadForTodosComponent} require={["scratchpad"]} variables={{ id: selectedItem.id }}>
-                  {data => <ScratchpadForm scratchpad={data.scratchpad} users={indexData.users.nodes} />}
-                </SimpleQuery>
-              )}
+                  {indexData.currentUser.todoFeedItems.edges.map(edge => {
+                    const feedItem = assert(edge.node);
+                    return (
+                      <Box
+                        key={feedItem.id}
+                        background={{
+                          color:
+                            selectedItem &&
+                            feedItem.todoSource.__typename == selectedItem.__typename &&
+                            feedItem.todoSource.id == selectedItem.id
+                              ? "white"
+                              : "light-1"
+                        }}
+                      >
+                        <Button
+                          onClick={() => setSelectedItem({ __typename: feedItem.todoSource.__typename, id: feedItem.todoSource.id })}
+                          hoverIndicator
+                        >
+                          <Box pad="small" border={{ side: "bottom", color: "light-3" }}>
+                            <Text>{feedItem.todoSource.name}</Text>
+                            <Text size="small">{DateTime.fromISO(feedItem.updatedAt).toLocaleString(DateTime.DATETIME_MED)}</Text>
+                            {feedItem.todoSource.__typename == "ProcessExecution" && (
+                              <UserAvatarList users={feedItem.todoSource.involvedUsers} size={32} />
+                            )}
+                          </Box>
+                        </Button>
+                      </Box>
+                    );
+                  })}
+                </InfiniteScroll>
+              </Box>
             </Box>
-          </Box>
+            <Box gridArea="editor" background="light-1">
+              <Box overflow={{ vertical: "auto" }}>
+                {selectedItem && selectedItem.__typename == "ProcessExecution" && (
+                  <SimpleQuery
+                    component={GetProcessExecutionForTodosComponent}
+                    require={["processExecution"]}
+                    variables={{ id: selectedItem.id }}
+                  >
+                    {data => (
+                      <CondensedProcessExecutionForm
+                        key={data.processExecution.id}
+                        processExecution={data.processExecution}
+                        users={indexData.users.nodes}
+                      />
+                    )}
+                  </SimpleQuery>
+                )}
+                {selectedItem && selectedItem.__typename == "Scratchpad" && (
+                  <SimpleQuery component={GetScratchpadForTodosComponent} require={["scratchpad"]} variables={{ id: selectedItem.id }}>
+                    {data => <ScratchpadForm key={data.scratchpad.id} scratchpad={data.scratchpad} users={indexData.users.nodes} />}
+                  </SimpleQuery>
+                )}
+              </Box>
+            </Box>
+          </Grid>
         )}
       </Page.Load>
     </Page.Layout>
