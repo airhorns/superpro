@@ -16,6 +16,6 @@ module Types::Identity::IdentityQueries
   end
 
   def users
-    context[:current_account].permissioned_users
+    context[:current_account].permissioned_users.where("confirmed_at IS NOT NULL")
   end
 end
