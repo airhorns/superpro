@@ -3,6 +3,7 @@ import { Box, Heading, Text } from "grommet";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { Row } from "superlib";
+import { AppSidebar } from "../chrome/AppSidebar";
 
 const StaticBreadcrumbs = {
   home: { text: "Home", path: "/" },
@@ -105,9 +106,13 @@ export class PageLayout extends React.Component<PageLayoutProps> {
           className="PageLayout-header"
           flex={false}
         >
-          <Heading level={"3"} margin="xsmall">
-            {this.props.title}
-          </Heading>
+          <Row>
+            <AppSidebar embeddedInPageHeader={true} />
+            <Heading level={"3"} margin="xsmall">
+              {this.props.title}
+            </Heading>
+          </Row>
+
           <Row>{this.props.headerExtra}</Row>
         </Row>
         <Box

@@ -16,7 +16,7 @@ export const ToolbarButton = (props: { active: boolean; icon: React.ComponentTyp
 
 export const Toolbar = (props: { children: React.ReactNode }) => {
   return (
-    <Row pad="xsmall" gap="xsmall" margin={{ bottom: "small" }} round="small" background="light-1">
+    <Row pad="xsmall" gap="xsmall" margin={{ bottom: "small" }} round="small" background="light-1" overflow={{ horizontal: "auto" }}>
       {props.children}
     </Row>
   );

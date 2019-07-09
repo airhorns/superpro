@@ -7,7 +7,7 @@ import { SiderInfoComponent } from "../../app-graph";
 import { UserAvatar } from "../common/UserAvatar";
 import { signOut } from "../../lib/auth";
 import { Settings } from "../../lib/settings";
-import { Row, Flag } from "../../../superlib";
+import { Flag } from "../../../superlib";
 import { Budget, Todos, Invite } from "../common/SuperproIcons";
 import { NavigationSectionButton, NavigationSubItemButton } from "./Navigation";
 
@@ -27,7 +27,7 @@ interface AppSidebarState {
 }
 
 export const AppSidebar = withRouter(
-  class InnerSidebar extends React.Component<RouteComponentProps<{}>, AppSidebarState> {
+  class InnerSidebar extends React.Component<RouteComponentProps & { embeddedInPageHeader: boolean }, AppSidebarState> {
     static contextType = ResponsiveContext;
     state: AppSidebarState = { openForSmall: false };
 
@@ -107,20 +107,20 @@ export const AppSidebar = withRouter(
       const size = this.context;
 
       if (size === "small") {
+        if (!this.props.embeddedInPageHeader) {
+          return null;
+        }
+
         return (
           <>
-            <Row justify="center" className="AppSidebar-container">
-              <Box flex>
-                <Button
-                  icon={<Menu />}
-                  onClick={() => {
-                    this.setState({ openForSmall: true });
-                  }}
-                />
-              </Box>
-              <Box flex={false}>{this.renderLogo()}</Box>
-              <Box flex />
-            </Row>
+            <Box>
+              <Button
+                icon={<Menu />}
+                onClick={() => {
+                  this.setState({ openForSmall: true });
+                }}
+              />
+            </Box>
             {this.state.openForSmall && (
               <Layer full={true}>
                 <Button icon={<FormClose />} onClick={this.close} style={{ position: "fixed", top: 0, right: 0 }} />
@@ -130,6 +130,10 @@ export const AppSidebar = withRouter(
           </>
         );
       } else {
+        if (this.props.embeddedInPageHeader) {
+          return null;
+        }
+
         return (
           <Box fill="vertical" width="small" flex={false} background="light-2" className="AppSidebar-container">
             {this.renderMenu()}

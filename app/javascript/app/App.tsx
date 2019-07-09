@@ -39,7 +39,7 @@ export const App = () => {
                 <ToastContainer>
                   <HotkeysContainer>
                     <Box fill direction="row-responsive" id="Superpro-Layout">
-                      <AppSidebar />
+                      <AppSidebar embeddedInPageHeader={false} />
                       <React.Suspense fallback={<PageLoadSpin />}>
                         <Switch>
                           <Route path="/" exact component={HomePage} />

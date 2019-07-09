@@ -41,13 +41,13 @@ export const NavigationSectionButton = withRouter((props: NavigationSectionButto
   return (
     <>
       <Button hoverIndicator="light-4" active={pathMatch} onClick={onClick} as="a" href={props.path}>
-        <Row pad="small" gap="small">
+        <Row pad="small" gap="small" responsive={false}>
           {props.icon}
           <Text>{props.text}</Text>
         </Row>
       </Button>
       {props.children && pathMatch && (
-        <Box margin={{ bottom: "small" }} background={pathMatch ? "light-3" : undefined}>
+        <Box margin={{ bottom: "small" }} background={pathMatch ? "light-3" : undefined} responsive={false}>
           {props.children}
         </Box>
       )}
@@ -81,7 +81,7 @@ export const NavigationSubItemButton = withRouter((props: NavigationSubItemButto
   const weight = pathMatch ? "bold" : "normal";
   return (
     <Button hoverIndicator="light-4" onClick={onClick} as="a" href={props.path}>
-      <Row pad={{ left: "medium", vertical: "xsmall" }} gap="small">
+      <Row pad={{ left: "medium", vertical: "xsmall" }} gap="small" responsive={false}>
         {props.icon && <Text weight={weight}>{props.icon}</Text>}
         <Text weight={weight}>{props.text}</Text>
       </Row>

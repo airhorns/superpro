@@ -83,7 +83,8 @@ export const BudgetFormSection = (props: { section: BudgetFormSectionValues; ind
       <Droppable droppableId={`${props.section.id}___series-lines`} type="SERIES-LINES" direction="vertical">
         {(provided, snapshot) => (
           <Box ref={provided.innerRef as any} background={snapshot.isDraggingOver ? "light-1" : "white"} {...provided.droppableProps}>
-            {<SeriesLinesSheet lines={seriesLinesForSection}>{provided.placeholder}</SeriesLinesSheet>}
+            {seriesLinesForSection.length > 0 && <SeriesLinesSheet lines={seriesLinesForSection}>{provided.placeholder}</SeriesLinesSheet>}
+            {seriesLinesForSection.length == 0 && provided.placeholder}
           </Box>
         )}
       </Droppable>
