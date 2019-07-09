@@ -11,7 +11,7 @@ jobs:
       - checkout
       - run:
           name: Build docker container
-          command: docker build -t gcr.io/superpro-production/core:$CIRCLE_SHA1 .
+          command: docker build --tag gcr.io/superpro-production/core:$CIRCLE_SHA1 --build-arg RELEASE=$CIRCLE_SHA1 .
       - gcp-cli/install
       - gcp-cli/initialize
       - run:

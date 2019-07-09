@@ -6,6 +6,7 @@ const globalVar = typeof window === "undefined" ? { environment: "unknown", entr
 if (globalVar.SUPERPRO_ENVIRONMENT === "production") {
   Sentry.init({
     dsn: globalVar.INJECTED_SETTINGS.sentryDsn,
+    release: globalVar.INJECTED_SETTINGS.release,
     environment: globalVar.SUPERPRO_ENVIRONMENT
   });
 }

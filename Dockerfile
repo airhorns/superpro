@@ -34,7 +34,8 @@ RUN NODE_ENV=production RAILS_ENV=production SECRET_KEY_BASE=valueneededtobootap
 
 # Start a fresh container and copy only the produced webpacker assets in, leaving the node binaries and yarn packages behind
 FROM ruby_environment
+ARG RELEASE=unknown
 
 COPY . /app/
-
 COPY --from=assets /app/public /app/public
+RUN echo $RELEASE > /app/RELEASE
