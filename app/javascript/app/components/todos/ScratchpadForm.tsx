@@ -11,6 +11,7 @@ import { UpdateScratchpadFromFormComponent, ScratchpadFormFragment, UpdateScratc
 import { UserCardProps, SavingNoticeState, ListPageCard } from "../common";
 import { TodoEditor } from "./todo_editor/TodoEditor";
 import { TrashScratchpadButton } from "./todo_editor/TrashScratchpadButton";
+import { ShareScratchpadButton } from "./todo_editor/ShareScratchpadButton";
 
 gql`
   fragment ScratchpadForm on Scratchpad {
@@ -110,7 +111,12 @@ export class ScratchpadForm extends React.Component<ScratchpadFormProps, SavingN
                   }}
                   autoFocus={false}
                   editorRef={this.editorRef}
-                  toolbarExtra={<TrashScratchpadButton id={this.props.scratchpad.id} onDiscard={this.props.onDiscard} />}
+                  toolbarExtra={
+                    <>
+                      <ShareScratchpadButton id={this.props.scratchpad.id} />
+                      <TrashScratchpadButton id={this.props.scratchpad.id} onDiscard={this.props.onDiscard} />
+                    </>
+                  }
                 />
                 <Row margin={{ bottom: "small" }} justify="center" gap="small">
                   <Anchor

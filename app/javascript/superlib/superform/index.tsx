@@ -7,6 +7,7 @@ export * from "./SuperForm";
 export * from "./Input";
 export * from "./NumberInput";
 export * from "./Select";
+export * from "./RadioButtons";
 export * from "./ArrayHelpers";
 export * from "./SuperDatePicker";
 export * from "./FieldBox";

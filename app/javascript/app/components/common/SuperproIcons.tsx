@@ -30,7 +30,8 @@ import {
   Currency,
   Alarm,
   TextWrap,
-  UserAdd
+  UserAdd,
+  Share as GrommetShare
 } from "grommet-icons";
 
 // Navigation & Root level ideas
@@ -60,6 +61,7 @@ export const CheckList = Task;
 export const Link = GrommetLink;
 export const Expense = Currency;
 export const Deadline = Alarm;
+export const Share = GrommetShare;
 
 // Misc
 export const Previous = GrommetPrevious;

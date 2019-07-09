@@ -528,6 +528,7 @@ export type ScratchpadAttributes = {
   mutationClientId?: Maybe<Scalars["MutationClientId"]>;
   /** Opaque JSON document powering the document editor for the scratchpad */
   document?: Maybe<Scalars["JSONScalar"]>;
+  accessMode?: Maybe<ScratchpadAccessModeEnum>;
 };
 
 /** The connection type for Scratchpad. */
@@ -923,6 +924,28 @@ export type StartProcessExecutionMutation = { __typename: "AppMutation" } & {
   createProcessExecution: Maybe<
     { __typename: "CreateProcessExecutionPayload" } & {
       processExecution: Maybe<{ __typename: "ProcessExecution" } & Pick<ProcessExecution, "id" | "updatedAt">>;
+      errors: Maybe<Array<{ __typename: "MutationError" } & Pick<MutationError, "fullMessage">>>;
+    }
+  >;
+};
+
+export type GetScratchpadForSharingQueryVariables = {
+  id: Scalars["ID"];
+};
+
+export type GetScratchpadForSharingQuery = { __typename: "AppQuery" } & {
+  scratchpad: Maybe<{ __typename: "Scratchpad" } & Pick<Scratchpad, "id" | "accessMode">>;
+};
+
+export type SetScratchpadSharingMutationVariables = {
+  id: Scalars["ID"];
+  attributes: ScratchpadAttributes;
+};
+
+export type SetScratchpadSharingMutation = { __typename: "AppMutation" } & {
+  updateScratchpad: Maybe<
+    { __typename: "UpdateScratchpadPayload" } & {
+      scratchpad: Maybe<{ __typename: "Scratchpad" } & Pick<Scratchpad, "id" | "accessMode">>;
       errors: Maybe<Array<{ __typename: "MutationError" } & Pick<MutationError, "fullMessage">>>;
     }
   >;
@@ -1705,6 +1728,67 @@ export function useStartProcessExecutionMutation(
 ) {
   return ReactApolloHooks.useMutation<StartProcessExecutionMutation, StartProcessExecutionMutationVariables>(
     StartProcessExecutionDocument,
+    baseOptions
+  );
+}
+export const GetScratchpadForSharingDocument = gql`
+  query GetScratchpadForSharing($id: ID!) {
+    scratchpad(id: $id) {
+      id
+      accessMode
+    }
+  }
+`;
+export type GetScratchpadForSharingComponentProps = Omit<
+  ReactApollo.QueryProps<GetScratchpadForSharingQuery, GetScratchpadForSharingQueryVariables>,
+  "query"
+> &
+  ({ variables: GetScratchpadForSharingQueryVariables; skip?: false } | { skip: true });
+
+export const GetScratchpadForSharingComponent = (props: GetScratchpadForSharingComponentProps) => (
+  <ReactApollo.Query<GetScratchpadForSharingQuery, GetScratchpadForSharingQueryVariables>
+    query={GetScratchpadForSharingDocument}
+    {...props}
+  />
+);
+
+export function useGetScratchpadForSharingQuery(baseOptions?: ReactApolloHooks.QueryHookOptions<GetScratchpadForSharingQueryVariables>) {
+  return ReactApolloHooks.useQuery<GetScratchpadForSharingQuery, GetScratchpadForSharingQueryVariables>(
+    GetScratchpadForSharingDocument,
+    baseOptions
+  );
+}
+export const SetScratchpadSharingDocument = gql`
+  mutation SetScratchpadSharing($id: ID!, $attributes: ScratchpadAttributes!) {
+    updateScratchpad(id: $id, attributes: $attributes) {
+      scratchpad {
+        id
+        accessMode
+      }
+      errors {
+        fullMessage
+      }
+    }
+  }
+`;
+export type SetScratchpadSharingMutationFn = ReactApollo.MutationFn<SetScratchpadSharingMutation, SetScratchpadSharingMutationVariables>;
+export type SetScratchpadSharingComponentProps = Omit<
+  ReactApollo.MutationProps<SetScratchpadSharingMutation, SetScratchpadSharingMutationVariables>,
+  "mutation"
+>;
+
+export const SetScratchpadSharingComponent = (props: SetScratchpadSharingComponentProps) => (
+  <ReactApollo.Mutation<SetScratchpadSharingMutation, SetScratchpadSharingMutationVariables>
+    mutation={SetScratchpadSharingDocument}
+    {...props}
+  />
+);
+
+export function useSetScratchpadSharingMutation(
+  baseOptions?: ReactApolloHooks.MutationHookOptions<SetScratchpadSharingMutation, SetScratchpadSharingMutationVariables>
+) {
+  return ReactApolloHooks.useMutation<SetScratchpadSharingMutation, SetScratchpadSharingMutationVariables>(
+    SetScratchpadSharingDocument,
     baseOptions
   );
 }

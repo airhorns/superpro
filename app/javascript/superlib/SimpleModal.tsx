@@ -3,10 +3,14 @@ import React from "react";
 import { Box, Button, ButtonProps, Layer } from "grommet";
 import { FormClose } from "../app/components/common/SuperproIcons";
 
+// Simple modal implementation that requires a trigger to open it.
+// Pass an icon and/or label to get a button trigger automatically,
+// or pass a trigger function that calls the callback to show the modal.
 export interface SimpleModalProps {
   children?: React.ReactNode | React.ReactNode[] | ((setShow: (state: boolean) => void) => React.ReactNode);
   triggerLabel?: ButtonProps["label"];
   triggerIcon?: ButtonProps["icon"];
+  trigger?: (setShow: (state: boolean) => void) => React.ReactNode;
 }
 
 export const SimpleModalOverlay = (props: { children: React.ReactNode; setShow: (state: boolean) => void }) => (
@@ -29,11 +33,12 @@ export const SimpleModal = (props: SimpleModalProps) => {
   const [show, setShow] = React.useState();
   const onShow = () => setShow(true);
   const content = isFunction(props.children) ? props.children(setShow) : props.children;
-  const showTrigger = !isUndefined(props.triggerLabel) || !isUndefined(props.triggerIcon);
+  const autoTrigger = (isUndefined(props.trigger) && !isUndefined(props.triggerLabel)) || !isUndefined(props.triggerIcon);
 
   return (
     <Box>
-      {showTrigger && <Button label={props.triggerLabel} icon={props.triggerIcon} onClick={onShow} hoverIndicator />}
+      {autoTrigger && <Button label={props.triggerLabel} icon={props.triggerIcon} onClick={onShow} hoverIndicator />}
+      {props.trigger && props.trigger(setShow)}
       {show && <SimpleModalOverlay setShow={setShow}>{content}</SimpleModalOverlay>}
     </Box>
   );
