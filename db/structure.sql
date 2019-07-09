@@ -1030,7 +1030,7 @@ UNION
 
 CREATE TABLE public.users (
     id bigint NOT NULL,
-    full_name character varying NOT NULL,
+    full_name character varying,
     email character varying NOT NULL,
     encrypted_password character varying NOT NULL,
     reset_password_token character varying,
@@ -1049,7 +1049,15 @@ CREATE TABLE public.users (
     unlock_token character varying,
     locked_at timestamp without time zone,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    invitation_token character varying,
+    invitation_created_at timestamp without time zone,
+    invitation_sent_at timestamp without time zone,
+    invitation_accepted_at timestamp without time zone,
+    invitation_limit integer,
+    invited_by_type character varying,
+    invited_by_id bigint,
+    invitations_count integer DEFAULT 0
 );
 
 
@@ -1431,6 +1439,34 @@ CREATE UNIQUE INDEX index_users_on_email ON public.users USING btree (email);
 
 
 --
+-- Name: index_users_on_invitation_token; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_users_on_invitation_token ON public.users USING btree (invitation_token);
+
+
+--
+-- Name: index_users_on_invitations_count; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_on_invitations_count ON public.users USING btree (invitations_count);
+
+
+--
+-- Name: index_users_on_invited_by_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_on_invited_by_id ON public.users USING btree (invited_by_id);
+
+
+--
+-- Name: index_users_on_invited_by_type_and_invited_by_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_on_invited_by_type_and_invited_by_id ON public.users USING btree (invited_by_type, invited_by_id);
+
+
+--
 -- Name: index_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1745,6 +1781,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190705135949'),
 ('20190705140825'),
 ('20190705173411'),
-('20190705180821');
+('20190705180821'),
+('20190709141711');
 
 

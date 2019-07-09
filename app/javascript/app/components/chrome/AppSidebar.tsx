@@ -8,7 +8,7 @@ import { UserAvatar } from "../common/UserAvatar";
 import { signOut } from "../../lib/auth";
 import { Settings } from "../../lib/settings";
 import { Row, Flag } from "../../../superlib";
-import { Budget, Todos } from "../common/SuperproIcons";
+import { Budget, Todos, Invite } from "../common/SuperproIcons";
 import { NavigationSectionButton, NavigationSubItemButton } from "./Navigation";
 
 gql`
@@ -79,6 +79,7 @@ export const AppSidebar = withRouter(
                   <NavigationSubItemButton path="/budget/reports" text="Reports" onClick={this.close} />
                 </NavigationSectionButton>
                 <Box flex />
+                <NavigationSectionButton path="/invite" text="Invite Users" icon={<Invite />} onClick={this.close} />
                 {!loading && (
                   <Box pad="small" align="center">
                     <DropButton

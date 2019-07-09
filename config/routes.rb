@@ -13,6 +13,8 @@ Rails.application.routes.draw do
   end
 
   if Rails.env.integration_test? || Rails.env.development?
+    mount LetterOpenerWeb::Engine, at: "/letter_opener"
+
     scope "test_support" do
       post "clean", to: "test_support#clean"
       post "force_login", to: "test_support#force_login"
@@ -25,6 +27,7 @@ Rails.application.routes.draw do
     # Some API is managed by devise and some is is managed by graphql right now.
     devise_for :users, path: "/auth/api", skip: ["registration"], controllers: {
                          sessions: "auth/sessions",
+                         invitations: "auth/invitations",
                          confirmations: "auth/confirmations",
                          passwords: "auth/passwords",
                          unlocks: "auth/unlocks",
@@ -38,6 +41,7 @@ Rails.application.routes.draw do
       mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "graphql"
       post "/graphql", to: "graphql#execute"
 
+      get "/accept_invite", to: "client_side_app#index", as: :accept_invitation
       get "*path", to: "client_side_app#index"
       root to: "client_side_app#index"
     end

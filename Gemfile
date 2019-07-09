@@ -4,6 +4,7 @@ ruby '2.6.2'
 
 # Core web app
 gem 'devise', github: "plataformatec/devise"
+gem 'devise_invitable'
 gem 'discard'
 gem 'graphiql-rails'
 gem 'graphql'
@@ -64,6 +65,8 @@ group :development, :test, :integration_test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'factory_bot_rails'
   gem 'faker'
+  gem 'letter_opener'
+  gem 'letter_opener_web'
   gem 'pry'
   gem 'pry-byebug'
   gem 'rcodetools'

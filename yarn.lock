@@ -9844,6 +9844,11 @@ react-loader-spinner@^2.3.0:
     babel-runtime "^6.26.0"
     prop-types "^15.6.2"
 
+react-loads@^8.3.3:
+  version "8.3.3"
+  resolved "https://registry.yarnpkg.com/react-loads/-/react-loads-8.3.3.tgz#36a293e865853327ae3ecfc19fabe49560348dea"
+  integrity sha512-1YdDQM6D5Mm8dEwQpYKWmn6C+IQXJfPVQVwlBLNrTYjva3wyvuROSCyYl4AMa8ZUsbGJNEvGQdSGtOdU3h0Oxg==
+
 react-number-format@^4.0.8:
   version "4.0.8"
   resolved "https://registry.yarnpkg.com/react-number-format/-/react-number-format-4.0.8.tgz#f0a0dfbeded9a746f4d8b309926cf55d7effebb2"

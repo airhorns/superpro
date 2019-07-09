@@ -29,7 +29,8 @@ import {
   Task,
   Currency,
   Alarm,
-  TextWrap
+  TextWrap,
+  UserAdd
 } from "grommet-icons";
 
 // Navigation & Root level ideas
@@ -39,6 +40,7 @@ export const Budget = Compare;
 export const Reports = Analytics;
 export const Todos = CheckboxSelected;
 export const Process = TextWrap;
+export const Invite = UserAdd;
 
 // Toolbar & Editor
 export const Undo = GrommetUndo;

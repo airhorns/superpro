@@ -29,8 +29,12 @@ Rails.application.configure do
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
-
   config.action_mailer.perform_caching = false
+
+  # Send mail using the development aid, letter_opener
+  # See https://github.com/fgrehm/letter_opener_web
+  config.action_mailer.delivery_method = :letter_opener
+  config.action_mailer.perform_deliveries = true
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
@@ -47,8 +51,6 @@ Rails.application.configure do
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
-
-  config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
 
   # Whitelist docker-for-mac ips for web console
   config.web_console.permissions = ["172.18.0.0/16", "172.19.0.0/16"]
@@ -68,4 +70,5 @@ Rails.application.configure do
   config.x.domains.admin = "admin.ggt.dev"
   config.action_controller.asset_host = "assets.ggt.dev"
   config.hosts << ".ggt.dev"
+  config.action_mailer.default_url_options = { host: config.x.domains.app }
 end

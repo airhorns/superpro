@@ -13,6 +13,7 @@ import { PageLoadSpin } from "../superlib";
 
 const HomePage = React.lazy(() => import("./components/home/HomePage"));
 const Launchpad = React.lazy(() => import("./components/home/Launchpad"));
+const InviteUsersPage = React.lazy(() => import("./components/identity/InviteUsersPage"));
 const BudgetReportsIndexPage = React.lazy(() => import("./components/budget/BudgetReportsIndexPage"));
 const BudgetReportPage = React.lazy(() => import("./components/budget/BudgetReportPage"));
 const EditBudgetPage = React.lazy(() => import("./components/budget/EditBudgetPage"));
@@ -43,6 +44,7 @@ export const App = () => {
                         <Switch>
                           <Route path="/" exact component={HomePage} />
                           <Route path="/launchpad" exact component={Launchpad} />
+                          <Route path="/invite" exact component={InviteUsersPage} />
                           <Route path="/budget" exact component={EditBudgetPage} />
                           <Route path="/budget/reports" exact component={BudgetReportsIndexPage} />
                           <Route path="/budget/reports/:reportKey" exact component={BudgetReportPage} />

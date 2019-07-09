@@ -12,6 +12,10 @@ class ActiveSupport::TestCase
     parallelize(workers: :number_of_processors)
   end
 
+  setup do
+    ActionMailer::Base.deliveries.clear
+  end
+
   def raise_on_unoptimized_queries
     old_enabled = Bullet.enable?
     Bullet.enable = true

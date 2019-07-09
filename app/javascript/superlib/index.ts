@@ -4,6 +4,7 @@ export * from "./Row";
 export * from "./Tag";
 export * from "./Alert";
 export * from "./SimpleQuery";
+export * from "./SimplePromise";
 export * from "./HelpTip";
 export * from "./TokenLabel";
 export * from "./EmptyTableMessage";

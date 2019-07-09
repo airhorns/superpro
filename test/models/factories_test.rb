@@ -13,5 +13,7 @@ class FactoriesTest < ActiveSupport::TestCase
   test "big account fixtures create only one account" do
     create(:account)
     assert_equal 1, Account.all.size
+    assert_equal 1, User.all.size
+    assert_equal 0, ActionMailer::Base.deliveries.size
   end
 end

@@ -1,4 +1,7 @@
 class Types::AppMutationType < Types::BaseObject
+  # Identity
+  field :invite_user, mutation: Mutations::Identity::InviteUser
+
   # Budgets
   field :update_budget, mutation: Mutations::Budget::UpdateBudget
 
