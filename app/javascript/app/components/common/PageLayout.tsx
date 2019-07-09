@@ -88,7 +88,7 @@ export class PageLayout extends React.Component<PageLayoutProps> {
   render() {
     const breadcrumbs = this.renderBreadcrumbs();
     return (
-      <Box flex className="PageLayout-container" overflow={{ vertical: this.props.scrolly ? "auto" : "hidden" }}>
+      <Box fill className="PageLayout-container">
         <Helmet>
           <title>{this.props.documentTitle || this.props.title} - Superpro</title>
         </Helmet>
@@ -110,7 +110,13 @@ export class PageLayout extends React.Component<PageLayoutProps> {
           </Heading>
           <Row>{this.props.headerExtra}</Row>
         </Row>
-        <Box flex pad={this.props.padded ? "medium" : undefined} className="PageLayout-content">
+        <Box
+          flex
+          pad={this.props.padded ? "medium" : undefined}
+          className="PageLayout-content"
+          overflow={{ vertical: this.props.scrolly ? "auto" : undefined }}
+          fill={!this.props.scrolly}
+        >
           {this.props.children}
         </Box>
       </Box>

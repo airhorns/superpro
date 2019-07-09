@@ -33,12 +33,12 @@ export const App = () => {
       <FlagsProvider flags={Settings.flags}>
         <ApolloProvider client={SuperproClient}>
           <ApolloHooksProvider client={SuperproClient}>
-            <Grommet full theme={SuperproGrommetTheme}>
+            <Grommet theme={SuperproGrommetTheme} style={{ width: "100vw", height: "100vh", overflow: "hidden" }}>
               <SuperproGlobalStyle />
               <Router basename={Settings.baseUrl}>
                 <ToastContainer>
                   <HotkeysContainer>
-                    <Box fill direction="row-responsive" id="superpro-root">
+                    <Box fill direction="row-responsive" id="Superpro-Layout">
                       <AppSidebar />
                       <React.Suspense fallback={<PageLoadSpin />}>
                         <Switch>

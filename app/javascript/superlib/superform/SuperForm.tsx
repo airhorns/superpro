@@ -4,7 +4,7 @@ import { FieldPath, DocType } from "./utils";
 import { ArrayHelpers } from "./ArrayHelpers";
 import { SuperFormContext } from "../superform";
 import { Backend, AutomergeBackend, Command } from "./Backends";
-import { Box } from "grommet";
+import { Box, BoxProps } from "grommet";
 
 export interface SuperFormProps<T extends DocType> {
   children: (form: SuperForm<T>) => React.ReactNode;
@@ -12,6 +12,7 @@ export interface SuperFormProps<T extends DocType> {
   onChange?: (doc: T, form: SuperForm<T>) => void;
   onSubmit?: (doc: T, form: SuperForm<T>) => void;
   backendClass?: typeof Backend;
+  containerProps?: Partial<BoxProps>;
 }
 
 export type SuperFormErrors<T extends DocType> = {
@@ -137,7 +138,8 @@ export class SuperForm<T extends DocType> extends React.Component<SuperFormProps
       <SuperFormContext.Provider value={this}>
         <Box
           as="form"
-          flex
+          flex="grow"
+          {...this.props.containerProps}
           className="SuperForm"
           onSubmit={e => {
             e.preventDefault();
