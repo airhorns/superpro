@@ -1,6 +1,6 @@
 import { DocType, FieldPath, Dispatcher } from "./utils";
 import { get } from "lodash";
-import { List } from "automerge";
+import { List } from "automerge/src/automerge";
 
 export type ArrayHelperListFunctions<E> = Pick<List<E>, "push" | "pop" | "shift" | "unshift" | "insertAt" | "deleteAt" | "splice">;
 

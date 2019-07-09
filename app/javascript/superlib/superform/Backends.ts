@@ -1,4 +1,4 @@
-import Automerge from "automerge";
+import Automerge from "automerge/src/automerge";
 import { DocType } from "./utils";
 
 export type OnChange<T extends DocType> = (newDoc: T) => void;

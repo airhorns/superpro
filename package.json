@@ -9,7 +9,7 @@
     "lintfix": "prettier --write \"app/javascript/**/*.{js,ts,tsx}\" && eslint --ext js,ts,tsx --fix app/javascript",
     "test": "jest",
     "open-cypress": "cypress open --project ./test",
-    "analyze-bundle": "NODE_ENV=production bin/webpack --profile --json > tmp/webpack-stats.json && webpack-bundle-analyzer tmp/webpack-stats.json"
+    "analyze-bundle": "RAILS_ENV=production NODE_ENV=production bin/webpack --profile --json > tmp/webpack-stats.json && webpack-bundle-analyzer tmp/webpack-stats.json"
   },
   "dependencies": {
     "@babel/core": "^7.5.0",
@@ -64,6 +64,7 @@
     "apollo-link-http": "^1.5.11",
     "automerge": "^0.10.1",
     "axios": "^0.19.0",
+    "babel-plugin-lodash": "^3.3.4",
     "babel-plugin-styled-components": "^1.10.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "classnames": "^2.2.6",

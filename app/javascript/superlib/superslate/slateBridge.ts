@@ -1,4 +1,4 @@
-// import Automerge from "automerge";
+// import Automerge from "automerge/src/automerge";
 // import { get } from "lodash";
 // import { Operation, ValueProperties } from "slate";
 

@@ -9,7 +9,7 @@ declare module "frontend/constants" {
   const STATE: symbol;
 }
 
-declare module "automerge" {
+declare module "automerge/src/automerge" {
   function applyChanges<T>(doc: T, changes: Change<T>[]): T;
   function canRedo<T>(doc: T): boolean;
   function canUndo<T>(doc: T): boolean;
