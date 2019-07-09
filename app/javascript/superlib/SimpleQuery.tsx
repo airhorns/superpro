@@ -4,8 +4,8 @@ import { AssertedKeys, assertKeys } from "./utils";
 import { Alert } from "./Alert";
 import { PageLoadSpin } from "./Spin";
 import { Omit } from "type-zoo";
-import { Data } from "slate";
 import { QueryResult } from "react-apollo";
+import { isEqual } from "lodash";
 
 // gql-gen generates SFCs that omit the variables key from the QueryProps then & with a { variables: Variables } that is mandatory or a {variables?: Variables } that isnt in order to better type check the invocations of the component. This makes it real annoying to dereference.
 export type GeneratedQueryComponentType<Data, Variables> =
@@ -29,6 +29,7 @@ export interface SimpleQueryProps<
   variables?: Variables;
   children?: (data: AssertedKeys<Data, RequiredKeys>, result: QueryResult<Data, Variables>) => React.ReactNode;
   require?: RequiredKeys[]; // properties to ensure are present in the returned data. If they aren't, render a 404
+  spinForSubsequentLoads?: boolean;
 }
 
 // Handy component to handle errors and loading states for big and simple loads all in one place, and return data with a stricter
@@ -50,13 +51,17 @@ export class SimpleQuery<
 > extends React.Component<SimpleQueryProps<Data, Variables, RequiredKeys, Component>> {
   handleResult = (result: ReactApollo.QueryResult<Data, Variables>) => {
     if (result.loading) {
-      return <PageLoadSpin />;
+      if (!result.data || isEqual(result.data, {}) || (result.data && this.props.spinForSubsequentLoads)) {
+        return <PageLoadSpin />;
+      }
     }
+
     if (result.error || !result.data) {
       console.error("Error loading data from backend", result.error);
       return <Alert message="There was an internal error. Please refresh the page and try again." type="error" />;
     }
 
+    // Handle 404s from the server for nullable queries
     const data = assertKeys(result.data, this.props.require || []);
     if (!data) {
       return <Alert message="Data Not Found" type="error" />;

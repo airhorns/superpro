@@ -57,7 +57,7 @@ export const TodoEditor = (
       TodoEditorToolbarPlugin({ toolbarExtra: props.toolbarExtra }),
       RerenderPlugin()
     ];
-  }, [props.toolbarExtra]);
+  }, []);
 
   return (
     <TodoEditorContext.Provider value={props}>
