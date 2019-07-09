@@ -42,7 +42,7 @@ export const NavigationSectionButton = withRouter((props: NavigationSectionButto
     <>
       <Button hoverIndicator="light-4" active={pathMatch} onClick={onClick} as="a" href={props.path}>
         <Row pad="small" gap="small">
-          {props.icon && <Text>{props.icon}</Text>}
+          {props.icon}
           <Text>{props.text}</Text>
         </Row>
       </Button>
