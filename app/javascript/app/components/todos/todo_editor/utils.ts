@@ -5,3 +5,4 @@ export const isTemplateMode = (editor: Editor | ReactEditor) => editor.value.dat
 export const isExecutionMode = (editor: Editor | ReactEditor) => editor.value.data.get("mode") === "execution";
 export const isFullEditingMode = (editor: Editor | ReactEditor) =>
   editor.value.data.get("mode") === "execution" || editor.value.data.get("mode") === "scratchpad";
+export const isScratchpadMode = (editor: Editor | ReactEditor) => editor.value.data.get("mode") === "scratchpad";

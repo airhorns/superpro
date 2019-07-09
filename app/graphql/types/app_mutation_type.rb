@@ -11,4 +11,5 @@ class Types::AppMutationType < Types::BaseObject
   field :discard_process_execution, mutation: Mutations::Todos::DiscardProcessExecution
   field :create_scratchpad, mutation: Mutations::Todos::CreateScratchpad
   field :update_scratchpad, mutation: Mutations::Todos::UpdateScratchpad
+  field :discard_scratchpad, mutation: Mutations::Todos::DiscardScratchpad
 end

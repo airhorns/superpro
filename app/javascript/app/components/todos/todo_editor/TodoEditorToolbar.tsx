@@ -25,7 +25,7 @@ export const CondensedTodosToggleButton = (props: { editor: Editor }) => {
   return <Button plain label={text} onClick={() => props.editor.command("toggleShowOnlyCondensedTodos")} />;
 };
 
-export class TodoEditorToolbar extends React.Component<{ editor: Editor }> {
+export class TodoEditorToolbar extends React.Component<{ editor: Editor; extra?: React.ReactNode }> {
   undo = (event: React.SyntheticEvent) => {
     event.preventDefault();
     this.props.editor.undo();
@@ -67,12 +67,14 @@ export class TodoEditorToolbar extends React.Component<{ editor: Editor }> {
         <ToolbarButton active={false} icon={Deadline} onClick={this.addDeadline} />
         <ToolbarDivider />
         {isExecutionMode(this.props.editor) && <CondensedTodosToggleButton editor={this.props.editor} />}
+        <Box flex />
+        {this.props.extra}
       </Toolbar>
     );
   }
 }
 
-export const TodoEditorToolbarPlugin = (): Plugin => {
+export const TodoEditorToolbarPlugin = (options?: { toolbarExtra?: React.ReactNode }): Plugin => {
   return {
     renderEditor(props, editor, next) {
       let showToolbar = editor.value.data.get("showToolbar");
@@ -80,7 +82,7 @@ export const TodoEditorToolbarPlugin = (): Plugin => {
 
       return (
         <Box flex pad="small">
-          {showToolbar && <TodoEditorToolbar editor={(editor as unknown) as Editor} />}
+          {showToolbar && <TodoEditorToolbar editor={(editor as unknown) as Editor} extra={options && options.toolbarExtra} />}
           {next()}
         </Box>
       );

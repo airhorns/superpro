@@ -10,6 +10,7 @@ import { SuperForm, ObjectBackend } from "superlib/superform";
 import { UpdateScratchpadFromFormComponent, ScratchpadFormFragment, UpdateScratchpadFromFormMutationFn } from "app/app-graph";
 import { UserCardProps, SavingNoticeState, ListPageCard } from "../common";
 import { TodoEditor } from "./todo_editor/TodoEditor";
+import { TrashScratchpadButton } from "./todo_editor/TrashScratchpadButton";
 
 gql`
   fragment ScratchpadForm on Scratchpad {
@@ -35,6 +36,7 @@ gql`
 export interface ScratchpadFormProps {
   users: UserCardProps["user"][];
   scratchpad: ScratchpadFormFragment;
+  onDiscard?: () => void;
 }
 
 interface ScratchpadFormValues {
@@ -108,6 +110,7 @@ export class ScratchpadForm extends React.Component<ScratchpadFormProps, SavingN
                   }}
                   autoFocus={false}
                   editorRef={this.editorRef}
+                  toolbarExtra={<TrashScratchpadButton id={this.props.scratchpad.id} onDiscard={this.props.onDiscard} />}
                 />
                 <Row margin={{ bottom: "small" }} justify="center" gap="small">
                   <Anchor

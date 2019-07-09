@@ -99,7 +99,7 @@ export const createScratchpad = async (client: ApolloClient<object>) => {
   }
 };
 
-type SelectedFeedItem = null | { __typename: "ProcessExecution" | "Scratchpad"; id: string };
+type SelectedFeedItem = null | { __typename: "ProcessExecution" | "Scratchpad"; id: string; index: number };
 
 export default (_props: {}) => {
   const [selectedItem, setSelectedItem] = React.useState<SelectedFeedItem>(null);
@@ -117,7 +117,7 @@ export default (_props: {}) => {
         onCompleted={indexData =>
           indexData.currentUser.todoFeedItems.edges.length > 0 &&
           !selectedItem &&
-          setSelectedItem(assert(indexData.currentUser.todoFeedItems.edges[0].node).todoSource)
+          setSelectedItem({ ...assert(indexData.currentUser.todoFeedItems.edges[0].node).todoSource, index: 0 })
         }
       >
         {(indexData, result) => {
@@ -154,7 +154,7 @@ export default (_props: {}) => {
                       </Box>
                     }
                   >
-                    {indexData.currentUser.todoFeedItems.edges.map(edge => {
+                    {indexData.currentUser.todoFeedItems.edges.map((edge, index) => {
                       const feedItem = assert(edge.node);
                       return (
                         <Box
@@ -169,7 +169,9 @@ export default (_props: {}) => {
                           }}
                         >
                           <Button
-                            onClick={() => setSelectedItem({ __typename: feedItem.todoSource.__typename, id: feedItem.todoSource.id })}
+                            onClick={() =>
+                              setSelectedItem({ __typename: feedItem.todoSource.__typename, id: feedItem.todoSource.id, index })
+                            }
                             hoverIndicator
                           >
                             <Box pad="small" border={{ side: "bottom", color: "light-3" }}>
@@ -205,7 +207,21 @@ export default (_props: {}) => {
                   )}
                   {selectedItem && selectedItem.__typename == "Scratchpad" && (
                     <SimpleQuery component={GetScratchpadForTodosComponent} require={["scratchpad"]} variables={{ id: selectedItem.id }}>
-                      {data => <ScratchpadForm key={data.scratchpad.id} scratchpad={data.scratchpad} users={indexData.users.nodes} />}
+                      {data => (
+                        <ScratchpadForm
+                          key={data.scratchpad.id}
+                          scratchpad={data.scratchpad}
+                          users={indexData.users.nodes}
+                          onDiscard={() => {
+                            const previousEdge = indexData.currentUser.todoFeedItems.edges[selectedItem.index - 1];
+                            if (previousEdge) {
+                              setSelectedItem({ ...assert(previousEdge.node).todoSource, index: selectedItem.index - 1 });
+                            } else {
+                              setSelectedItem(null);
+                            }
+                          }}
+                        />
+                      )}
                     </SimpleQuery>
                   )}
                 </Box>
