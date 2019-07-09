@@ -156,16 +156,15 @@ export default (_props: {}) => {
                   >
                     {indexData.currentUser.todoFeedItems.edges.map((edge, index) => {
                       const feedItem = assert(edge.node);
+                      const isSelectedItem =
+                        selectedItem &&
+                        feedItem.todoSource.__typename == selectedItem.__typename &&
+                        feedItem.todoSource.id == selectedItem.id;
                       return (
                         <Box
                           key={feedItem.id}
                           background={{
-                            color:
-                              selectedItem &&
-                              feedItem.todoSource.__typename == selectedItem.__typename &&
-                              feedItem.todoSource.id == selectedItem.id
-                                ? "white"
-                                : "light-1"
+                            color: isSelectedItem ? "white" : "light-1"
                           }}
                         >
                           <Button
@@ -174,7 +173,13 @@ export default (_props: {}) => {
                             }
                             hoverIndicator
                           >
-                            <Box pad="small" border={{ side: "bottom", color: "light-3" }}>
+                            <Box
+                              pad="small"
+                              border={{
+                                side: "horizontal",
+                                color: isSelectedItem ? "brand" : "light-3"
+                              }}
+                            >
                               <Text>{feedItem.todoSource.name}</Text>
                               <Text size="small">{DateTime.fromISO(feedItem.updatedAt).toLocaleString(DateTime.DATETIME_MED)}</Text>
                               {feedItem.todoSource.__typename == "ProcessExecution" && (
