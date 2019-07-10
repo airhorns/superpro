@@ -238,7 +238,7 @@ GEM
       http (~> 3.0)
       recursive-open-struct (~> 1.0, >= 1.0.4)
       rest-client (~> 2.0)
-    kubernetes-deploy (0.26.5)
+    kubernetes-deploy (0.26.6)
       activesupport (>= 5.0)
       colorize (~> 0.8)
       concurrent-ruby (~> 1.1)
