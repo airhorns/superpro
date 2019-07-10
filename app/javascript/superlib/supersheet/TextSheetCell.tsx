@@ -25,6 +25,7 @@ export const TextSheetCell = (props: TextSheetCellProps) => {
     }
   });
   const value = form.getValue(props.path);
+  const showPlaceholder = isUndefined(value) || value == "";
 
   return (
     <StyledDataGridCell
@@ -35,8 +36,8 @@ export const TextSheetCell = (props: TextSheetCellProps) => {
       onDoubleClick={() => sheet.handleCellDoubleClick(props.row, props.column)}
     >
       {editing && <Input autoFocus plain path={props.path} onBlur={sheet.onCellBlur} {...props} />}
-      {!editing && !isUndefined(value) && <Text>{value}</Text>}
-      {!editing && isUndefined(value) && <Text color="status-unknown">{props.placeholder}</Text>}
+      {!editing && !showPlaceholder && <Text>{value}</Text>}
+      {!editing && showPlaceholder && <Text color="status-unknown">{props.placeholder}</Text>}
     </StyledDataGridCell>
   );
 };
