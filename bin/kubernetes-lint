@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -e
+export REVISION=deadbeef
+
+for template in config/deploy/production/*.{yaml,erb}; do
+  echo "Linting $(basename $template) ..."
+  contents=$(bundle exec kubernetes-render --template-dir=config/deploy/production $(basename $template))
+  if [[ $contents != *"kubeval-ignore"* ]]; then
+    echo "$contents" | kubeval --filename=$template
+  else
+    echo "Not kubevaling $template as it has an ignore directive"
+  fi
+done
