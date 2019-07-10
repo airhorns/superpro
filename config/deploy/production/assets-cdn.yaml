@@ -1,16 +1,4 @@
 ---
-apiVersion: cloud.google.com/v1beta1
-kind: BackendConfig
-metadata:
-  name: assets-backend-config
-spec:
-  cdn:
-    enabled: true
-    cachePolicy:
-      includeHost: true
-      includeProtocol: true
-      includeQueryString: false
----
 apiVersion: v1
 kind: Service
 metadata:
