@@ -1,27 +1,38 @@
 import React from "react";
 import gql from "graphql-tag";
 import { Settings } from "app/lib/settings";
-import { PlaidLink } from "../PlaidLink";
+import { PlaidLink } from "./PlaidLink";
 import { ConnectionCard } from "./ConnectionCard";
 import { useConnectPlaidMutation } from "app/app-graph";
 import { mutationSuccess, toast } from "superlib";
+import { Box, Text } from "grommet";
+import { flatMap } from "lodash";
 
 gql`
+  fragment PlaidConnectionCardContent on PlaidItem {
+    id
+    accounts {
+      id
+      name
+      type
+    }
+  }
+
   mutation ConnectPlaid($publicToken: String!) {
     connectPlaid(publicToken: $publicToken) {
       plaidItem {
-        id
-        accounts {
-          name
-          type
-          subtype
-        }
+        ...PlaidConnectionCardContent
       }
     }
   }
 `;
 
-export const PlaidConnectionCard = (_props: {}) => {
+interface PlaidItem {
+  id: string;
+  accounts: { id: string; name: string; type: string }[];
+}
+
+export const PlaidConnectionCard = (props: { plaidItems: PlaidItem[] }) => {
   const connectPlaid = useConnectPlaidMutation();
   const onSuccess = React.useCallback(
     async (publicToken: string) => {
@@ -44,7 +55,24 @@ export const PlaidConnectionCard = (_props: {}) => {
     [connectPlaid]
   );
   return (
-    <ConnectionCard name="Plaid" description="Plaid is a blah blah blah">
+    <ConnectionCard
+      name="Direct Bank Accounts"
+      description="Superpro can connect directly to your bank account to import transaction data for your budget. Superpro connects securely via our banking partner [Plaid](https://plaid.com/)."
+    >
+      {props.plaidItems.length > 0 && (
+        <Box>
+          <Text>Currently Connected Bank Accounts:</Text>
+          <ul>
+            {flatMap(props.plaidItems, item =>
+              item.accounts.map(account => (
+                <li key={account.id}>
+                  {account.name} ({account.type})
+                </li>
+              ))
+            )}
+          </ul>
+        </Box>
+      )}
       <PlaidLink
         clientName="Superpro"
         env={Settings.plaid.env as any}
@@ -53,8 +81,13 @@ export const PlaidConnectionCard = (_props: {}) => {
         webhook={Settings.plaid.webhookUrl}
         style={{ outline: "none", border: "0px", background: "#FFFFFF" }}
         onSuccess={onSuccess}
-        onExit={() => toast.error("There was an error connecting Plaid. Please try again.")}
-        label="Connect Plaid"
+        onExit={(error: any) => {
+          if (error) {
+            const message = error.display_message || "";
+            toast.error(`There was an error connecting Plaid. ${message} Please try again.`);
+          }
+        }}
+        label={`Connect ${props.plaidItems.length > 0 && "Another "}Bank Account`}
       />
     </ConnectionCard>
   );

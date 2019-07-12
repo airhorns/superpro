@@ -1,8 +1,8 @@
-class Types::Identity::PlaidItemType < Types::BaseObject
+class Types::Connections::PlaidItemType < Types::BaseObject
   field :id, GraphQL::Types::ID, null: false
   field :account_id, String, null: false
   field :creator, Types::Identity::UserType, null: false
-  field :accounts, [Types::Identity::PlaidItemAccountType], null: false
+  field :accounts, [Types::Connections::PlaidItemAccountType], null: false
   field :created_at, GraphQL::Types::ISO8601DateTime, null: false
   field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
 

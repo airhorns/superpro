@@ -1,4 +1,4 @@
-class Types::Identity::PlaidItemAccountType < Types::BaseObject
+class Types::Connections::PlaidItemAccountType < Types::BaseObject
   field :id, GraphQL::Types::ID, null: false
   field :name, String, null: false
   field :type, String, null: false

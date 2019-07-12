@@ -886,19 +886,23 @@ export type UpdateAccountSettingsMutation = { __typename: "AppMutation" } & {
   >;
 };
 
+export type GetConnectionsIndexPageQueryVariables = {};
+
+export type GetConnectionsIndexPageQuery = { __typename: "AppQuery" } & {
+  plaidItems: { __typename: "PlaidItemConnection" } & { nodes: Array<{ __typename: "PlaidItem" } & PlaidConnectionCardContentFragment> };
+};
+
+export type PlaidConnectionCardContentFragment = { __typename: "PlaidItem" } & Pick<PlaidItem, "id"> & {
+    accounts: Array<{ __typename: "PlaidItemAccount" } & Pick<PlaidItemAccount, "id" | "name" | "type">>;
+  };
+
 export type ConnectPlaidMutationVariables = {
   publicToken: Scalars["String"];
 };
 
 export type ConnectPlaidMutation = { __typename: "AppMutation" } & {
   connectPlaid: Maybe<
-    { __typename: "ConnectPlaidPayload" } & {
-      plaidItem: Maybe<
-        { __typename: "PlaidItem" } & Pick<PlaidItem, "id"> & {
-            accounts: Array<{ __typename: "PlaidItemAccount" } & Pick<PlaidItemAccount, "name" | "type" | "subtype">>;
-          }
-      >;
-    }
+    { __typename: "ConnectPlaidPayload" } & { plaidItem: Maybe<{ __typename: "PlaidItem" } & PlaidConnectionCardContentFragment> }
   >;
 };
 
@@ -1246,6 +1250,16 @@ export const BudgetForEditFragmentDoc = gql`
     }
   }
 `;
+export const PlaidConnectionCardContentFragmentDoc = gql`
+  fragment PlaidConnectionCardContent on PlaidItem {
+    id
+    accounts {
+      id
+      name
+      type
+    }
+  }
+`;
 export const CondensedProcessExecutionFormFragmentDoc = gql`
   fragment CondensedProcessExecutionForm on ProcessExecution {
     id
@@ -1451,19 +1465,43 @@ export function useUpdateAccountSettingsMutation(
     baseOptions
   );
 }
+export const GetConnectionsIndexPageDocument = gql`
+  query GetConnectionsIndexPage {
+    plaidItems {
+      nodes {
+        ...PlaidConnectionCardContent
+      }
+    }
+  }
+  ${PlaidConnectionCardContentFragmentDoc}
+`;
+export type GetConnectionsIndexPageComponentProps = Omit<
+  ReactApollo.QueryProps<GetConnectionsIndexPageQuery, GetConnectionsIndexPageQueryVariables>,
+  "query"
+>;
+
+export const GetConnectionsIndexPageComponent = (props: GetConnectionsIndexPageComponentProps) => (
+  <ReactApollo.Query<GetConnectionsIndexPageQuery, GetConnectionsIndexPageQueryVariables>
+    query={GetConnectionsIndexPageDocument}
+    {...props}
+  />
+);
+
+export function useGetConnectionsIndexPageQuery(baseOptions?: ReactApolloHooks.QueryHookOptions<GetConnectionsIndexPageQueryVariables>) {
+  return ReactApolloHooks.useQuery<GetConnectionsIndexPageQuery, GetConnectionsIndexPageQueryVariables>(
+    GetConnectionsIndexPageDocument,
+    baseOptions
+  );
+}
 export const ConnectPlaidDocument = gql`
   mutation ConnectPlaid($publicToken: String!) {
     connectPlaid(publicToken: $publicToken) {
       plaidItem {
-        id
-        accounts {
-          name
-          type
-          subtype
-        }
+        ...PlaidConnectionCardContent
       }
     }
   }
+  ${PlaidConnectionCardContentFragmentDoc}
 `;
 export type ConnectPlaidMutationFn = ReactApollo.MutationFn<ConnectPlaidMutation, ConnectPlaidMutationVariables>;
 export type ConnectPlaidComponentProps = Omit<ReactApollo.MutationProps<ConnectPlaidMutation, ConnectPlaidMutationVariables>, "mutation">;

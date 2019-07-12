@@ -1,4 +1,4 @@
-class Identity::PlaidAuth
+class Connections::PlaidAuth
   def initialize(account, user)
     @account = account
     @user = user

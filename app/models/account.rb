@@ -42,6 +42,8 @@ class Account < ApplicationRecord
   end
 
   has_many :plaid_items, inverse_of: :account, dependent: :destroy
+  has_many :plaid_item_accounts, inverse_of: :account, dependent: :destroy
+  has_many :plaid_transactions, inverse_of: :account, dependent: :destroy
 
   belongs_to :creator, class_name: "User", inverse_of: :created_accounts
 end

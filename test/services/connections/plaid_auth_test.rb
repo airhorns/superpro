@@ -1,9 +1,9 @@
 require "test_helper"
 
-class Identity::PlaidAuthTest < ActiveSupport::TestCase
+class Connections::PlaidAuthTest < ActiveSupport::TestCase
   setup do
     @account = create(:account)
-    @plaid_auth = Identity::PlaidAuth.new(@account, @account.creator)
+    @plaid_auth = Connections::PlaidAuth.new(@account, @account.creator)
   end
 
   test "it can exchange a public token for an access token" do

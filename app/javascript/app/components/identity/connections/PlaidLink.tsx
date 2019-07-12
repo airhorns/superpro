@@ -52,7 +52,7 @@ export interface PlaidLinkProps {
   onSuccess: (token: any, metadata: any) => void;
 
   // A function that is called when a user has specifically exited Link flow
-  onExit?: () => void;
+  onExit?: (error?: any) => void;
 
   // A function that is called when the Link module has finished loading.
   // Calls to plaidLinkHandler.open() prior to the onLoad callback will be

@@ -1,12 +1,11 @@
-class Mutations::Identity::ConnectPlaid < Mutations::BaseMutation
+class Mutations::Connections::ConnectPlaid < Mutations::BaseMutation
   argument :public_token, String, required: true
 
-  field :plaid_item, Types::Identity::PlaidItemType, null: true
+  field :plaid_item, Types::Connections::PlaidItemType, null: true
   field :errors, [String], null: true
 
   def resolve(public_token:)
-    account = context[:current_account]
-    item, errors = Identity::PlaidAuth.new(context[:current_account], context[:current_user]).complete_link(public_token)
+    item, errors = Connections::PlaidAuth.new(context[:current_account], context[:current_user]).complete_link(public_token)
     if item
       {
         plaid_item: item,

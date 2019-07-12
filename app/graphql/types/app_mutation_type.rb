@@ -2,7 +2,6 @@ class Types::AppMutationType < Types::BaseObject
   # Identity
   field :invite_user, mutation: Mutations::Identity::InviteUser
   field :update_account, mutation: Mutations::Identity::UpdateAccount
-  field :connect_plaid, mutation: Mutations::Identity::ConnectPlaid
 
   # Budgets
   field :update_budget, mutation: Mutations::Budget::UpdateBudget
@@ -21,4 +20,7 @@ class Types::AppMutationType < Types::BaseObject
   # Infrastructure
   field :attach_direct_uploaded_file, mutation: Mutations::Infrastructure::AttachDirectUploadedFile
   field :attach_remote_url, mutation: Mutations::Infrastructure::AttachRemoteUrl
+
+  # Connections
+  field :connect_plaid, mutation: Mutations::Connections::ConnectPlaid
 end
