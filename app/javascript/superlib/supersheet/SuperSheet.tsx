@@ -116,6 +116,16 @@ export class SuperSheet extends React.Component<{}, SheetState> {
     return this.moveSelectionTo(coord, coord).startEdit();
   }
 
+  handleContainerBlur = (event: React.FocusEvent) => {
+    // If the container is being blurred, it could be because the user has clicked into some other interactive element, in which case the sheet should lose its selection. Sadly, the container blur event fires when the container loses focus to one of the inputs *inside* it also. This is because the focus has gotten more specific to be on one textinput in one cell. In this case, we don't want the sheet to lose its selection. event.relatedTarget points to the node which has taken focus, so if that node is inside the container, don't do anything. If it's outside the container, reset the focus.
+    if (this.containerRef.current && event.relatedTarget) {
+      if (this.containerRef.current.contains(event.relatedTarget as any)) {
+        return;
+      } else {
+        this.clearSelection();
+      }
+    }
+  };
   startEdit() {
     if (this.state.selection) {
       this.update({ edit: { row: this.state.selection.start.row, column: this.state.selection.start.column } });
@@ -133,6 +143,13 @@ export class SuperSheet extends React.Component<{}, SheetState> {
 
   cancelEdit() {
     this.update({ edit: null }).focusContainer();
+  }
+
+  clearSelection() {
+    if (this.state.selection) {
+      return this.update({ selection: null });
+    }
+    return this;
   }
 
   collapseSelection() {
@@ -239,7 +256,7 @@ export class SuperSheet extends React.Component<{}, SheetState> {
 
   render() {
     return (
-      <StyledDataGridContainer tabIndex={0} ref={this.containerRef} onKeyDown={this.handleKeyDown}>
+      <StyledDataGridContainer tabIndex={0} ref={this.containerRef} onKeyDown={this.handleKeyDown} onBlur={this.handleContainerBlur}>
         <SheetContext.Provider value={this}>
           <StyledDataGrid onKeyDown={this.handleKeyDown}>{this.props.children}</StyledDataGrid>
         </SheetContext.Provider>
