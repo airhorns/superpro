@@ -31,7 +31,8 @@ import {
   Alarm,
   TextWrap,
   UserAdd,
-  Share as GrommetShare
+  Share as GrommetShare,
+  Configure
 } from "grommet-icons";
 
 // Navigation & Root level ideas
@@ -42,6 +43,7 @@ export const Reports = Analytics;
 export const Todos = CheckboxSelected;
 export const Process = TextWrap;
 export const Invite = UserAdd;
+export const Settings = Configure;
 
 // Toolbar & Editor
 export const Undo = GrommetUndo;
