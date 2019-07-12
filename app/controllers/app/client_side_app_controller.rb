@@ -13,6 +13,11 @@ class App::ClientSideAppController < AppAreaController
         apiUrl: Rails.configuration.cubejs.api_url,
         token: CubeJSAuth.token_for_user(current_user, current_account),
       },
+      plaid: {
+        publicKey: Rails.configuration.plaid.public_key,
+        env: Rails.configuration.plaid.env,
+        webhookUrl: connections_plaid_webhook_url,
+      },
       reportingCurrency: currency_details,
     })
   end

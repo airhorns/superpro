@@ -22,6 +22,7 @@ gem 'rails-i18n'
 
 # Integrations
 gem 'omniauth'
+gem 'plaid'
 
 # JSFarm
 gem 'rest-client'
@@ -93,6 +94,7 @@ group :test do
   gem 'timecop'
   gem 'minitest-ci', require: !ENV['CI'].nil?
   gem 'mocha'
+  gem 'webmock'
   gem 'vcr'
 end
 

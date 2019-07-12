@@ -10,6 +10,11 @@ export interface SettingsBag {
     apiUrl: string;
     token: string;
   };
+  plaid: {
+    publicKey: string;
+    env: string;
+    webhookUrl: string;
+  };
   reportingCurrency: {
     id: string;
     isoCode: string;

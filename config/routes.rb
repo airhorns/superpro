@@ -46,6 +46,10 @@ Rails.application.routes.draw do
       root to: "client_side_app#index"
     end
 
+    namespace "connections" do
+      post "/plaid/webhooks", to: "plaid_webhooks#process", as: :plaid_webhook
+    end
+
     scope module: :app do
       mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "graphql", as: "app_graphiql"
       post "/graphql", to: "graphql#execute"

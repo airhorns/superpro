@@ -45,6 +45,7 @@ module Superpro
 
     config.admin = config_for(:admin)
     config.cubejs = config_for(:cubejs)
+    config.plaid = config_for(:plaid)
 
     config.middleware.swap(
       Rails::Rack::Logger,

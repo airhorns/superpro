@@ -1,0 +1,19 @@
+development:
+  client_id: 5d28a6d14388c80013735b5a
+  public_key: cff1d4517f44edd07a6b84051d4a79
+  secret: 94a394df32b0ee21133a42e71ae4a5
+  env: sandbox
+test:
+  client_id: 5d28a6d14388c80013735b5a
+  public_key: cff1d4517f44edd07a6b84051d4a79
+  secret: 94a394df32b0ee21133a42e71ae4a5
+  env: sandbox
+integration_test:
+  client_id: 5d28a6d14388c80013735b5a
+  public_key: cff1d4517f44edd07a6b84051d4a79
+  secret: 94a394df32b0ee21133a42e71ae4a5
+production:
+  client_id: 5d28a6d14388c80013735b5a
+  public_key: cff1d4517f44edd07a6b84051d4a79
+  secret: 94a394df32b0ee21133a42e71ae4a5
+  env: sandbox

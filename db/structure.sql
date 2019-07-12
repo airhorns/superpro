@@ -707,6 +707,26 @@ ALTER SEQUENCE public.connections_id_seq OWNED BY public.connections.id;
 
 
 --
+-- Name: exchange_rate; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.exchange_rate (
+    date timestamp with time zone NOT NULL,
+    _sdc_received_at timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_table_version bigint,
+    _sdc_batched_at timestamp with time zone
+);
+
+
+--
+-- Name: TABLE exchange_rate; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON TABLE public.exchange_rate IS '{"version": null, "schema_version": 1, "table_mappings": [{"type": "TABLE", "from": ["exchange_rate"], "to": "exchange_rate"}], "key_properties": ["date"], "mappings": {"date": {"type": ["string"], "from": ["date"], "format": "date-time"}, "_sdc_received_at": {"type": ["string", "null"], "from": ["_sdc_received_at"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_table_version": {"type": ["integer", "null"], "from": ["_sdc_table_version"]}, "_sdc_batched_at": {"type": ["string", "null"], "from": ["_sdc_batched_at"], "format": "date-time"}}}';
+
+
+--
 -- Name: fixed_budget_line_descriptors; Type: TABLE; Schema: public; Owner: -
 --
 

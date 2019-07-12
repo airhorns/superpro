@@ -2,6 +2,7 @@ class Types::AppMutationType < Types::BaseObject
   # Identity
   field :invite_user, mutation: Mutations::Identity::InviteUser
   field :update_account, mutation: Mutations::Identity::UpdateAccount
+  field :connect_plaid, mutation: Mutations::Identity::ConnectPlaid
 
   # Budgets
   field :update_budget, mutation: Mutations::Budget::UpdateBudget

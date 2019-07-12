@@ -85,6 +85,9 @@ export const AppSidebar = withRouter(
                   <NavigationSectionButton path="/settings" text="Settings" icon={<SettingsIcon />} onClick={this.close}>
                     <NavigationSubItemButton path="/settings/account" exact text="Account" onClick={this.close} />
                     <NavigationSubItemButton path="/settings/users" exact text="Users" onClick={this.close} />
+                    <Flag name={["feature.connections"]}>
+                      <NavigationSubItemButton path="/settings/connections" exact text="Connections" onClick={this.close} />
+                    </Flag>
                   </NavigationSectionButton>
                 </Box>
                 {!loading && (
