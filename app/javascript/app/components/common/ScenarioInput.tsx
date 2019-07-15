@@ -6,6 +6,7 @@ import { DocType, useSuperForm, NumberInputProps, NumberInput, pathToName } from
 import { Row } from "superlib";
 import styled from "styled-components";
 import { FormClose } from "./SuperproIcons";
+import { ScenarioButton } from "./ScenarioButton";
 
 const ControlRow = styled(Row)<{ plain?: boolean }>`
   ${props => !props.plain && controlBorderStyle};
@@ -110,9 +111,7 @@ export const ScenarioInput = <T extends DocType>(props: NumberInputProps) => {
         dropTarget={dropRef.current || undefined}
       >
         <Box margin={{ horizontal: "xsmall" }} flex={false} style={{ minWidth: "auto" }}>
-          <Text size="large" style={{ filter: scenariosEnabled ? "" : "grayscale(100%)" }}>
-            🌤
-          </Text>
+          <ScenarioButton enabled={scenariosEnabled} size="large" />
         </Box>
       </DropButton>
     </ControlRow>

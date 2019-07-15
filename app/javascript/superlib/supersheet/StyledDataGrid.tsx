@@ -26,57 +26,59 @@ export const editingStyle = css`
   }
 `;
 
-// This is an implementation of table layout using CSS grid, adapted from here:
-// https://adamlynch.com/flexible-data-tables-with-css-grid/?1
-// It's handy because
+// This is the styling for the data grid table that is compatible with react-beautiful-dnd, which needs rows that it
+// can mess around with the styling of to not change their layout. We use the simplest and baddest strategy for this
+// which is fixed table cell widths. See https://github.com/atlassian/react-beautiful-dnd/blob/master/docs/patterns/tables.md
 export const StyledDataGrid = styled.table`
-  display: grid;
   border-collapse: collapse;
   min-width: 100%;
-  grid-template-columns:
-    48px
-    288px
-    repeat(12, 96px)
-    48px;
-
-  grid-template-rows: 32px;
-  grid-auto-rows: 48px;
-  align-items: stretch;
+  table-layout: fixed;
   ${genericStyles};
 `;
 
 export const StyledDataGridRow = styled.tr<{ dragging?: boolean }>`
-  ${props =>
-    props.dragging
-      ? `
-    display: table;
-    background: ${props.theme.global.colors["light-3"]};
-  `
-      : `
-      display: contents;
-  `}
+  display: table;
+  min-height: 48px;
+  ${props => props.dragging && `background: ${props.theme.global.colors["light-3"]};`}
 `;
 
 export const StyledDataGridBody = styled.tbody`
-  display: contents;
+  border: 0;
 `;
 
 export const StyledDataGridHeader = styled.thead`
-  display: contents;
+  border: 0;
 `;
 
-export const StyledDataGridHeaderCell = styled.th<{ primary?: boolean }>`
+export const StyledDataGridHeaderCell = styled.th<{ primary?: boolean; width: string | number }>`
+  box-sizing: border-box;
   border-bottom: 1px solid ${props => props.theme.global.colors["dark-2"]};
   font-weight: ${props => (props.primary ? "bold" : "normal")};
+  width: ${props => props.width};
 `;
 
-export const StyledDataGridCell = styled.td<{ editing?: boolean; selected?: boolean }>`
+export interface DataGridCellProps {
+  editing?: boolean;
+  selected?: boolean;
+  width: string | number;
+}
+
+export const StyledDataGridCell = styled.td<DataGridCellProps>`
+  box-sizing: border-box;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  width: ${props => props.width};
   ${props => `border: 1px solid ${props.theme.global.colors["light-1"]};`}
   ${props => (props.editing ? editingStyle : props.selected ? focusStyle : false)}
+`;
 
-  display: flex;
-  align-items: center;
+export const StyledDataGridFakeCell = styled.div<DataGridCellProps>`
+  box-sizing: border-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: ${props => props.width};
+  ${props => `border: 1px solid ${props.theme.global.colors["light-1"]};`}
+  ${props => (props.editing ? editingStyle : props.selected ? focusStyle : false)}
 `;

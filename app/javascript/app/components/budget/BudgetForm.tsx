@@ -21,6 +21,7 @@ export interface BudgetFormLineFixedValue {
 
 export interface BudgetFormLineSeriesValue {
   type: "series";
+  scenariosEnabled: boolean;
   cells: {
     [dateTime: string]: {
       amountScenarios: {

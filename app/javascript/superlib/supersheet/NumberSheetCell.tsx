@@ -1,11 +1,13 @@
 import React from "react";
-import { StyledDataGridCell } from "./StyledDataGrid";
+import { StyledDataGridCell, DataGridCellProps } from "./StyledDataGrid";
 import { useCell } from "./SuperSheet";
 import { NumberInputProps, NumberInput } from "superlib/superform";
 
 export interface NumberSheetCellProps extends NumberInputProps {
   row: number;
   column: number;
+  width: string | number;
+  as?: React.ComponentType<DataGridCellProps>;
 }
 
 export const NumberSheetCell = (props: NumberSheetCellProps) => {
@@ -22,10 +24,12 @@ export const NumberSheetCell = (props: NumberSheetCellProps) => {
       }
     }
   });
+  const Component = props.as || StyledDataGridCell;
 
   return (
-    <StyledDataGridCell
+    <Component
       ref={ref}
+      width={props.width}
       editing={editing}
       selected={selected}
       onClick={() => sheet.handleCellClick(props.row, props.column)}
@@ -38,6 +42,6 @@ export const NumberSheetCell = (props: NumberSheetCellProps) => {
         displayType={editing ? "input" : "text"}
         {...props}
       />
-    </StyledDataGridCell>
+    </Component>
   );
 };

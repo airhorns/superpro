@@ -18,6 +18,7 @@ export const setLineAsSeriesValueType = (form: SuperFormController<BudgetFormVal
     if (form.getValue(linePath + ".type") != "series") {
       const value: BudgetFormLineSeriesValue = {
         type: "series",
+        scenariosEnabled: false,
         cells: {}
       };
       form.setValue(linePath, value);

@@ -1,3 +1,4 @@
+export * from "./SuperSheetController";
 export * from "./SuperSheet";
 export * from "./StyledDataGrid";
 export * from "./StaticSheetCell";

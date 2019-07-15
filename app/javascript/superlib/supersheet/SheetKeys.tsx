@@ -1,10 +1,10 @@
 import isHotkey from "is-hotkey";
-import { SuperSheet } from "./SuperSheet";
+import { SuperSheetController } from "./SuperSheetController";
 
 export interface SheetKeyAction {
   availableDuringEdit: boolean;
   check: (event: KeyboardEvent) => boolean;
-  action: (sheet: SuperSheet) => void;
+  action: (sheet: SuperSheetController) => void;
 }
 
 export const SheetKeys: { [key: string]: SheetKeyAction } = {
@@ -54,8 +54,8 @@ export const SheetKeys: { [key: string]: SheetKeyAction } = {
     availableDuringEdit: true,
     check: isHotkey("enter"),
     action: sheet => {
-      if (sheet.state.selection) {
-        sheet.toggleEdit(sheet.state.selection.start.row, sheet.state.selection.start.column);
+      if (sheet.selection) {
+        sheet.toggleEdit(sheet.selection.start.row, sheet.selection.start.column);
       }
     }
   },

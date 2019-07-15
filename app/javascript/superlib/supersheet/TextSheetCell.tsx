@@ -8,6 +8,7 @@ import { isUndefined } from "lodash";
 export interface TextSheetCellProps extends InputProps {
   row: number;
   column: number;
+  width: string | number;
 }
 
 export const TextSheetCell = (props: TextSheetCellProps) => {
@@ -30,6 +31,7 @@ export const TextSheetCell = (props: TextSheetCellProps) => {
   return (
     <StyledDataGridCell
       ref={ref}
+      width={props.width}
       editing={editing}
       selected={selected}
       onClick={() => sheet.handleCellClick(props.row, props.column)}

@@ -9,6 +9,7 @@ export * from "./EditButton";
 export * from "./FadeBox";
 export * from "./AddButton";
 export * from "./ScenarioInput";
+export * from "./ScenarioButton";
 export * from "./SavingNotice";
 export * from "./HoverEditor";
 export * from "./CubeChart";
