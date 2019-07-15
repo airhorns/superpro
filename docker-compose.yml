@@ -42,7 +42,7 @@ services:
     command: redis-server --appendonly yes
 
   cubeserver:
-    image: gcr.io/superpro-production/cubeserver:e0b678a8c4458eaddabe6486410e1fa31a7f0f4a
+    image: gcr.io/superpro-production/cubeserver:2b565b4a4cc1ea26e74491fc4195fe362d2965ff
     ports:
       - 4001:4000
     restart: on-failure
