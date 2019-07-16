@@ -1,7 +1,7 @@
 import React from "react";
 import { isUndefined, isNumber } from "lodash";
 import { DocType, pathToName, propsForGrommetComponent } from "./utils";
-import { TextInput as GrommetTextInput } from "grommet";
+import { TextInput as GrommetTextInput, Form } from "grommet";
 import { useSuperForm } from "../superform";
 import { InputProps } from "./Input";
 import NumberFormat, { NumberFormatProps } from "react-number-format";
@@ -45,7 +45,9 @@ export const NumberInput = <T extends DocType>(props: NumberInputProps) => {
           value = value * 10 ** props.decimalScale;
         }
 
-        form.setValue(props.path, value);
+        if (form.getValue(props.path) != value) {
+          form.setValue(props.path, value);
+        }
         props.onChange && props.onChange({} as any);
       }}
       onBlur={(e: any) => {
