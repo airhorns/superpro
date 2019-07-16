@@ -1,7 +1,7 @@
 import { range } from "lodash";
 import { SuperSheetController } from "../SuperSheetController";
 import { assert } from "../../utils";
-import { SuperFormController } from "superlib/superform";
+import { SuperFormController } from "../../superform/SuperFormController";
 
 interface TestSheetForm {
   values: { [key: string]: string[] };

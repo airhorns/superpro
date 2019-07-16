@@ -167,7 +167,12 @@ export class SuperSheetController {
   }
 
   clearSelectedCells() {
-    // someday, this should use the form to clear all the selected cells
+    this.form.batch(() => {
+      for (const registration of this.getSelectedCellRegistrations()) {
+        this.form.setValue(registration.path, null);
+      }
+    });
+    return this;
   }
 
   dimensions() {
