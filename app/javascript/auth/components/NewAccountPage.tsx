@@ -5,7 +5,7 @@ import gql from "graphql-tag";
 import { NewAccountComponent, AccountAttributes, NewAccountMutationFn } from "../auth-graph";
 import { PageBox } from "./PageBox";
 import { toast, applyResponseErrors } from "../../superlib";
-import { SuperForm, Input, FieldBox } from "superlib/superform";
+import { SuperForm, SuperFormController, Input, FieldBox } from "superlib/superform";
 
 gql`
   mutation NewAccount($account: AccountAttributes!) {
@@ -31,7 +31,11 @@ interface CreateAccountFormValues {
 }
 
 export default class NewAccountPage extends React.Component<RouteComponentProps> {
-  async handleFormSubmit(createAccount: NewAccountMutationFn, doc: CreateAccountFormValues, form: SuperForm<CreateAccountFormValues>) {
+  async handleFormSubmit(
+    createAccount: NewAccountMutationFn,
+    doc: CreateAccountFormValues,
+    form: SuperFormController<CreateAccountFormValues>
+  ) {
     const variables = {
       account: {
         ...doc.account,

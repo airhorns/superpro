@@ -5,14 +5,14 @@ import { Box } from "grommet";
 import { Row, shallowSubsetEqual, shallowEqual, isTouchDevice } from "superlib";
 import { BudgetFormLine, BudgetFormValues } from "./BudgetForm";
 import { DragHandle } from "../common/SuperproIcons";
-import { SuperForm, Input } from "superlib/superform";
+import { SuperFormController, Input } from "superlib/superform";
 import { RecurrenceSelect } from "./RecurrenceSelect";
 import { LineValueStyleSelect } from "./LineValueStyleSelect";
 
 export interface BudgetLineFormProps {
   linesIndex: number;
   line: BudgetFormLine;
-  form: SuperForm<BudgetFormValues>;
+  form: SuperFormController<BudgetFormValues>;
 }
 
 export interface BudgetLineFormState {

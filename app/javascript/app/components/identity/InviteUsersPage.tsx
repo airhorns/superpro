@@ -4,7 +4,7 @@ import { Box, Text, Button } from "grommet";
 import { Row, mutationSuccess, toast } from "superlib";
 import { Invite } from "../common/SuperproIcons";
 import gql from "graphql-tag";
-import { SuperForm, Input, FieldBox } from "superlib/superform";
+import { SuperForm, Input, SuperFormController } from "superlib/superform";
 import { InviteNewUserComponent, InviteNewUserMutationFn } from "app/app-graph";
 
 gql`
@@ -25,7 +25,7 @@ interface InviteFormValues {
 }
 
 export default class InviteUsersPage extends Page {
-  handleSubmit = async (form: SuperForm<InviteFormValues>, mutate: InviteNewUserMutationFn) => {
+  handleSubmit = async (form: SuperFormController<InviteFormValues>, mutate: InviteNewUserMutationFn) => {
     const result = await mutate({
       variables: {
         user: form.getValue("user")

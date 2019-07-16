@@ -1,8 +1,8 @@
 import { ISO8601DateString } from "superlib";
-import { SuperForm } from "superlib/superform";
+import { SuperFormController } from "superlib/superform";
 import { BudgetFormValues, BudgetFormLineSeriesValue } from "./BudgetForm";
 
-export const setLineAsFixedValueType = (form: SuperForm<BudgetFormValues>, linePath: string, occursAt: ISO8601DateString) => {
+export const setLineAsFixedValueType = (form: SuperFormController<BudgetFormValues>, linePath: string, occursAt: ISO8601DateString) => {
   form.batch(() => {
     if (form.getValue(linePath + ".type") != "fixed") {
       form.setValue(linePath, { type: "fixed", recurrenceRules: null, amountScenarios: {} });
@@ -13,7 +13,7 @@ export const setLineAsFixedValueType = (form: SuperForm<BudgetFormValues>, lineP
   });
 };
 
-export const setLineAsSeriesValueType = (form: SuperForm<BudgetFormValues>, linePath: string) => {
+export const setLineAsSeriesValueType = (form: SuperFormController<BudgetFormValues>, linePath: string) => {
   form.batch(() => {
     if (form.getValue(linePath + ".type") != "series") {
       const value: BudgetFormLineSeriesValue = {

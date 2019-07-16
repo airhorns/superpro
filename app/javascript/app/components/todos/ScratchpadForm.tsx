@@ -92,6 +92,13 @@ export class ScratchpadForm extends React.Component<ScratchpadFormProps, SavingN
     this.debouncedSave(form, update);
   };
 
+  toolbarExtra = memoizeOne((id: string) => (
+    <>
+      <ShareScratchpadButton id={id} />
+      <TrashScratchpadButton id={id} onDiscard={this.props.onDiscard} />
+    </>
+  ));
+
   render() {
     return (
       <UpdateScratchpadFromFormComponent>
@@ -111,12 +118,7 @@ export class ScratchpadForm extends React.Component<ScratchpadFormProps, SavingN
                   }}
                   autoFocus={false}
                   editorRef={this.editorRef}
-                  toolbarExtra={
-                    <>
-                      <ShareScratchpadButton id={this.props.scratchpad.id} />
-                      <TrashScratchpadButton id={this.props.scratchpad.id} onDiscard={this.props.onDiscard} />
-                    </>
-                  }
+                  toolbarExtra={this.toolbarExtra(this.props.scratchpad.id)}
                 />
                 <Row margin={{ bottom: "small" }} justify="center" gap="small">
                   <Anchor

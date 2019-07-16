@@ -3,7 +3,7 @@ import { sortBy } from "lodash";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { assert, ISO8601DateString } from "superlib";
 import { BudgetFormSection } from "./BudgetFormSection";
-import { SuperForm } from "superlib/superform";
+import { SuperFormController } from "superlib/superform";
 import { BudgetFormNewSectionList } from "./BudgetFormNewSectionList";
 import { SerializedRRuleSet } from "app/lib/rrules";
 import { DateTime } from "luxon";
@@ -80,7 +80,7 @@ const linesForSection = (doc: BudgetFormValues, sectionId: string, valueType: Bu
 
 const sectionIdForDroppableId = (droppableId: string) => droppableId.replace(/___.*$/, "");
 
-export class BudgetForm extends React.Component<{ form: SuperForm<BudgetFormValues> }> {
+export class BudgetForm extends React.Component<{ form: SuperFormController<BudgetFormValues> }> {
   onDragStart = () => {
     if (window.navigator.vibrate) {
       window.navigator.vibrate(100);

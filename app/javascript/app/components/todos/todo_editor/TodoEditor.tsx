@@ -41,6 +41,8 @@ export const TodoEditorContext = React.createContext<TodoEditorContextData>({} a
 export const TodoEditor = (
   props: EditorProps & TodoEditorContextData & { toolbarExtra?: React.ReactNode; editorRef?: React.Ref<Editor> }
 ) => {
+  const { toolbarExtra, editorRef, users, ...rest } = props;
+
   const plugins = React.useMemo(() => {
     return [
       CondensedTodosPlugin(),
@@ -54,14 +56,14 @@ export const TodoEditor = (
       BasicFormattingPlugin(),
       SimpleListsPlugin(),
       RichShortcutsPlugin(),
-      TodoEditorToolbarPlugin({ toolbarExtra: props.toolbarExtra }),
+      TodoEditorToolbarPlugin({ toolbarExtra }),
       RerenderPlugin()
     ];
-  }, [props.toolbarExtra]);
+  }, [toolbarExtra]);
 
   return (
-    <TodoEditorContext.Provider value={props}>
-      <Editor ref={props.editorRef} spellCheck schema={TodoSchema} plugins={plugins} {...props} />
+    <TodoEditorContext.Provider value={{ users }}>
+      <Editor ref={editorRef} spellCheck schema={TodoSchema} plugins={plugins} {...rest} />
     </TodoEditorContext.Provider>
   );
 };

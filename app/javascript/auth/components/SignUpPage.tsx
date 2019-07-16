@@ -2,7 +2,7 @@ import * as React from "react";
 import { RouteComponentProps } from "react-router";
 import { Heading, Box, Button } from "grommet";
 import { PageBox } from "./PageBox";
-import { SuperForm, FieldBox, Input } from "superlib/superform";
+import { SuperForm, FieldBox, Input, SuperFormController } from "superlib/superform";
 import { authClient } from "superlib/axios";
 import { Alert, applyResponseErrors } from "superlib";
 
@@ -26,7 +26,7 @@ interface SignUpPageState {
 export default class SignUpPage extends React.Component<RouteComponentProps, SignUpPageState> {
   state: SignUpPageState = {};
 
-  handleSubmit = async (doc: SignUpFormValues, form: SuperForm<SignUpFormValues>) => {
+  handleSubmit = async (doc: SignUpFormValues, form: SuperFormController<SignUpFormValues>) => {
     try {
       const response = await authClient.post("sign_up.json", { sign_up: doc });
       if (response.data.success) {

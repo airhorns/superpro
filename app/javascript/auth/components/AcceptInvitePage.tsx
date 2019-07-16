@@ -3,7 +3,7 @@ import queryString from "query-string";
 import { RouteComponentProps } from "react-router";
 import { Heading, Box, Button, Text } from "grommet";
 import { PageBox } from "./PageBox";
-import { SuperForm, FieldBox, Input } from "superlib/superform";
+import { SuperForm, SuperFormController, FieldBox, Input } from "superlib/superform";
 import { authClient } from "superlib/axios";
 import { Alert, applyResponseErrors, SimplePromise } from "superlib";
 
@@ -23,7 +23,7 @@ interface AcceptInvitePageState {
 export default class AcceptInvitePage extends React.Component<RouteComponentProps, AcceptInvitePageState> {
   state: AcceptInvitePageState = {};
 
-  handleSubmit = async (doc: AcceptInviteFormValues, form: SuperForm<AcceptInviteFormValues>) => {
+  handleSubmit = async (doc: AcceptInviteFormValues, form: SuperFormController<AcceptInviteFormValues>) => {
     const params = queryString.parse(this.props.location.search);
 
     try {

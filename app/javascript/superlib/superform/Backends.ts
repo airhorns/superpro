@@ -1,7 +1,7 @@
 import Automerge from "automerge/src/automerge";
 import { DocType } from "./utils";
 
-export type OnChange<T extends DocType> = (newDoc: T) => void;
+export type OnChange<T extends DocType> = (newDoc: T, previousDoc: T) => void;
 export type Command<T extends DocType> = (doc: T) => void;
 
 export abstract class Backend<T extends DocType> {
@@ -13,7 +13,7 @@ export abstract class Backend<T extends DocType> {
     this.doc = {} as any;
   }
 
-  abstract setInitialValues(initialValues: T): void;
+  abstract resetDoc(doc: T): void;
   abstract change(command: Command<T>): void;
   abstract getChanges(oldDoc: T, newDoc: T): any[];
   abstract canUndo(): boolean;
@@ -28,15 +28,12 @@ export class AutomergeBackend<T extends DocType> extends Backend<T> {
     this.doc = Automerge.init<T>();
   }
 
-  setInitialValues(initialValues: T) {
-    this.doc = Automerge.change(this.doc, doc => Object.assign(doc, initialValues));
-    // reset undo/redo state
-    this.doc = Automerge.load(Automerge.save(this.doc));
+  resetDoc(doc: T) {
+    this.doc = Automerge.change(Automerge.init<T>(), emptyDoc => Object.assign(emptyDoc, doc));
   }
 
   change(command: Command<T>) {
-    this.doc = Automerge.change(this.doc, command);
-    this.onChange(this.doc);
+    this.setDoc(Automerge.change(this.doc, command));
   }
 
   getChanges(oldDoc: T, newDoc: T) {
@@ -52,24 +49,29 @@ export class AutomergeBackend<T extends DocType> extends Backend<T> {
   }
 
   undo() {
-    this.doc = Automerge.undo(this.doc);
-    this.onChange(this.doc);
+    this.setDoc(Automerge.undo(this.doc));
   }
 
   redo() {
-    this.doc = Automerge.redo(this.doc);
-    this.onChange(this.doc);
+    this.setDoc(Automerge.redo(this.doc));
+  }
+
+  private setDoc(newDoc: T) {
+    const prevDoc = this.doc;
+    this.doc = newDoc;
+    this.onChange(this.doc, prevDoc);
   }
 }
 
 export class ObjectBackend<T extends DocType> extends Backend<T> {
-  setInitialValues(initialValues: T) {
+  resetDoc(initialValues: T) {
     this.doc = initialValues;
   }
 
   change(command: Command<T>) {
+    const prevDoc = this.doc;
     command(this.doc);
-    this.onChange(this.doc);
+    this.onChange(this.doc, prevDoc);
   }
 
   getChanges(_oldDoc: T, _newDoc: T) {

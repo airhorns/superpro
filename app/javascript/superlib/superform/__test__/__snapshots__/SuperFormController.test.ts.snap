@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`it should call the change callback with the new doc when set 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      Object {
+        "foo": false,
+        "list": Array [
+          1,
+          2,
+          3,
+        ],
+        "obj": Object {
+          "bar": false,
+        },
+      },
+      Object {
+        "foo": true,
+        "list": Array [
+          1,
+          2,
+          3,
+        ],
+        "obj": Object {
+          "bar": false,
+        },
+      },
+      SuperFormController {
+        "backend": AutomergeBackend {
+          "doc": Object {
+            "foo": false,
+            "list": Array [
+              1,
+              2,
+              3,
+            ],
+            "obj": Object {
+              "bar": false,
+            },
+          },
+          "onChange": [Function],
+        },
+        "batch": [Function],
+        "currentBatch": null,
+        "dispatch": [Function],
+        "errors": Object {},
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+  ],
+}
+`;

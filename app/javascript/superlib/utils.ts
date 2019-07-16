@@ -2,7 +2,7 @@ import { get, set, isUndefined, isNull, isFunction, isArray, toPath, cloneDeep }
 import memoizeOne from "memoize-one";
 import { DateTime } from "luxon";
 import { FetchResult } from "react-apollo";
-import { SuperForm, DocType, SuperFormErrors } from "./superform";
+import { SuperFormController, DocType, SuperFormErrors } from "./superform";
 export type AssertedKeys<T, K extends keyof T> = { [Key in K]: NonNullable<T[Key]> } & T;
 
 export function assert<T>(value: T | undefined | null): T {
@@ -133,7 +133,7 @@ export const mutationSuccess = <Result extends FetchResult<Shape>, Shape = Fetch
 
 export const applyResponseErrors = <T extends DocType>(
   errors: (SuperproStyleGraphQLError | SuperproStyleRESTError)[],
-  form: SuperForm<T>
+  form: SuperFormController<T>
 ) => {
   const errorsObject: SuperFormErrors<T> = {};
   errors.forEach(error => {
