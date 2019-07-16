@@ -43,8 +43,8 @@ export const BudgetFormSection = (props: { section: BudgetFormSectionValues; ind
           {(editing && <Input path={`budget.sections.${props.index}.name`} onBlur={() => setEditing(false)} />) || props.section.name}
           <FadeBox visible={isTouchDevice() || hovered}>
             <Row margin={{ left: "small" }} gap="small">
-              <AddButton onClick={addLine} />
               <EditButton onClick={() => setEditing(!editing)} />
+              <AddButton onClick={addLine} />
               <TrashButton
                 onClick={() => {
                   form.dispatch(doc => {
