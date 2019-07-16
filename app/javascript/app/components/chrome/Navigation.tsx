@@ -47,7 +47,7 @@ export const NavigationSectionButton = withRouter((props: NavigationSectionButto
         </Row>
       </Button>
       {props.children && pathMatch && (
-        <Box margin={{ bottom: "small" }} background={pathMatch ? "light-3" : undefined} responsive={false}>
+        <Box margin={{ bottom: "small" }} background={pathMatch ? "light-3" : undefined} responsive={false} flex={false}>
           {props.children}
         </Box>
       )}

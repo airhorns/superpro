@@ -50,41 +50,42 @@ export const AppSidebar = withRouter(
             if (!data) return "No data";
             return (
               <>
-                <Box pad="small" align="center">
+                <Box pad="small" align="center" flex={false}>
                   {this.renderLogo()}
                 </Box>
-                <Box background="accent-2" align="center">
+                <Box background="accent-2" align="center" flex={false}>
                   <Text size="xsmall" color="white">
                     ALPHA
                   </Text>
                 </Box>
                 {Settings.devMode && (
-                  <Box background="accent-3" align="center">
+                  <Box background="accent-3" align="center" flex={false}>
                     <Text size="xsmall" color="white">
                       DEV ENV
                     </Text>
                   </Box>
                 )}
-
-                <NavigationSectionButton path="/launchpad" text="Launchpad" icon={<Launch />} onClick={this.close} />
-                <Flag name={["feature.todos"]}>
-                  <NavigationSectionButton path="/todos" text="Todos" icon={<Todos />} onClick={this.close}>
-                    <NavigationSubItemButton path="/todos" exact text="My Todos" onClick={this.close} />
-                    <NavigationSubItemButton path="/todos/process/runs" text="Process Runs" onClick={this.close} />
-                    <NavigationSubItemButton path="/todos/process/docs" text="Process Docs" onClick={this.close} />
+                <Box overflow={{ vertical: "auto" }}>
+                  <NavigationSectionButton path="/launchpad" text="Launchpad" icon={<Launch />} onClick={this.close} />
+                  <Flag name={["feature.todos"]}>
+                    <NavigationSectionButton path="/todos" text="Todos" icon={<Todos />} onClick={this.close}>
+                      <NavigationSubItemButton path="/todos" exact text="My Todos" onClick={this.close} />
+                      <NavigationSubItemButton path="/todos/process/runs" text="Process Runs" onClick={this.close} />
+                      <NavigationSubItemButton path="/todos/process/docs" text="Process Docs" onClick={this.close} />
+                    </NavigationSectionButton>
+                  </Flag>
+                  <NavigationSectionButton path="/budget" text="Budgets" icon={<Budget />} onClick={this.close}>
+                    <NavigationSubItemButton path="/budget" exact text="My Budget" onClick={this.close} />
+                    <NavigationSubItemButton path="/budget/reports" text="Reports" onClick={this.close} />
                   </NavigationSectionButton>
-                </Flag>
-                <NavigationSectionButton path="/budget" text="Budgets" icon={<Budget />} onClick={this.close}>
-                  <NavigationSubItemButton path="/budget" exact text="My Budget" onClick={this.close} />
-                  <NavigationSubItemButton path="/budget/reports" text="Reports" onClick={this.close} />
-                </NavigationSectionButton>
-                <Box flex />
-                <NavigationSectionButton path="/invite" text="Invite Users" icon={<Invite />} onClick={this.close} />
-                <NavigationSectionButton path="/settings/account" text="Settings" icon={<SettingsIcon />} onClick={this.close}>
-                  <NavigationSubItemButton path="/settings/account" exact text="Account" onClick={this.close} />
-                </NavigationSectionButton>
+                  <Box flex />
+                  <NavigationSectionButton path="/invite" text="Invite Users" icon={<Invite />} onClick={this.close} />
+                  <NavigationSectionButton path="/settings/account" text="Settings" icon={<SettingsIcon />} onClick={this.close}>
+                    <NavigationSubItemButton path="/settings/account" exact text="Account" onClick={this.close} />
+                  </NavigationSectionButton>
+                </Box>
                 {!loading && (
-                  <Box pad="small" align="center">
+                  <Box pad="small" align="center" flex={false}>
                     <DropButton
                       hoverIndicator="light-4"
                       dropAlign={{ bottom: "top" }}
