@@ -1,6 +1,7 @@
 import React from "react";
+import { range } from "lodash";
 import EventEmitter from "eventemitter3";
-import { SheetSelection, Coordinates, moveCoordinates, clampCoordinates } from "./Selection";
+import { SheetSelection, Coordinates, clampCoordinates } from "./Selection";
 import { SheetKeys, isUnknownHotkey } from "./SheetKeys";
 
 export type SheetUpdateCallback = (controller: SuperSheetController) => void;
@@ -10,6 +11,8 @@ export interface CellRegistration {
   path: string | string[];
   row: number;
   column: number;
+  rowSpan?: number;
+  colSpan?: number;
   handleKeyDown: (event: KeyboardEvent) => void;
 }
 
@@ -29,10 +32,10 @@ export class SuperSheetController {
   isSelected(row: number, column: number) {
     if (!this.selection) return false;
     return (
-      this.selection.start.row <= row &&
-      this.selection.start.column <= column &&
-      this.selection.end.row >= row &&
-      this.selection.end.column >= column
+      this.selection.anchor.row <= row &&
+      this.selection.anchor.column <= column &&
+      this.selection.focus.row >= row &&
+      this.selection.focus.column >= column
     );
   }
 
@@ -41,17 +44,31 @@ export class SuperSheetController {
     return this.edit.row == row && this.edit.column == column;
   }
 
+  isRegistrationSelected(registration: CellRegistration) {
+    for (let selectedRegistration of this.getSelectedCellRegistrations()) {
+      if (selectedRegistration.row == registration.row && selectedRegistration.column == registration.column) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   startEdit() {
     if (this.selection) {
-      this.update({ edit: { row: this.selection.start.row, column: this.selection.start.column } });
+      this.update({ edit: { row: this.selection.focus.row, column: this.selection.focus.column } });
     }
   }
 
-  toggleEdit(row: number, column: number) {
-    if (this.isEditing(row, column)) {
+  toggleEdit() {
+    if (this.edit) {
       this.cancelEdit();
     } else {
-      const coord = { row, column };
+      const registration = this.getSelectionFocusCellRegistration();
+      if (!registration) {
+        return this;
+      }
+
+      const coord = { row: registration.row, column: registration.column };
       this.moveSelectionTo(coord, coord).startEdit();
     }
   }
@@ -69,19 +86,19 @@ export class SuperSheetController {
 
   collapseSelection() {
     if (this.selection) {
-      return this.update({ selection: { start: this.selection.start, end: this.selection.start } });
+      return this.update({ selection: { anchor: this.selection.focus, focus: this.selection.focus } });
     }
     return this;
   }
 
-  moveSelectionTo(start: Coordinates, end: Coordinates) {
+  moveSelectionTo(anchor: Coordinates, focus: Coordinates) {
     const { rowMin, rowMax, colMin, colMax } = this.dimensions();
 
     return this.focusContainer()
       .update({
         selection: {
-          start: clampCoordinates(start, rowMin, rowMax, colMin, colMax),
-          end: clampCoordinates(end, rowMin, rowMax, colMin, colMax)
+          anchor: clampCoordinates(anchor, rowMin, rowMax, colMin, colMax),
+          focus: clampCoordinates(focus, rowMin, rowMax, colMin, colMax)
         },
         edit: null
       })
@@ -89,7 +106,7 @@ export class SuperSheetController {
   }
 
   scrollSelectedCellIntoView() {
-    const registration = this.getSelectedCellRegistration();
+    const registration = this.getSelectionFocusCellRegistration();
     if (registration && registration.ref.current) {
       registration.ref.current.scrollIntoView({ inline: "center" });
     }
@@ -99,11 +116,50 @@ export class SuperSheetController {
   moveSelectionDelta(rowDelta: number, columnDelta: number) {
     if (this.selection) {
       return this.moveSelectionTo(
-        moveCoordinates(this.selection.start, rowDelta, columnDelta),
-        moveCoordinates(this.selection.end, rowDelta, columnDelta)
+        this.applyCellSpaceDelta(this.selection.anchor, rowDelta, columnDelta),
+        this.applyCellSpaceDelta(this.selection.focus, rowDelta, columnDelta)
       );
     }
     return this;
+  }
+
+  // This implements rowspan and colspan aware cell movement. rowDelta and columnDelta are passed in as
+  // the number of *unique* cells to move in a particular direction, so if you're moving through a rowspan
+  // or colspan, that whole span should only count as one for the delta, instead of the actual length of the
+  // span.
+  applyCellSpaceDelta(coord: Coordinates, rowDelta: number, columnDelta: number) {
+    let currentCell = this.getCellRegistration(coord.row, coord.column);
+    let rowCursor = coord.row;
+    const nextRow = rowDelta > 0 ? 1 : -1;
+    let columnCursor = coord.column;
+    const nextColumn = columnDelta > 0 ? 1 : -1;
+
+    while (rowDelta != 0) {
+      rowCursor += nextRow;
+      let nextCell = this.getCellRegistration(rowCursor, coord.column);
+      if (!nextCell || nextCell != currentCell) {
+        rowDelta -= nextRow;
+        currentCell = nextCell;
+      }
+    }
+
+    while (columnDelta != 0) {
+      columnCursor += nextColumn;
+      let nextCell = this.getCellRegistration(rowCursor, columnCursor);
+      if (!nextCell || nextCell != currentCell) {
+        columnDelta -= nextColumn;
+        currentCell = nextCell;
+      }
+    }
+
+    const dimensions = this.dimensions();
+    return clampCoordinates(
+      { row: rowCursor, column: columnCursor },
+      dimensions.rowMin,
+      dimensions.rowMax,
+      dimensions.colMin,
+      dimensions.colMax
+    );
   }
 
   dimensions() {
@@ -145,8 +201,7 @@ export class SuperSheetController {
     // If the key pressed is not a keyboard shortcut and is a letter, number, or puncutation mark
     // it's intended for the data in the cell. Set the value of the form to that data.
     if (!this.edit && this.selection && !isUnknownHotkey(event as any)) {
-      console.debug("sheet event: keyDown, edit passthrough", event);
-      const registration = this.getSelectedCellRegistration();
+      const registration = this.getSelectionFocusCellRegistration();
       if (registration) {
         registration.handleKeyDown(event as any);
       }
@@ -195,27 +250,66 @@ export class SuperSheetController {
 
   registerCell(registration: CellRegistration, updateCallback: SheetUpdateCallback) {
     this.updates.on("update", updateCallback);
-    let cellRow = this.cells.get(registration.row);
-    if (!cellRow) {
-      cellRow = new Map<number, CellRegistration>();
-      this.cells.set(registration.row, cellRow);
+
+    // Register this cell for all the atomic cells it's responsible for across it's spans
+    // For most cells, this is just the row and column in the registration, but if there's a
+    // rowSpan or colSpan, then it will appear multiple times in the cell registration maps.
+    const rows = range(registration.row, registration.row + (registration.rowSpan || 1));
+    const columns = range(registration.column, registration.column + (registration.colSpan || 1));
+    for (let row of rows) {
+      let cellRow = this.cells.get(row);
+      if (!cellRow) {
+        cellRow = new Map<number, CellRegistration>();
+        this.cells.set(row, cellRow);
+      }
+
+      for (let column of columns) {
+        cellRow.set(column, registration);
+      }
     }
-    cellRow.set(registration.column, registration);
   }
 
   unregisterCell(registration: CellRegistration, updateCallback: SheetUpdateCallback) {
     this.updates.off("update", updateCallback);
-    let cellRow = this.cells.get(registration.row);
-    if (cellRow) {
-      cellRow.delete(registration.column);
+    const rows = range(registration.row, registration.row + (registration.rowSpan || 1));
+    const columns = range(registration.column, registration.column + (registration.colSpan || 1));
+
+    for (let row of rows) {
+      let cellRow = this.cells.get(row);
+      if (cellRow) {
+        for (let column of columns) {
+          cellRow.delete(column);
+        }
+      }
     }
   }
 
-  getSelectedCellRegistration() {
+  getSelectionFocusCellRegistration() {
     if (!this.selection) return;
-    const cellRow = this.cells.get(this.selection.start.row);
+    return this.getCellRegistration(this.selection.anchor.row, this.selection.anchor.column);
+  }
+
+  *getSelectedCellRegistrations() {
+    if (!this.selection) return;
+    const registration = this.getCellRegistration(this.selection.focus.row, this.selection.focus.column);
+    if (registration) {
+      yield registration;
+    }
+
+    for (let row of range(this.selection.anchor.row, this.selection.focus.row)) {
+      for (let column of range(this.selection.anchor.column, this.selection.focus.column)) {
+        const registration = this.getCellRegistration(row, column);
+        if (registration) {
+          yield registration;
+        }
+      }
+    }
+  }
+
+  getCellRegistration(row: number, column: number) {
+    const cellRow = this.cells.get(row);
     if (cellRow) {
-      return cellRow.get(this.selection.start.column);
+      return cellRow.get(column);
     }
   }
 
@@ -223,6 +317,7 @@ export class SuperSheetController {
     Object.assign(this, update);
     this.version += 1;
     this.updates.emit("update", this);
+    // console.debug("sheet change", this);
     return this;
   }
 }

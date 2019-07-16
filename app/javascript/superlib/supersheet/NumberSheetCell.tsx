@@ -7,6 +7,8 @@ export interface NumberSheetCellProps extends NumberInputProps {
   row: number;
   column: number;
   width: string | number;
+  rowSpan?: number;
+  colSpan?: number;
   as?: React.ComponentType<DataGridCellProps>;
 }
 
@@ -16,6 +18,8 @@ export const NumberSheetCell = (props: NumberSheetCellProps) => {
     row: props.row,
     column: props.column,
     path: props.path,
+    rowSpan: props.rowSpan,
+    colSpan: props.colSpan,
     ref,
     handleKeyDown(event) {
       if (event.key.match(/^[0-9]$/)) {

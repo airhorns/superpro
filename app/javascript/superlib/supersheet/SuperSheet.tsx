@@ -20,24 +20,34 @@ export const useCell = <E extends HTMLElement>(registration: CellRegistration) =
   const form = useSuperForm<any>();
   const [sheetVersion, setSheetVersion] = React.useState<number>(0);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const registrationMemo = React.useMemo(() => registration, [
+    registration.row,
+    registration.column,
+    registration.path,
+    registration.handleKeyDown,
+    registration.colSpan,
+    registration.rowSpan
+  ]);
+
   React.useEffect(() => {
     const sheetUpdated: SheetUpdateCallback = (event: { version: number }) => {
       setSheetVersion(event.version);
     };
 
-    sheet.registerCell(registration, sheetUpdated);
+    sheet.registerCell(registrationMemo, sheetUpdated);
 
     return () => {
-      sheet.unregisterCell(registration, sheetUpdated);
+      sheet.unregisterCell(registrationMemo, sheetUpdated);
     };
-  });
+  }, [sheet, registrationMemo]);
 
   return {
     sheet,
     sheetVersion,
     form,
     editing: sheet.isEditing(registration.row, registration.column),
-    selected: sheet.isSelected(registration.row, registration.column)
+    selected: sheet.isRegistrationSelected(registrationMemo)
   };
 };
 

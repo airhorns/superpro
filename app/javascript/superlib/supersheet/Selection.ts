@@ -6,8 +6,8 @@ export interface Coordinates {
 }
 
 export interface SheetSelection {
-  start: Coordinates;
-  end: Coordinates;
+  anchor: Coordinates;
+  focus: Coordinates;
 }
 
 export const moveCoordinates = (coord: Coordinates, rowDelta: number, columnDelta: number) => {

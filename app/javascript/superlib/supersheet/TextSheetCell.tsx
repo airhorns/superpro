@@ -9,6 +9,8 @@ export interface TextSheetCellProps extends InputProps {
   row: number;
   column: number;
   width: string | number;
+  rowSpan?: number;
+  colSpan?: number;
 }
 
 export const TextSheetCell = (props: TextSheetCellProps) => {
@@ -17,6 +19,8 @@ export const TextSheetCell = (props: TextSheetCellProps) => {
     row: props.row,
     column: props.column,
     path: props.path,
+    rowSpan: props.rowSpan,
+    colSpan: props.colSpan,
     ref,
     handleKeyDown(event) {
       if (event.key.length == 1) {

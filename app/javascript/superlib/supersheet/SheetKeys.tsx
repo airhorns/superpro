@@ -55,7 +55,7 @@ export const SheetKeys: { [key: string]: SheetKeyAction } = {
     check: isHotkey("enter"),
     action: sheet => {
       if (sheet.selection) {
-        sheet.toggleEdit(sheet.selection.start.row, sheet.selection.start.column);
+        sheet.toggleEdit(sheet.selection.focus.row, sheet.selection.focus.column);
       }
     }
   },

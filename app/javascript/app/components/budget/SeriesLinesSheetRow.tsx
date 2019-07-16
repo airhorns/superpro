@@ -64,6 +64,7 @@ export const SeriesLineSheetRow = (props: { line: BudgetFormLine; rowIndex: numb
             row={props.rowIndex}
             width="244px"
             column={0}
+            rowSpan={scenariosEnabled ? 3 : 1}
             path={`${lineFieldKey}.description`}
             placeholder="Line description"
           />

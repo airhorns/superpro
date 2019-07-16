@@ -79,6 +79,7 @@ export const StyledDataGridFakeCell = styled.div<DataGridCellProps>`
   text-overflow: ellipsis;
   white-space: nowrap;
   width: ${props => props.width};
+  min-height: 48px;
   ${props => `border: 1px solid ${props.theme.global.colors["light-1"]};`}
   ${props => (props.editing ? editingStyle : props.selected ? focusStyle : false)}
 `;
