@@ -80,8 +80,9 @@ export const AppSidebar = withRouter(
                   </NavigationSectionButton>
                   <Box flex />
                   <NavigationSectionButton path="/invite" text="Invite Users" icon={<Invite />} onClick={this.close} />
-                  <NavigationSectionButton path="/settings/account" text="Settings" icon={<SettingsIcon />} onClick={this.close}>
+                  <NavigationSectionButton path="/settings" text="Settings" icon={<SettingsIcon />} onClick={this.close}>
                     <NavigationSubItemButton path="/settings/account" exact text="Account" onClick={this.close} />
+                    <NavigationSubItemButton path="/settings/users" exact text="Users" onClick={this.close} />
                   </NavigationSectionButton>
                 </Box>
                 {!loading && (

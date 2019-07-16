@@ -3,7 +3,7 @@ import Gravatar from "react-gravatar";
 import "./user-avatar.scss";
 
 export interface UserAvatarProps {
-  user: { id: string; email: string; fullName: string };
+  user: { id: string; email: string; primaryTextIdentifier: string };
   size?: number;
 }
 
@@ -19,7 +19,7 @@ export class UserAvatar extends React.Component<UserAvatarProps> {
         protocol={"https://"}
         email={this.props.user.email}
         size={this.props.size}
-        default={`https://ui-avatars.com/api/${encodeURIComponent(this.props.user.fullName)}/${this.props.size}` as any}
+        default={`https://ui-avatars.com/api/${encodeURIComponent(this.props.user.primaryTextIdentifier)}/${this.props.size}` as any}
       />
     );
   }

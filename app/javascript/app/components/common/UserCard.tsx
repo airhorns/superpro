@@ -8,18 +8,22 @@ gql`
   fragment UserCard on User {
     id
     email
-    fullName
+    primaryTextIdentifier
   }
 `;
 
 export interface UserCardProps {
-  user: { email: string; fullName: string; id: string };
+  user: { email: string; primaryTextIdentifier: string; id: string };
   link?: boolean;
 }
 
 export const UserCard = (props: UserCardProps) => (
   <Row gap="small">
     <UserAvatar user={props.user} size={32} />
-    {props.link ? <Link to={`/users/${props.user.id}`}>{props.user.fullName}</Link> : <Text>{props.user.fullName}</Text>}
+    {props.link ? (
+      <Link to={`/users/${props.user.id}`}>{props.user.primaryTextIdentifier}</Link>
+    ) : (
+      <Text>{props.user.primaryTextIdentifier}</Text>
+    )}
   </Row>
 );

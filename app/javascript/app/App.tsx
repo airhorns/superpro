@@ -24,6 +24,7 @@ const CreateProcessDocPage = React.lazy(() => import("./components/todos/CreateP
 const EditProcessDocPage = React.lazy(() => import("./components/todos/EditProcessDocPage"));
 const StartProcessPage = React.lazy(() => import("./components/todos/StartProcessPage"));
 const EditProcessRunPage = React.lazy(() => import("./components/todos/EditProcessRunPage"));
+const UsersSettingsPage = React.lazy(() => import("./components/identity/UsersSettingsPage"));
 const AccountSettingsPage = React.lazy(() => import("./components/identity/AccountSettingsPage"));
 
 export const SuperproClient = getClient();
@@ -56,7 +57,9 @@ export const App = () => {
                           <Route path="/todos/process/docs/:id/start" exact component={StartProcessPage} />
                           <Route path="/todos/process/runs" exact component={ProcessRunsIndexPage} />
                           <Route path="/todos/process/runs/:id" exact component={EditProcessRunPage} />
+                          <Route path="/settings" exact component={AccountSettingsPage} />
                           <Route path="/settings/account" exact component={AccountSettingsPage} />
+                          <Route path="/settings/users" exact component={UsersSettingsPage} />
                           <Route component={NotFoundPage} />
                         </Switch>
                       </React.Suspense>

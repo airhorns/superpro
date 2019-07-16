@@ -637,14 +637,15 @@ export type User = {
   __typename: "User";
   accounts: Array<Account>;
   authAreaUrl: Scalars["String"];
-  confirmed: Scalars["Boolean"];
   createdAt: Scalars["ISO8601DateTime"];
   email: Scalars["String"];
-  fullName: Scalars["String"];
+  fullName?: Maybe<Scalars["String"]>;
   id: Scalars["ID"];
   involvedProcessExecutions: ProcessExecutionConnection;
-  locked: Scalars["Boolean"];
+  pendingInvitation: Scalars["Boolean"];
+  primaryTextIdentifier: Scalars["String"];
   scratchpads: ScratchpadConnection;
+  secondaryTextIdentifier: Scalars["String"];
   todoFeedItems: TodoFeedItemConnection;
   updatedAt: Scalars["ISO8601DateTime"];
 };
@@ -760,7 +761,7 @@ export type SiderInfoQuery = { __typename: "AppQuery" } & {
   currentUser: { __typename: "User" } & Pick<User, "email" | "fullName" | "authAreaUrl"> & UserCardFragment;
 };
 
-export type UserCardFragment = { __typename: "User" } & Pick<User, "id" | "email" | "fullName">;
+export type UserCardFragment = { __typename: "User" } & Pick<User, "id" | "email" | "primaryTextIdentifier">;
 
 export type GetAccountForSettingsQueryVariables = {};
 
@@ -789,6 +790,14 @@ export type InviteNewUserMutation = { __typename: "AppMutation" } & {
         errors: Maybe<Array<{ __typename: "MutationError" } & Pick<MutationError, "fullMessage">>>;
       }
   >;
+};
+
+export type GetUsersForSettingsQueryVariables = {};
+
+export type GetUsersForSettingsQuery = { __typename: "AppQuery" } & {
+  users: { __typename: "UserConnection" } & {
+    nodes: Array<{ __typename: "User" } & Pick<User, "id" | "fullName" | "email" | "pendingInvitation"> & UserCardFragment>;
+  };
 };
 
 export type CondensedProcessExecutionFormFragment = { __typename: "ProcessExecution" } & Pick<ProcessExecution, "id" | "document" | "name">;
@@ -1105,7 +1114,7 @@ export const UserCardFragmentDoc = gql`
   fragment UserCard on User {
     id
     email
-    fullName
+    primaryTextIdentifier
   }
 `;
 export const ContextForTodoEditorFragmentDoc = gql`
@@ -1316,6 +1325,32 @@ export function useInviteNewUserMutation(
   baseOptions?: ReactApolloHooks.MutationHookOptions<InviteNewUserMutation, InviteNewUserMutationVariables>
 ) {
   return ReactApolloHooks.useMutation<InviteNewUserMutation, InviteNewUserMutationVariables>(InviteNewUserDocument, baseOptions);
+}
+export const GetUsersForSettingsDocument = gql`
+  query GetUsersForSettings {
+    users {
+      nodes {
+        id
+        fullName
+        email
+        pendingInvitation
+        ...UserCard
+      }
+    }
+  }
+  ${UserCardFragmentDoc}
+`;
+export type GetUsersForSettingsComponentProps = Omit<
+  ReactApollo.QueryProps<GetUsersForSettingsQuery, GetUsersForSettingsQueryVariables>,
+  "query"
+>;
+
+export const GetUsersForSettingsComponent = (props: GetUsersForSettingsComponentProps) => (
+  <ReactApollo.Query<GetUsersForSettingsQuery, GetUsersForSettingsQueryVariables> query={GetUsersForSettingsDocument} {...props} />
+);
+
+export function useGetUsersForSettingsQuery(baseOptions?: ReactApolloHooks.QueryHookOptions<GetUsersForSettingsQueryVariables>) {
+  return ReactApolloHooks.useQuery<GetUsersForSettingsQuery, GetUsersForSettingsQueryVariables>(GetUsersForSettingsDocument, baseOptions);
 }
 export const UpdateProcessExecutionTodosPageDocument = gql`
   mutation UpdateProcessExecutionTodosPage($id: ID!, $attributes: ProcessExecutionAttributes!) {
