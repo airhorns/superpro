@@ -3,6 +3,7 @@ import { range } from "lodash";
 import EventEmitter from "eventemitter3";
 import { SheetSelection, Coordinates, clampCoordinates } from "./Selection";
 import { SheetKeys, isUnknownHotkey } from "./SheetKeys";
+import { SuperFormController } from "superlib/superform";
 
 export type SheetUpdateCallback = (controller: SuperSheetController) => void;
 
@@ -17,6 +18,7 @@ export interface CellRegistration {
 }
 
 export class SuperSheetController {
+  form: SuperFormController<any>;
   selection: null | SheetSelection = null;
   edit: null | Coordinates = null;
   version: number = 0;
@@ -25,7 +27,8 @@ export class SuperSheetController {
   containerRef: React.RefObject<HTMLDivElement> = React.createRef();
   processedEvents: WeakMap<Event, boolean> = new WeakMap();
 
-  constructor(onChange: SheetUpdateCallback) {
+  constructor(form: SuperFormController<any>, onChange: SheetUpdateCallback) {
+    this.form = form;
     this.updates = new EventEmitter();
     this.updates.on("update", onChange);
   }

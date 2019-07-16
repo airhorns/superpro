@@ -55,31 +55,21 @@ interface SuperSheetState {
   version: number;
 }
 
-export class SuperSheet extends React.Component<{}, SuperSheetState> {
-  state: SuperSheetState = { version: 0 };
-  controller: SuperSheetController;
+export const SuperSheet = (props: { children: React.ReactNode }) => {
+  const [version, setVersion] = React.useState(0);
+  const form = useSuperForm();
+  const controller = React.useMemo(() => new SuperSheetController(form, () => setVersion(version => version + 1)), [form]);
 
-  constructor(props: {}) {
-    super(props);
-    this.controller = new SuperSheetController(this.onChange);
-  }
-
-  onChange = (controller: SuperSheetController) => {
-    this.setState({ version: controller.version });
-  };
-
-  render() {
-    return (
-      <StyledDataGridContainer
-        tabIndex={0}
-        ref={this.controller.containerRef}
-        onKeyDown={this.controller.handleKeyDown}
-        onBlur={this.controller.handleContainerBlur}
-      >
-        <SheetContext.Provider value={this.controller}>
-          <StyledDataGrid onKeyDown={this.controller.handleKeyDown}>{this.props.children}</StyledDataGrid>
-        </SheetContext.Provider>
-      </StyledDataGridContainer>
-    );
-  }
-}
+  return (
+    <StyledDataGridContainer
+      tabIndex={0}
+      ref={controller.containerRef}
+      onKeyDown={controller.handleKeyDown}
+      onBlur={controller.handleContainerBlur}
+    >
+      <SheetContext.Provider value={controller}>
+        <StyledDataGrid onKeyDown={controller.handleKeyDown}>{props.children}</StyledDataGrid>
+      </SheetContext.Provider>
+    </StyledDataGridContainer>
+  );
+};

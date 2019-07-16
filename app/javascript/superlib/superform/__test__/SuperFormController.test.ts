@@ -1,5 +1,4 @@
 import { SuperFormController } from "../SuperFormController";
-import { SuperForm } from "../SuperForm";
 
 interface TestDocShape {
   foo: boolean;

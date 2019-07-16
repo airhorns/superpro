@@ -1,13 +1,20 @@
 import { range } from "lodash";
 import { SuperSheetController } from "../SuperSheetController";
 import { assert } from "../../utils";
+import { SuperFormController } from "superlib/superform";
 
+interface TestSheetForm {
+  values: { [key: string]: string[] };
+}
+
+let form!: SuperFormController<TestSheetForm>;
 let controller!: SuperSheetController;
 let onChange!: VoidFunction;
 
 beforeEach(() => {
+  form = new SuperFormController<TestSheetForm>({ values: {} }, () => {});
   onChange = jest.fn();
-  controller = new SuperSheetController(onChange);
+  controller = new SuperSheetController(form, onChange);
 });
 
 describe("a basic spreadsheet", () => {
