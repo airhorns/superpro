@@ -6,7 +6,6 @@ import { NumberInputProps, NumberInput } from "superlib/superform";
 export interface NumberSheetCellProps extends NumberInputProps {
   row: number;
   column: number;
-  width: string | number;
   rowSpan?: number;
   colSpan?: number;
   as?: React.ComponentType<DataGridCellProps>;
@@ -33,7 +32,6 @@ export const NumberSheetCell = (props: NumberSheetCellProps) => {
   return (
     <Component
       ref={ref}
-      width={props.width}
       editing={editing}
       selected={selected}
       onClick={() => sheet.handleCellClick(props.row, props.column)}

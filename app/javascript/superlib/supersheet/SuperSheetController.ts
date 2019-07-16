@@ -23,6 +23,7 @@ export class SuperSheetController {
   cells: Map<number, Map<number, CellRegistration>> = new Map();
   updates: EventEmitter;
   containerRef: React.RefObject<HTMLDivElement> = React.createRef();
+  processedEvents: WeakMap<Event, boolean> = new WeakMap();
 
   constructor(onChange: SheetUpdateCallback) {
     this.updates = new EventEmitter();
@@ -185,6 +186,11 @@ export class SuperSheetController {
   }
 
   handleKeyDown = (event: React.KeyboardEvent) => {
+    if (this.processedEvents.has(event.nativeEvent)) {
+      return;
+    }
+    this.processedEvents.set(event.nativeEvent, true);
+
     const action = Object.entries(SheetKeys).find(([_name, action]) => {
       if (this.edit && !action.availableDuringEdit) {
         return false;
@@ -193,7 +199,6 @@ export class SuperSheetController {
     });
 
     if (action) {
-      console.debug("sheet event: keyDown", action);
       action[1].action(this);
       event.preventDefault();
     }

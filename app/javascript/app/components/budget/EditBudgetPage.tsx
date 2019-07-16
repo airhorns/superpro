@@ -1,5 +1,5 @@
 import React from "react";
-import { uniq, keyBy, debounce, pick } from "lodash";
+import { uniq, keyBy, debounce, pick, omit } from "lodash";
 import shortid from "shortid";
 import { Page, SavingNotice, SavingNoticeState } from "../common";
 import { BudgetForm, BudgetFormValues, BudgetFormLineValue } from "./BudgetForm";
@@ -116,7 +116,7 @@ export default class EditBudgetPage extends Page<{}, SavingNoticeState> {
               let value: BudgetLineValueAttributes;
               if (line.value.type == "series") {
                 value = {
-                  ...line.value,
+                  ...omit(line.value, "scenariosEnabled"),
                   cells: Object.entries(line.value.cells).map(([millis, cell]) => ({
                     dateTime: DateTime.fromMillis(parseInt(millis, 10)).toISO(),
                     ...cell

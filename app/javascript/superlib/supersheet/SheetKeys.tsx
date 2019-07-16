@@ -54,9 +54,7 @@ export const SheetKeys: { [key: string]: SheetKeyAction } = {
     availableDuringEdit: true,
     check: isHotkey("enter"),
     action: sheet => {
-      if (sheet.selection) {
-        sheet.toggleEdit(sheet.selection.focus.row, sheet.selection.focus.column);
-      }
+      sheet.toggleEdit();
     }
   },
   cancelEditing: {

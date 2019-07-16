@@ -11,10 +11,11 @@ import {
   StyledDataGridRow,
   StaticSheetCell,
   StyledDataGridFakeCell,
-  StyledDataGridCell
+  StyledDataGridMultiCell
 } from "superlib/supersheet";
 import { DefaultCellMonths } from "./SeriesLinesSheet";
 import { Button } from "grommet";
+import { toggleLineSeriesValueScenariosEnabled } from "./commands";
 
 export const SeriesLineSheetRow = (props: { line: BudgetFormLine; rowIndex: number; linesIndex: number }) => {
   const form = useSuperForm<BudgetFormValues>();
@@ -24,15 +25,7 @@ export const SeriesLineSheetRow = (props: { line: BudgetFormLine; rowIndex: numb
   const lineHelpers = form.arrayHelpers("budget.lines");
   const scenariosEnabledKey = `${lineFieldKey}.value.scenariosEnabled`;
   const scenariosEnabled = form.getValue(scenariosEnabledKey);
-
-  const toggleScenarios = React.useCallback(() => {
-    const enabled = form.getValue(scenariosEnabledKey);
-    if (enabled) {
-      form.setValue(scenariosEnabledKey, false);
-    } else {
-      form.setValue(scenariosEnabledKey, true);
-    }
-  }, [form, scenariosEnabledKey]);
+  const toggleScenarios = React.useCallback(() => toggleLineSeriesValueScenariosEnabled(form, lineFieldKey), [form, lineFieldKey]);
 
   return (
     <Draggable draggableId={props.line.id} index={props.line.sortOrder}>
@@ -45,7 +38,7 @@ export const SeriesLineSheetRow = (props: { line: BudgetFormLine; rowIndex: numb
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          <StaticSheetCell key="draghandle" width="96px">
+          <StaticSheetCell key="draghandle">
             <FadeBox visible={showIcons}>
               <Row gap="xsmall">
                 <DragHandle color="light-5" />
@@ -77,7 +70,7 @@ export const SeriesLineSheetRow = (props: { line: BudgetFormLine; rowIndex: numb
             };
             if (scenariosEnabled) {
               return (
-                <StyledDataGridCell width="96px">
+                <StyledDataGridMultiCell width="96px">
                   {["optimistic", "default", "pessimistic"].map((scenario, scenarioIndex) => (
                     <NumberSheetCell
                       width="96px"
@@ -89,7 +82,7 @@ export const SeriesLineSheetRow = (props: { line: BudgetFormLine; rowIndex: numb
                       {...cellProps}
                     />
                   ))}
-                </StyledDataGridCell>
+                </StyledDataGridMultiCell>
               );
             } else {
               return (

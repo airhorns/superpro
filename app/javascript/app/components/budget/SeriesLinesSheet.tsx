@@ -21,12 +21,12 @@ class SheetHeader extends React.PureComponent<{}> {
     return (
       <StyledDataGridHeader>
         <StyledDataGridRow>
-          <StyledDataGridHeaderCell key="actions" width="118px" />
-          <StyledDataGridHeaderCell key="description" primary width="244px">
+          <StyledDataGridHeaderCell key="actions" fixedWidth="118px" />
+          <StyledDataGridHeaderCell key="description" primary fixedWidth="244px">
             Description
           </StyledDataGridHeaderCell>
           {DefaultCellMonths().map(col => (
-            <StyledDataGridHeaderCell key={col.toISO()} width="96px">
+            <StyledDataGridHeaderCell key={col.toISO()} fixedWidth="96px">
               {col.toFormat("MMM yyyy")}
             </StyledDataGridHeaderCell>
           ))}
