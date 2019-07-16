@@ -2,6 +2,7 @@ import React from "react";
 import { StyledDataGridCell, DataGridCellProps } from "./StyledDataGrid";
 import { useCell } from "./SuperSheet";
 import { NumberInputProps, NumberInput } from "superlib/superform";
+import { propsForInnerCellComponent } from "./utils";
 
 export interface NumberSheetCellProps extends NumberInputProps {
   row: number;
@@ -42,7 +43,7 @@ export const NumberSheetCell = (props: NumberSheetCellProps) => {
         autoFocus={editing}
         style={{ padding: "0px" }}
         displayType={editing ? "input" : "text"}
-        {...props}
+        {...propsForInnerCellComponent(props)}
       />
     </Component>
   );

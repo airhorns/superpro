@@ -45,7 +45,7 @@ export const SeriesLineSheetRow = (props: { line: BudgetFormLine; rowIndex: numb
                 <Button
                   hoverIndicator
                   plain={false}
-                  icon={<ScenarioButton enabled={false} />}
+                  icon={<ScenarioButton enabled={scenariosEnabled} />}
                   style={{ padding: "7px" }}
                   onClick={toggleScenarios}
                 />
@@ -78,6 +78,7 @@ export const SeriesLineSheetRow = (props: { line: BudgetFormLine; rowIndex: numb
                       column={index + 1}
                       key={scenario}
                       path={`${lineFieldKey}.value.cells.${dateTime.valueOf()}.amountScenarios.${scenario}`}
+                      placeholder={form.getValue(`${lineFieldKey}.value.cells.${dateTime.valueOf()}.amountScenarios.default`)}
                       as={StyledDataGridFakeCell}
                       {...cellProps}
                     />

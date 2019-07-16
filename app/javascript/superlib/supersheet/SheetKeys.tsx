@@ -7,6 +7,9 @@ export interface SheetKeyAction {
   action: (sheet: SuperSheetController) => void;
 }
 
+const isBackspace = isHotkey("backspace");
+const isDelete = isHotkey("delete");
+
 export const SheetKeys: { [key: string]: SheetKeyAction } = {
   moveRight: {
     availableDuringEdit: false,
@@ -62,6 +65,13 @@ export const SheetKeys: { [key: string]: SheetKeyAction } = {
     check: isHotkey("escape"),
     action: sheet => {
       sheet.cancelEdit();
+    }
+  },
+  clearCell: {
+    availableDuringEdit: false,
+    check: e => isBackspace(e) || isDelete(e),
+    action: sheet => {
+      sheet.clearSelectedCells();
     }
   }
 };

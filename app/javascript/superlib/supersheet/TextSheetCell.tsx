@@ -4,6 +4,7 @@ import { StyledDataGridCell } from "./StyledDataGrid";
 import { useCell } from "./SuperSheet";
 import { Input, InputProps } from "superlib/superform";
 import { isUndefined } from "lodash";
+import { propsForInnerCellComponent } from "./utils";
 
 export interface TextSheetCellProps extends InputProps {
   row: number;
@@ -39,7 +40,7 @@ export const TextSheetCell = (props: TextSheetCellProps) => {
       onClick={() => sheet.handleCellClick(props.row, props.column)}
       onDoubleClick={() => sheet.handleCellDoubleClick(props.row, props.column)}
     >
-      {editing && <Input autoFocus plain path={props.path} onBlur={sheet.onCellBlur} {...props} />}
+      {editing && <Input autoFocus plain path={props.path} onBlur={sheet.onCellBlur} {...propsForInnerCellComponent(props)} />}
       {!editing && !showPlaceholder && <Text>{value}</Text>}
       {!editing && showPlaceholder && <Text color="status-unknown">{props.placeholder}</Text>}
     </StyledDataGridCell>

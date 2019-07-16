@@ -79,7 +79,7 @@ export default class EditBudgetPage extends Page<{}, SavingNoticeState> {
     } else if (data.__typename == "BudgetLineSeriesValue") {
       return {
         type: "series",
-        scenariosEnabled: false,
+        scenariosEnabled: data.cells.some(cell => Object.keys(cell.amountScenarios).some(key => key != "default")),
         cells: keyBy(data.cells.map(cell => pick(cell, "dateTime", "amountScenarios")), cell => DateTime.fromISO(cell.dateTime).valueOf())
       };
     }

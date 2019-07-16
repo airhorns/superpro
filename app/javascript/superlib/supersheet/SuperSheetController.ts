@@ -163,6 +163,10 @@ export class SuperSheetController {
     );
   }
 
+  clearSelectedCells() {
+    // someday, this should use the form to clear all the selected cells
+  }
+
   dimensions() {
     const rowMin = Math.min(...Array.from(this.cells.keys()));
     const rowMax = Math.max(...Array.from(this.cells.keys()));

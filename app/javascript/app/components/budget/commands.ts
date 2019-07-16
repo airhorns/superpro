@@ -26,7 +26,7 @@ export const setLineAsSeriesValueType = (form: SuperFormController<BudgetFormVal
   });
 };
 
-export const toggleLineSeriesValueScenariosEnabled = (form: SuperForm<BudgetFormValues>, linePath: string) => {
+export const toggleLineSeriesValueScenariosEnabled = (form: SuperFormController<BudgetFormValues>, linePath: string) => {
   const scenariosEnabledKey = `${linePath}.value.scenariosEnabled`;
   const enabled = form.getValue(scenariosEnabledKey);
   if (enabled) {
@@ -35,7 +35,7 @@ export const toggleLineSeriesValueScenariosEnabled = (form: SuperForm<BudgetForm
     Object.entries(cells).forEach(([cellKey, value]) => {
       for (let scenario in value.amountScenarios) {
         if (scenario != "default") {
-          form.deletePath(`${linePath}.value.cells.${cellKey}.${scenario}`);
+          form.deletePath(`${linePath}.value.cells.${cellKey}.amountScenarios.${scenario}`);
         }
       }
     });

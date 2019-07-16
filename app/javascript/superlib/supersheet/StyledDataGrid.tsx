@@ -41,7 +41,11 @@ export const StyledDataGrid = styled.table`
 
 export const StyledDataGridRow = styled.tr<{ dragging?: boolean }>`
   min-height: 48px;
-  ${props => props.dragging && `background: ${props.theme.global.colors["light-3"]};`}
+  ${props =>
+    props.dragging &&
+    `
+    background: ${props.theme.global.colors["light-3"]};
+  `}
 `;
 
 export const StyledDataGridBody = styled.tbody`
