@@ -4,7 +4,6 @@ import {
   FontSize,
   BulletedList,
   CheckList,
-  Expense,
   Undo,
   Redo,
   Bold,
@@ -58,12 +57,6 @@ export class TodoEditorToolbar extends React.Component<{ editor: Editor; extra?:
         <ToggleBlockToolbarButton type="bulleted-list" icon={BulletedList} editor={this.props.editor} />
         <ToolbarDivider />
         <ToggleBlockToolbarButton type="check-list-item" icon={CheckList} editor={this.props.editor} />
-        <ToggleBlockToolbarButton
-          type="expense-item"
-          icon={Expense}
-          editor={this.props.editor}
-          newBlockData={{ amountSubunits: 0, incurred: false }}
-        />
         <ToolbarButton active={false} icon={Deadline} onClick={this.addDeadline} />
         <ToolbarDivider />
         {isExecutionMode(this.props.editor) && <CondensedTodosToggleButton editor={this.props.editor} />}

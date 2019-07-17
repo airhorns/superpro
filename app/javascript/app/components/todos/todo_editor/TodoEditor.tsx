@@ -7,7 +7,6 @@ import { MarkHotkeys } from "./MarkHotkeysPlugin";
 import { SimpleListsPlugin } from "./SimpleLists";
 import { DeadlinesPlugin } from "./DeadlinesPlugin";
 import { BasicFormattingPlugin } from "./BasicFormattingPlugin";
-import { ExpensePlugin } from "./ExpensePlugin";
 import { GlobalHotkeysPlugin } from "./GlobalHotkeysPlugin";
 import { RichShortcutsPlugin } from "./RichShortcutsPlugin";
 import { CondensedTodosPlugin } from "./CondensedTodosPlugin";
@@ -47,7 +46,6 @@ export const TodoEditor = (
     return [
       CondensedTodosPlugin(),
       ChecklistPlugin(),
-      ExpensePlugin(),
       DeadlinesPlugin(),
       PasteLinkify(),
       CollapseOnEscape(),

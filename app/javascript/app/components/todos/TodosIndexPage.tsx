@@ -194,7 +194,7 @@ export default (_props: {}) => {
                 </Box>
               </Box>
               <Box gridArea="editor" background="light-1">
-                <Box overflow={{ vertical: "auto" }}>
+                <Box overflow={{ vertical: "auto" }} pad={{ top: "small" }}>
                   {selectedItem && selectedItem.__typename == "ProcessExecution" && (
                     <SimpleQuery
                       component={GetProcessExecutionForTodosComponent}

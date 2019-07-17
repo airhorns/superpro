@@ -1,4 +1,4 @@
-import { isNumber, isNull, isString, isBoolean, isUndefined } from "lodash";
+import { isNull, isString, isBoolean, isUndefined } from "lodash";
 import { SchemaProperties } from "slate";
 
 export const TodoSchema: SchemaProperties = {
@@ -15,12 +15,6 @@ export const TodoSchema: SchemaProperties = {
       data: {
         checked: value => isUndefined(value) || isBoolean(value),
         ownerId: value => isUndefined(value) || isNull(value) || isString(value)
-      }
-    },
-    "expense-item": {
-      data: {
-        incurred: isBoolean,
-        amountSubunits: isNumber
       }
     },
     deadline: {
