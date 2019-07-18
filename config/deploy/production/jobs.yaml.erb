@@ -25,9 +25,11 @@ spec:
             - -q
             - mailers
           env: <%= partial 'rails_environment' %>
+          volumeMounts: <%= partial 'rails_volume_mounts' %>
           resources: {}
           securityContext:
             capabilities:
               add:
                 - SYS_PTRACE
       restartPolicy: Always
+      volumes: <%= partial 'rails_volumes' %>

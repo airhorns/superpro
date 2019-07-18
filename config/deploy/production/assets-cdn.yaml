@@ -1,21 +1,6 @@
----
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    service: web-assets
-  name: web-assets
-  annotations:
-    beta.cloud.google.com/backend-config: '{"ports": {"80":"assets-backend-config"}}'
-spec:
-  ports:
-    - name: http
-      protocol: TCP
-      port: 80
-      targetPort: 3000
-  selector:
-    service: web
-  type: NodePort
+# Assets are served in a pretty weird way to appease Larry and Sergei.
+# In order to take advantage of the cheap and Google-native Cloud CDN, we need to use a GKE Ingress provider to serve our resources, so that we can pass it the BackendConfig that sets up the CDN all nice and good. We usually use nginx ingresses cause they're more featureful, but I wasn't able to figure out a good way of configuring the CDN to point to an ingress resource in a reproducible way.
+# So, we have the public assets.superpro.io ingress accepting traffic. The assets are actually stored in a Google Cloud Storage bucket so that A) they're super available and B) the asset availability is permanent. Clients can request old assets if they're running an old version of the client, so they need to be stored somewhere "global" such that they exist beyond the life of the container they're housed in.
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
@@ -35,3 +20,17 @@ spec:
           - backend:
               serviceName: web-assets
               servicePort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    service: web-assets
+  name: web-assets
+  annotations:
+    beta.cloud.google.com/backend-config: '{"ports": {"80":"assets-backend-config"}}'
+spec:
+  type: ExternalName
+  externalName: core-assets-gsbxqmgsbxqm.superpro.io
+---
+

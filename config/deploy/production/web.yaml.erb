@@ -41,6 +41,7 @@ spec:
             - -b
             - 0.0.0.0
           env: <%= partial 'rails_environment' %>
+          volumeMounts: <%= partial 'rails_volume_mounts' %>
           image: gcr.io/superpro-production/core:<%= current_sha %>
           ports:
             - containerPort: 3000
@@ -57,4 +58,5 @@ spec:
             timeoutSeconds: 1
             successThreshold: 1
             failureThreshold: 10
+      volumes: <%= partial 'rails_volumes' %>
       restartPolicy: Always

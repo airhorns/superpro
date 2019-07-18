@@ -32,6 +32,8 @@ gem 'active_record_query_trace'
 gem 'analytics-ruby', '~> 2.2.7', require: 'segment/analytics'
 gem "annotate"
 gem 'ar_transaction_changes'
+gem "asset_sync"
+gem "fog-google", '~> 1.9.1'
 gem 'bcrypt', '~> 3.1.7'
 gem 'bootsnap', '>= 1.1.0', require: false
 gem "bullet", "~> 6.0.1"

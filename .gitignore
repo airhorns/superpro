@@ -22,6 +22,7 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+/config/google_service_key.json
 /config/docker-compose/server.key
 /config/docker-compose/server.crt
 /public/packs

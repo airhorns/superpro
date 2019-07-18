@@ -7,10 +7,10 @@ GIT
 
 GIT
   remote: https://github.com/hlascelles/que-scheduler.git
-  revision: f42b8b77948c80b1bc1d7cf5124b6a0171350d52
+  revision: 60471f42d44ec97089d0634755763e72a8fb3f60
   branch: que-1.0-compatibility
   specs:
-    que-scheduler (3.2.3)
+    que-scheduler (3.2.4)
       activesupport (>= 4.0)
       backports (~> 3.10)
       fugit (~> 1.1, >= 1.1.8)
@@ -106,13 +106,18 @@ GEM
       rake (>= 10.4, < 13.0)
     ar_transaction_changes (1.1.4)
       activerecord (>= 4.2.4)
+    asset_sync (2.8.0)
+      activemodel (>= 4.1.0)
+      fog-core
+      mime-types (>= 2.99)
+      unf
     ast (2.4.0)
-    autoprefixer-rails (9.6.0)
+    autoprefixer-rails (9.6.1)
       execjs
     backport (1.1.1)
     backports (3.15.0)
     bcrypt (3.1.13)
-    bindex (0.7.0)
+    bindex (0.8.1)
     bootsnap (1.4.4)
       msgpack (~> 1.0)
     builder (3.2.3)
@@ -139,6 +144,7 @@ GEM
     erubis (2.7.0)
     et-orbi (1.2.1)
       tzinfo
+    excon (0.64.0)
     execjs (2.7.0)
     factory_bot (5.0.2)
       activesupport (>= 4.2.0)
@@ -162,31 +168,46 @@ GEM
       flipper (~> 0.16.2)
       rack (>= 1.4, < 3)
       rack-protection (>= 1.5.3, < 2.1.0)
-    fugit (1.2.2)
+    fog-core (2.1.0)
+      builder
+      excon (~> 0.58)
+      formatador (~> 0.2)
+      mime-types
+    fog-google (1.9.1)
+      fog-core (<= 2.1.0)
+      fog-json (~> 1.2)
+      fog-xml (~> 0.1.0)
+      google-api-client (~> 0.23.0)
+    fog-json (1.2.0)
+      fog-core
+      multi_json (~> 1.10)
+    fog-xml (0.1.3)
+      fog-core
+      nokogiri (>= 1.5.11, < 2.0.0)
+    formatador (0.2.5)
+    fugit (1.2.3)
       et-orbi (~> 1.1, >= 1.1.8)
       raabro (~> 1.1)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
-    google-api-client (0.30.5)
+    google-api-client (0.23.9)
       addressable (~> 2.5, >= 2.5.1)
-      googleauth (>= 0.5, < 0.10.0)
+      googleauth (>= 0.5, < 0.7.0)
       httpclient (>= 2.8.1, < 3.0)
-      mini_mime (~> 1.0)
+      mime-types (~> 3.0)
       representable (~> 3.0)
       retriable (>= 2.0, < 4.0)
-      signet (~> 0.10)
+      signet (~> 0.9)
     google-cloud-core (1.3.0)
       google-cloud-env (~> 1.0)
     google-cloud-env (1.2.0)
       faraday (~> 0.11)
-    google-cloud-storage (1.19.0)
-      addressable (~> 2.5)
+    google-cloud-storage (1.16.0)
       digest-crc (~> 0.4)
-      google-api-client (~> 0.26)
+      google-api-client (~> 0.23)
       google-cloud-core (~> 1.2)
       googleauth (>= 0.6.2, < 0.10.0)
-      mime-types (~> 3.0)
-    googleauth (0.8.1)
+    googleauth (0.6.7)
       faraday (~> 0.12)
       jwt (>= 1.4, < 3.0)
       memoist (~> 0.16)
@@ -197,7 +218,7 @@ GEM
       railties
       sprockets-rails
     graphql (1.9.7)
-    graphql-batch (0.4.0)
+    graphql-batch (0.4.1)
       graphql (>= 1.3, < 2)
       promise.rb (~> 0.7.2)
     hashie (3.6.0)
@@ -239,12 +260,12 @@ GEM
       http (~> 3.0)
       recursive-open-struct (~> 1.0, >= 1.0.4)
       rest-client (~> 2.0)
-    kubernetes-deploy (0.26.7)
+    kubernetes-deploy (0.26.6)
       activesupport (>= 5.0)
       colorize (~> 0.8)
       concurrent-ruby (~> 1.1)
       ejson (~> 1.0)
-      googleauth (~> 0.8.0)
+      googleauth (~> 0.6.6)
       jsonpath (~> 0.9.6)
       kubeclient (~> 4.3)
       oj (~> 3.0)
@@ -279,7 +300,7 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2019.0331)
     mimemagic (0.3.3)
-    mini_magick (4.9.4)
+    mini_magick (4.9.5)
     mini_mime (1.0.2)
     mini_portile2 (2.4.0)
     minitest (5.11.3)
@@ -287,7 +308,7 @@ GEM
       minitest (>= 5.0.6)
     mocha (1.9.0)
       metaclass (~> 0.0.1)
-    monetize (1.9.1)
+    monetize (1.9.2)
       money (~> 6.12)
     money (6.13.4)
       i18n (>= 0.6.4, <= 2)
@@ -509,7 +530,7 @@ GEM
     websocket-extensions (0.1.4)
     xxhash (0.4.0)
     yard (0.9.20)
-    zeitwerk (2.1.8)
+    zeitwerk (2.1.9)
 
 PLATFORMS
   ruby
@@ -519,6 +540,7 @@ DEPENDENCIES
   analytics-ruby (~> 2.2.7)
   annotate
   ar_transaction_changes
+  asset_sync
   bcrypt (~> 3.1.7)
   bootsnap (>= 1.1.0)
   bullet (~> 6.0.1)
@@ -533,6 +555,7 @@ DEPENDENCIES
   flipper-active_record
   flipper-active_support_cache_store
   flipper-ui
+  fog-google (~> 1.9.1)
   google-cloud-storage
   graphiql-rails
   graphql

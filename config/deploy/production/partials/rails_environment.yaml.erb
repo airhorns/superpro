@@ -11,11 +11,10 @@
     secretKeyRef:
       name: application-secrets
       key: DATABASE_URL
-- name: SUPERPRO_CORE_PRODUCTION_GCS_PRIVATE_KEY
-  valueFrom:
-    secretKeyRef:
-      name: application-secrets
-      key: SUPERPRO_CORE_PRODUCTION_GCS_PRIVATE_KEY
+- name: GOOGLE_CLOUD_PROJECT
+  value: superpro-production
+- name: ASSETS_GCS_BUCKET
+  value: core-assets-gsbxqmgsbxqm.superpro.io
 - name: SECRET_KEY_BASE
   valueFrom:
     secretKeyRef:

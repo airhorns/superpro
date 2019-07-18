@@ -1,16 +1,15 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: migrate-<%= deployment_id %>
+  name: upload-assets-<%= deployment_id %>
 spec:
   containers:
-    - name: migrate
+    - name: upload-assets
       args:
         - bundle
         - exec
         - rake
-        - db:create
-        - db:migrate
+        - assets:sync
       env: <%= partial 'rails_environment' %>
       volumeMounts: <%= partial 'rails_volume_mounts' %>
       image: gcr.io/superpro-production/core:<%= current_sha %>
