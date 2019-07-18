@@ -31,4 +31,5 @@ class Scratchpad < ApplicationRecord
   validates :access_mode, inclusion: { in: ["private", "public"] }
 
   belongs_to :creator, class_name: "User", optional: false
+  has_many_attached :files
 end

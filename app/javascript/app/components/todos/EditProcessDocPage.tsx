@@ -4,7 +4,12 @@ import { TodoEditor } from "./todo_editor/TodoEditor";
 import { Row, mutationSuccess, toast, LinkButton } from "superlib";
 import gql from "graphql-tag";
 import { SuperForm, ObjectBackend } from "superlib/superform";
-import { GetProcessTemplateForEditComponent, UpdateProcessTemplateMutationFn, UpdateProcessTemplateComponent } from "app/app-graph";
+import {
+  GetProcessTemplateForEditComponent,
+  UpdateProcessTemplateMutationFn,
+  UpdateProcessTemplateComponent,
+  AttachmentContainerEnum
+} from "app/app-graph";
 import { Value } from "slate";
 import { debounce } from "lodash";
 
@@ -118,6 +123,8 @@ export default class extends Page<{ id: string }, SavingNoticeState> {
                       <TodoEditor
                         autoFocus
                         users={data.users.nodes}
+                        attachmentContainerType={AttachmentContainerEnum.ProcessTemplate}
+                        attachmentContainerId={data.processTemplate.id}
                         value={form.getValue("processTemplate.value")}
                         onChange={({ value }: { value: Value }) => {
                           form.setValue("processTemplate.value", value);

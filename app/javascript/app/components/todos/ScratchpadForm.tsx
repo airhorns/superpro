@@ -7,11 +7,16 @@ import { debounce } from "lodash";
 import { Anchor } from "grommet";
 import { mutationSuccess, toast, Row } from "superlib";
 import { SuperForm, ObjectBackend } from "superlib/superform";
-import { UpdateScratchpadFromFormComponent, ScratchpadFormFragment, UpdateScratchpadFromFormMutationFn } from "app/app-graph";
+import {
+  UpdateScratchpadFromFormComponent,
+  ScratchpadFormFragment,
+  UpdateScratchpadFromFormMutationFn,
+  AttachmentContainerEnum
+} from "app/app-graph";
 import { UserCardProps, SavingNoticeState, ListPageCard } from "../common";
 import { TodoEditor } from "./todo_editor/TodoEditor";
-import { TrashScratchpadButton } from "./todo_editor/TrashScratchpadButton";
-import { ShareScratchpadButton } from "./todo_editor/ShareScratchpadButton";
+import { TrashScratchpadButton } from "./todo_editor/toolbar/TrashScratchpadButton";
+import { ShareScratchpadButton } from "./todo_editor/toolbar/ShareScratchpadButton";
 
 gql`
   fragment ScratchpadForm on Scratchpad {
@@ -112,6 +117,8 @@ export class ScratchpadForm extends React.Component<ScratchpadFormProps, SavingN
               <ListPageCard>
                 <TodoEditor
                   users={this.props.users}
+                  attachmentContainerType={AttachmentContainerEnum.Scratchpad}
+                  attachmentContainerId={this.props.scratchpad.id}
                   value={form.getValue("scratchpad.value")}
                   onChange={({ value }: { value: Value }) => {
                     form.setValue("scratchpad.value", value);

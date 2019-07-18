@@ -303,6 +303,74 @@ ALTER SEQUENCE public.accounts_id_seq OWNED BY public.accounts.id;
 
 
 --
+-- Name: active_storage_attachments; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.active_storage_attachments (
+    id bigint NOT NULL,
+    name character varying NOT NULL,
+    record_type character varying NOT NULL,
+    record_id bigint NOT NULL,
+    blob_id bigint NOT NULL,
+    created_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: active_storage_attachments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.active_storage_attachments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: active_storage_attachments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.active_storage_attachments_id_seq OWNED BY public.active_storage_attachments.id;
+
+
+--
+-- Name: active_storage_blobs; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.active_storage_blobs (
+    id bigint NOT NULL,
+    key character varying NOT NULL,
+    filename character varying NOT NULL,
+    content_type character varying,
+    metadata text,
+    byte_size bigint NOT NULL,
+    checksum character varying NOT NULL,
+    created_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: active_storage_blobs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.active_storage_blobs_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: active_storage_blobs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.active_storage_blobs_id_seq OWNED BY public.active_storage_blobs.id;
+
+
+--
 -- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -736,6 +804,119 @@ ALTER SEQUENCE public.flipper_gates_id_seq OWNED BY public.flipper_gates.id;
 
 
 --
+-- Name: plaid_item_accounts; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.plaid_item_accounts (
+    id bigint NOT NULL,
+    account_id bigint NOT NULL,
+    plaid_item_id bigint NOT NULL,
+    plaid_account_identifier character varying NOT NULL,
+    name character varying NOT NULL,
+    type character varying NOT NULL,
+    subtype character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: plaid_item_accounts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.plaid_item_accounts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: plaid_item_accounts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.plaid_item_accounts_id_seq OWNED BY public.plaid_item_accounts.id;
+
+
+--
+-- Name: plaid_items; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.plaid_items (
+    id bigint NOT NULL,
+    account_id bigint NOT NULL,
+    creator_id bigint NOT NULL,
+    access_token character varying NOT NULL,
+    item_id bigint NOT NULL,
+    initial_update_complete boolean DEFAULT false NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: plaid_items_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.plaid_items_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: plaid_items_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.plaid_items_id_seq OWNED BY public.plaid_items.id;
+
+
+--
+-- Name: plaid_transactions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.plaid_transactions (
+    id bigint NOT NULL,
+    account_id bigint NOT NULL,
+    plaid_item_id bigint NOT NULL,
+    plaid_account_identifier character varying NOT NULL,
+    plaid_transaction_identifier character varying NOT NULL,
+    category character varying[],
+    category_id character varying,
+    transaction_type character varying NOT NULL,
+    name character varying NOT NULL,
+    amount character varying NOT NULL,
+    iso_currency_code character varying,
+    unofficial_currency_code character varying,
+    date date NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: plaid_transactions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.plaid_transactions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: plaid_transactions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.plaid_transactions_id_seq OWNED BY public.plaid_transactions.id;
+
+
+--
 -- Name: process_execution_involved_users; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1095,6 +1276,20 @@ ALTER TABLE ONLY public.accounts ALTER COLUMN id SET DEFAULT nextval('public.acc
 
 
 --
+-- Name: active_storage_attachments id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.active_storage_attachments ALTER COLUMN id SET DEFAULT nextval('public.active_storage_attachments_id_seq'::regclass);
+
+
+--
+-- Name: active_storage_blobs id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.active_storage_blobs ALTER COLUMN id SET DEFAULT nextval('public.active_storage_blobs_id_seq'::regclass);
+
+
+--
 -- Name: budget_line_scenarios id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1148,6 +1343,27 @@ ALTER TABLE ONLY public.flipper_features ALTER COLUMN id SET DEFAULT nextval('pu
 --
 
 ALTER TABLE ONLY public.flipper_gates ALTER COLUMN id SET DEFAULT nextval('public.flipper_gates_id_seq'::regclass);
+
+
+--
+-- Name: plaid_item_accounts id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.plaid_item_accounts ALTER COLUMN id SET DEFAULT nextval('public.plaid_item_accounts_id_seq'::regclass);
+
+
+--
+-- Name: plaid_items id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.plaid_items ALTER COLUMN id SET DEFAULT nextval('public.plaid_items_id_seq'::regclass);
+
+
+--
+-- Name: plaid_transactions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.plaid_transactions ALTER COLUMN id SET DEFAULT nextval('public.plaid_transactions_id_seq'::regclass);
 
 
 --
@@ -1213,6 +1429,22 @@ ALTER TABLE ONLY public.account_user_permissions
 
 ALTER TABLE ONLY public.accounts
     ADD CONSTRAINT accounts_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: active_storage_attachments active_storage_attachments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.active_storage_attachments
+    ADD CONSTRAINT active_storage_attachments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: active_storage_blobs active_storage_blobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.active_storage_blobs
+    ADD CONSTRAINT active_storage_blobs_pkey PRIMARY KEY (id);
 
 
 --
@@ -1285,6 +1517,30 @@ ALTER TABLE ONLY public.flipper_features
 
 ALTER TABLE ONLY public.flipper_gates
     ADD CONSTRAINT flipper_gates_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: plaid_item_accounts plaid_item_accounts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.plaid_item_accounts
+    ADD CONSTRAINT plaid_item_accounts_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: plaid_items plaid_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.plaid_items
+    ADD CONSTRAINT plaid_items_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: plaid_transactions plaid_transactions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.plaid_transactions
+    ADD CONSTRAINT plaid_transactions_pkey PRIMARY KEY (id);
 
 
 --
@@ -1397,6 +1653,27 @@ CREATE INDEX index_accounts_on_discarded_at ON public.accounts USING btree (disc
 
 
 --
+-- Name: index_active_storage_attachments_on_blob_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_active_storage_attachments_on_blob_id ON public.active_storage_attachments USING btree (blob_id);
+
+
+--
+-- Name: index_active_storage_attachments_uniqueness; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_active_storage_attachments_uniqueness ON public.active_storage_attachments USING btree (record_type, record_id, name, blob_id);
+
+
+--
+-- Name: index_active_storage_blobs_on_key; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_active_storage_blobs_on_key ON public.active_storage_blobs USING btree (key);
+
+
+--
 -- Name: index_cells_on_account_id_and_series_id_and_scenario; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1415,6 +1692,13 @@ CREATE UNIQUE INDEX index_flipper_features_on_key ON public.flipper_features USI
 --
 
 CREATE UNIQUE INDEX index_flipper_gates_on_feature_key_and_key_and_value ON public.flipper_gates USING btree (feature_key, key, value);
+
+
+--
+-- Name: index_plaid_transactions_on_plaid_transaction_identifier; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_plaid_transactions_on_plaid_transaction_identifier ON public.plaid_transactions USING btree (plaid_transaction_identifier);
 
 
 --
@@ -1625,6 +1909,14 @@ ALTER TABLE ONLY public.budget_lines
 
 
 --
+-- Name: plaid_item_accounts fk_rails_7f47dbb069; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.plaid_item_accounts
+    ADD CONSTRAINT fk_rails_7f47dbb069 FOREIGN KEY (plaid_item_id) REFERENCES public.plaid_items(id);
+
+
+--
 -- Name: process_executions fk_rails_8312e93e59; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1649,11 +1941,27 @@ ALTER TABLE ONLY public.cells
 
 
 --
+-- Name: plaid_transactions fk_rails_91669f6ab9; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.plaid_transactions
+    ADD CONSTRAINT fk_rails_91669f6ab9 FOREIGN KEY (account_id) REFERENCES public.accounts(id);
+
+
+--
 -- Name: budget_line_scenarios fk_rails_9ab43f1055; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.budget_line_scenarios
     ADD CONSTRAINT fk_rails_9ab43f1055 FOREIGN KEY (fixed_budget_line_descriptor_id) REFERENCES public.fixed_budget_line_descriptors(id);
+
+
+--
+-- Name: plaid_transactions fk_rails_a810b9b840; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.plaid_transactions
+    ADD CONSTRAINT fk_rails_a810b9b840 FOREIGN KEY (plaid_item_id) REFERENCES public.plaid_items(id);
 
 
 --
@@ -1721,11 +2029,43 @@ ALTER TABLE ONLY public.accounts
 
 
 --
+-- Name: active_storage_attachments fk_rails_c3b3935057; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.active_storage_attachments
+    ADD CONSTRAINT fk_rails_c3b3935057 FOREIGN KEY (blob_id) REFERENCES public.active_storage_blobs(id);
+
+
+--
 -- Name: scratchpads fk_rails_c608ce4b4c; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.scratchpads
     ADD CONSTRAINT fk_rails_c608ce4b4c FOREIGN KEY (creator_id) REFERENCES public.users(id);
+
+
+--
+-- Name: plaid_item_accounts fk_rails_cd76fab8e2; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.plaid_item_accounts
+    ADD CONSTRAINT fk_rails_cd76fab8e2 FOREIGN KEY (account_id) REFERENCES public.accounts(id);
+
+
+--
+-- Name: plaid_items fk_rails_d063f9be8a; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.plaid_items
+    ADD CONSTRAINT fk_rails_d063f9be8a FOREIGN KEY (account_id) REFERENCES public.accounts(id);
+
+
+--
+-- Name: plaid_items fk_rails_f3e129c887; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.plaid_items
+    ADD CONSTRAINT fk_rails_f3e129c887 FOREIGN KEY (creator_id) REFERENCES public.users(id);
 
 
 --
@@ -1782,6 +2122,10 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190705140825'),
 ('20190705173411'),
 ('20190705180821'),
-('20190709141711');
+('20190709141711'),
+('20190712152031'),
+('20190712152310'),
+('20190712202725'),
+('20190717223839');
 
 

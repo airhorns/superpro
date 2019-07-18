@@ -248,7 +248,7 @@ export type User = {
   pendingInvitation: Scalars['Boolean'],
   primaryTextIdentifier: Scalars['String'],
   scratchpads: ScratchpadConnection,
-  secondaryTextIdentifier: Scalars['String'],
+  secondaryTextIdentifier?: Maybe<Scalars['String']>,
   todoFeedItems: TodoFeedItemConnection,
   updatedAt: Scalars['ISO8601DateTime'],
 };
