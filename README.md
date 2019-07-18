@@ -38,3 +38,20 @@ Setup DB:
     bin/rails db:setup
 
 And you're off to the races!
+
+### Structure
+
+Superpro is a Rails app with a React frontend that communicates over GraphQL.
+
+Useful directories:
+
+- `app/models`: Contains data models backed by database tables using Rails' ActiveRecord models.
+- `app/services`: Contains business logic modeled as discrete operations
+- `app/graphql`: Contains GraphQL types, queries, and mutations allowing the client side to fetch data or invoke services
+- `app/javascript/app`: Contains the client side application, the front of the frontend
+- `app/javascript/superlib`: Contains supporting libraries for the client side application, the back of the frontend
+
+We do our best to keep these principles in mind, within reason:
+
+- What can be done on the server should be done on the server. Frontends should be as dumb as possible in order to make writing more fo them easier.
+- Code should be written to be read, which usually means writing it is a little bit slower. We use types, descriptive variable names, and a little more boilerplate than other Rails apps might. This is to make it really easy to join the project, not break stuff, and change stuff quickly.
