@@ -3,10 +3,10 @@ import { Plugin, RenderBlockProps } from "slate-react";
 import styled from "styled-components";
 import { CheckBox } from "grommet";
 import { Row } from "superlib";
-import { isTemplateMode, isFullEditingMode } from "./utils";
+import { isTemplateMode, isFullEditingMode } from "../utils";
 import isHotkey from "is-hotkey";
-import { AvatarSelect } from "./AvatarSelect";
-import { TodoEditorContext } from "./TodoEditor";
+import { AvatarSelect } from "../AvatarSelect";
+import { TodoEditorContext } from "../TodoEditor";
 import { Block } from "slate";
 import { List } from "immutable";
 

@@ -17,14 +17,21 @@ import {
 import { Toolbar, ToolbarButton, ToolbarDivider, ToggleMarkToolbarButton, ToggleBlockToolbarButton } from "./Toolbar";
 import { Box, Button } from "grommet";
 import { isUndefined } from "util";
-import { isExecutionMode } from "./utils";
+import { isExecutionMode } from "../utils";
+import { InsertImageToolbarButton } from "./InsertImageToolbarButton";
+import { AttachmentContainerEnum } from "app/app-graph";
 
 export const CondensedTodosToggleButton = (props: { editor: Editor }) => {
   const text = props.editor.value.data.get("showOnlyCondensedTodos") ? "Show Instructions" : "Hide Instructions";
   return <Button plain label={text} onClick={() => props.editor.command("toggleShowOnlyCondensedTodos")} />;
 };
 
-export class TodoEditorToolbar extends React.Component<{ editor: Editor; extra?: React.ReactNode }> {
+export class TodoEditorToolbar extends React.Component<{
+  editor: Editor;
+  attachmentContainerId: string;
+  attachmentContainerType: AttachmentContainerEnum;
+  extra?: React.ReactNode;
+}> {
   undo = (event: React.SyntheticEvent) => {
     event.preventDefault();
     this.props.editor.undo();
@@ -56,6 +63,11 @@ export class TodoEditorToolbar extends React.Component<{ editor: Editor; extra?:
         <ToggleBlockToolbarButton type="numbered-list" icon={OrderedList} editor={this.props.editor} />
         <ToggleBlockToolbarButton type="bulleted-list" icon={BulletedList} editor={this.props.editor} />
         <ToolbarDivider />
+        <InsertImageToolbarButton
+          editor={this.props.editor}
+          attachmentContainerId={this.props.attachmentContainerId}
+          attachmentContainerType={this.props.attachmentContainerType}
+        />
         <ToggleBlockToolbarButton type="check-list-item" icon={CheckList} editor={this.props.editor} />
         <ToolbarButton active={false} icon={Deadline} onClick={this.addDeadline} />
         <ToolbarDivider />
@@ -67,7 +79,11 @@ export class TodoEditorToolbar extends React.Component<{ editor: Editor; extra?:
   }
 }
 
-export const TodoEditorToolbarPlugin = (options?: { toolbarExtra?: React.ReactNode }): Plugin => {
+export const TodoEditorToolbarPlugin = (options: {
+  attachmentContainerId: string;
+  attachmentContainerType: AttachmentContainerEnum;
+  toolbarExtra?: React.ReactNode;
+}): Plugin => {
   return {
     renderEditor(props, editor, next) {
       let showToolbar = editor.value.data.get("showToolbar");
@@ -75,7 +91,14 @@ export const TodoEditorToolbarPlugin = (options?: { toolbarExtra?: React.ReactNo
 
       return (
         <Box flex pad="small">
-          {showToolbar && <TodoEditorToolbar editor={(editor as unknown) as Editor} extra={options && options.toolbarExtra} />}
+          {showToolbar && (
+            <TodoEditorToolbar
+              editor={(editor as unknown) as Editor}
+              extra={options && options.toolbarExtra}
+              attachmentContainerId={options.attachmentContainerId}
+              attachmentContainerType={options.attachmentContainerType}
+            />
+          )}
           {next()}
         </Box>
       );

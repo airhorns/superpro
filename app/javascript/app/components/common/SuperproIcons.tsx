@@ -32,7 +32,8 @@ import {
   TextWrap,
   UserAdd,
   Share as GrommetShare,
-  Configure
+  Configure,
+  Image as GrommetImage
 } from "grommet-icons";
 
 // Navigation & Root level ideas
@@ -59,6 +60,7 @@ export const BlockQuote = GrommetBlockQuote;
 export const FontSize = Superscript;
 export const BulletedList = List;
 export const OrderedList = GrommetOrderedList;
+export const Image = GrommetImage;
 export const CheckList = Task;
 export const Link = GrommetLink;
 export const Expense = Currency;

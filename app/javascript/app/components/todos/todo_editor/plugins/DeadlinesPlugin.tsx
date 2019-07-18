@@ -6,7 +6,7 @@ import isHotkey from "is-hotkey";
 
 import { DividerHeading } from "app/components/common";
 import { Deadline } from "app/components/common/SuperproIcons";
-import { isTemplateMode } from "./utils";
+import { isTemplateMode } from "../utils";
 import { DatePicker, Row } from "superlib";
 import { DateTime } from "luxon";
 

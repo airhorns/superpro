@@ -15,8 +15,8 @@ import {
 } from "app/app-graph";
 import { UserCardProps, SavingNoticeState, ListPageCard } from "../common";
 import { TodoEditor } from "./todo_editor/TodoEditor";
-import { TrashScratchpadButton } from "./todo_editor/TrashScratchpadButton";
-import { ShareScratchpadButton } from "./todo_editor/ShareScratchpadButton";
+import { TrashScratchpadButton } from "./todo_editor/toolbar/TrashScratchpadButton";
+import { ShareScratchpadButton } from "./todo_editor/toolbar/ShareScratchpadButton";
 
 gql`
   fragment ScratchpadForm on Scratchpad {

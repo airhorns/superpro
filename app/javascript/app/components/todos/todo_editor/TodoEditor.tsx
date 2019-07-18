@@ -2,24 +2,24 @@ import React from "react";
 import { Editor, EditorProps } from "slate-react";
 import PasteLinkify from "slate-paste-linkify";
 import CollapseOnEscape from "slate-collapse-on-escape";
-import { ChecklistPlugin } from "./ChecklistPlugin";
-import { MarkHotkeys } from "./MarkHotkeysPlugin";
-import { SimpleListsPlugin } from "./SimpleLists";
-import { DeadlinesPlugin } from "./DeadlinesPlugin";
-import { BasicFormattingPlugin } from "./BasicFormattingPlugin";
-import { GlobalHotkeysPlugin } from "./GlobalHotkeysPlugin";
-import { RichShortcutsPlugin } from "./RichShortcutsPlugin";
-import { CondensedTodosPlugin } from "./CondensedTodosPlugin";
-import { TodoEditorToolbarPlugin } from "./TodoEditorToolbar";
-import { RerenderPlugin } from "./RerenderPlugin";
+import { ChecklistPlugin } from "./plugins/ChecklistPlugin";
+import { MarkHotkeys } from "./plugins/MarkHotkeysPlugin";
+import { SimpleListsPlugin } from "./plugins/SimpleListsPlugin";
+import { DeadlinesPlugin } from "./plugins/DeadlinesPlugin";
+import { BasicFormattingPlugin } from "./plugins/BasicFormattingPlugin";
+import { GlobalHotkeysPlugin } from "./plugins/GlobalHotkeysPlugin";
+import { RichShortcutsPlugin } from "./plugins/RichShortcutsPlugin";
+import { CondensedTodosPlugin } from "./plugins/CondensedTodosPlugin";
+import { TodoEditorToolbarPlugin } from "./toolbar/TodoEditorToolbar";
+import { RerenderPlugin } from "./plugins/RerenderPlugin";
 
 import { TodoSchema } from "./TodoSchema";
 import { UserCardProps } from "app/components/common";
 import "app/lib/slate";
 import gql from "graphql-tag";
-import { InsertFilesPlugin } from "./InsertFilesPlugin";
+import { PasteAndDropFilesPlugin } from "./plugins/PasteAndDropFilesPlugin";
 import { AttachmentContainerEnum } from "app/app-graph";
-import { RenderAttachmentsPlugin } from "./RenderAttachmentsPlugin";
+import { RenderAttachmentsPlugin } from "./plugins/RenderAttachmentsPlugin";
 
 gql`
   fragment ContextForTodoEditor on AppQuery {
@@ -64,8 +64,8 @@ export const TodoEditor = (
       SimpleListsPlugin(),
       RichShortcutsPlugin(),
       RenderAttachmentsPlugin(),
-      InsertFilesPlugin({ attachmentContainerId, attachmentContainerType }),
-      TodoEditorToolbarPlugin({ toolbarExtra }),
+      PasteAndDropFilesPlugin({ attachmentContainerId, attachmentContainerType }),
+      TodoEditorToolbarPlugin({ attachmentContainerId, attachmentContainerType, toolbarExtra }),
       RerenderPlugin()
     ];
   }, [toolbarExtra, attachmentContainerId, attachmentContainerType]);

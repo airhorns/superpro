@@ -101,6 +101,7 @@
     "react-beautiful-dnd": "^11.0.3",
     "react-display-name": "^0.2.4",
     "react-dom": "^16.7.0",
+    "react-dropzone": "^10.1.5",
     "react-file-icon": "^0.2.0",
     "react-gravatar": "^2.6.3",
     "react-helmet": "^5.2.1",
