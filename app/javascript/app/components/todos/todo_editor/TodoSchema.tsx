@@ -8,9 +8,6 @@ export const TodoSchema: SchemaProperties = {
     "heading-one": {},
     "heading-two": {},
     "block-quote": {},
-    image: {
-      isVoid: true
-    },
     "check-list-item": {
       data: {
         checked: value => isUndefined(value) || isBoolean(value),
@@ -20,6 +17,15 @@ export const TodoSchema: SchemaProperties = {
     deadline: {
       nodes: [{ match: { object: "inline" } }, { match: { object: "text" } }],
       data: { dueDate: () => true }
+    },
+    image: {
+      isVoid: true
+    },
+    "file-attachment": {
+      isVoid: true
+    },
+    "file-placeholder": {
+      isVoid: true
     }
   },
   inlines: {}

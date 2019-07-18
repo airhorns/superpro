@@ -24,4 +24,5 @@ class ProcessTemplate < ApplicationRecord
 
   belongs_to :creator, class_name: "User", inverse_of: :created_process_templates
   has_many :process_executions, inverse_of: :process_template, dependent: :nullify
+  has_many_attached :files
 end

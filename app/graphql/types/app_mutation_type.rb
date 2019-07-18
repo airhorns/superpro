@@ -16,4 +16,8 @@ class Types::AppMutationType < Types::BaseObject
   field :create_scratchpad, mutation: Mutations::Todos::CreateScratchpad
   field :update_scratchpad, mutation: Mutations::Todos::UpdateScratchpad
   field :discard_scratchpad, mutation: Mutations::Todos::DiscardScratchpad
+
+  # Infrastructure
+  field :attach_direct_uploaded_file, mutation: Mutations::Infrastructure::AttachDirectUploadedFile
+  field :attach_remote_url, mutation: Mutations::Infrastructure::AttachRemoteUrl
 end

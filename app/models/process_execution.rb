@@ -36,4 +36,5 @@ class ProcessExecution < ApplicationRecord
 
   has_many :process_execution_involved_users, dependent: :destroy, autosave: true
   has_many :involved_users, class_name: "User", through: :process_execution_involved_users, source: :user
+  has_many_attached :files
 end

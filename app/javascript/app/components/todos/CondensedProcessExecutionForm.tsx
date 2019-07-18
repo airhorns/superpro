@@ -8,7 +8,8 @@ import { SuperForm, ObjectBackend } from "superlib/superform";
 import {
   UpdateProcessExecutionTodosPageComponent,
   CondensedProcessExecutionFormFragment,
-  UpdateProcessExecutionTodosPageMutationFn
+  UpdateProcessExecutionTodosPageMutationFn,
+  AttachmentContainerEnum
 } from "app/app-graph";
 import { UserCardProps, SavingNoticeState, SavingNotice, ListPageCard } from "../common";
 import { TodoEditor } from "./todo_editor/TodoEditor";
@@ -117,6 +118,8 @@ export class CondensedProcessExecutionForm extends React.Component<CondensedProc
                 >
                   <TodoEditor
                     users={this.props.users}
+                    attachmentContainerType={AttachmentContainerEnum.ProcessExecution}
+                    attachmentContainerId={this.props.processExecution.id}
                     value={form.getValue("processExecution.value")}
                     onChange={({ value }: { value: Value }) => {
                       form.setValue("processExecution.value", value);

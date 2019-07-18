@@ -17,6 +17,7 @@ export interface SettingsBag {
     exponent: number;
   };
   flags: SuperproFlags;
+  directUploadUrl: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-object-literal-type-assertion

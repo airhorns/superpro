@@ -9,7 +9,8 @@ import {
   StartProcessExecutionComponent,
   StartProcessExecutionMutationFn,
   GetProcessTemplateForStartQuery,
-  StartProcessExecutionMutationVariables
+  StartProcessExecutionMutationVariables,
+  AttachmentContainerEnum
 } from "app/app-graph";
 import { Value } from "slate";
 import { Button } from "grommet";
@@ -150,6 +151,8 @@ export default class extends Page<{ id: string }, StartProcessPageState> {
                       <TodoEditor
                         readOnly={this.state.saving}
                         users={data.users.nodes}
+                        attachmentContainerType={AttachmentContainerEnum.ProcessTemplate}
+                        attachmentContainerId={data.processTemplate.id}
                         value={form.getValue("processExecution.value")}
                         onChange={({ value }: { value: Value }) => {
                           form.setValue("processExecution.value", value);

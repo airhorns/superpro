@@ -13,7 +13,8 @@ import {
   GetProcessExecutionForEditComponent,
   UpdateProcessExecutionComponent,
   UpdateProcessExecutionMutationFn,
-  GetProcessExecutionForEditQuery
+  GetProcessExecutionForEditQuery,
+  AttachmentContainerEnum
 } from "app/app-graph";
 
 gql`
@@ -161,6 +162,8 @@ export default class extends Page<{ id: string }, SavingNoticeState> {
                     >
                       <TodoEditor
                         users={data.users.nodes}
+                        attachmentContainerType={AttachmentContainerEnum.ProcessExecution}
+                        attachmentContainerId={data.processExecution.id}
                         value={form.getValue("processExecution.value")}
                         onChange={({ value }: { value: Value }) => {
                           form.setValue("processExecution.value", value);

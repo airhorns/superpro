@@ -45,6 +45,7 @@ gem 'hiredis'
 gem 'jwt'
 gem "lru_redux"
 gem "marginalia"
+gem "mini_magick"
 gem "oj"
 gem "que", github: "chanks/que", ref: "5ddddd5ebac6153d7a683ef08c86bced8e03fb51"
 gem "que-scheduler", github: "hlascelles/que-scheduler", branch: "que-1.0-compatibility"
