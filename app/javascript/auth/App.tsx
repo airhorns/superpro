@@ -10,9 +10,9 @@ import { client } from "./lib/apollo";
 import { PrivateRoute } from "./components/PrivateRoute";
 import { SentryErrorBoundary, FlagsProvider, PageLoadSpin, ToastContainer, SegmentIdentify } from "../superlib";
 
-const HomePage = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "Auth" */ "./components/HomePage"));
-const SignUpPage = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "Auth" */ "./components/SignUpPage"));
-const AcceptInvitePage = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "Auth" */ "./components/AcceptInvitePage"));
+const HomePage = React.lazy(() => import("./components/HomePage"));
+const SignUpPage = React.lazy(() => import("./components/SignUpPage"));
+const AcceptInvitePage = React.lazy(() => import("./components/AcceptInvitePage"));
 const NewAccountPage = React.lazy(() => import("./components/NewAccountPage"));
 
 export class App extends React.Component {
