@@ -6,6 +6,8 @@
   value: "true"
 - name: RAILS_LOG_TO_STDOUT
   value: "true"
+- name: RAILS_LOG_LEVEL
+  value: <%= if defined?(rails_log_level) then rails_log_level else "debug" end %>
 - name: DATABASE_URL
   valueFrom:
     secretKeyRef:
