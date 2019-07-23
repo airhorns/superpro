@@ -12,7 +12,7 @@ gem 'graphql-batch', require: "graphql/batch"
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 4.0'
 gem 'rack-cors'
-gem 'rails', '6.0.0.rc1'
+gem 'rails', '6.0.0.rc2'
 gem 'webpacker'
 
 # Functionality
