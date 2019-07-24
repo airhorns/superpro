@@ -47,7 +47,7 @@ You need to be running 3 processes to run a local instance of Superpro:
 - `bin/rails server`: Runs the Ruby server process to render pages requested by the browser
 - `bin/webpack-dev-server`: Runs a Node server process to compile, serve, and cache assets (almost all JavaScript) to the browser with much faster re-compile speeds
 
-Run these three (most do it in separate terminal windows) processes, and then visit https://app.supo.dev , which will point to your local Superpro instance.
+Run these three (most do it in separate terminal windows) processes, and then visit https://app.supo.dev, which will point to your local Superpro instance.
 
 ### Structure
 

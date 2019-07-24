@@ -65,7 +65,7 @@ export const AppSidebar = withRouter(
                     </Text>
                   </Box>
                 )}
-                <Box overflow={{ vertical: "auto" }}>
+                <Box flex="grow" overflow={{ vertical: "auto" }}>
                   <NavigationSectionButton path="/launchpad" text="Launchpad" icon={<Launch />} onClick={this.close} />
                   <Flag name={["feature.todos"]}>
                     <NavigationSectionButton path="/todos" text="Todos" icon={<Todos />} onClick={this.close}>
