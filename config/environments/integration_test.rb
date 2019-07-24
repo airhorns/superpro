@@ -31,7 +31,7 @@ Rails.application.configure do
   # The :test delivery method accumulates sent emails in the
   # ActionMailer::Base.deliveries array.
   config.action_mailer.delivery_method = :test
-  config.action_mailer.default_url_options = { host: "test-emails.ggt.dev" }
+  config.action_mailer.default_url_options = { host: "test-emails.supo.dev" }
 
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
@@ -43,8 +43,8 @@ Rails.application.configure do
   logger.formatter = config.log_formatter
   config.logger = ActiveSupport::TaggedLogging.new(logger)
 
-  config.x.domains.app = "app.ggt.dev"
-  config.x.domains.admin = "admin.ggt.dev"
-  config.x.domains.assets = "assets.ggt.dev"
-  config.hosts << ".ggt.dev"
+  config.x.domains.app = "app.supo.dev"
+  config.x.domains.admin = "admin.supo.dev"
+  config.x.domains.assets = "assets.supo.dev"
+  config.hosts << ".supo.dev"
 end

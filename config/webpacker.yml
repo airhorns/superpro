@@ -63,7 +63,7 @@ development:
     https: false
     host: localhost
     port: 3035
-    public: https://ggt.dev:3034
+    public: https://supo.dev:3034
     hmr: false
     inline: true
     overlay: true
@@ -72,7 +72,7 @@ development:
     use_local_ip: false
     quiet: false
     headers:
-      "Access-Control-Allow-Origin": "https://ggt.dev"
+      "Access-Control-Allow-Origin": "https://supo.dev"
       "Access-Control-Allow-Credentials": "true"
     watch_options:
       ignored: "**/node_modules/**"

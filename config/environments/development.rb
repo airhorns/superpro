@@ -66,9 +66,9 @@ Rails.application.configure do
     Bullet.rails_logger = true
   end
 
-  config.x.domains.app = "app.ggt.dev"
-  config.x.domains.admin = "admin.ggt.dev"
-  config.action_controller.asset_host = "assets.ggt.dev"
-  config.hosts << ".ggt.dev"
+  config.x.domains.app = "app.supo.dev"
+  config.x.domains.admin = "admin.supo.dev"
+  config.action_controller.asset_host = "assets.supo.dev"
+  config.hosts << ".supo.dev"
   config.action_mailer.default_url_options = { host: config.x.domains.app }
 end

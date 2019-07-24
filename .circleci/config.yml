@@ -134,7 +134,7 @@ jobs:
             wget -O mkcert https://github.com/FiloSottile/mkcert/releases/download/v1.3.0/mkcert-v1.3.0-linux-amd64
             chmod +x mkcert
             ./mkcert -install
-            ./mkcert -cert-file .circleci/server.crt -key-file .circleci/server.key ggt.dev "*.ggt.dev"
+            ./mkcert -cert-file .circleci/server.crt -key-file .circleci/server.key supo.dev "*.supo.dev"
       - run:
           name: Set up database
           command: RAILS_ENV=integration_test bin/rails db:prepare
