@@ -41,6 +41,7 @@ class Account < ApplicationRecord
     end
   end
 
+  has_many :connections, inverse_of: :account, dependent: :destroy
   has_many :plaid_items, inverse_of: :account, dependent: :destroy
   has_many :plaid_item_accounts, inverse_of: :account, dependent: :destroy
   has_many :plaid_transactions, inverse_of: :account, dependent: :destroy

@@ -16,6 +16,10 @@ class Connections::PlaidAuth
       item.access_token = access_token
       sync_accounts(item)
       item.save!
+
+      connection = @account.connections.find_or_initialize_by(integration: item)
+      connection.display_name = "Plaid Account (Item ID: #{item_id})"
+      connection.save!
     end
 
     item
