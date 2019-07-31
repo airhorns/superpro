@@ -28,6 +28,7 @@ module Superpro
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
+
     config.autoload_paths << Rails.root.join("app", "services")
     config.autoload_paths << Rails.root.join("app", "graphql")
     config.autoload_paths << Rails.root.join("app", "lib")
@@ -38,14 +39,17 @@ module Superpro
     end
 
     config.active_record.index_nested_attribute_errors = true
+
+    # Needed for views and postgres extensions
     config.active_record.schema_format = :sql
 
-    config.x.domains.app = "replaceme"
-    config.x.domains.admin = "replaceme"
+    config.x.domains.app = "should set in the environments"
+    config.x.domains.admin = "should be set in the environments"
 
     config.admin = config_for(:admin)
     config.cubejs = config_for(:cubejs)
     config.plaid = config_for(:plaid)
+    config.singer_importer = config_for(:singer_importer)
 
     config.middleware.swap(
       Rails::Rack::Logger,

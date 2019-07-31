@@ -557,7 +557,6 @@ GEM
     websocket-driver (0.7.1)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.4)
-    xxhash (0.4.0)
     yard (0.9.20)
     zeitwerk (2.1.9)
 
@@ -641,7 +640,6 @@ DEPENDENCIES
   web-console!
   webmock
   webpacker
-  xxhash
 
 RUBY VERSION
    ruby 2.6.2p47

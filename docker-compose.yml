@@ -53,4 +53,17 @@ services:
       CUBEJS_DB_NAME: superpro_development
       CUBEJS_DB_USER: superpro
       CUBEJS_API_SECRET: testdevelopmentapisecret
-      REDIS_URL: redis://redis:6379/0
+      REDIS_URL: redis://redis:6379/2
+
+  singer-importer:
+    image: gcr.io/superpro-production/singer-importer:05680d68ef9c753ecc07a5781c46c758ed05833f
+    ports:
+      - 4002:5000
+    restart: on-failure
+    environment:
+      FLASK_ENV: development
+      TARGET_POSTGRES_HOST: postgres
+      TARGET_POSTGRES_DATABASE: superpro_development
+      TARGET_POSTGRES_USERNAME: superpro
+      AUTH_TOKENS: testdevelopmentapisecret
+      REDIS_URL: redis://redis:6379/3

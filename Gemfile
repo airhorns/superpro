@@ -24,10 +24,7 @@ gem 'rails-i18n'
 gem 'omniauth'
 gem 'plaid'
 gem 'shopify_api'
-
-# JSFarm
 gem 'rest-client'
-gem 'xxhash'
 
 # Performance & Infrastructure
 gem 'active_record_query_trace'
