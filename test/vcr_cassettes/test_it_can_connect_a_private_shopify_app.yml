@@ -1,0 +1,112 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://hrsn.myshopify.com/admin/api/2019-04/shop.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Authorization:
+      - Basic ZjdjY2U1ZjNhOWNiYTMzMDkzZTU3NjZkNGZjMGVlNTY6YzMxM2Y4MWZlODUxYjg5YjM2OWY3OTdjZjk5ZTM0NzY=
+      Accept:
+      - application/json
+      User-Agent:
+      - ShopifyAPI/7.0.1 ActiveResource/5.1.0 Ruby/2.6.2
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Wed, 31 Jul 2019 13:32:42 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Set-Cookie:
+      - __cfduid=d1a00e7c08ae9245439981b95dc4f10461564579962; expires=Thu, 30-Jul-20
+        13:32:42 GMT; path=/; domain=.myshopify.com; HttpOnly
+      X-Sorting-Hat-Podid:
+      - '55'
+      X-Sorting-Hat-Shopid:
+      - '21942543'
+      Vary:
+      - Accept-Encoding
+      Referrer-Policy:
+      - origin-when-cross-origin
+      X-Frame-Options:
+      - DENY
+      X-Shopid:
+      - '21942543'
+      X-Shardid:
+      - '55'
+      X-Stats-Userid:
+      - ''
+      X-Stats-Apiclientid:
+      - '2759947'
+      X-Stats-Apipermissionid:
+      - '97204797496'
+      X-Shopify-Api-Terms:
+      - By accessing or using the Shopify API you agree to the Shopify API License
+        and Terms of Use at https://www.shopify.com/legal/api-terms
+      Http-X-Shopify-Shop-Api-Call-Limit:
+      - 1/40
+      X-Shopify-Shop-Api-Call-Limit:
+      - 1/40
+      X-Shopify-Api-Version:
+      - 2019-04
+      Strict-Transport-Security:
+      - max-age=7889238
+      X-Request-Id:
+      - 8876230e-ddcd-4237-826f-8e4a7c524e4f
+      X-Shopify-Stage:
+      - production
+      Content-Security-Policy:
+      - 'default-src ''self'' data: blob: ''unsafe-inline'' ''unsafe-eval'' https://*
+        shopify-pos://*; block-all-mixed-content; child-src ''self'' https://* shopify-pos://*;
+        connect-src ''self'' wss://* https://*; frame-ancestors ''none''; img-src
+        ''self'' data: blob: https:; script-src https://cdn.shopify.com https://checkout.shopifycs.com
+        https://js-agent.newrelic.com https://bam.nr-data.net https://dme0ih8comzn4.cloudfront.net
+        https://api.stripe.com https://mpsnare.iesnare.com https://appcenter.intuit.com
+        https://www.paypal.com https://js.braintreegateway.com https://c.paypal.com
+        https://maps.googleapis.com https://www.google-analytics.com https://v.shopify.com
+        https://widget.intercom.io https://js.intercomcdn.com ''self'' ''unsafe-inline''
+        ''unsafe-eval''; upgrade-insecure-requests; report-uri /csp-report?source%5Baction%5D=show&source%5Bapp%5D=Shopify&source%5Bcontroller%5D=admin%2Fshops&source%5Bsection%5D=admin_api&source%5Buuid%5D=8876230e-ddcd-4237-826f-8e4a7c524e4f'
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Xss-Protection:
+      - 1; mode=block; report=/xss-report?source%5Baction%5D=show&source%5Bapp%5D=Shopify&source%5Bcontroller%5D=admin%2Fshops&source%5Bsection%5D=admin_api&source%5Buuid%5D=8876230e-ddcd-4237-826f-8e4a7c524e4f
+      X-Dc:
+      - gcp-us-east1,gcp-us-east1
+      Nel:
+      - '{"report_to":"network-errors","max_age":2592000,"failure_fraction":0.01,"success_fraction":0.0001}'
+      Report-To:
+      - '{"group":"network-errors","max_age":2592000,"endpoints":[{"url":"https://monorail-edge.shopifycloud.com/v1/reports/nel/20190325/shopify"}]}'
+      Expect-Ct:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 4feff09b58a627c0-YYZ
+    body:
+      encoding: ASCII-8BIT
+      string: '{"shop":{"id":21942543,"name":"Big Clear Farms","email":"harry.brundage@gmail.com","domain":"bigclear.farm","province":"Ontario","country":"CA","address1":"250
+        City Centre Ave, Bay 216","zip":"K1R 6K7","city":"Ottawa","source":null,"phone":"613
+        400 0293","latitude":45.40828250000001,"longitude":-75.71878,"primary_locale":"en","address2":"Suite
+        800","created_at":"2017-07-17T14:55:47-04:00","updated_at":"2019-02-13T17:57:27-05:00","country_code":"CA","country_name":"Canada","currency":"CAD","customer_email":"harry.brundage@gmail.com","timezone":"(GMT-05:00)
+        America\/New_York","iana_timezone":"America\/New_York","shop_owner":"Harrison
+        Brundage","money_format":"${{amount}}","money_with_currency_format":"${{amount}}
+        CAD","weight_unit":"kg","province_code":"ON","taxes_included":false,"tax_shipping":null,"county_taxes":true,"plan_display_name":"staff_business","plan_name":"staff_business","has_discounts":false,"has_gift_cards":false,"myshopify_domain":"hrsn.myshopify.com","google_apps_domain":null,"google_apps_login_enabled":null,"money_in_emails_format":"${{amount}}","money_with_currency_in_emails_format":"${{amount}}
+        CAD","eligible_for_payments":true,"requires_extra_payments_agreement":false,"password_enabled":false,"has_storefront":true,"eligible_for_card_reader_giveaway":true,"finances":true,"primary_location_id":40483778,"checkout_api_supported":true,"multi_location_enabled":true,"setup_required":false,"force_ssl":true,"pre_launch_enabled":false,"enabled_presentment_currencies":["CAD"]}}'
+    http_version: 
+  recorded_at: Wed, 31 Jul 2019 13:32:42 GMT
+recorded_with: VCR 5.0.0

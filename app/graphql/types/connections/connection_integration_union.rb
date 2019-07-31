@@ -3,7 +3,7 @@ class Types::Connections::ConnectionIntegrationUnion < Types::BaseUnion
   possible_types Types::Connections::PlaidItemType
 
   # Optional: if this method is defined, it will override `Schema.resolve_type`
-  def self.resolve_type(object, context)
+  def self.resolve_type(object, _context)
     if object.is_a?(PlaidItem)
       Types::Connections::PlaidItemType
     else

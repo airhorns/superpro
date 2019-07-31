@@ -1,4 +1,5 @@
 import createFlags from "flag";
+import { KeyPath } from "useful-types";
 
 export interface SuperproFlags {
   "feature.connections": boolean;
@@ -9,3 +10,4 @@ export interface SuperproFlags {
 
 const { FlagsProvider, Flag, useFlag, useFlags } = createFlags<SuperproFlags>();
 export { FlagsProvider, Flag, useFlag, useFlags };
+export type FlagKeyPath = KeyPath<SuperproFlags>;

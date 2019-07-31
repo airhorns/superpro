@@ -5,7 +5,7 @@ class Mutations::Connections::ConnectPlaid < Mutations::BaseMutation
   field :errors, [String], null: true
 
   def resolve(public_token:)
-    item, errors = Connections::PlaidAuth.new(context[:current_account], context[:current_user]).complete_link(public_token)
+    item, _ = Connections::PlaidAuth.new(context[:current_account], context[:current_user]).complete_link(public_token)
     if item
       {
         plaid_item: item,

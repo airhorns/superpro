@@ -677,11 +677,10 @@ ALTER SEQUENCE public.cells_id_seq OWNED BY public.cells.id;
 CREATE TABLE public.connections (
     id bigint NOT NULL,
     account_id bigint NOT NULL,
-    provider_key character varying NOT NULL,
-    provider_system_identifier character varying NOT NULL,
+    integration_id bigint NOT NULL,
+    integration_type character varying NOT NULL,
+    enabled boolean DEFAULT true NOT NULL,
     display_name character varying NOT NULL,
-    config json,
-    discarded_at timestamp without time zone,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -1194,6 +1193,43 @@ ALTER SEQUENCE public.series_id_seq OWNED BY public.series.id;
 
 
 --
+-- Name: shopify_shops; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.shopify_shops (
+    id bigint NOT NULL,
+    shopify_domain character varying NOT NULL,
+    api_key character varying NOT NULL,
+    password character varying NOT NULL,
+    name character varying NOT NULL,
+    shop_id bigint NOT NULL,
+    account_id bigint NOT NULL,
+    creator_id bigint NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: shopify_shops_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.shopify_shops_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: shopify_shops_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.shopify_shops_id_seq OWNED BY public.shopify_shops.id;
+
+
+--
 -- Name: todo_feed_items; Type: VIEW; Schema: public; Owner: -
 --
 
@@ -1429,6 +1465,13 @@ ALTER TABLE ONLY public.series ALTER COLUMN id SET DEFAULT nextval('public.serie
 
 
 --
+-- Name: shopify_shops id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.shopify_shops ALTER COLUMN id SET DEFAULT nextval('public.shopify_shops_id_seq'::regclass);
+
+
+--
 -- Name: users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1644,18 +1687,19 @@ ALTER TABLE ONLY public.series
 
 
 --
+-- Name: shopify_shops shopify_shops_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.shopify_shops
+    ADD CONSTRAINT shopify_shops_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
-
-
---
--- Name: idx_connections_on_account_provider; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX idx_connections_on_account_provider ON public.connections USING btree (account_id, provider_key, provider_system_identifier);
 
 
 --
@@ -1726,6 +1770,13 @@ CREATE UNIQUE INDEX index_plaid_transactions_on_plaid_transaction_identifier ON 
 --
 
 CREATE UNIQUE INDEX index_que_scheduler_audit_on_scheduler_job_id ON public.que_scheduler_audit USING btree (scheduler_job_id);
+
+
+--
+-- Name: index_shopify_shops_on_account_id_and_shopify_domain; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_shopify_shops_on_account_id_and_shopify_domain ON public.shopify_shops USING btree (account_id, shopify_domain);
 
 
 --
@@ -1873,11 +1924,27 @@ ALTER TABLE ONLY public.series
 
 
 --
+-- Name: shopify_shops fk_rails_484f3cc7d7; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.shopify_shops
+    ADD CONSTRAINT fk_rails_484f3cc7d7 FOREIGN KEY (account_id) REFERENCES public.accounts(id);
+
+
+--
 -- Name: process_executions fk_rails_501396e88e; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.process_executions
     ADD CONSTRAINT fk_rails_501396e88e FOREIGN KEY (process_template_id) REFERENCES public.process_templates(id);
+
+
+--
+-- Name: shopify_shops fk_rails_55ea274344; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.shopify_shops
+    ADD CONSTRAINT fk_rails_55ea274344 FOREIGN KEY (creator_id) REFERENCES public.users(id);
 
 
 --
@@ -2146,6 +2213,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190712152031'),
 ('20190712152310'),
 ('20190712202725'),
-('20190717223839');
+('20190717223839'),
+('20190729180803'),
+('20190729181220');
 
 

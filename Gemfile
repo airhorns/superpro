@@ -23,6 +23,7 @@ gem 'rails-i18n'
 # Integrations
 gem 'omniauth'
 gem 'plaid'
+gem 'shopify_api'
 
 # JSFarm
 gem 'rest-client'

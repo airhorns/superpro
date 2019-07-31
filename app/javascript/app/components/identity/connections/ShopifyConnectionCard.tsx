@@ -1,0 +1,115 @@
+import React from "react";
+import gql from "graphql-tag";
+import { Settings } from "app/lib/settings";
+import { ConnectionCard } from "./ConnectionCard";
+import { useConnectShopifyMutation, GetConnectionsIndexPageDocument } from "app/app-graph";
+import { mutationSuccess, toast, SimpleModal } from "superlib";
+import { Box, Text, Heading, Button } from "grommet";
+import { flatMap } from "lodash";
+import { Add } from "app/components/common/SuperproIcons";
+import { useSuperForm, Input, FieldBox, SuperForm } from "superlib/superform";
+
+gql`
+  fragment ShopifyConnectionCardContent on ShopifyShop {
+    id
+    name
+    shopifyDomain
+    shopId
+  }
+
+  mutation ConnectShopify($apiKey: String!, $password: String!, $domain: String!) {
+    connectShopify(apiKey: $apiKey, password: $password, domain: $domain) {
+      errors
+      shopifyShop {
+        ...ShopifyConnectionCardContent
+      }
+    }
+  }
+`;
+
+interface ShopifyShop {
+  id: string;
+  name: string;
+  shopifyDomain: string;
+  shopId: string;
+}
+
+interface NewShopFormValues {
+  apiKey: string;
+  password: string;
+  domain: string;
+}
+
+const NewShopifyConnectionForm = () => {
+  const connectShopify = useConnectShopifyMutation();
+
+  const onSubmit = React.useCallback(
+    async (formValues: NewShopFormValues, setShow: (modalShow: boolean) => void) => {
+      let success = false;
+      let result;
+      try {
+        result = await connectShopify({ variables: formValues, refetchQueries: [{ query: GetConnectionsIndexPageDocument }] });
+      } catch (e) {}
+
+      const data = mutationSuccess(result, "connectShopify");
+      if (data) {
+        success = true;
+        toast.success("Shopify connected successfully.");
+      }
+
+      if (!success) {
+        toast.error("There was an error connecting Shopify. Please try again.");
+      } else {
+        setShow(false);
+      }
+    },
+    [connectShopify]
+  );
+
+  return (
+    <SimpleModal triggerLabel="Connect Shopify" triggerIcon={<Add />}>
+      {setShow => (
+        <SuperForm<NewShopFormValues> onSubmit={doc => onSubmit(doc, setShow)} initialValues={{ apiKey: "", password: "", domain: "" }}>
+          {() => (
+            <Box gap="small">
+              <Heading level="3">Connect New Shopify Shop</Heading>
+              <FieldBox path="domain" label="Shopify Shop domain">
+                <Input path="domain" />
+              </FieldBox>
+              <FieldBox path="apiKey" label="API Key">
+                <Input path="apiKey" />
+              </FieldBox>
+              <FieldBox path="password" label="API Password">
+                <Input path="password" />
+              </FieldBox>
+              <Button type="submit" label="Connect" />
+            </Box>
+          )}
+        </SuperForm>
+      )}
+    </SimpleModal>
+  );
+};
+
+export const ShopifyConnectionCard = (props: { shopifyShops: ShopifyShop[] }) => {
+  return (
+    <ConnectionCard
+      name="Shopify"
+      description="Superpro connects to [Shopify](https://www.shopify.com/) to import your order, inventory, customer, and web traffic data."
+    >
+      {props.shopifyShops.length > 0 && (
+        <Box>
+          <Text>Currently Connected Shops:</Text>
+          <ul>
+            {props.shopifyShops.map(shop => (
+              <li key={shop.id}>
+                {shop.name} (<a href={`https://${shop.shopifyDomain}`}>{shop.shopifyDomain}</a>)
+              </li>
+            ))}
+          </ul>
+        </Box>
+      )}
+      <NewShopifyConnectionForm />
+    </ConnectionCard>
+  );
+};

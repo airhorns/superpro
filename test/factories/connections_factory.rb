@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :shopify_connection do
+  factory :connection, class: Connection do
     display_name { "Test Shopify Connection" }
     association :account
 
@@ -7,7 +7,7 @@ FactoryBot.define do
     integration_id { create(:shopify_shop).id }
   end
 
-  factory :plaid_connection do
+  factory :plaid_connection, class: Connection do
     display_name { "Test Plaid Connection" }
     association :account
 

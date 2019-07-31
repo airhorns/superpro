@@ -3,5 +3,6 @@ module Types
     include Identity::IdentityQueries
     include Budget::BudgetQueries
     include Todos::TodosQueries
+    include Connections::ConnectionsQueries
   end
 end

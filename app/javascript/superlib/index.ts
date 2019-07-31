@@ -12,6 +12,7 @@ export * from "./SentryErrorBoundary";
 export * from "./SegmentAnalytics";
 export * from "./SuperproTheme";
 export * from "./SimpleModal";
+export * from "./FlagRoute";
 export * from "./Link";
 export * from "./DatePicker";
 export * from "./utils";
