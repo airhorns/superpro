@@ -24,4 +24,5 @@ class Types::AppMutationType < Types::BaseObject
   # Connections
   field :connect_plaid, mutation: Mutations::Connections::ConnectPlaid
   field :connect_shopify, mutation: Mutations::Connections::ConnectShopify
+  field :restart_connection_sync, mutation: Mutations::Connections::RestartConnectionSync
 end

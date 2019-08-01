@@ -1,13 +1,12 @@
 import React from "react";
 import gql from "graphql-tag";
-import { Settings } from "app/lib/settings";
 import { ConnectionCard } from "./ConnectionCard";
 import { useConnectShopifyMutation, GetConnectionsIndexPageDocument } from "app/app-graph";
-import { mutationSuccess, toast, SimpleModal } from "superlib";
+import { mutationSuccess, toast, SimpleModal, Row } from "superlib";
 import { Box, Text, Heading, Button } from "grommet";
-import { flatMap } from "lodash";
 import { Add } from "app/components/common/SuperproIcons";
-import { useSuperForm, Input, FieldBox, SuperForm } from "superlib/superform";
+import { Input, FieldBox, SuperForm } from "superlib/superform";
+import { RestartConnectionSyncButton } from "./RestartConnectionSyncButton";
 
 gql`
   fragment ShopifyConnectionCardContent on ShopifyShop {
@@ -15,6 +14,9 @@ gql`
     name
     shopifyDomain
     shopId
+    connection {
+      id
+    }
   }
 
   mutation ConnectShopify($apiKey: String!, $password: String!, $domain: String!) {
@@ -32,6 +34,9 @@ interface ShopifyShop {
   name: string;
   shopifyDomain: string;
   shopId: string;
+  connection: {
+    id: string;
+  };
 }
 
 interface NewShopFormValues {
@@ -103,7 +108,13 @@ export const ShopifyConnectionCard = (props: { shopifyShops: ShopifyShop[] }) =>
           <ul>
             {props.shopifyShops.map(shop => (
               <li key={shop.id}>
-                {shop.name} (<a href={`https://${shop.shopifyDomain}`}>{shop.shopifyDomain}</a>)
+                <Box gap="small">
+                  <Heading level="5">{shop.name}</Heading>
+                  <Row justify="between">
+                    <a href={`https://${shop.shopifyDomain}`}>{shop.shopifyDomain}</a>
+                    <RestartConnectionSyncButton connection={shop.connection} />
+                  </Row>
+                </Box>
               </li>
             ))}
           </ul>

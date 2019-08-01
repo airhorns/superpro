@@ -26,4 +26,5 @@
 class ShopifyShop < ApplicationRecord
   include AccountScoped
   belongs_to :creator, class_name: "User", optional: false
+  has_one :connection, as: :integration, dependent: :destroy
 end

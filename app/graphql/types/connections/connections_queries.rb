@@ -5,6 +5,8 @@ module Types::Connections::ConnectionsQueries
     field :plaid_items, Types::Connections::PlaidItemType.connection_type, null: false, description: "Get all the Plaid connections for the current account"
 
     field :shopify_shops, Types::Connections::ShopifyShopType.connection_type, null: false, description: "Get all the Shopify Shop connections for the current account"
+
+    field :connections, Types::Connections::ConnectionType.connection_type, null: false, description: "Get all the connections for all integrations for the current account"
   end
 
   def plaid_items
@@ -13,5 +15,9 @@ module Types::Connections::ConnectionsQueries
 
   def shopify_shops
     context[:current_account].shopify_shops
+  end
+
+  def connections
+    context[:current_account].connections
   end
 end

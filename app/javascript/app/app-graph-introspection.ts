@@ -38,6 +38,15 @@ const result: IntrospectionResultData = {
             name: "BudgetLineSeriesValue"
           }
         ]
+      },
+      {
+        kind: "UNION",
+        name: "ConnectionIntegrationUnion",
+        possibleTypes: [
+          {
+            name: "PlaidItem"
+          }
+        ]
       }
     ]
   }
