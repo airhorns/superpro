@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :connection, class: Connection do
+  factory :shopify_connection, class: Connection do
     display_name { "Test Shopify Connection" }
     strategy { "singer" }
     association :account

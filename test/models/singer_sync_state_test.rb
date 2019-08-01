@@ -15,7 +15,7 @@
 #  fk_rails_...  (connection_id => connections.id)
 #
 
-require 'test_helper'
+require "test_helper"
 
 class SingerSyncStateTest < ActiveSupport::TestCase
   # test "the truth" do

@@ -5,7 +5,7 @@ class Infrastructure::PeriodicSyncAllConnectionsJob < Que::Job
     end
   end
 
-  def log_level(elapsed)
+  def log_level(_elapsed)
     :info
   end
 end
