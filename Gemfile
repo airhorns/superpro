@@ -51,12 +51,13 @@ gem "oj"
 gem "que", github: "chanks/que", ref: "5ddddd5ebac6153d7a683ef08c86bced8e03fb51"
 gem "que-scheduler", github: "hlascelles/que-scheduler", branch: "que-1.0-compatibility"
 gem 'que-web'
+gem 'rails-middleware-extensions'
+gem 'rails_semantic_logger'
 gem 'redis', '~> 4.0'
 gem 'request_store'
 gem "safely"
 gem "scenic"
 gem "sentry-raven"
-gem 'silencer'
 
 # Admin
 gem 'omniauth-google-oauth2'
@@ -64,6 +65,7 @@ gem 'trestle'
 gem 'trestle-omniauth'
 
 group :development, :test, :integration_test do
+  gem 'awesome_print'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'factory_bot_rails'
   gem 'faker'

@@ -51,13 +51,21 @@ module Superpro
     config.plaid = config_for(:plaid)
     config.singer_importer = config_for(:singer_importer)
 
-    config.middleware.swap(
-      Rails::Rack::Logger,
-      Silencer::Logger,
-      config.log_tags,
-      silence: ["/health_check", "/favicon.ico"],
-    )
+    config.rails_semantic_logger.semantic = true
 
+    silence_regex = %r(\A/health_check|favicon)
+    logger = SemanticLogger[Rails]
+    logger.filter = ->log { log.payload[:path] !~ silence_regex if log.payload }
+
+    config.log_tags = {
+      request_id: :request_id,
+      user_id: ->request { request.session[:current_user_id] },
+      account_id: ->request { request.session[:current_account_id] },
+      client_session_id: ->request { request.headers["X-Client-Session-Id"] },
+    }
+
+    # Make sure that the semantic logger middleware which evaluats the above log_tags procs has a session on the request
+    config.middleware.move_after ActionDispatch::Session::CacheStore, RailsSemanticLogger::Rack::Logger, config.log_tags
     config.middleware.use Flipper::Middleware::Memoizer
   end
 end
