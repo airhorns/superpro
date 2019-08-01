@@ -64,6 +64,9 @@ module Superpro
       client_session_id: ->request { request.headers["X-Client-Session-Id"] },
     }
 
+    Que.logger = SemanticLogger[Que]
+    Que.log_formatter = ->data { data }
+
     # Make sure that the semantic logger middleware which evaluats the above log_tags procs has a session on the request
     config.middleware.move_after ActionDispatch::Session::CacheStore, RailsSemanticLogger::Rack::Logger, config.log_tags
     config.middleware.use Flipper::Middleware::Memoizer

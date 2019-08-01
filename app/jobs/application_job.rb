@@ -6,4 +6,9 @@ class ApplicationJob < ActiveJob::Base
 
   # Most jobs are safe to ignore if the underlying records are no longer available
   discard_on ActiveJob::DeserializationError
+
+  # https://github.com/chanks/que/blob/master/docs/logging.md#logging-job-completion
+  def log_level(elapsed)
+    :info
+  end
 end

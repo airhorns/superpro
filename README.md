@@ -49,6 +49,16 @@ You need to be running 3 processes to run a local instance of Superpro:
 
 Run these three (most do it in separate terminal windows) processes, and then visit https://app.supo.dev, which will point to your local Superpro instance.
 
+#### Auxiliary Development Services
+
+You can also run a jobs server to execute background jobs enqueued locally. Run:
+
+```
+bundle exec que -q default -q mailers
+```
+
+to execute Que, our jobs system.
+
 ### Structure
 
 Superpro is a Rails app with a React frontend that communicates over GraphQL.

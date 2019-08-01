@@ -61,6 +61,11 @@ Rails.application.configure do
   config.cache_store = :redis_cache_store, { url: "redis://localhost:6379/0" }
   config.session_store :cache_store, key: "superpro_dev_sessions"
 
+  # Always log to stdout in development. Rails somehow magically makes this happen for the webserver but not for other processes
+  # like the jobs server
+  STDOUT.sync = true
+  config.semantic_logger.add_appender(io: STDOUT, level: config.log_level, formatter: config.rails_semantic_logger.format)
+
   config.after_initialize do
     Bullet.enable = true
     Bullet.rails_logger = true
