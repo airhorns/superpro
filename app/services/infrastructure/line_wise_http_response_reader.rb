@@ -8,7 +8,7 @@ class Infrastructure::LineWiseHttpResponseReader
     @response.read_body do |chunk|
       chunk = remainings + chunk
 
-      while i = chunk.index("\n")
+      while (i = chunk.index("\n"))
         yield chunk[0..i]
         chunk = chunk[i + 1..-1]
       end
