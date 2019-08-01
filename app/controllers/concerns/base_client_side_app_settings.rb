@@ -24,7 +24,7 @@ module BaseClientSideAppSettings
           },
         },
         flags: EXPORTED_FLAGS.each_with_object({}) do |flag, obj|
-          obj[flag] = Flipper[flag].enabled?(current_user)
+          obj[flag] = Flipper[flag].enabled?(current_account)
         end,
         directUploadUrl: rails_direct_uploads_path,
       }
