@@ -21,7 +21,7 @@ class Connection < ApplicationRecord
   include AccountScoped
   belongs_to :integration, polymorphic: true, optional: false, autosave: true
   enum strategy: { singer: "singer", plaid: "plaid" }, _prefix: true
-  validates :value_type, inclusion: { in: ["singer", "plaid"] }
+  validates :strategy, inclusion: { in: ["singer", "plaid"] }
 
   has_one :singer_sync_state, dependent: :destroy
 end
