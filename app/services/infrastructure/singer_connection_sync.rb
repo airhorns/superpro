@@ -26,17 +26,24 @@ module Infrastructure
 
       importer = importer_for_connection(connection)
       config = config_for_connection(connection)
-      import_tag = SecureRandom.uuid
+      attempt_record = @account.singer_sync_attempts.create!(connection: connection, started_at: Time.now.utc)
 
-      logger.tagged connection_id: connection.id, importer: importer, import_id: import_tag do
+      logger.tagged connection_id: connection.id, importer: importer, import_id: attempt_record.id do
         logger.info "Beginning Singer sync for connection"
-        SingerImporterClient.client.import(importer, config, state, { import_id: import_tag }) do |new_state|
-          state_record.state = new_state
-          state_record.save!
-          logger.info "State updated to #{new_state}"
+
+        begin
+          SingerImporterClient.client.import(importer, config, state, { import_id: attempt_record.id }, transform_for_connection(connection)) do |new_state|
+            state_record.state = new_state
+            state_record.save!
+            logger.info "State updated to #{new_state}"
+          end
+        rescue StandardError => e
+          attempt_record.update!(finished_at: Time.now.utc, success: false, failure_reason: e.message)
+          raise
         end
 
         logger.info "Import completed successfully"
+        attempt_record.update!(finished_at: Time.now.utc, success: true)
       end
     end
 
@@ -52,6 +59,17 @@ module Infrastructure
       when ShopifyShop then { "private_app_api_key" => connection.integration.api_key, "private_app_password" => connection.integration.password, "shop" => connection.integration.shopify_domain, "start_date" => "2019-07-27" }
       else raise RuntimeError.new("Unknown connection integration class #{connection.integration.class} for connection #{connection.id}")
       end
+    end
+
+    def transform_for_connection(connection)
+      field_values = { account_id: @account.id }
+
+      case connection.integration
+      when ShopifyShop then field_values[:shop_id] = connection.integration.shop_id
+      else raise RuntimeError.new("Unknown connection integration class #{connection.integration.class} for connection #{connection.id}")
+      end
+
+      field_values
     end
   end
 end

@@ -4,7 +4,6 @@ development:
   api_url: http://singer-importer-docker-compose.supo.dev:4002
   auth_token: testdevelopmentapisecret
 test:
-  # api_url: http://localhost:5000
   api_url: http://singer-importer-docker-compose.supo.dev:4002
   auth_token: testdevelopmentapisecret
 integration_test:

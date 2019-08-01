@@ -24,4 +24,5 @@ class Connection < ApplicationRecord
   validates :strategy, inclusion: { in: ["singer", "plaid"] }
 
   has_one :singer_sync_state, dependent: :destroy
+  has_many :singer_sync_attempts, dependent: :destroy
 end
