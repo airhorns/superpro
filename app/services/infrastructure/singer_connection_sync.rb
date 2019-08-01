@@ -8,16 +8,21 @@ module Infrastructure
       @account = account
     end
 
-    def sync(connection, reset_state = nil)
+    def reset_state(connection)
+      state_record = connection.singer_sync_state
+      if state_record
+        state_record.state = {}
+        state_record.save!
+      end
+    end
+
+    def sync(connection)
       if !connection.strategy_singer?
         raise RuntimeError.new("Trying to singer sync a connection that isn't using singer for sync. #{connection}")
       end
 
       state_record = connection.singer_sync_state || connection.build_singer_sync_state(account: @account)
-      state = state_record.state
-      if !state || reset_state
-        state = {}
-      end
+      state = state_record.state || {}
 
       importer = importer_for_connection(connection)
       config = config_for_connection(connection)
