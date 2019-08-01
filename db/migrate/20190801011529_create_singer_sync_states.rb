@@ -3,7 +3,7 @@ class CreateSingerSyncStates < ActiveRecord::Migration[6.0]
     create_table :singer_sync_states do |t|
       t.bigint :account_id, null: false
       t.bigint :connection_id, null: false
-      t.json :state, null: false
+      t.jsonb :state, null: false
 
       t.timestamps
     end
