@@ -1,6 +1,6 @@
 development:
-  google_oauth_client_id: 910628609504-286gu01pcap1po63p2j46bg8dpo73sa0.apps.googleusercontent.com
-  google_oauth_client_secret: RFehtbPpzAnI__iKhabu4G0D
+  google_oauth_client_id: 441963534992-8di7bhmba2fkj0tu2g6necfhkl59eump.apps.googleusercontent.com
+  google_oauth_client_secret: XrrhqUSHMNfgRLh3wibm9B9E
 production:
   google_oauth_client_id: <%= ENV['ADMIN_GOOGLE_OAUTH_CLIENT_ID'] %>
   google_oauth_client_secret: <%= ENV['ADMIN_GOOGLE_OAUTH_CLIENT_SECRET'] %>
