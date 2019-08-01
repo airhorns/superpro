@@ -21,6 +21,7 @@ class Connections::ConnectShopify
       end
 
       shop = @account.shopify_shops.find_or_initialize_by(shop_id: shop_response.id)
+      connection = nil
 
       ShopifyShop.transaction do
         shop.creator ||= @user
@@ -37,7 +38,8 @@ class Connections::ConnectShopify
         connection.save!
       end
 
-      if shop.persisted?
+      if shop.persisted? && connection && connection.persisted?
+        Infrastructure::SyncSingerConnectionJob.enqueue(connection_id: connection.id)
         return shop, nil
       else
         return nil, ["There was an error saving your Shopify shop. PLease try again."]
