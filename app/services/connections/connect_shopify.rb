@@ -32,6 +32,7 @@ class Connections::ConnectShopify
         shop.save!
 
         connection = @account.connections.find_or_initialize_by(integration: shop)
+        connection.strategy = "singer"
         connection.display_name = "Shopify Shop #{shop.name} (Shop ID: #{shop_response.id})"
         connection.save!
       end

@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  before_action :set_raven_context
+  around_action :set_instrumentation_context
   after_action :track_server_side_page_view
 
   private
@@ -33,14 +33,19 @@ class ApplicationController < ActionController::Base
     (Rails.env.development? || Rails.env.integration_test?) && request.headers["HTTP_X_TRUSTED_DEV_CLIENT"].present?
   end
 
-  def set_raven_context
+  def set_instrumentation_context
+    Raven.tags_context(client_session_id: client_session_id)
+
     if current_user.present?
       Raven.user_context(user_id: current_user.id, email: current_user.email)
     end
-    if respond_to?(:current_account) && current_account.present?
+
+    current_account = respond_to?(:current_account) && current_account.present?
+    if current_account
       Raven.tags_context(account_id: current_account.id, account_name: current_account.name)
     end
-    Raven.tags_context(client_session_id: client_session_id)
+
+    yield
   end
 
   def track_server_side_page_view

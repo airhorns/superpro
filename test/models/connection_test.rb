@@ -6,6 +6,7 @@
 #  display_name     :string           not null
 #  enabled          :boolean          default(TRUE), not null
 #  integration_type :string           not null
+#  strategy         :string           not null
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  account_id       :bigint(8)        not null

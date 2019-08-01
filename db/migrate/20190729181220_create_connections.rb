@@ -6,6 +6,7 @@ class CreateConnections < ActiveRecord::Migration[6.0]
       t.string :integration_type, null: false
       t.boolean :enabled, null: false, default: true
       t.string :display_name, null: false
+      t.string :strategy, null: false
 
       t.timestamps
     end

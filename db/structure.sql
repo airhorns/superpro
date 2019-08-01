@@ -681,6 +681,7 @@ CREATE TABLE public.connections (
     integration_type character varying NOT NULL,
     enabled boolean DEFAULT true NOT NULL,
     display_name character varying NOT NULL,
+    strategy character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -1230,6 +1231,39 @@ ALTER SEQUENCE public.shopify_shops_id_seq OWNED BY public.shopify_shops.id;
 
 
 --
+-- Name: singer_sync_states; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.singer_sync_states (
+    id bigint NOT NULL,
+    account_id bigint NOT NULL,
+    connection_id bigint NOT NULL,
+    state json NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: singer_sync_states_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.singer_sync_states_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: singer_sync_states_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.singer_sync_states_id_seq OWNED BY public.singer_sync_states.id;
+
+
+--
 -- Name: todo_feed_items; Type: VIEW; Schema: public; Owner: -
 --
 
@@ -1472,6 +1506,13 @@ ALTER TABLE ONLY public.shopify_shops ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
+-- Name: singer_sync_states id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.singer_sync_states ALTER COLUMN id SET DEFAULT nextval('public.singer_sync_states_id_seq'::regclass);
+
+
+--
 -- Name: users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1692,6 +1733,14 @@ ALTER TABLE ONLY public.series
 
 ALTER TABLE ONLY public.shopify_shops
     ADD CONSTRAINT shopify_shops_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: singer_sync_states singer_sync_states_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.singer_sync_states
+    ADD CONSTRAINT singer_sync_states_pkey PRIMARY KEY (id);
 
 
 --
@@ -1916,6 +1965,14 @@ ALTER TABLE ONLY public.process_execution_involved_users
 
 
 --
+-- Name: singer_sync_states fk_rails_3c1c3bc797; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.singer_sync_states
+    ADD CONSTRAINT fk_rails_3c1c3bc797 FOREIGN KEY (connection_id) REFERENCES public.connections(id);
+
+
+--
 -- Name: series fk_rails_455c8d3820; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2001,6 +2058,14 @@ ALTER TABLE ONLY public.budget_lines
 
 ALTER TABLE ONLY public.plaid_item_accounts
     ADD CONSTRAINT fk_rails_7f47dbb069 FOREIGN KEY (plaid_item_id) REFERENCES public.plaid_items(id);
+
+
+--
+-- Name: singer_sync_states fk_rails_7ffa223581; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.singer_sync_states
+    ADD CONSTRAINT fk_rails_7ffa223581 FOREIGN KEY (account_id) REFERENCES public.accounts(id);
 
 
 --
@@ -2215,6 +2280,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190712202725'),
 ('20190717223839'),
 ('20190729180803'),
-('20190729181220');
+('20190729181220'),
+('20190801011529');
 
 
