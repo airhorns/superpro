@@ -56,7 +56,7 @@ module Infrastructure
 
     def config_for_connection(connection)
       case connection.integration
-      when ShopifyShop then { "private_app_api_key" => connection.integration.api_key, "private_app_password" => connection.integration.password, "shop" => connection.integration.shopify_domain, "start_date" => "2019-07-27" }
+      when ShopifyShop then { "private_app_api_key" => connection.integration.api_key, "private_app_password" => connection.integration.password, "shop" => connection.integration.shopify_domain, "start_date" => "2019-07-01" }
       else raise RuntimeError.new("Unknown connection integration class #{connection.integration.class} for connection #{connection.id}")
       end
     end
