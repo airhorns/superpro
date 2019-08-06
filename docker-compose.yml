@@ -41,8 +41,17 @@ services:
     restart: on-failure
     command: redis-server --appendonly yes
 
+  jobs:
+    image: gcr.io/superpro-production/core:c59912cd827d6e9568a6edbdb52e181c60719bf5
+    command: bundle exec que -q default -q mailers
+    restart: on-failure
+    volumes:
+      - ./:/app:delegated
+    environment:
+      RAILS_ENV: development
+
   cubeserver:
-    image: gcr.io/superpro-production/cubeserver:2b565b4a4cc1ea26e74491fc4195fe362d2965ff
+    image: gcr.io/superpro-production/cubeserver:3a4f84f309478c609f1ad7a8c2979eb5d77aae3b
     ports:
       - 4001:4000
     restart: on-failure
@@ -56,7 +65,7 @@ services:
       REDIS_URL: redis://redis:6379/2
 
   singer-importer:
-    image: gcr.io/superpro-production/singer-importer:f3c6535e6f141f63701547f6d860cf73a46d9c94
+    image: gcr.io/superpro-production/singer-importer:b57f23668942a41662142071a29bc1715188f002
     ports:
       - 4002:5000
     restart: on-failure
