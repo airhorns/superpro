@@ -10,5 +10,5 @@ integration_test:
   api_url: http://singer-importer-docker-compose.supo.dev:4002
   auth_token: testdevelopmentapisecret
 production:
-  api_url: https://singer-importer.superpro.io
+  api_url: http://web.singer-importer-production.svc.cluster.local
   auth_token: <%= ENV['SINGER_IMPORTER_AUTH_TOKEN'] %>
