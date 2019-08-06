@@ -14,6 +14,7 @@ class Infrastructure::SingerImporterClient
       url: @base_url + "/import/#{importer}?#{url_params.to_query}",
       payload: { singer_config: config, singer_state: state, transform: transform }.to_json,
       headers: { :Authorization => "Token #{@auth_token}", content_type: :json },
+      read_timeout: nil,
       block_response: proc { |response|
         Infrastructure::LineWiseHttpResponseReader.new(response).each_line do |line|
           blob = JSON.parse(line)
