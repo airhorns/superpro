@@ -215,6 +215,7 @@ workflows:
       - test_javascript
       - lint_ruby
       - lint_javascript
+      - lint_kubernetes
       - deploy:
           context: superpro-gke
           requires:
@@ -222,6 +223,7 @@ workflows:
             - lint_ruby
             - test_javascript
             - lint_javascript
+            - lint_kubernetes
             - build_docker
             - test_cypress
           filters:
