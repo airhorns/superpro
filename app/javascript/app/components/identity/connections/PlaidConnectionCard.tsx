@@ -87,7 +87,7 @@ export const PlaidConnectionCard = (props: { plaidItems: PlaidItem[] }) => {
             toast.error(`There was an error connecting Plaid. ${message} Please try again.`);
           }
         }}
-        label={`Connect ${props.plaidItems.length > 0 && "Another "}Bank Account`}
+        label={`Connect ${(props.plaidItems.length > 0 && "Another ") || ""}Bank Account`}
       />
     </ConnectionCard>
   );
