@@ -19,6 +19,8 @@ require "rails/test_unit/railtie"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+require_relative "../app/lib/silent_log_middleware"
+
 module Superpro
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
@@ -53,10 +55,6 @@ module Superpro
 
     config.rails_semantic_logger.semantic = true
 
-    silence_regex = %r(\A/health_check|favicon)
-    logger = SemanticLogger[Rails]
-    logger.filter = ->log { log.payload[:path] !~ silence_regex if log.payload }
-
     config.log_tags = {
       request_id: :request_id,
       user_id: ->request { request.session[:current_user_id] },
@@ -66,6 +64,7 @@ module Superpro
 
     # Make sure that the semantic logger middleware which evaluats the above log_tags procs has a session on the request
     config.middleware.move_after ActionDispatch::Session::CacheStore, RailsSemanticLogger::Rack::Logger, config.log_tags
+    config.middleware.insert_before ActionDispatch::Static, SilentLogMiddleware, { silence: ["/health_check", %r{^/assets/}, "/favicon.ico"] }
     config.middleware.use Flipper::Middleware::Memoizer
   end
 end
