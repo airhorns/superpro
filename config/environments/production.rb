@@ -72,8 +72,8 @@ Rails.application.configure do
   # Use semantic_logger logging setup to STDOUT
   STDOUT.sync = true
   config.rails_semantic_logger.add_file_appender = false
-  config.semantic_logger.add_appender(io: STDOUT, level: config.log_level, formatter: config.rails_semantic_logger.format)
   config.rails_semantic_logger.format = :json
+  config.semantic_logger.add_appender(io: STDOUT, level: config.log_level, formatter: config.rails_semantic_logger.format)
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
