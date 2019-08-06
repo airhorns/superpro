@@ -51,3 +51,8 @@
     secretKeyRef:
       name: application-secrets
       key: SENDGRID_APIKEY
+- name: SINGER_IMPORTER_AUTH_TOKEN
+  valueFrom:
+    secretKeyRef:
+      name: application-secrets
+      key: SINGER_IMPORTER_AUTH_TOKEN
