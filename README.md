@@ -45,13 +45,13 @@ You need to be running 3 processes to run a local instance of Superpro:
 
 - `docker-compose up`: Runs background daemons to power Superpro, like the database, nginx, Redis, and potentially more in the future.
 - `bin/rails server`: Runs the Ruby server process to render pages requested by the browser
-- `bin/webpack-dev-server`: Runs a Node server process to compile, serve, and cache assets (almost all JavaScript) to the browser with much faster re-compile speeds
+- `bin/webpack-dev-server`: Runs a Node server process to compile, serve, and cache assets (almost all JavaScript) to the browser with much faster re-compile speeds. We keep this one separate because it is very sensitive to the performance hit of running inside docker, and affects developer iteration speed a lot.
 
 Run these three (most do it in separate terminal windows) processes, and then visit https://app.supo.dev, which will point to your local Superpro instance.
 
 #### Auxiliary Development Services
 
-You can also run a jobs server to execute background jobs enqueued locally. Run:
+You can also run a jobs server to execute background jobs enqueued locally in the foreground for testing and debugging. Use:
 
 ```
 bundle exec que -q default -q mailers

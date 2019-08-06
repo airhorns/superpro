@@ -41,15 +41,6 @@ services:
     restart: on-failure
     command: redis-server --appendonly yes
 
-  jobs:
-    image: gcr.io/superpro-production/core:c59912cd827d6e9568a6edbdb52e181c60719bf5
-    command: bundle exec que -q default -q mailers
-    restart: on-failure
-    volumes:
-      - ./:/app:delegated
-    environment:
-      RAILS_ENV: development
-
   cubeserver:
     image: gcr.io/superpro-production/cubeserver:3a4f84f309478c609f1ad7a8c2979eb5d77aae3b
     ports:
