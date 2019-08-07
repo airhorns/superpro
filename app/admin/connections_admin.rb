@@ -24,7 +24,7 @@ Trestle.resource(:connections) do
     end
 
     tab :attempts, badge: connection.singer_sync_attempts.size do
-      table connection.singer_sync_attempts, admin: :singer_sync_attempts do
+      table connection.singer_sync_attempts.order("created_at DESC"), admin: :singer_sync_attempts do
         column :started_at
         column :finished_at
         column :success
