@@ -57,7 +57,7 @@ export const PlaidConnectionCard = (props: { plaidItems: PlaidItem[] }) => {
   return (
     <ConnectionCard
       name="Direct Bank Accounts"
-      description="Superpro can connect directly to your bank account to import transaction data for your budget. Superpro connects securely via our banking partner [Plaid](https://plaid.com/)."
+      description="Superpro can connect directly to your bank account to import transaction data for your business. Superpro connects securely via our banking partner [Plaid](https://plaid.com/)."
     >
       {props.plaidItems.length > 0 && (
         <Box>

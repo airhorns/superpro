@@ -14,20 +14,7 @@ export interface IntrospectionResultData {
 
 const result: IntrospectionResultData = {
   __schema: {
-    types: [
-      {
-        kind: "UNION",
-        name: "TodoFeedItemSourceUnion",
-        possibleTypes: [
-          {
-            name: "ProcessExecution"
-          },
-          {
-            name: "Scratchpad"
-          }
-        ]
-      }
-    ]
+    types: []
   }
 };
 

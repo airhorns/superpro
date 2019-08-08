@@ -16,7 +16,6 @@ class Identity::CreateAccountTest < ActiveSupport::TestCase
       assert_equal result.name, "A test account"
       assert_equal @user, result.creator
       assert_includes @user.reload.permissioned_accounts, result
-      assert_not_nil Budget.where(account: result).first
     end
   end
 

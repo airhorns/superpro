@@ -1,5 +1,2 @@
-UpdateAllProcessExecutionStatsJob:
-  cron: "0 0/6 * * *"
-
 "Infrastructure::PeriodicSyncAllConnectionsJob":
   cron: "*/30 * * * *"

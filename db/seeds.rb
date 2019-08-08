@@ -7,9 +7,7 @@ user = User.new(full_name: "Smart Developer", email: "dev@superpro.io", password
 user.skip_confirmation!
 user.save!
 
-account = FactoryBot.create :account, creator: user
-account.budgets.destroy_all
-FactoryBot.create(:base_operational_budget, account: account, creator: account.creator)
+FactoryBot.create :account, creator: user
 
 # Enable all feature flags for developers
 BaseClientSideAppSettings::EXPORTED_FLAGS.each do |flag|
@@ -17,6 +15,6 @@ BaseClientSideAppSettings::EXPORTED_FLAGS.each do |flag|
 end
 
 Rails.logger.info "DB Seeded!"
-[Account, User, BudgetLine, Series, Cell].each do |klass|
+[Account, User].each do |klass|
   Rails.logger.info "#{klass.name} count: #{klass.all.count}"
 end

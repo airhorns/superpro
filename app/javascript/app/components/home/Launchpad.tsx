@@ -22,8 +22,8 @@ export default class HomePage extends Page {
         <Box align="center">
           <Paragraph>Welcome to Superpro! Let&apos;s get started.</Paragraph>
           <Row gap="medium">
-            <StartCard title="Create a Budget" destination="/budget" />
-            <StartCard title="Start a Process" destination="/todos/process/docs/new" />
+            <StartCard title="Do something" destination="/not-done-yet" />
+            <StartCard title="Do something else" destination="/also-not-done-yet" />
           </Row>
         </Box>
       </Page.Layout>

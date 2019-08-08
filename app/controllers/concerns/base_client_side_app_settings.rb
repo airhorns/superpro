@@ -1,6 +1,6 @@
 module BaseClientSideAppSettings
   include ActiveSupport::Concern
-  EXPORTED_FLAGS = ["feature.connections", "feature.todos", "features.budgets", "gate.publicSignUps"]
+  EXPORTED_FLAGS = ["gate.publicSignUps"]
 
   def base_settings
     @base_settings ||= begin

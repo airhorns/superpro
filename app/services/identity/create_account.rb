@@ -8,15 +8,7 @@ class Identity::CreateAccount
     new_account.assign_attributes(new_attributes)
     new_account.account_user_permissions.build(user: @creator)
 
-    success = false
-    Account.transaction do
-      if !new_account.save
-        raise ActiveRecord::Rollback
-      end
-      Budget.create!(name: "Operational Budget", account: new_account, creator: @creator)
-
-      success = true
-    end
+    success = new_account.save
 
     if success
       return new_account, nil

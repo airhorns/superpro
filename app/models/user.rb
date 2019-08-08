@@ -51,17 +51,7 @@ class User < ApplicationRecord
 
   # Creations
   has_many :created_accounts, foreign_key: :creator_id, inverse_of: :creator, class_name: "Account", dependent: :restrict_with_exception
-  has_many :created_budgets, foreign_key: :creator_id, inverse_of: :creator, class_name: "Budget", dependent: :restrict_with_exception
-  has_many :created_budget_lines, foreign_key: :creator_id, inverse_of: :creator, class_name: "BudgetLine", dependent: :restrict_with_exception
-  has_many :created_series, foreign_key: :creator_id, inverse_of: :creator, class_name: "Series", dependent: :restrict_with_exception
-  has_many :created_process_templates, foreign_key: :creator_id, inverse_of: :creator, class_name: "ProcessTemplate", dependent: :restrict_with_exception
-  has_many :created_process_executions, foreign_key: :creator_id, inverse_of: :creator, class_name: "ProcessExecution", dependent: :restrict_with_exception
-  has_many :created_scratchpads, foreign_key: :creator_id, inverse_of: :creator, class_name: "Scratchpad", dependent: :restrict_with_exception
   has_many :created_plaid_items, foreign_key: :creator_id, inverse_of: :creator, class_name: "PlaidItem", dependent: :restrict_with_exception
-
-  # Todos
-  has_many :process_execution_involved_users, dependent: :restrict_with_exception
-  has_many :involved_process_executions, through: :process_execution_involved_users, source: :process_execution
 
   # Auth
   has_many :account_user_permissions, inverse_of: :user, dependent: :destroy

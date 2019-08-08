@@ -13,8 +13,6 @@ export type Scalars = {
   Float: number,
   /** An ISO 8601-encoded datetime */
   ISO8601DateTime: string,
-  /** Untyped JSON output useful for bags of values who's keys or types can't be predicted ahead of time. */
-  JSONScalar: any,
   /** Represents textual data as UTF-8 character sequences. This type is most often
    * used by GraphQL to represent free-form human-readable text.
  */
@@ -81,7 +79,6 @@ export type DiscardAccountPayload = {
 
 
 
-
 /** Error object describing a reason why a mutation was unsuccessful, specific to a particular field. */
 export type MutationError = {
   __typename?: 'MutationError',
@@ -97,145 +94,6 @@ export type MutationError = {
   relativeField: Scalars['String'],
 };
 
-/** Information about pagination in a connection. */
-export type PageInfo = {
-  __typename?: 'PageInfo',
-  /** When paginating forwards, the cursor to continue. */
-  endCursor?: Maybe<Scalars['String']>,
-  /** When paginating forwards, are there more items? */
-  hasNextPage: Scalars['Boolean'],
-  /** When paginating backwards, are there more items? */
-  hasPreviousPage: Scalars['Boolean'],
-  /** When paginating backwards, the cursor to continue. */
-  startCursor?: Maybe<Scalars['String']>,
-};
-
-export type ProcessExecution = {
-  __typename?: 'ProcessExecution',
-  closedTodoCount: Scalars['Int'],
-  closestFutureDeadline?: Maybe<Scalars['ISO8601DateTime']>,
-  createdAt: Scalars['ISO8601DateTime'],
-  creator: User,
-  discardedAt: Scalars['ISO8601DateTime'],
-  document: Scalars['JSONScalar'],
-  id: Scalars['ID'],
-  involvedUsers: Array<User>,
-  name: Scalars['String'],
-  openTodoCount: Scalars['Int'],
-  processTemplate?: Maybe<ProcessTemplate>,
-  startedAt?: Maybe<Scalars['ISO8601DateTime']>,
-  totalTodoCount: Scalars['Int'],
-  updatedAt: Scalars['ISO8601DateTime'],
-};
-
-/** The connection type for ProcessExecution. */
-export type ProcessExecutionConnection = {
-  __typename?: 'ProcessExecutionConnection',
-  /** A list of edges. */
-  edges: Array<ProcessExecutionEdge>,
-  /** A list of nodes. */
-  nodes: Array<ProcessExecution>,
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo,
-};
-
-/** An edge in a connection. */
-export type ProcessExecutionEdge = {
-  __typename?: 'ProcessExecutionEdge',
-  /** A cursor for use in pagination. */
-  cursor: Scalars['String'],
-  /** The item at the end of the edge. */
-  node?: Maybe<ProcessExecution>,
-};
-
-export type ProcessTemplate = {
-  __typename?: 'ProcessTemplate',
-  createdAt: Scalars['ISO8601DateTime'],
-  creator: User,
-  discardedAt: Scalars['ISO8601DateTime'],
-  document: Scalars['JSONScalar'],
-  executionCount: Scalars['Int'],
-  id: Scalars['ID'],
-  lastExecution?: Maybe<ProcessExecution>,
-  name: Scalars['String'],
-  updatedAt: Scalars['ISO8601DateTime'],
-};
-
-export type Scratchpad = {
-  __typename?: 'Scratchpad',
-  accessMode: ScratchpadAccessModeEnum,
-  closedTodoCount: Scalars['Int'],
-  closestFutureDeadline?: Maybe<Scalars['ISO8601DateTime']>,
-  createdAt: Scalars['ISO8601DateTime'],
-  creator: User,
-  discardedAt: Scalars['ISO8601DateTime'],
-  document: Scalars['JSONScalar'],
-  id: Scalars['ID'],
-  name: Scalars['String'],
-  openTodoCount: Scalars['Int'],
-  totalTodoCount: Scalars['Int'],
-  updatedAt: Scalars['ISO8601DateTime'],
-};
-
-export const enum ScratchpadAccessModeEnum {
-  /** All members of the account can view and edit this scratchpad */
-  Public = 'PUBLIC',
-  /** Only the creator of the scratchpad can view and edit it with no exceptions. */
-  Private = 'PRIVATE'
-};
-
-/** The connection type for Scratchpad. */
-export type ScratchpadConnection = {
-  __typename?: 'ScratchpadConnection',
-  /** A list of edges. */
-  edges: Array<ScratchpadEdge>,
-  /** A list of nodes. */
-  nodes: Array<Scratchpad>,
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo,
-};
-
-/** An edge in a connection. */
-export type ScratchpadEdge = {
-  __typename?: 'ScratchpadEdge',
-  /** A cursor for use in pagination. */
-  cursor: Scalars['String'],
-  /** The item at the end of the edge. */
-  node?: Maybe<Scratchpad>,
-};
-
-export type TodoFeedItem = {
-  __typename?: 'TodoFeedItem',
-  createdAt: Scalars['ISO8601DateTime'],
-  creator: User,
-  id: Scalars['ID'],
-  todoSource: TodoFeedItemSourceUnion,
-  updatedAt: Scalars['ISO8601DateTime'],
-};
-
-/** The connection type for TodoFeedItem. */
-export type TodoFeedItemConnection = {
-  __typename?: 'TodoFeedItemConnection',
-  /** A list of edges. */
-  edges: Array<TodoFeedItemEdge>,
-  /** A list of nodes. */
-  nodes: Array<TodoFeedItem>,
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo,
-};
-
-/** An edge in a connection. */
-export type TodoFeedItemEdge = {
-  __typename?: 'TodoFeedItemEdge',
-  /** A cursor for use in pagination. */
-  cursor: Scalars['String'],
-  /** The item at the end of the edge. */
-  node?: Maybe<TodoFeedItem>,
-};
-
-/** Objects which create entries in the todo feed */
-export type TodoFeedItemSourceUnion = ProcessExecution | Scratchpad;
-
 export type User = {
   __typename?: 'User',
   accounts: Array<Account>,
@@ -244,37 +102,10 @@ export type User = {
   email: Scalars['String'],
   fullName?: Maybe<Scalars['String']>,
   id: Scalars['ID'],
-  involvedProcessExecutions: ProcessExecutionConnection,
   pendingInvitation: Scalars['Boolean'],
   primaryTextIdentifier: Scalars['String'],
-  scratchpads: ScratchpadConnection,
   secondaryTextIdentifier?: Maybe<Scalars['String']>,
-  todoFeedItems: TodoFeedItemConnection,
   updatedAt: Scalars['ISO8601DateTime'],
-};
-
-
-export type UserInvolvedProcessExecutionsArgs = {
-  after?: Maybe<Scalars['String']>,
-  before?: Maybe<Scalars['String']>,
-  first?: Maybe<Scalars['Int']>,
-  last?: Maybe<Scalars['Int']>
-};
-
-
-export type UserScratchpadsArgs = {
-  after?: Maybe<Scalars['String']>,
-  before?: Maybe<Scalars['String']>,
-  first?: Maybe<Scalars['Int']>,
-  last?: Maybe<Scalars['Int']>
-};
-
-
-export type UserTodoFeedItemsArgs = {
-  after?: Maybe<Scalars['String']>,
-  before?: Maybe<Scalars['String']>,
-  first?: Maybe<Scalars['Int']>,
-  last?: Maybe<Scalars['Int']>
 };
 export type AllAccountsQueryVariables = {};
 

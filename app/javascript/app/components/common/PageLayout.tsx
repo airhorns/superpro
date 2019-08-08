@@ -7,9 +7,6 @@ import { AppSidebar } from "../chrome/AppSidebar";
 
 const StaticBreadcrumbs = {
   home: { text: "Home", path: "/" },
-  budget: { text: "Budget", path: "/budget" },
-  processDocs: { text: "Process Docs", path: "/todos/process/docs" },
-  processRuns: { text: "Process Runs", path: "/todos/process/runs" },
   settings: { text: "Settings", path: null },
   connectionSettings: { text: "Connections", path: "/settings/connections" }
 };

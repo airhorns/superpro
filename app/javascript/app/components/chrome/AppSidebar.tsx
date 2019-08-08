@@ -67,27 +67,12 @@ export const AppSidebar = withRouter(
                 )}
                 <Box flex="grow" overflow={{ vertical: "auto" }}>
                   <NavigationSectionButton path="/launchpad" text="Launchpad" icon={<Launch />} onClick={this.close} />
-                  <Flag name={["feature.todos"]}>
-                    <NavigationSectionButton path="/todos" text="Todos" icon={<Todos />} onClick={this.close}>
-                      <NavigationSubItemButton path="/todos" exact text="My Todos" onClick={this.close} />
-                      <NavigationSubItemButton path="/todos/process/runs" text="Process Runs" onClick={this.close} />
-                      <NavigationSubItemButton path="/todos/process/docs" text="Process Docs" onClick={this.close} />
-                    </NavigationSectionButton>
-                  </Flag>
-                  <Flag name={["feature.budgets"]}>
-                    <NavigationSectionButton path="/budget" text="Budgets" icon={<Budget />} onClick={this.close}>
-                      <NavigationSubItemButton path="/budget" exact text="My Budget" onClick={this.close} />
-                      <NavigationSubItemButton path="/budget/reports" text="Reports" onClick={this.close} />
-                    </NavigationSectionButton>
-                  </Flag>
                   <Box flex />
                   <NavigationSectionButton path="/invite" text="Invite Users" icon={<Invite />} onClick={this.close} />
                   <NavigationSectionButton path="/settings" text="Settings" icon={<SettingsIcon />} onClick={this.close}>
                     <NavigationSubItemButton path="/settings/account" exact text="Account" onClick={this.close} />
                     <NavigationSubItemButton path="/settings/users" exact text="Users" onClick={this.close} />
-                    <Flag name={["feature.connections"]}>
-                      <NavigationSubItemButton path="/settings/connections" exact text="Connections" onClick={this.close} />
-                    </Flag>
+                    <NavigationSubItemButton path="/settings/connections" exact text="Connections" onClick={this.close} />
                   </NavigationSectionButton>
                 </Box>
                 {!loading && (
