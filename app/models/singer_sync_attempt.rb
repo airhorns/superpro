@@ -12,6 +12,10 @@
 #  account_id     :bigint(8)        not null
 #  connection_id  :bigint(8)        not null
 #
+# Indexes
+#
+#  index_singer_sync_attempts_on_created_at  (created_at)
+#
 # Foreign Keys
 #
 #  fk_rails_...  (account_id => accounts.id)

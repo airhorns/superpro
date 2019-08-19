@@ -9,6 +9,13 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
+-- Name: dbt_harry; Type: SCHEMA; Schema: -; Owner: -
+--
+
+CREATE SCHEMA dbt_harry;
+
+
+--
 -- Name: gapfillinternal(anyelement, anyelement); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -1860,6 +1867,13 @@ CREATE UNIQUE INDEX index_shopify_shops_on_account_id_and_shopify_domain ON publ
 
 
 --
+-- Name: index_singer_sync_attempts_on_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_singer_sync_attempts_on_created_at ON public.singer_sync_attempts USING btree (created_at);
+
+
+--
 -- Name: index_users_on_confirmation_token; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2328,6 +2342,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190729180803'),
 ('20190729181220'),
 ('20190801011529'),
-('20190801180723');
+('20190801180723'),
+('20190819140226');
 
 
