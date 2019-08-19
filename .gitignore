@@ -28,6 +28,7 @@
 /public/packs
 /public/packs-*
 /test/reports
+/test/scratch/*
 tsconfig.tsbuildinfo
 /node_modules
 /yarn-error.log
