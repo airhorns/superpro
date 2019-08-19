@@ -365,7 +365,7 @@ GEM
     parser (2.6.3.0)
       ast (~> 2.4.0)
     pg (1.1.4)
-    plaid (8.0.0)
+    plaid (8.1.0)
       faraday
       faraday_middleware
       hashie (>= 3.4.3)
