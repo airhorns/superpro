@@ -1,2 +1,5 @@
 "Infrastructure::PeriodicSyncAllConnectionsJob":
   cron: "*/30 * * * *"
+
+"Infrastructure::TruncateSingerConnectionSyncAttemptsJob":
+  cron: "@daily"
