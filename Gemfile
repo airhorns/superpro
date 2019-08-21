@@ -3,7 +3,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.6.2'
 
 # Core web app
-gem 'devise', github: "plataformatec/devise", ref: "19045a4"  # needed for rails 6 compat
+gem 'devise', '~> 4.7.0'
 gem 'devise_invitable'
 gem 'discard'
 gem 'graphiql-rails'
