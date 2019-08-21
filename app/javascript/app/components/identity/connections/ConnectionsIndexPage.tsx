@@ -2,10 +2,10 @@ import React from "react";
 import { Page } from "../../common";
 import { Box } from "grommet";
 import { PlaidConnectionCard } from "./PlaidConnectionCard";
-import { ConnectionCard } from "./ConnectionCard";
 import gql from "graphql-tag";
 import { GetConnectionsIndexPageComponent } from "app/app-graph";
 import { ShopifyConnectionCard } from "./ShopifyConnectionCard";
+import { GoogleAnalyticsConnectionCard } from "./GoogleAnalyticsConnectionCard";
 
 gql`
   query GetConnectionsIndexPage {
@@ -30,8 +30,7 @@ export default (_props: {}) => {
           <Box direction="row-responsive" gap="medium" wrap>
             <PlaidConnectionCard plaidItems={data.plaidItems.nodes} />
             <ShopifyConnectionCard shopifyShops={data.shopifyShops.nodes} />
-            <ConnectionCard name="Xero Accounting" description="Coming soon!" />
-            <ConnectionCard name="Quickbooks Accounting" description="Coming soon!" />
+            <GoogleAnalyticsConnectionCard />
           </Box>
         )}
       </Page.Load>
