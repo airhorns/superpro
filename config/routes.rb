@@ -51,8 +51,7 @@ Rails.application.routes.draw do
     end
 
     scope module: :app do
-      get "/connauth/auth/:provider/callback", to: "connection_sessions#create"
-      mount AppOmniauthStack, at: "/connauth"
+      get "/connection_auth/:provider/callback", to: "connection_sessions#create"
 
       mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "graphql", as: "app_graphiql"
       post "/graphql", to: "graphql#execute"

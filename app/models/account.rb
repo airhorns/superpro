@@ -31,6 +31,7 @@ class Account < ApplicationRecord
   has_many :plaid_item_accounts, inverse_of: :account, dependent: :destroy
   has_many :plaid_transactions, inverse_of: :account, dependent: :destroy
   has_many :shopify_shops, inverse_of: :account, dependent: :destroy
+  has_many :google_analytics_credentials, inverse_of: :account, dependent: :destroy
   has_many :connections, inverse_of: :account, dependent: :destroy
   has_many :singer_sync_states, inverse_of: :account, dependent: :destroy
   has_many :singer_sync_attempts, inverse_of: :account, dependent: :destroy

@@ -811,6 +811,50 @@ ALTER SEQUENCE public.flipper_gates_id_seq OWNED BY public.flipper_gates.id;
 
 
 --
+-- Name: google_analytics_credentials; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.google_analytics_credentials (
+    id bigint NOT NULL,
+    account_id bigint NOT NULL,
+    creator_id bigint NOT NULL,
+    token character varying NOT NULL,
+    refresh_token character varying NOT NULL,
+    expires_at timestamp without time zone,
+    grantor_name character varying NOT NULL,
+    grantor_email character varying NOT NULL,
+    configured boolean DEFAULT false NOT NULL,
+    view_id bigint,
+    view_name character varying,
+    property_id bigint,
+    property_name character varying,
+    ga_account_id bigint,
+    ga_account_name character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: google_analytics_credentials_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.google_analytics_credentials_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: google_analytics_credentials_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.google_analytics_credentials_id_seq OWNED BY public.google_analytics_credentials.id;
+
+
+--
 -- Name: plaid_item_accounts; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1459,6 +1503,13 @@ ALTER TABLE ONLY public.flipper_gates ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
+-- Name: google_analytics_credentials id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.google_analytics_credentials ALTER COLUMN id SET DEFAULT nextval('public.google_analytics_credentials_id_seq'::regclass);
+
+
+--
 -- Name: plaid_item_accounts id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1651,6 +1702,14 @@ ALTER TABLE ONLY public.flipper_features
 
 ALTER TABLE ONLY public.flipper_gates
     ADD CONSTRAINT flipper_gates_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: google_analytics_credentials google_analytics_credentials_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.google_analytics_credentials
+    ADD CONSTRAINT google_analytics_credentials_pkey PRIMARY KEY (id);
 
 
 --
@@ -2058,6 +2117,14 @@ ALTER TABLE ONLY public.shopify_shops
 
 
 --
+-- Name: google_analytics_credentials fk_rails_5640b900e5; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.google_analytics_credentials
+    ADD CONSTRAINT fk_rails_5640b900e5 FOREIGN KEY (creator_id) REFERENCES public.users(id);
+
+
+--
 -- Name: account_user_permissions fk_rails_5c34e80f82; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2258,6 +2325,14 @@ ALTER TABLE ONLY public.scratchpads
 
 
 --
+-- Name: google_analytics_credentials fk_rails_c82cc36acf; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.google_analytics_credentials
+    ADD CONSTRAINT fk_rails_c82cc36acf FOREIGN KEY (account_id) REFERENCES public.accounts(id);
+
+
+--
 -- Name: plaid_item_accounts fk_rails_cd76fab8e2; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2343,6 +2418,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190729181220'),
 ('20190801011529'),
 ('20190801180723'),
-('20190819140226');
+('20190819140226'),
+('20190821203957');
 
 

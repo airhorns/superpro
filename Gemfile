@@ -25,6 +25,7 @@ gem 'omniauth'
 gem 'plaid'
 gem 'shopify_api'
 gem 'rest-client'
+gem 'google-api-client'
 
 # Performance & Infrastructure
 gem 'active_record_query_trace'

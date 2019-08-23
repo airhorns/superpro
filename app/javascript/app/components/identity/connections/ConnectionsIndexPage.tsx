@@ -19,10 +19,16 @@ gql`
         ...ShopifyConnectionCardContent
       }
     }
+    googleAnalyticsCredentials {
+      nodes {
+        ...GoogleAnalyticsConnectionCardContent
+      }
+    }
   }
 `;
 
-export default (_props: {}) => {
+export default (props: {}) => {
+  console.log(props);
   return (
     <Page.Layout title="Connection Settings">
       <Page.Load component={GetConnectionsIndexPageComponent} require={["plaidItems", "shopifyShops"]}>
@@ -30,7 +36,7 @@ export default (_props: {}) => {
           <Box direction="row-responsive" gap="medium" wrap>
             <PlaidConnectionCard plaidItems={data.plaidItems.nodes} />
             <ShopifyConnectionCard shopifyShops={data.shopifyShops.nodes} />
-            <GoogleAnalyticsConnectionCard />
+            <GoogleAnalyticsConnectionCard googleAnalyticsCredentials={data.googleAnalyticsCredentials.nodes} />
           </Box>
         )}
       </Page.Load>
