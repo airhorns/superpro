@@ -2,6 +2,7 @@ AllCops:
   Exclude:
     - "vendor/**/*"
     - "node_modules/**/*"
+    - "test/scratch/**/*"
   TargetRubyVersion: 2.6
 
 require:
