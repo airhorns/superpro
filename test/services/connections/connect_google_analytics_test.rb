@@ -23,12 +23,17 @@ class Connections::ConnectGoogleAnalyticsTest < ActiveSupport::TestCase
     views = @connect_ga.list_views(@credential)
     @connect_ga.select_view(@credential, views[0][:id])
     @credential.reload
+
     assert @credential.configured
     assert_equal 127652462, @credential.view_id
-    assert_equal "whatever", @credential.view_name
-    assert_equal 123, @credential.account_id
-    assert_equal "whatever", @credential.account_name
-    assert_equal 123, @credential.property_id
-    assert_equal "whatever", @credential.property_name
+    assert_equal "All Web Site Data", @credential.view_name
+    assert_equal 82477248, @credential.ga_account_id
+    assert_equal "noraswimwear", @credential.ga_account_name
+    assert_equal 0, @credential.property_id
+    assert_equal "main website", @credential.property_name
+
+    connection = @account.connections.where(integration: @credential).first
+    assert_not_nil connection
+    assert_not_nil connection.display_name
   end
 end

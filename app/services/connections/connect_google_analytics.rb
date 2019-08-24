@@ -66,9 +66,18 @@ class Connections::ConnectGoogleAnalytics
     end
 
     if ga_credential.view_id.present?
-      ga_credential.configured = true
-      ga_credential.save!
+      GoogleAnalyticsCredential.transaction do
+        ga_credential.configured = true
+        ga_credential.save!
+
+        connection = @account.connections.find_or_initialize_by(integration: ga_credential)
+        connection.strategy = "singer"
+        connection.display_name = "Google Analytics Account #{ga_credential.ga_account_name} - #{ga_credential.property_name} (View ID: #{ga_credential.view_id})"
+        connection.save!
+      end
     end
+
+    ga_credential
   end
 
   private
