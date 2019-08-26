@@ -17,4 +17,15 @@ class Infrastructure::SingerImporterClientTest < ActiveSupport::TestCase
 
     assert lines > 0
   end
+
+  test "it raises when given incorrect configuration" do
+    assert_raises do
+      @client.import("shopify", {
+        "start_date": "2019-07-28",
+        "private_app_api_key": "not-real",
+        "private_app_password": "not-real",
+        "shop": "hrsn.myshopify.com",
+      })
+    end
+  end
 end
