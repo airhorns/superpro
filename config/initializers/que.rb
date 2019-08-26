@@ -20,7 +20,7 @@ end
 
 Que.logger = SemanticLogger[Que]
 
-Que.error_notifier = proc do |_error, job|
+Que.error_notifier = proc do |error, job|
   Que.logger.error(error.message, job)
-  Raven.capture_exception(exception, extra: { job: job })
+  Raven.capture_exception(error, extra: { job: job })
 end
