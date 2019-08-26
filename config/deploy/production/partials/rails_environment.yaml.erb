@@ -34,15 +34,16 @@
     secretKeyRef:
       name: application-secrets
       key: CUBEJS_API_SECRET
-- name: ADMIN_GOOGLE_OAUTH_CLIENT_ID
-  value: "1056215503718-ecvqitvd7f2uuom78ijk5l6ep1d9t6rp.apps.googleusercontent.com"
 - name: ADMIN_GOOGLE_OAUTH_CLIENT_SECRET
   valueFrom:
     secretKeyRef:
       name: application-secrets
       key: ADMIN_GOOGLE_OAUTH_CLIENT_SECRET
-- name: APP_GOOGLE_OAUTH_CLIENT_ID
-  value: "1056215503718-1laa3ndt9ar4dadc0q3qmc6ftn30nppe.apps.googleusercontent.com"
+- name: APP_GOOGLE_OAUTH_CLIENT_SECRET
+  valueFrom:
+    secretKeyRef:
+      name: application-secrets
+      key: APP_GOOGLE_OAUTH_CLIENT_SECRET
 - name: SEGMENT_BACKEND_WRITE_KEY
   valueFrom:
     secretKeyRef:
