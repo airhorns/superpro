@@ -29,8 +29,14 @@ Install JS dependencies
 
     yarn
 
-Install [Docker for Mac](https://hub.docker.com/editions/community/docker-ce-desktop-mac) and boot containers:
+Install [Docker for Mac](https://hub.docker.com/editions/community/docker-ce-desktop-mac) and `gcloud`:
 
+    brew install google-cloud-sdk
+
+Configure it to connect to our Google Cloud docker container registry, and then boot containers:
+
+    gcloud auth login
+    gcloud auth configure-docker
     docker-compose up
 
 Setup DB:
