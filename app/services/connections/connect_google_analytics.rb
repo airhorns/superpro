@@ -74,6 +74,8 @@ class Connections::ConnectGoogleAnalytics
         connection.strategy = "singer"
         connection.display_name = "Google Analytics Account #{ga_credential.ga_account_name} - #{ga_credential.property_name} (View ID: #{ga_credential.view_id})"
         connection.save!
+
+        Infrastructure::SyncSingerConnectionJob.enqueue(connection_id: connection.id)
       end
     end
 

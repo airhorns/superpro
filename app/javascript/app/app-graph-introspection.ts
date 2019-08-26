@@ -21,6 +21,12 @@ const result: IntrospectionResultData = {
         possibleTypes: [
           {
             name: "PlaidItem"
+          },
+          {
+            name: "ShopifyShop"
+          },
+          {
+            name: "GoogleAnalyticsCredential"
           }
         ]
       }
