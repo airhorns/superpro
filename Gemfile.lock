@@ -589,6 +589,7 @@ DEPENDENCIES
   flipper-active_support_cache_store
   flipper-ui
   fog-google (~> 1.9.1)
+  google-api-client
   google-cloud-storage
   graphiql-rails
   graphql

@@ -50,6 +50,7 @@ module Infrastructure
     def importer_for_connection(connection)
       case connection.integration
       when ShopifyShop then "shopify"
+      when GoogleAnalyticsCredential then "google-analytics"
       else raise RuntimeError.new("Unknown connection integration class #{connection.integration.class} for connection #{connection.id}")
       end
     end
@@ -57,6 +58,7 @@ module Infrastructure
     def config_for_connection(connection)
       case connection.integration
       when ShopifyShop then { "private_app_api_key" => connection.integration.api_key, "private_app_password" => connection.integration.password, "shop" => connection.integration.shopify_domain, "start_date" => "2017-01-01" }
+      when GoogleAnalyticsCredential then { "oauth_credentials" => { "access_token" => connection.integration.token, "refresh_token" => connection.integration.refresh_token, "client_id" => Rails.configuration.google[:google_oauth_client_id], "client_secret" => Rails.configuration.google[:google_oauth_client_secret] }, "start_date": "2017-01-01", "view_id": connection.integration.view_id.to_s }
       else raise RuntimeError.new("Unknown connection integration class #{connection.integration.class} for connection #{connection.id}")
       end
     end
@@ -66,6 +68,7 @@ module Infrastructure
 
       case connection.integration
       when ShopifyShop then field_values[:shop_id] = connection.integration.shop_id
+      when GoogleAnalyticsCredential then field_values[:view_id] = connection.integration.view_id
       else raise RuntimeError.new("Unknown connection integration class #{connection.integration.class} for connection #{connection.id}")
       end
 

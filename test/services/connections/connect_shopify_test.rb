@@ -1,6 +1,6 @@
 require "test_helper"
 
-class Connections::PlaidAuthTest < ActiveSupport::TestCase
+class Connections::ConnectShopifyTest < ActiveSupport::TestCase
   setup do
     @account = create(:account)
     @connect_shopify = Connections::ConnectShopify.new(@account, @account.creator)

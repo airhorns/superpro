@@ -17,6 +17,8 @@ const InviteUsersPage = React.lazy(() => import("./components/identity/InviteUse
 const UsersSettingsPage = React.lazy(() => import("./components/identity/UsersSettingsPage"));
 const AccountSettingsPage = React.lazy(() => import("./components/identity/AccountSettingsPage"));
 const ConnectionsIndexPage = React.lazy(() => import("./components/identity/connections/ConnectionsIndexPage"));
+const ConnectionCompletionErrorPage = React.lazy(() => import("./components/identity/connections/ConnectionCompletionErrorPage"));
+const GoogleAnalyticsCompletePage = React.lazy(() => import("./components/identity/connections/GoogleAnalyticsCompletePage"));
 
 export const SuperproClient = getClient();
 
@@ -42,6 +44,12 @@ export const App = () => {
                           <Route path="/settings/account" exact component={AccountSettingsPage} />
                           <Route path="/settings/users" exact component={UsersSettingsPage} />
                           <Route path="/settings/connections" exact component={ConnectionsIndexPage} />
+                          <Route path="/settings/connections/error" exact component={ConnectionCompletionErrorPage} />
+                          <Route
+                            path="/settings/connections/google_analytics/:credentialId/complete"
+                            exact
+                            component={GoogleAnalyticsCompletePage}
+                          />
                           <Route component={NotFoundPage} />
                         </Switch>
                       </React.Suspense>

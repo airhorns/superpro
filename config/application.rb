@@ -52,6 +52,7 @@ module Superpro
     config.cubejs = config_for(:cubejs)
     config.plaid = config_for(:plaid)
     config.singer_importer = config_for(:singer_importer)
+    config.google = config_for(:google)
 
     config.rails_semantic_logger.semantic = true
 

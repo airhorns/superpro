@@ -1,0 +1,54 @@
+---
+http_interactions:
+  - request:
+      method: post
+      uri: http://singer-importer-docker-compose.supo.dev:4002/import/shopify
+      body:
+        encoding: UTF-8
+        string: '{"singer_config":{"start_date":"2019-07-28","private_app_api_key":"not-real","private_app_password":"not-real","shop":"hrsn.myshopify.com"},"singer_state":{},"transform":{}}'
+      headers:
+        Accept:
+          - "*/*"
+        Accept-Encoding:
+          - gzip, deflate
+        User-Agent:
+          - rest-client/2.0.2 (darwin18.2.0 x86_64) ruby/2.6.2p47
+        Authorization:
+          - Token testdevelopmentapisecret
+        Content-Type:
+          - application/json
+        Content-Length:
+          - "173"
+    response:
+      status:
+        code: 200
+        message: OK
+      headers:
+        Content-Type:
+          - text/singer-text; charset=utf-8
+        Connection:
+          - close
+        Server:
+          - Werkzeug/0.15.5 Python/3.7.4
+        Date:
+          - Mon, 26 Aug 2019 16:15:09 GMT
+      body:
+        encoding: UTF-8
+        string: |-
+          {"stream": "STDERR", "tag": "tap", "message": "INFO Using private app basic authentication from config[\"private_app_api_key\"] and config[\"private_app_password\"]\n"}
+          {"stream": "STDERR", "tag": "tap", "message": "INFO Syncing stream: orders\n"}
+          {"stream": "STDERR", "tag": "target", "message": "Traceback (most recent call last):\n"}
+          {"stream": "STDERR", "tag": "target", "message": "  File \"/Users/airhorns/.virtualenvs/target-postgres-_12SyqPv/bin/target-postgres\", line 11, in <module>\n"}
+          {"stream": "STDERR", "tag": "target", "message": "    load_entry_point('singer-target-postgres', 'console_scripts', 'target-postgres')()\n"}
+          {"stream": "STDERR", "tag": "target", "message": "  File \"/Users/airhorns/.virtualenvs/target-postgres-_12SyqPv/src/singer-target-postgres/target_postgres/__init__.py\", line 42, in cli\n"}
+          {"stream": "STDERR", "tag": "target", "message": "    main(args.config)\n"}
+          {"stream": "STDERR", "tag": "target", "message": "  File \"/Users/airhorns/.virtualenvs/target-postgres-_12SyqPv/src/singer-target-postgres/target_postgres/__init__.py\", line 24, in main\n"}
+          {"stream": "STDERR", "tag": "target", "message": "    sslcrl=config.get('postgres_sslcrl')\n"}
+          {"stream": "STDERR", "tag": "target", "message": "  File \"/Users/airhorns/.virtualenvs/target-postgres-_12SyqPv/lib/python3.7/site-packages/psycopg2/__init__.py\", line 126, in connect\n"}
+          {"stream": "STDERR", "tag": "target", "message": "    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)\n"}
+          {"stream": "STDERR", "tag": "target", "message": "psycopg2.OperationalError: FATAL:  role \"singer-importer\" does not exist\n"}
+          {"stream": "STDERR", "tag": "target", "message": "\n"}
+          {"stream": "SYSTEM", "success": false, "tag": "tap-shopify", "exit_code": 1}
+      http_version:
+    recorded_at: Mon, 26 Aug 2019 16:15:10 GMT
+recorded_with: VCR 5.0.0

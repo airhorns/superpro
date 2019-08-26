@@ -1,4 +1,6 @@
 class Infrastructure::SingerImporterClient
+  class UncleanExitException < RuntimeError; end
+
   def self.client
     @client ||= self.new(Rails.configuration.singer_importer[:api_url], Rails.configuration.singer_importer[:auth_token])
   end
@@ -18,10 +20,17 @@ class Infrastructure::SingerImporterClient
       block_response: proc { |response|
         Infrastructure::LineWiseHttpResponseReader.new(response).each_line do |line|
           blob = JSON.parse(line)
+
           if blob["stream"] == "STDOUT" && blob["tag"] == "target"
             message = JSON.parse(blob["message"])
             if message["type"] == "STATE"
               yield message["value"]
+            end
+          end
+
+          if blob["stream"] == "SYSTEM"
+            if !blob["success"].nil? && !blob["success"]
+              raise UncleanExitException.new("Process #{blob["tag"]} exited with exit code #{blob["exit_code"]}")
             end
           end
         end

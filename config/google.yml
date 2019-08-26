@@ -1,0 +1,10 @@
+development: &development
+  google_oauth_client_id: 441963534992-nc47ocqf9po4qortnsdlv7rqn51u58un.apps.googleusercontent.com
+  google_oauth_client_secret: fwwXsWvVz30h0koVlYbB7DE8
+test:
+  <<: *development
+integration_test:
+  <<: *development
+production:
+  google_oauth_client_id: <%= ENV['APP_GOOGLE_OAUTH_CLIENT_ID'] %>
+  google_oauth_client_secret: <%= ENV['APP_GOOGLE_OAUTH_CLIENT_SECRET'] %>

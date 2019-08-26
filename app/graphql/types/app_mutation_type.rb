@@ -10,5 +10,6 @@ class Types::AppMutationType < Types::BaseObject
   # Connections
   field :connect_plaid, mutation: Mutations::Connections::ConnectPlaid
   field :connect_shopify, mutation: Mutations::Connections::ConnectShopify
+  field :complete_google_analytics_setup, mutation: Mutations::Connections::CompleteGoogleAnalyticsSetup
   field :restart_connection_sync, mutation: Mutations::Connections::RestartConnectionSync
 end
