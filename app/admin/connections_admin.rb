@@ -29,7 +29,9 @@ Trestle.resource(:connections) do
         column :finished_at
         column :success
         column :failure_reason
-        actions
+        column :links do |attempt|
+          link_to "Logs", SingerSyncAttemptsHelper.logs_url(attempt)
+        end
       end
     end
   end
