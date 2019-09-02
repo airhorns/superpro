@@ -485,7 +485,7 @@ GEM
       concurrent-ruby (~> 1.0)
     sentry-raven (2.11.0)
       faraday (>= 0.7.6, < 1.0)
-    shopify_api (7.0.2)
+    shopify_api (7.1.0)
       activeresource (>= 4.1.0, < 6.0.0)
       graphql-client
       rack
