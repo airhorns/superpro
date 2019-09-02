@@ -3,7 +3,7 @@ require "test_helper"
 class Infrastructure::SingerConnectionSyncTest < ActiveSupport::TestCase
   setup do
     @account = create(:account)
-    @sync = Infrastructure::SingerConnectionSync.new(@account)
+    @sync = Infrastructure::SingerConnectionSync.new(@account, start_date: "2019-09-01")
     @connection = create(:shopify_hrsn_connection, account: @account)
 
     # Reset this sequence so the IDs are the same for VCR every time
@@ -33,6 +33,15 @@ class Infrastructure::SingerConnectionSyncTest < ActiveSupport::TestCase
     @connection.reload
     assert_not_nil @connection.singer_sync_state
     assert_not_nil @connection.singer_sync_state.state["bookmarks"]
+  end
+
+  test "it can sync a google analytics credential" do
+    @connection = create(:google_analytics_connection, account: @account)
+    assert_difference "SingerSyncAttempt.count", 1 do
+      @sync.sync(@connection)
+    end
+    attempt = @connection.singer_sync_attempts.order("id DESC").first
+    assert attempt.success
   end
 
   test "it tracks restclient exceptions as failures" do

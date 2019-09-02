@@ -23,4 +23,14 @@ FactoryBot.define do
     integration_type { "PlaidItem" }
     integration_id { create(:plaid_item).id }
   end
+
+  factory :google_analytics_connection, class: Connection do
+    display_name { "Test GA Connection" }
+    strategy { "singer" }
+    association :account
+
+    after(:build) do |connection|
+      connection.integration = build(:google_analytics_credential, account: connection.account)
+    end
+  end
 end

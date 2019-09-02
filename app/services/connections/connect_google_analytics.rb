@@ -82,18 +82,29 @@ class Connections::ConnectGoogleAnalytics
     ga_credential
   end
 
+  def refresh_access_token(ga_credential)
+    signet_client = secrets_for_credential(ga_credential).to_authorization
+    signet_client.refresh!
+    if signet_client.access_token != ga_credential.token
+      ga_credential.update(token: signet_client.access_token, refresh_token: signet_client.refresh_token, expires_at: signet_client.expires_at)
+    end
+    ga_credential
+  end
+
   private
 
-  def service_for_credential(ga_credential)
-    secrets = Google::APIClient::ClientSecrets.new({
+  def secrets_for_credential(ga_credential)
+    Google::APIClient::ClientSecrets.new({
       "web" => { "access_token" => ga_credential.token,
                 "refresh_token" => ga_credential.refresh_token,
                 "client_id" => Rails.configuration.google[:google_oauth_client_id],
                 "client_secret" => Rails.configuration.google[:google_oauth_client_secret] },
     })
+  end
 
+  def service_for_credential(ga_credential)
     service = Google::Apis::AnalyticsV3::AnalyticsService.new
-    service.authorization = secrets.to_authorization
+    service.authorization = secrets_for_credential(ga_credential).to_authorization
     service.authorization.refresh!
 
     service

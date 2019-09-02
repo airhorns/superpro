@@ -4,9 +4,14 @@ require "rails/test_help"
 require "mocha/minitest"
 require "webmock/minitest"
 
+ENV["GA_OAUTH_ACCESS_TOKEN"] ||= "test_access_token"
+ENV["GA_OAUTH_REFRESH_TOKEN"] ||= "test_refresh_token"
+
 VCR.configure do |config|
   config.cassette_library_dir = Rails.root.join("test", "vcr_cassettes").to_s
   config.hook_into :webmock
+  config.filter_sensitive_data("<GA_OAUTH_ACCESS_TOKEN>") { ENV["GA_OAUTH_ACCESS_TOKEN"] }
+  config.filter_sensitive_data("<GA_OAUTH_REFRESH_TOKEN>") { ENV["GA_OAUTH_REFRESH_TOKEN"] }
 end
 
 class ActiveSupport::TestCase
