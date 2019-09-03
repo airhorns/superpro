@@ -51,6 +51,7 @@ gem "mini_magick"
 gem "oj"
 gem "que", github: "chanks/que", ref: "5ddddd5ebac6153d7a683ef08c86bced8e03fb51"
 gem "que-scheduler", github: "hlascelles/que-scheduler", branch: "que-1.0-compatibility"
+gem "que-locks", github: "superpro-inc/que-locks", ref: "5e0e29a807860a5d1babdb046785586832044de0", require: "que/locks"
 gem 'que-web'
 gem 'rails-middleware-extensions'
 gem 'rails_semantic_logger'

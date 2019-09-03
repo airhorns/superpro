@@ -49,7 +49,7 @@ export default (props: {}) => {
               <Box margin={{ bottom: "small" }}>
                 {data.connections.map(node => {
                   return (
-                    <Box pad="small" key={node.id} border="all">
+                    <Box pad="small" key={node.id}>
                       <Heading level="3">{node.displayName}</Heading>
                       <Row>
                         {(node.enabled && "Enabled") || "Paused"}

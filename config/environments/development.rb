@@ -64,6 +64,9 @@ Rails.application.configure do
   # Always log to stdout in development. Rails somehow magically makes this happen for the webserver but not for other processes
   # like the jobs server
   STDOUT.sync = true
+  if SemanticLogger.appenders.all? { |appender| appender.instance_variable_get(:@log) != STDOUT }
+    config.semantic_logger.add_appender(io: STDOUT, level: config.log_level, formatter: config.rails_semantic_logger.format)
+  end
 
   config.after_initialize do
     Bullet.enable = true

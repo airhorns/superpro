@@ -27,6 +27,16 @@ GIT
       bindex (>= 0.4.0)
       railties (>= 6.0.0.a)
 
+GIT
+  remote: https://github.com/superpro-inc/que-locks.git
+  revision: 5e0e29a807860a5d1babdb046785586832044de0
+  ref: 5e0e29a807860a5d1babdb046785586832044de0
+  specs:
+    que-locks (0.1.0)
+      neatjson
+      que (>= 0.10)
+      xxhash
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -333,6 +343,7 @@ GEM
     multi_xml (0.6.0)
     multipart-post (2.1.1)
     mustermann (1.0.3)
+    neatjson (0.9)
     netrc (0.11.0)
     nio4r (2.4.0)
     nokogiri (1.10.4)
@@ -560,6 +571,7 @@ GEM
     websocket-driver (0.7.1)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.4)
+    xxhash (0.4.0)
     yard (0.9.20)
     zeitwerk (2.1.9)
 
@@ -615,6 +627,7 @@ DEPENDENCIES
   pry-byebug
   puma (~> 4.1)
   que!
+  que-locks!
   que-scheduler!
   que-web
   rack-cors

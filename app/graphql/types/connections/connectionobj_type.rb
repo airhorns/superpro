@@ -22,4 +22,8 @@ class Types::Connections::ConnectionobjType < Types::BaseObject
   def sync_attempts
     object.singer_sync_attempts.order("created_at DESC")
   end
+
+  def integration
+    AssociationLoader.for(Connection, :integration).load(object)
+  end
 end
