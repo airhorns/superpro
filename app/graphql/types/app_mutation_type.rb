@@ -12,4 +12,6 @@ class Types::AppMutationType < Types::BaseObject
   field :connect_shopify, mutation: Mutations::Connections::ConnectShopify
   field :complete_google_analytics_setup, mutation: Mutations::Connections::CompleteGoogleAnalyticsSetup
   field :restart_connection_sync, mutation: Mutations::Connections::RestartConnectionSync
+  field :sync_connection_now, mutation: Mutations::Connections::SyncConnectionNow
+  field :set_connection_enabled, mutation: Mutations::Connections::SetConnectionEnabled
 end

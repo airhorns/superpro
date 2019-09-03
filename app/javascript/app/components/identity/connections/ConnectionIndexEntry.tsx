@@ -3,7 +3,13 @@ import gql from "graphql-tag";
 import { Box, Heading, Menu } from "grommet";
 import { Row, mutationSuccess, toast } from "superlib";
 import { ConnectionSyncDiagram } from "./ConnectionSyncDiagram";
-import { ConnectionIndexEntryFragment, useRestartConnectionSyncMutation } from "app/app-graph";
+import {
+  ConnectionIndexEntryFragment,
+  useRestartConnectionSyncMutation,
+  useSyncConnectionNowMutation,
+  useSetConnectionEnabledMutation,
+  GetConnectionsIndexPageDocument
+} from "app/app-graph";
 import { Restart, Trash, CloudGo, Test, Pause, Play } from "app/components/common/SuperproIcons";
 
 gql`
@@ -38,6 +44,25 @@ gql`
       errors
     }
   }
+
+  mutation SyncConnectionNow($connectionId: ID!) {
+    syncConnectionNow(connectionId: $connectionId) {
+      connection {
+        id
+      }
+      errors
+    }
+  }
+
+  mutation SetConnectionEnabled($connectionId: ID!, $enabled: Boolean!) {
+    setConnectionEnabled(connectionId: $connectionId, enabled: $enabled) {
+      connection {
+        id
+        enabled
+      }
+      errors
+    }
+  }
 `;
 
 const ConnectionEnabledIndicator = (props: { enabled: boolean }) => {
@@ -53,10 +78,16 @@ const ConnectionEnabledIndicator = (props: { enabled: boolean }) => {
 
 export const ConnectionIndexEntry = (props: { connection: ConnectionIndexEntryFragment }) => {
   const restartConnectionSync = useRestartConnectionSyncMutation();
+  const syncConnectionNow = useSyncConnectionNowMutation();
+  const setConnectionEnabled = useSetConnectionEnabledMutation();
+
   const onRestartClick = React.useCallback(async () => {
     let result;
     try {
-      result = await restartConnectionSync({ variables: { connectionId: props.connection.id } });
+      result = await restartConnectionSync({
+        variables: { connectionId: props.connection.id },
+        refetchQueries: [{ query: GetConnectionsIndexPageDocument }]
+      });
       const data = mutationSuccess(result, "restartConnectionSync");
       if (data) {
         return toast.success("Connection sync restarted successfully.");
@@ -64,6 +95,36 @@ export const ConnectionIndexEntry = (props: { connection: ConnectionIndexEntryFr
     } catch (e) {}
     toast.error("There was an error restarting this connection sync.");
   }, [props.connection.id, restartConnectionSync]);
+
+  const onSyncClick = React.useCallback(async () => {
+    let result;
+    try {
+      result = await syncConnectionNow({ variables: { connectionId: props.connection.id } });
+      const data = mutationSuccess(result, "syncConnectionNow");
+      if (data) {
+        return toast.success("Connection sync started successfully.");
+      }
+    } catch (e) {}
+    toast.error("There was an error starting this connection sync.");
+  }, [props.connection.id, syncConnectionNow]);
+
+  const onToggleEnabled = React.useCallback(
+    async (enabled: boolean) => {
+      let result;
+      try {
+        result = await setConnectionEnabled({
+          variables: { connectionId: props.connection.id, enabled: enabled },
+          refetchQueries: [{ query: GetConnectionsIndexPageDocument }]
+        });
+        const data = mutationSuccess(result, "setConnectionEnabled");
+        if (data) {
+          return toast.success(`Connection ${enabled ? "enabled" : "disabled"} successfully.`);
+        }
+      } catch (e) {}
+      toast.error(`There was an error ${enabled ? "enabling" : "disabling"} this connection sync.`);
+    },
+    [props.connection.id, setConnectionEnabled]
+  );
 
   return (
     <Box pad="small" key={props.connection.id}>
@@ -75,9 +136,13 @@ export const ConnectionIndexEntry = (props: { connection: ConnectionIndexEntryFr
           label="Actions"
           items={[
             { icon: <Test />, label: "Test Connection" },
-            { icon: <CloudGo />, label: "Sync Now" },
+            { icon: <CloudGo />, label: "Sync Now", onClick: onSyncClick },
             { icon: <Restart />, label: "Restart Sync", onClick: onRestartClick },
-            { icon: <Pause />, label: "Pause" },
+            {
+              icon: props.connection.enabled ? <Pause /> : <Play />,
+              label: props.connection.enabled ? "Pause" : "Resume",
+              onClick: () => onToggleEnabled(!props.connection.enabled)
+            },
             { icon: <Trash />, label: "Delete" }
           ]}
         />

@@ -1,4 +1,4 @@
-class Mutations::Connections::RestartConnectionSync < Mutations::BaseMutation
+class Mutations::Connections::SyncConnectionNow < Mutations::BaseMutation
   argument :connection_id, GraphQL::Types::ID, required: true
 
   field :connection, Types::Connections::ConnectionobjType, null: true, connection: false
@@ -9,11 +9,9 @@ class Mutations::Connections::RestartConnectionSync < Mutations::BaseMutation
     errors = nil
 
     if connection.strategy_singer?
-      connection.enabled = true
-      Infrastructure::SingerConnectionSync.new(context[:current_account]).reset_state(connection)
       Infrastructure::SyncSingerConnectionJob.enqueue(connection_id: connection.id)
     else
-      errors = ["Can't reset this connection right now."]
+      errors = ["Can't sync this connection right now."]
     end
 
     {
