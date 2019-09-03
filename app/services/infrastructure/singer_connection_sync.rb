@@ -27,13 +27,13 @@ module Infrastructure
       state = state_record.state || {}
 
       logger.tagged connection_id: connection.id, import_id: attempt_record.id do
-        prepare_integration(connection)
-        importer = importer_for_connection(connection)
-        config = config_for_connection(connection)
-
-        logger.info "Beginning Singer sync for connection", importer: importer
-
         begin
+          prepare_integration(connection)
+          importer = importer_for_connection(connection)
+          config = config_for_connection(connection)
+
+          logger.info "Beginning Singer sync for connection", importer: importer
+
           SingerImporterClient.client.import(importer, config, state, { import_id: attempt_record.id }, transform_for_connection(connection)) do |new_state|
             SingerSyncAttempt.transaction do
               state_record.state = new_state
