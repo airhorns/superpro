@@ -1,7 +1,7 @@
 class Mutations::Connections::RestartConnectionSync < Mutations::BaseMutation
   argument :connection_id, GraphQL::Types::ID, required: true
 
-  field :connection, Types::Connections::ConnectionType, null: true, connection: false
+  field :connection, Types::Connections::ConnectionobjType, null: true, connection: false
   field :errors, [String], null: true
 
   def resolve(connection_id:)

@@ -13,9 +13,6 @@ class App::GraphQLController < AppAreaController
     }
     result = SuperproAppSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
     render json: result
-  rescue => e
-    raise e unless Rails.env.development?
-    handle_error_in_development e
   end
 
   # Dev only helper for Apollo and gql-gen to be able to get the schema

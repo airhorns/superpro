@@ -5,7 +5,7 @@ class Types::Connections::ShopifyShopType < Types::BaseObject
   field :api_key, String, null: false
   field :shop_id, GraphQL::Types::ID, null: false
 
-  field :connection, Types::Connections::ConnectionType, null: false, connection: false
+  field :connection, Types::Connections::ConnectionobjType, null: false, connection: false
   field :creator, Types::Identity::UserType, null: false
 
   field :created_at, GraphQL::Types::ISO8601DateTime, null: false

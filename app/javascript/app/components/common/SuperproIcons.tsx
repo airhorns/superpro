@@ -34,7 +34,8 @@ import {
   Share as GrommetShare,
   Configure,
   Image as GrommetImage,
-  Cycle
+  Cycle,
+  CirclePlay
 } from "grommet-icons";
 
 // Navigation & Root level ideas
@@ -76,6 +77,7 @@ export const Add = GrommetAdd;
 export const FormClose = GrommetFormClose;
 export const DragHandle = Menu;
 export const Restart = Cycle;
+export const Go = CirclePlay;
 
 export const AddStack = (props: { icon: React.ReactNode; anchor?: StackProps["anchor"] }) => (
   <Stack anchor={props.anchor || "bottom-right"}>

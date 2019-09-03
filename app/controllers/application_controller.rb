@@ -22,13 +22,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def handle_error_in_development(exception)
-    logger.error exception.message
-    logger.error exception.backtrace.join("\n")
-
-    render json: { error: { message: exception.message, backtrace: exception.backtrace }, data: {} }, status: :internal_server_error
-  end
-
   def trusted_dev_request?
     (Rails.env.development? || Rails.env.integration_test?) && request.headers["HTTP_X_TRUSTED_DEV_CLIENT"].present?
   end

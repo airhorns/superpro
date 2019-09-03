@@ -2,28 +2,17 @@ import React from "react";
 import gql from "graphql-tag";
 import { ConnectionCard } from "./ConnectionCard";
 import { useConnectShopifyMutation, GetConnectionsIndexPageDocument } from "app/app-graph";
-import { mutationSuccess, toast, SimpleModal, Row } from "superlib";
-import { Box, Text, Heading, Button } from "grommet";
+import { mutationSuccess, toast, SimpleModal } from "superlib";
+import { Box, Heading, Button } from "grommet";
 import { Add } from "app/components/common/SuperproIcons";
 import { Input, FieldBox, SuperForm } from "superlib/superform";
-import { RestartConnectionSyncButton } from "./RestartConnectionSyncButton";
 
 gql`
-  fragment ShopifyConnectionCardContent on ShopifyShop {
-    id
-    name
-    shopifyDomain
-    shopId
-    connection {
-      id
-    }
-  }
-
   mutation ConnectShopify($apiKey: String!, $password: String!, $domain: String!) {
     connectShopify(apiKey: $apiKey, password: $password, domain: $domain) {
       errors
       shopifyShop {
-        ...ShopifyConnectionCardContent
+        id
       }
     }
   }
@@ -96,30 +85,12 @@ const NewShopifyConnectionForm = () => {
   );
 };
 
-export const ShopifyConnectionCard = (props: { shopifyShops: ShopifyShop[] }) => {
+export const ShopifyConnectionCard = () => {
   return (
     <ConnectionCard
       name="Shopify"
       description="Superpro connects to [Shopify](https://www.shopify.com/) to import your order, inventory, customer, and web traffic data."
     >
-      {props.shopifyShops.length > 0 && (
-        <Box>
-          <Text>Currently Connected Shops:</Text>
-          <ul>
-            {props.shopifyShops.map(shop => (
-              <li key={shop.id}>
-                <Box gap="small">
-                  <Heading level="5">{shop.name}</Heading>
-                  <Row justify="between">
-                    <a href={`https://${shop.shopifyDomain}`}>{shop.shopifyDomain}</a>
-                    <RestartConnectionSyncButton connection={shop.connection} />
-                  </Row>
-                </Box>
-              </li>
-            ))}
-          </ul>
-        </Box>
-      )}
       <NewShopifyConnectionForm />
     </ConnectionCard>
   );
