@@ -28,16 +28,19 @@ module Infrastructure
       prepare_integration(connection)
       importer = importer_for_connection(connection)
       config = config_for_connection(connection)
-      attempt_record = @account.singer_sync_attempts.create!(connection: connection, started_at: Time.now.utc)
+      attempt_record = @account.singer_sync_attempts.create!(connection: connection, started_at: Time.now.utc, last_progress_at: Time.now.utc)
 
       logger.tagged connection_id: connection.id, importer: importer, import_id: attempt_record.id do
         logger.info "Beginning Singer sync for connection"
 
         begin
           SingerImporterClient.client.import(importer, config, state, { import_id: attempt_record.id }, transform_for_connection(connection)) do |new_state|
-            state_record.state = new_state
-            state_record.save!
-            logger.info "State updated to #{new_state}"
+            SingerSyncAttempt.transaction do
+              state_record.state = new_state
+              state_record.save!
+              attempt_record.update!(last_progress_at: Time.now.utc)
+              logger.info "State updated to #{new_state}"
+            end
           end
         rescue StandardError => e
           attempt_record.update!(finished_at: Time.now.utc, success: false, failure_reason: e.message)

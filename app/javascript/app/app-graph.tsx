@@ -516,6 +516,18 @@ export type ConnectionIndexEntryFragment = { __typename: "Connectionobj" } & Pic
     };
   };
 
+export type RestartConnectionSyncMutationVariables = {
+  connectionId: Scalars["ID"];
+};
+
+export type RestartConnectionSyncMutation = { __typename: "AppMutation" } & {
+  restartConnectionSync: Maybe<
+    { __typename: "RestartConnectionSyncPayload" } & Pick<RestartConnectionSyncPayload, "errors"> & {
+        connection: Maybe<{ __typename: "Connectionobj" } & Pick<Connectionobj, "id">>;
+      }
+  >;
+};
+
 export type GetConnectionsIndexPageQueryVariables = {};
 
 export type GetConnectionsIndexPageQuery = { __typename: "AppQuery" } & {
@@ -566,18 +578,6 @@ export type ConnectPlaidMutationVariables = {
 export type ConnectPlaidMutation = { __typename: "AppMutation" } & {
   connectPlaid: Maybe<
     { __typename: "ConnectPlaidPayload" } & { plaidItem: Maybe<{ __typename: "PlaidItem" } & PlaidConnectionCardContentFragment> }
-  >;
-};
-
-export type RestartConnectionSyncMutationVariables = {
-  connectionId: Scalars["ID"];
-};
-
-export type RestartConnectionSyncMutation = { __typename: "AppMutation" } & {
-  restartConnectionSync: Maybe<
-    { __typename: "RestartConnectionSyncPayload" } & Pick<RestartConnectionSyncPayload, "errors"> & {
-        connection: Maybe<{ __typename: "Connectionobj" } & Pick<Connectionobj, "id">>;
-      }
   >;
 };
 
@@ -663,7 +663,7 @@ export const ConnectionIndexEntryFragmentDoc = gql`
       }
     }
     supportsSync
-    syncAttempts(first: 50) {
+    syncAttempts(first: 15) {
       nodes {
         id
         success
@@ -765,6 +765,37 @@ export function useUpdateAccountSettingsMutation(
 ) {
   return ReactApolloHooks.useMutation<UpdateAccountSettingsMutation, UpdateAccountSettingsMutationVariables>(
     UpdateAccountSettingsDocument,
+    baseOptions
+  );
+}
+export const RestartConnectionSyncDocument = gql`
+  mutation RestartConnectionSync($connectionId: ID!) {
+    restartConnectionSync(connectionId: $connectionId) {
+      connection {
+        id
+      }
+      errors
+    }
+  }
+`;
+export type RestartConnectionSyncMutationFn = ReactApollo.MutationFn<RestartConnectionSyncMutation, RestartConnectionSyncMutationVariables>;
+export type RestartConnectionSyncComponentProps = Omit<
+  ReactApollo.MutationProps<RestartConnectionSyncMutation, RestartConnectionSyncMutationVariables>,
+  "mutation"
+>;
+
+export const RestartConnectionSyncComponent = (props: RestartConnectionSyncComponentProps) => (
+  <ReactApollo.Mutation<RestartConnectionSyncMutation, RestartConnectionSyncMutationVariables>
+    mutation={RestartConnectionSyncDocument}
+    {...props}
+  />
+);
+
+export function useRestartConnectionSyncMutation(
+  baseOptions?: ReactApolloHooks.MutationHookOptions<RestartConnectionSyncMutation, RestartConnectionSyncMutationVariables>
+) {
+  return ReactApolloHooks.useMutation<RestartConnectionSyncMutation, RestartConnectionSyncMutationVariables>(
+    RestartConnectionSyncDocument,
     baseOptions
   );
 }
@@ -883,37 +914,6 @@ export function useConnectPlaidMutation(
   baseOptions?: ReactApolloHooks.MutationHookOptions<ConnectPlaidMutation, ConnectPlaidMutationVariables>
 ) {
   return ReactApolloHooks.useMutation<ConnectPlaidMutation, ConnectPlaidMutationVariables>(ConnectPlaidDocument, baseOptions);
-}
-export const RestartConnectionSyncDocument = gql`
-  mutation RestartConnectionSync($connectionId: ID!) {
-    restartConnectionSync(connectionId: $connectionId) {
-      connection {
-        id
-      }
-      errors
-    }
-  }
-`;
-export type RestartConnectionSyncMutationFn = ReactApollo.MutationFn<RestartConnectionSyncMutation, RestartConnectionSyncMutationVariables>;
-export type RestartConnectionSyncComponentProps = Omit<
-  ReactApollo.MutationProps<RestartConnectionSyncMutation, RestartConnectionSyncMutationVariables>,
-  "mutation"
->;
-
-export const RestartConnectionSyncComponent = (props: RestartConnectionSyncComponentProps) => (
-  <ReactApollo.Mutation<RestartConnectionSyncMutation, RestartConnectionSyncMutationVariables>
-    mutation={RestartConnectionSyncDocument}
-    {...props}
-  />
-);
-
-export function useRestartConnectionSyncMutation(
-  baseOptions?: ReactApolloHooks.MutationHookOptions<RestartConnectionSyncMutation, RestartConnectionSyncMutationVariables>
-) {
-  return ReactApolloHooks.useMutation<RestartConnectionSyncMutation, RestartConnectionSyncMutationVariables>(
-    RestartConnectionSyncDocument,
-    baseOptions
-  );
 }
 export const ConnectShopifyDocument = gql`
   mutation ConnectShopify($apiKey: String!, $password: String!, $domain: String!) {
