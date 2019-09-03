@@ -12,7 +12,7 @@ export const ConnectionSyncDiagram = (props: { syncAttempts: { id: string; succe
       } else if (attempt.success) {
         color = "green";
       }
-      return <Box key={attempt.id} pad="small" background={color} />;
+      return <Box key={attempt.id} width="20px" height="30px" background={color}></Box>;
     })}
   </Row>
 );

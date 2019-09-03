@@ -4,7 +4,7 @@ import { Box, Heading, Menu } from "grommet";
 import { Row, mutationSuccess, toast } from "superlib";
 import { ConnectionSyncDiagram } from "./ConnectionSyncDiagram";
 import { ConnectionIndexEntryFragment, useRestartConnectionSyncMutation } from "app/app-graph";
-import { Restart, Trash, CloudGo, Test, Pause } from "app/components/common/SuperproIcons";
+import { Restart, Trash, CloudGo, Test, Pause, Play } from "app/components/common/SuperproIcons";
 
 gql`
   fragment ConnectionIndexEntry on Connectionobj {
@@ -20,7 +20,7 @@ gql`
       }
     }
     supportsSync
-    syncAttempts(first: 50) {
+    syncAttempts(first: 15) {
       nodes {
         id
         success
@@ -40,6 +40,17 @@ gql`
   }
 `;
 
+const ConnectionEnabledIndicator = (props: { enabled: boolean }) => {
+  const text = props.enabled ? "Enabled" : "Paused";
+  const icon = props.enabled ? <Play /> : <Pause />;
+  return (
+    <Row border="all" gap="small" pad={{ horizontal: "medium", vertical: "xsmall" }} round>
+      {icon}
+      {text}
+    </Row>
+  );
+};
+
 export const ConnectionIndexEntry = (props: { connection: ConnectionIndexEntryFragment }) => {
   const restartConnectionSync = useRestartConnectionSyncMutation();
   const onRestartClick = React.useCallback(async () => {
@@ -58,7 +69,7 @@ export const ConnectionIndexEntry = (props: { connection: ConnectionIndexEntryFr
     <Box pad="small" key={props.connection.id}>
       <Heading level="3">{props.connection.displayName}</Heading>
       <Row justify="between">
-        {(props.connection.enabled && "Enabled") || "Paused"}
+        <ConnectionEnabledIndicator enabled={props.connection.enabled} />
         <ConnectionSyncDiagram syncAttempts={props.connection.syncAttempts.nodes} />
         <Menu
           label="Actions"

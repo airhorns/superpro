@@ -29,8 +29,8 @@ GIT
 
 GIT
   remote: https://github.com/superpro-inc/que-locks.git
-  revision: 5e0e29a807860a5d1babdb046785586832044de0
-  ref: 5e0e29a807860a5d1babdb046785586832044de0
+  revision: 6605fc589ce8e39b0d1523953b3813d8a54c386d
+  ref: 6605fc589ce8e39b0d1523953b3813d8a54c386d
   specs:
     que-locks (0.1.0)
       neatjson
