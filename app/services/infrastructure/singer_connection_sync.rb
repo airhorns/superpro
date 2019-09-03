@@ -22,16 +22,16 @@ module Infrastructure
         raise RuntimeError.new("Trying to singer sync a connection that isn't using singer for sync. #{connection}")
       end
 
+      attempt_record = @account.singer_sync_attempts.create!(connection: connection, started_at: Time.now.utc, last_progress_at: Time.now.utc)
       state_record = connection.singer_sync_state || connection.build_singer_sync_state(account: @account)
       state = state_record.state || {}
 
-      prepare_integration(connection)
-      importer = importer_for_connection(connection)
-      config = config_for_connection(connection)
-      attempt_record = @account.singer_sync_attempts.create!(connection: connection, started_at: Time.now.utc, last_progress_at: Time.now.utc)
+      logger.tagged connection_id: connection.id, import_id: attempt_record.id do
+        prepare_integration(connection)
+        importer = importer_for_connection(connection)
+        config = config_for_connection(connection)
 
-      logger.tagged connection_id: connection.id, importer: importer, import_id: attempt_record.id do
-        logger.info "Beginning Singer sync for connection"
+        logger.info "Beginning Singer sync for connection", importer: importer
 
         begin
           SingerImporterClient.client.import(importer, config, state, { import_id: attempt_record.id }, transform_for_connection(connection)) do |new_state|
