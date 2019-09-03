@@ -2,7 +2,7 @@ import React from "react";
 import { RouteComponentProps } from "react-router";
 import { Box, Paragraph, Button } from "grommet";
 import gql from "graphql-tag";
-import { GetGoogleAnalyticsViewsComponent, useCompleteGoogleAnalyticsSetupMutation } from "app/app-graph";
+import { GetGoogleAnalyticsViewsComponent, useCompleteGoogleAnalyticsSetupMutation, GetConnectionsIndexPageDocument } from "app/app-graph";
 import { Page } from "../../common";
 import { SuperForm, Select } from "superlib/superform";
 import { mutationSuccess, toast } from "superlib";
@@ -52,7 +52,10 @@ export default (props: RouteComponentProps<{ credentialId: string }>) => {
     async (form: CompleteGoogleAnalyticsSetupFormValues) => {
       let result;
       try {
-        result = await completeSetup({ variables: { credentialId: props.match.params.credentialId, viewId: form.viewId } });
+        result = await completeSetup({
+          variables: { credentialId: props.match.params.credentialId, viewId: form.viewId },
+          refetchQueries: [GetConnectionsIndexPageDocument]
+        });
       } catch (e) {}
 
       const data = mutationSuccess(result, "completeGoogleAnalyticsSetup");

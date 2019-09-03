@@ -5,6 +5,21 @@ import { lighten } from "polished";
 import { merge } from "lodash";
 import { Props as ReactSelectProps } from "react-select/lib/Select";
 
+const HeadingAutoWidths = {
+  xlarge: {
+    maxWidth: "auto"
+  },
+  large: {
+    maxWidth: "auto"
+  },
+  medium: {
+    maxWidth: "auto"
+  },
+  small: {
+    maxWidth: "auto"
+  }
+};
+
 export const SuperproGrommetTheme = merge({}, generate(24), {
   global: {
     font: {
@@ -13,6 +28,14 @@ export const SuperproGrommetTheme = merge({}, generate(24), {
     },
     input: {
       weight: "normal"
+    }
+  },
+  heading: {
+    level: {
+      1: HeadingAutoWidths,
+      2: HeadingAutoWidths,
+      3: HeadingAutoWidths,
+      4: HeadingAutoWidths
     }
   }
 });

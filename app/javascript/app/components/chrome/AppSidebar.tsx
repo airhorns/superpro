@@ -8,7 +8,7 @@ import { UserAvatar } from "../common/UserAvatar";
 import { signOut } from "../../lib/auth";
 import { Settings } from "../../lib/settings";
 import { Flag } from "../../../superlib";
-import { Budget, Todos, Invite, Settings as SettingsIcon } from "../common/SuperproIcons";
+import { Invite, Settings as SettingsIcon } from "../common/SuperproIcons";
 import { NavigationSectionButton, NavigationSubItemButton } from "./Navigation";
 
 gql`

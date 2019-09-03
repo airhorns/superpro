@@ -195,6 +195,7 @@ export type Connectionobj = {
   id: Scalars["ID"];
   integration: ConnectionIntegrationUnion;
   supportsSync: Scalars["Boolean"];
+  supportsTest: Scalars["Boolean"];
   syncAttempts: SyncAttemptConnection;
   updatedAt: Scalars["ISO8601DateTime"];
 };
@@ -406,7 +407,7 @@ export type SyncAttempt = {
   finishedAt?: Maybe<Scalars["ISO8601DateTime"]>;
   id: Scalars["ID"];
   startedAt: Scalars["ISO8601DateTime"];
-  success: Scalars["Boolean"];
+  success?: Maybe<Scalars["Boolean"]>;
   updatedAt: Scalars["ISO8601DateTime"];
 };
 
@@ -505,17 +506,20 @@ export type UpdateAccountSettingsMutation = { __typename: "AppMutation" } & {
   >;
 };
 
+export type ConnectionIndexEntryFragment = { __typename: "Connectionobj" } & Pick<
+  Connectionobj,
+  "id" | "displayName" | "supportsSync" | "enabled"
+> & {
+    integration: { __typename: "ShopifyShop" } & Pick<ShopifyShop, "id" | "name" | "shopifyDomain" | "shopId">;
+    syncAttempts: { __typename: "SyncAttemptConnection" } & {
+      nodes: Array<{ __typename: "SyncAttempt" } & Pick<SyncAttempt, "id" | "success" | "finishedAt">>;
+    };
+  };
+
 export type GetConnectionsIndexPageQueryVariables = {};
 
 export type GetConnectionsIndexPageQuery = { __typename: "AppQuery" } & {
-  connections: Array<
-    { __typename: "Connectionobj" } & Pick<Connectionobj, "id" | "displayName" | "supportsSync" | "enabled"> & {
-        integration: { __typename: "ShopifyShop" } & Pick<ShopifyShop, "id" | "name" | "shopifyDomain" | "shopId">;
-        syncAttempts: { __typename: "SyncAttemptConnection" } & {
-          nodes: Array<{ __typename: "SyncAttempt" } & Pick<SyncAttempt, "id" | "success" | "finishedAt">>;
-        };
-      }
-  >;
+  connections: Array<{ __typename: "Connectionobj" } & Pick<Connectionobj, "id"> & ConnectionIndexEntryFragment>;
 };
 
 export type GetGoogleAnalyticsViewsQueryVariables = {
@@ -645,6 +649,30 @@ export const UserCardFragmentDoc = gql`
     primaryTextIdentifier
   }
 `;
+export const ConnectionIndexEntryFragmentDoc = gql`
+  fragment ConnectionIndexEntry on Connectionobj {
+    id
+    displayName
+    integration {
+      __typename
+      ... on ShopifyShop {
+        id
+        name
+        shopifyDomain
+        shopId
+      }
+    }
+    supportsSync
+    syncAttempts(first: 50) {
+      nodes {
+        id
+        success
+        finishedAt
+      }
+    }
+    enabled
+  }
+`;
 export const GoogleAnalyticsConnectionCardContentFragmentDoc = gql`
   fragment GoogleAnalyticsConnectionCardContent on GoogleAnalyticsCredential {
     id
@@ -744,27 +772,10 @@ export const GetConnectionsIndexPageDocument = gql`
   query GetConnectionsIndexPage {
     connections {
       id
-      displayName
-      integration {
-        __typename
-        ... on ShopifyShop {
-          id
-          name
-          shopifyDomain
-          shopId
-        }
-      }
-      supportsSync
-      syncAttempts(first: 50) {
-        nodes {
-          id
-          success
-          finishedAt
-        }
-      }
-      enabled
+      ...ConnectionIndexEntry
     }
   }
+  ${ConnectionIndexEntryFragmentDoc}
 `;
 export type GetConnectionsIndexPageComponentProps = Omit<
   ReactApollo.QueryProps<GetConnectionsIndexPageQuery, GetConnectionsIndexPageQueryVariables>,

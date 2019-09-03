@@ -22,29 +22,26 @@ import {
   Compare,
   Menu,
   Analytics,
-  CheckboxSelected,
   Code as GrommetCode,
   List,
   OrderedList as GrommetOrderedList,
   Task,
   Currency,
   Alarm,
-  TextWrap,
   UserAdd,
   Share as GrommetShare,
   Configure,
   Image as GrommetImage,
   Cycle,
-  CirclePlay
+  CirclePlay,
+  Pause as GrommetPause,
+  CloudDownload
 } from "grommet-icons";
 
 // Navigation & Root level ideas
 export const SuperproLogo = Launch;
 export const Home = GrommetHome;
-export const Budget = Compare;
 export const Reports = Analytics;
-export const Todos = CheckboxSelected;
-export const Process = TextWrap;
 export const Invite = UserAdd;
 export const Settings = Configure;
 
@@ -77,7 +74,10 @@ export const Add = GrommetAdd;
 export const FormClose = GrommetFormClose;
 export const DragHandle = Menu;
 export const Restart = Cycle;
-export const Go = CirclePlay;
+export const Play = CirclePlay;
+export const Pause = GrommetPause;
+export const CloudGo = CloudDownload;
+export const Test = Compare;
 
 export const AddStack = (props: { icon: React.ReactNode; anchor?: StackProps["anchor"] }) => (
   <Stack anchor={props.anchor || "bottom-right"}>
