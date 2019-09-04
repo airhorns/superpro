@@ -30,7 +30,9 @@ gql`
       nodes {
         id
         success
+        startedAt
         finishedAt
+        failureReason
       }
     }
     enabled

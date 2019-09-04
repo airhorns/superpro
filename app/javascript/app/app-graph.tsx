@@ -421,7 +421,7 @@ export type ShopifyShopEdge = {
 export type SyncAttempt = {
   __typename: "SyncAttempt";
   createdAt: Scalars["ISO8601DateTime"];
-  failureReason: Scalars["String"];
+  failureReason?: Maybe<Scalars["String"]>;
   finishedAt?: Maybe<Scalars["ISO8601DateTime"]>;
   id: Scalars["ID"];
   startedAt: Scalars["ISO8601DateTime"];
@@ -537,7 +537,7 @@ export type ConnectionIndexEntryFragment = { __typename: "Connectionobj" } & Pic
 > & {
     integration: { __typename: "ShopifyShop" } & Pick<ShopifyShop, "id" | "name" | "shopifyDomain" | "shopId">;
     syncAttempts: { __typename: "SyncAttemptConnection" } & {
-      nodes: Array<{ __typename: "SyncAttempt" } & Pick<SyncAttempt, "id" | "success" | "finishedAt">>;
+      nodes: Array<{ __typename: "SyncAttempt" } & Pick<SyncAttempt, "id" | "success" | "startedAt" | "finishedAt" | "failureReason">>;
     };
   };
 
@@ -717,7 +717,9 @@ export const ConnectionIndexEntryFragmentDoc = gql`
       nodes {
         id
         success
+        startedAt
         finishedAt
+        failureReason
       }
     }
     enabled

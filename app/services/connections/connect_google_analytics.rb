@@ -105,8 +105,6 @@ class Connections::ConnectGoogleAnalytics
   def service_for_credential(ga_credential)
     service = Google::Apis::AnalyticsV3::AnalyticsService.new
     service.authorization = secrets_for_credential(ga_credential).to_authorization
-    service.authorization.refresh!
-
     service
   end
 end
