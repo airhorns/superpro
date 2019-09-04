@@ -11,7 +11,7 @@ class Mutations::Connections::RestartConnectionSync < Mutations::BaseMutation
     if connection.strategy_singer?
       connection.enabled = true
       Infrastructure::SingerConnectionSync.new(context[:current_account]).reset_state(connection)
-      Infrastructure::SyncSingerConnectionJob.enqueue(connection_id: connection.id)
+      Infrastructure::SingerConnectionSync.run_in_background(connection)
     else
       errors = ["Can't reset this connection right now."]
     end

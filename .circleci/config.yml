@@ -55,6 +55,8 @@ jobs:
           name: Install Ruby dependencies
           command: |
             bundle install --jobs=4 --retry=3 --path vendor/bundle
+            mkdir ~/.kube
+            cp .circleci/kube-config ~/.kube/config
       - save_cache:
           paths:
             - ~/repo/vendor/bundle

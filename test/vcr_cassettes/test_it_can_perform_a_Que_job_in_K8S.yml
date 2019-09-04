@@ -1,0 +1,61 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://<KUBE_CLUSTER_ADDRESS>/apis/batch/v1
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 04 Sep 2019 19:28:49 GMT
+      Content-Length:
+      - '361'
+    body:
+      encoding: ASCII-8BIT
+      string: '{"kind":"APIResourceList","apiVersion":"v1","groupVersion":"batch/v1","resources":[{"name":"jobs","singularName":"","namespaced":true,"kind":"Job","verbs":["create","delete","deletecollection","get","list","patch","update","watch"],"categories":["all"]},{"name":"jobs/status","singularName":"","namespaced":true,"kind":"Job","verbs":["get","patch","update"]}]}
+
+'
+    http_version: 
+  recorded_at: Wed, 04 Sep 2019 19:28:49 GMT
+- request:
+    method: post
+    uri: https://<KUBE_CLUSTER_ADDRESS>/apis/batch/v1/namespaces/test/jobs
+    body:
+      encoding: UTF-8
+      string: '{"apiVersion":"batch/v1","kind":"Job","metadata":{"name":"infrastructure--testexceptionjob-1567625329","namespace":"test"},"spec":{"completions":1,"parallelism":1,"backoffLimit":0,"template":{"metadata":{"name":"infrastructure--testexceptionjob-1567625329"},"spec":{"containers":[{"name":"execute-job","image":"hello-world","command":["bundle","exec","rake","job:run_inline[Infrastructure::TestExceptionJob,
+        \"[]\"]"],"env":[{"name":"TEST_ENV_VAR","value":"FOO"}],"volumeMounts":[],"securityContext":{"capabilities":{"add":["SYS_PTRACE"]}}}],"volumes":[],"restartPolicy":"Never"}}}}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+  response:
+    status:
+      code: 201
+      message: Created
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 04 Sep 2019 19:28:49 GMT
+      Content-Length:
+      - '1372'
+    body:
+      encoding: ASCII-8BIT
+      string: '{"kind":"Job","apiVersion":"batch/v1","metadata":{"name":"infrastructure--testexceptionjob-1567625329","namespace":"test","selfLink":"/apis/batch/v1/namespaces/test/jobs/infrastructure--testexceptionjob-1567625329","uid":"38b0dcc7-cf4a-11e9-9bbb-025000000001","resourceVersion":"13747","creationTimestamp":"2019-09-04T19:28:49Z","labels":{"controller-uid":"38b0dcc7-cf4a-11e9-9bbb-025000000001","job-name":"infrastructure--testexceptionjob-1567625329"}},"spec":{"parallelism":1,"completions":1,"backoffLimit":0,"selector":{"matchLabels":{"controller-uid":"38b0dcc7-cf4a-11e9-9bbb-025000000001"}},"template":{"metadata":{"name":"infrastructure--testexceptionjob-1567625329","creationTimestamp":null,"labels":{"controller-uid":"38b0dcc7-cf4a-11e9-9bbb-025000000001","job-name":"infrastructure--testexceptionjob-1567625329"}},"spec":{"containers":[{"name":"execute-job","image":"hello-world","command":["bundle","exec","rake","job:run_inline[Infrastructure::TestExceptionJob,
+        \"[]\"]"],"env":[{"name":"TEST_ENV_VAR","value":"FOO"}],"resources":{},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File","imagePullPolicy":"Always","securityContext":{"capabilities":{"add":["SYS_PTRACE"]}}}],"restartPolicy":"Never","terminationGracePeriodSeconds":30,"dnsPolicy":"ClusterFirst","securityContext":{},"schedulerName":"default-scheduler"}}},"status":{}}
+
+'
+    http_version: 
+  recorded_at: Wed, 04 Sep 2019 19:28:49 GMT
+recorded_with: VCR 5.0.0

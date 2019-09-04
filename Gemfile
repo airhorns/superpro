@@ -51,7 +51,7 @@ gem "mini_magick"
 gem "oj"
 gem "que", github: "chanks/que", ref: "5ddddd5ebac6153d7a683ef08c86bced8e03fb51"
 gem "que-scheduler", github: "hlascelles/que-scheduler", branch: "que-1.0-compatibility"
-gem "que-locks", github: "superpro-inc/que-locks", ref: "6605fc589ce8e39b0d1523953b3813d8a54c386d", require: "que/locks"
+gem "que-locks", github: "superpro-inc/que-locks", ref: "45c4e9792da479ccba7d3ede634b3e5a34046a91", require: "que/locks"
 gem 'que-web'
 gem 'rails-middleware-extensions'
 gem 'rails_semantic_logger'
@@ -60,6 +60,7 @@ gem 'request_store'
 gem "safely"
 gem "scenic"
 gem "sentry-raven"
+gem 'k8s-client'
 
 # Admin
 gem 'omniauth-google-oauth2'

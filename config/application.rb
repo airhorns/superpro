@@ -53,6 +53,7 @@ module Superpro
     config.plaid = config_for(:plaid)
     config.singer_importer = config_for(:singer_importer)
     config.google = config_for(:google)
+    config.kubernetes = config_for(:kubernetes)
 
     config.rails_semantic_logger.semantic = true
 

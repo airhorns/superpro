@@ -5,6 +5,8 @@ module AppRelease
 
       if File.exist?(release_file)
         File.read(release_file).chomp
+      elsif ENV["RELEASE"]
+        ENV["RELEASE"]
       else
         "unknown"
       end

@@ -1,0 +1,19 @@
+development: &development
+  pod_template_data:
+    rails_environment:
+      - name: TEST_ENV_VAR
+        value: "FOO"
+    rails_volume_mounts: []
+    rails_volumes: []
+  rails_image: hello-world
+  namespace: "test"
+  kube_config: "~/.kube/config"
+test:
+  <<: *development
+integration_test:
+  <<: *development
+production:
+  pod_template_data: <%= JSON.dump(YAML.load(ENV['RAILS_POD_TEMPLATE_YAML'] || "") || {}) %>
+  rails_image: "gcr.io/superpro-production/core:<%= ENV['RELEASE'] %>"
+  namespace: "core-production-jobs"
+  in_cluster_config: true

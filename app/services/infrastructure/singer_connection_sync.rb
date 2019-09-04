@@ -4,6 +4,15 @@ module Infrastructure
   class SingerConnectionSync
     include SemanticLogger::Loggable
 
+    def self.run_in_background(connection)
+      args = [{ connection_id: connection.id }]
+      if Rails.env.production?
+        KubernetesClient.client.run_background_job_in_k8s(Infrastructure::SyncSingerConnectionJob, args)
+      else
+        Infrastructure::SyncSingerConnectionJob.enqueue(*args)
+      end
+    end
+
     def initialize(account, start_date: "2017-01-01")
       @account = account
       @start_date = start_date

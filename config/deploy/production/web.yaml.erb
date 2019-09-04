@@ -39,12 +39,11 @@ spec:
             - "3000"
             - -b
             - 0.0.0.0
-          env: <%= partial 'rails_environment' %>
+          env: <%= partial 'rails_environment', expose_contents_as_variable: true %>
           volumeMounts: <%= partial 'rails_volume_mounts' %>
           image: gcr.io/superpro-production/core:<%= current_sha %>
           ports:
             - containerPort: 3000
-          resources: {}
           securityContext:
             capabilities:
               add:

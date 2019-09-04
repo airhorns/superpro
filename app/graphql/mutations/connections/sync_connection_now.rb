@@ -9,7 +9,7 @@ class Mutations::Connections::SyncConnectionNow < Mutations::BaseMutation
     errors = nil
 
     if connection.strategy_singer?
-      Infrastructure::SyncSingerConnectionJob.enqueue(connection_id: connection.id)
+      Infrastructure::SingerConnectionSync.run_in_background(connection)
     else
       errors = ["Can't sync this connection right now."]
     end

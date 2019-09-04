@@ -8,6 +8,8 @@
   value: "true"
 - name: RAILS_LOG_LEVEL
   value: <%= if defined?(rails_log_level) then rails_log_level else "debug" end %>
+- name: RELEASE
+  value: <%= current_sha %>
 - name: DATABASE_URL
   valueFrom:
     secretKeyRef:
@@ -59,3 +61,11 @@
     secretKeyRef:
       name: application-secrets
       key: SINGER_IMPORTER_AUTH_TOKEN
+<% # This is some messed up shit that allows the rails application to create pods of itself. Because we use kubernetes-deploy to render out all these nice partials, the Rails app needs to be able to do the same, so we pass in the same data rendered out here as an environment variable that can then be decoded and reused in Rails. Sketchy. %>
+<% if locals[:expose_contents_as_variable] %>
+- name: RAILS_POD_TEMPLATE_YAML
+  value: |
+    rails_environment: <%= partial 'rails_environment', expose_contents_as_variable: false %>
+    rails_volumes: <%= partial 'rails_volumes' %>
+    rails_volume_mounts: <%= partial 'rails_volume_mounts' %>
+<% end %>

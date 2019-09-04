@@ -39,7 +39,7 @@ class Connections::ConnectShopify
       end
 
       if shop.persisted? && connection && connection.persisted?
-        Infrastructure::SyncSingerConnectionJob.enqueue(connection_id: connection.id)
+        Infrastructure::SingerConnectionSync.run_in_background(connection)
         return shop, nil
       else
         return nil, ["There was an error saving your Shopify shop. PLease try again."]

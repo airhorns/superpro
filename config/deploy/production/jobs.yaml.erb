@@ -24,7 +24,7 @@ spec:
             - default
             - -q
             - mailers
-          env: <%= partial 'rails_environment' %>
+          env: <%= partial 'rails_environment', expose_contents_as_variable: true %>
           volumeMounts: <%= partial 'rails_volume_mounts' %>
           resources: {}
           securityContext:

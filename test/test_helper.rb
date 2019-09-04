@@ -12,6 +12,10 @@ VCR.configure do |config|
   config.hook_into :webmock
   config.filter_sensitive_data("<GA_OAUTH_ACCESS_TOKEN>") { ENV["GA_OAUTH_ACCESS_TOKEN"] }
   config.filter_sensitive_data("<GA_OAUTH_REFRESH_TOKEN>") { ENV["GA_OAUTH_REFRESH_TOKEN"] }
+  config.filter_sensitive_data("<AUTHORIZATION>") do |interaction|
+    interaction.request.headers.has_key?("Authorization") && interaction.request.headers["Authorization"].first
+  end
+  config.filter_sensitive_data("<KUBE_CLUSTER_ADDRESS>") { "kubernetes.docker.internal:6443" }
 end
 
 class ActiveSupport::TestCase
