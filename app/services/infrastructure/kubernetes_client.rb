@@ -21,7 +21,8 @@ class Infrastructure::KubernetesClient
 
   def run_background_job_in_k8s(job_class, args)
     class_name = job_class.name
-    if job_class.exclusive_execution_lock && !job_class.lock_available?(args)
+
+    if job_class.ancestors.include?(Que::Job) && job_class.exclusive_execution_lock && !job_class.lock_available?(args)
       logger.info("Skipped k8s job enqueue as the lock is unavailable right now", job_class: job_class, args: args)
       return
     end

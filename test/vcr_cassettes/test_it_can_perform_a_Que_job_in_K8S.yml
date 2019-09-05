@@ -17,7 +17,7 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Wed, 04 Sep 2019 19:28:49 GMT
+      - Thu, 05 Sep 2019 15:42:15 GMT
       Content-Length:
       - '361'
     body:
@@ -26,13 +26,13 @@ http_interactions:
 
 '
     http_version: 
-  recorded_at: Wed, 04 Sep 2019 19:28:49 GMT
+  recorded_at: Thu, 05 Sep 2019 15:42:15 GMT
 - request:
     method: post
     uri: https://<KUBE_CLUSTER_ADDRESS>/apis/batch/v1/namespaces/test/jobs
     body:
       encoding: UTF-8
-      string: '{"apiVersion":"batch/v1","kind":"Job","metadata":{"name":"infrastructure--testexceptionjob-1567625329","namespace":"test"},"spec":{"completions":1,"parallelism":1,"backoffLimit":0,"template":{"metadata":{"name":"infrastructure--testexceptionjob-1567625329"},"spec":{"containers":[{"name":"execute-job","image":"hello-world","command":["bundle","exec","rake","job:run_inline[Infrastructure::TestExceptionJob,
+      string: '{"apiVersion":"batch/v1","kind":"Job","metadata":{"name":"infrastructure--testexceptionjob-1567698135","namespace":"test"},"spec":{"completions":1,"parallelism":1,"backoffLimit":0,"template":{"metadata":{"name":"infrastructure--testexceptionjob-1567698135"},"spec":{"containers":[{"name":"execute-job","image":"hello-world","command":["bundle","exec","rake","job:run_inline[Infrastructure::TestExceptionJob,
         \"[]\"]"],"env":[{"name":"TEST_ENV_VAR","value":"FOO"}],"volumeMounts":[],"securityContext":{"capabilities":{"add":["SYS_PTRACE"]}}}],"volumes":[],"restartPolicy":"Never"}}}}'
     headers:
       Accept:
@@ -47,15 +47,46 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Wed, 04 Sep 2019 19:28:49 GMT
+      - Thu, 05 Sep 2019 15:42:15 GMT
       Content-Length:
       - '1372'
     body:
       encoding: ASCII-8BIT
-      string: '{"kind":"Job","apiVersion":"batch/v1","metadata":{"name":"infrastructure--testexceptionjob-1567625329","namespace":"test","selfLink":"/apis/batch/v1/namespaces/test/jobs/infrastructure--testexceptionjob-1567625329","uid":"38b0dcc7-cf4a-11e9-9bbb-025000000001","resourceVersion":"13747","creationTimestamp":"2019-09-04T19:28:49Z","labels":{"controller-uid":"38b0dcc7-cf4a-11e9-9bbb-025000000001","job-name":"infrastructure--testexceptionjob-1567625329"}},"spec":{"parallelism":1,"completions":1,"backoffLimit":0,"selector":{"matchLabels":{"controller-uid":"38b0dcc7-cf4a-11e9-9bbb-025000000001"}},"template":{"metadata":{"name":"infrastructure--testexceptionjob-1567625329","creationTimestamp":null,"labels":{"controller-uid":"38b0dcc7-cf4a-11e9-9bbb-025000000001","job-name":"infrastructure--testexceptionjob-1567625329"}},"spec":{"containers":[{"name":"execute-job","image":"hello-world","command":["bundle","exec","rake","job:run_inline[Infrastructure::TestExceptionJob,
+      string: '{"kind":"Job","apiVersion":"batch/v1","metadata":{"name":"infrastructure--testexceptionjob-1567698135","namespace":"test","selfLink":"/apis/batch/v1/namespaces/test/jobs/infrastructure--testexceptionjob-1567698135","uid":"bc85b1a7-cff3-11e9-87cd-025000000001","resourceVersion":"25157","creationTimestamp":"2019-09-05T15:42:15Z","labels":{"controller-uid":"bc85b1a7-cff3-11e9-87cd-025000000001","job-name":"infrastructure--testexceptionjob-1567698135"}},"spec":{"parallelism":1,"completions":1,"backoffLimit":0,"selector":{"matchLabels":{"controller-uid":"bc85b1a7-cff3-11e9-87cd-025000000001"}},"template":{"metadata":{"name":"infrastructure--testexceptionjob-1567698135","creationTimestamp":null,"labels":{"controller-uid":"bc85b1a7-cff3-11e9-87cd-025000000001","job-name":"infrastructure--testexceptionjob-1567698135"}},"spec":{"containers":[{"name":"execute-job","image":"hello-world","command":["bundle","exec","rake","job:run_inline[Infrastructure::TestExceptionJob,
         \"[]\"]"],"env":[{"name":"TEST_ENV_VAR","value":"FOO"}],"resources":{},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File","imagePullPolicy":"Always","securityContext":{"capabilities":{"add":["SYS_PTRACE"]}}}],"restartPolicy":"Never","terminationGracePeriodSeconds":30,"dnsPolicy":"ClusterFirst","securityContext":{},"schedulerName":"default-scheduler"}}},"status":{}}
 
 '
     http_version: 
-  recorded_at: Wed, 04 Sep 2019 19:28:49 GMT
+  recorded_at: Thu, 05 Sep 2019 15:42:15 GMT
+- request:
+    method: post
+    uri: https://<KUBE_CLUSTER_ADDRESS>/apis/batch/v1/namespaces/test/jobs
+    body:
+      encoding: UTF-8
+      string: '{"apiVersion":"batch/v1","kind":"Job","metadata":{"name":"infrastructure--singerconnectionsync-1567698135","namespace":"test"},"spec":{"completions":1,"parallelism":1,"backoffLimit":0,"template":{"metadata":{"name":"infrastructure--singerconnectionsync-1567698135"},"spec":{"containers":[{"name":"execute-job","image":"hello-world","command":["bundle","exec","rake","job:run_inline[Infrastructure::SingerConnectionSync,
+        \"[{\"connection_id\":1}]\"]"],"env":[{"name":"TEST_ENV_VAR","value":"FOO"}],"volumeMounts":[],"securityContext":{"capabilities":{"add":["SYS_PTRACE"]}}}],"volumes":[],"restartPolicy":"Never"}}}}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+  response:
+    status:
+      code: 201
+      message: Created
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 05 Sep 2019 15:42:15 GMT
+      Content-Length:
+      - '1417'
+    body:
+      encoding: ASCII-8BIT
+      string: '{"kind":"Job","apiVersion":"batch/v1","metadata":{"name":"infrastructure--singerconnectionsync-1567698135","namespace":"test","selfLink":"/apis/batch/v1/namespaces/test/jobs/infrastructure--singerconnectionsync-1567698135","uid":"bc89f4e6-cff3-11e9-87cd-025000000001","resourceVersion":"25158","creationTimestamp":"2019-09-05T15:42:15Z","labels":{"controller-uid":"bc89f4e6-cff3-11e9-87cd-025000000001","job-name":"infrastructure--singerconnectionsync-1567698135"}},"spec":{"parallelism":1,"completions":1,"backoffLimit":0,"selector":{"matchLabels":{"controller-uid":"bc89f4e6-cff3-11e9-87cd-025000000001"}},"template":{"metadata":{"name":"infrastructure--singerconnectionsync-1567698135","creationTimestamp":null,"labels":{"controller-uid":"bc89f4e6-cff3-11e9-87cd-025000000001","job-name":"infrastructure--singerconnectionsync-1567698135"}},"spec":{"containers":[{"name":"execute-job","image":"hello-world","command":["bundle","exec","rake","job:run_inline[Infrastructure::SingerConnectionSync,
+        \"[{\"connection_id\":1}]\"]"],"env":[{"name":"TEST_ENV_VAR","value":"FOO"}],"resources":{},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File","imagePullPolicy":"Always","securityContext":{"capabilities":{"add":["SYS_PTRACE"]}}}],"restartPolicy":"Never","terminationGracePeriodSeconds":30,"dnsPolicy":"ClusterFirst","securityContext":{},"schedulerName":"default-scheduler"}}},"status":{}}
+
+'
+    http_version: 
+  recorded_at: Thu, 05 Sep 2019 15:42:15 GMT
 recorded_with: VCR 5.0.0

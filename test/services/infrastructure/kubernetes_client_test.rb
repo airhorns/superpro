@@ -11,5 +11,6 @@ class Infrastructure::KubernetesClientTest < ActiveSupport::TestCase
 
   test "it can perform a Que job in K8S" do
     @client.run_background_job_in_k8s(Infrastructure::TestExceptionJob, [])
+    @client.run_background_job_in_k8s(Infrastructure::SingerConnectionSync, [{ connection_id: 1 }])
   end
 end
