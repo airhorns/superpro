@@ -3,6 +3,7 @@ kind: Pod
 metadata:
   name: migrate-<%= deployment_id %>
 spec:
+  serviceAccountName: core-production
   containers:
     - name: migrate
       args:

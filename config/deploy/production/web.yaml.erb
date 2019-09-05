@@ -28,6 +28,7 @@ spec:
       labels:
         service: web
     spec:
+      serviceAccountName: core-production
       containers:
         - name: web
           args:

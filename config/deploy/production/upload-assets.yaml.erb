@@ -3,6 +3,7 @@ kind: Pod
 metadata:
   name: upload-assets-<%= deployment_id %>
 spec:
+  serviceAccountName: core-production
   containers:
     - name: upload-assets
       args:
