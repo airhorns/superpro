@@ -1,4 +1,5 @@
 require "shellwords"
+require "securerandom"
 
 class Infrastructure::KubernetesClient
   include SemanticLogger::Loggable
@@ -30,7 +31,7 @@ class Infrastructure::KubernetesClient
     end
 
     create_long_running_rails_job(
-      "#{class_name.gsub(/[^A-Za-z0-9]/, "-").downcase}-#{Time.now.utc.to_i}",
+      "#{class_name.gsub(/[^A-Za-z0-9]/, "-").downcase}-#{SecureRandom.hex(5)}",
       ["bundle", "exec", "rake", "job:run_inline[#{Shellwords.escape(class_name)}, #{Shellwords.escape(args.to_json)}]"]
     )
   end
