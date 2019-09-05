@@ -711,7 +711,8 @@ CREATE TABLE public.connections (
     display_name character varying NOT NULL,
     strategy character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    discarded_at timestamp without time zone
 );
 
 
@@ -2699,6 +2700,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190801180723'),
 ('20190819140226'),
 ('20190821203957'),
-('20190903210744');
+('20190903210744'),
+('20190905191310');
 
 

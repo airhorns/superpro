@@ -14,4 +14,5 @@ class Types::AppMutationType < Types::BaseObject
   field :restart_connection_sync, mutation: Mutations::Connections::RestartConnectionSync
   field :sync_connection_now, mutation: Mutations::Connections::SyncConnectionNow
   field :set_connection_enabled, mutation: Mutations::Connections::SetConnectionEnabled
+  field :discard_connection, mutation: Mutations::Connections::DiscardConnection
 end

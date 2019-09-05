@@ -3,6 +3,7 @@
 # Table name: connections
 #
 #  id               :bigint(8)        not null, primary key
+#  discarded_at     :datetime
 #  display_name     :string           not null
 #  enabled          :boolean          default(TRUE), not null
 #  integration_type :string           not null
@@ -19,6 +20,8 @@
 
 class Connection < ApplicationRecord
   include AccountScoped
+  include Discard::Model
+
   belongs_to :integration, polymorphic: true, optional: false, autosave: true
   enum strategy: { singer: "singer", plaid: "plaid" }, _prefix: true
   validates :strategy, inclusion: { in: ["singer", "plaid"] }

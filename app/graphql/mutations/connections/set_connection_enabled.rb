@@ -6,7 +6,7 @@ class Mutations::Connections::SetConnectionEnabled < Mutations::BaseMutation
   field :errors, [String], null: true
 
   def resolve(connection_id:, enabled:)
-    connection = context[:current_account].connections.find(connection_id)
+    connection = context[:current_account].connections.kept.find(connection_id)
     errors = nil
 
     enabler = Connections::ConnectionEnabler.new(context[:current_account], context[:current_user])

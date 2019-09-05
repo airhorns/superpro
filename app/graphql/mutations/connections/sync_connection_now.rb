@@ -5,7 +5,7 @@ class Mutations::Connections::SyncConnectionNow < Mutations::BaseMutation
   field :errors, [String], null: true
 
   def resolve(connection_id:)
-    connection = context[:current_account].connections.find(connection_id)
+    connection = context[:current_account].connections.kept.find(connection_id)
     errors = nil
 
     if connection.strategy_singer?

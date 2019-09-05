@@ -6,34 +6,66 @@ class Connections::ConnectGoogleAnalyticsTest < ActiveSupport::TestCase
     @credential = create(
       :google_analytics_credential,
       account: @account,
-      token: "ya29.GlxsB1E2fIpvkcY5zVgpYM0fn9bJh5LXQ1mpvmIflKO9Nrad_UWbDUDzmYW22gpXfD1QLBbx4xeWzxvHHI0niWKSuxSlvmCN30_xaTV_UGP9d0EoowLkLmiDGPj2cw",
-      refresh_token: "ya29.GlxsB1E2fIpvkcY5zVgpYM0fn9bJh5LXQ1mpvmIflKO9Nrad_UWbDUDzmYW22gpXfD1QLBbx4xeWzxvHHI0niWKSuxSlvmCN30_xaTV_UGP9d0EoowLkLmiDGPj2cw",
+      token: ENV["GA_OAUTH_ACCESS_TOKEN"],
+      refresh_token: ENV["GA_OAUTH_REFRESH_TOKEN"],
       configured: false,
     )
+    @connection = create(
+      :google_analytics_connection,
+      account: @account,
+      integration: @credential,
+    )
     @connect_ga = Connections::ConnectGoogleAnalytics.new(@account, @account.creator)
+    assert_equal 1, GoogleAnalyticsCredential.all.size # validates factory setup
   end
 
   test "it can list the views for an unconfigured google analytics credential" do
     views = @connect_ga.list_views(@credential)
     assert_not_nil views
-    assert_equal ({ :id => "127652462", :name => "All Web Site Data", :property_id => "UA-82477248-1", :property_name => "main website", :account_id => "82477248", :account_name => "noraswimwear", :already_setup => false }), views[0]
+    assert_equal ({ :id => "200604105", :name => "All Web Site Data", :property_id => "UA-146176198-1", :property_name => "Marketing Brochure", :account_id => "146176198", :account_name => "Superpro", :already_setup => false }), superpro_view(views)
+  end
+
+  test "listing views for unconfigured google analytics credential shows which views are already setup" do
+    old_credential = create(:google_analytics_credential, account: @account, view_id: 200604105)
+    create(:google_analytics_connection, account: @account, integration: old_credential)
+
+    views = @connect_ga.list_views(@credential)
+    assert_not_nil views
+    assert_equal ({ :id => "200604105", :name => "All Web Site Data", :property_id => "UA-146176198-1", :property_name => "Marketing Brochure", :account_id => "146176198", :account_name => "Superpro", :already_setup => true }), superpro_view(views)
+  end
+
+  test "listing views for unconfigured google analytics credential allows setting up views previously used on a discarded connection" do
+    old_credential = create(:google_analytics_credential, account: @account, view_id: 200604105)
+    old_connection = create(:google_analytics_connection, account: @account, integration: old_credential)
+
+    Connections::DiscardConnection.new(@account, @account.creator).discard(old_connection)
+
+    views = @connect_ga.list_views(@credential)
+    assert_not_nil views
+    assert_equal ({ :id => "200604105", :name => "All Web Site Data", :property_id => "UA-146176198-1", :property_name => "Marketing Brochure", :account_id => "146176198", :account_name => "Superpro", :already_setup => false }), superpro_view(views)
   end
 
   test "it can select a view for a credential" do
     views = @connect_ga.list_views(@credential)
-    @connect_ga.select_view(@credential, views[0][:id])
+    @connect_ga.select_view(@credential, superpro_view(views)[:id])
     @credential.reload
 
     assert @credential.configured
-    assert_equal 127652462, @credential.view_id
+    assert_equal 200604105, @credential.view_id
     assert_equal "All Web Site Data", @credential.view_name
-    assert_equal 82477248, @credential.ga_account_id
-    assert_equal "noraswimwear", @credential.ga_account_name
+    assert_equal 146176198, @credential.ga_account_id
+    assert_equal "Superpro", @credential.ga_account_name
     assert_equal 0, @credential.property_id
-    assert_equal "main website", @credential.property_name
+    assert_equal "Marketing Brochure", @credential.property_name
 
     connection = @account.connections.where(integration: @credential).first
     assert_not_nil connection
     assert_not_nil connection.display_name
+  end
+
+  private
+
+  def superpro_view(views_list)
+    views_list.detect { |view| view[:id] == "200604105" }
   end
 end

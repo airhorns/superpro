@@ -21,7 +21,7 @@ module Types::Connections::ConnectionsQueries
   end
 
   def account_connections
-    context[:current_account].connections.order("created_at DESC")
+    context[:current_account].connections.kept.order("created_at DESC")
   end
 
   def google_analytics_views(credential_id:)

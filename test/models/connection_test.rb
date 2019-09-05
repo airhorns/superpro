@@ -3,6 +3,7 @@
 # Table name: connections
 #
 #  id               :bigint(8)        not null, primary key
+#  discarded_at     :datetime
 #  display_name     :string           not null
 #  enabled          :boolean          default(TRUE), not null
 #  integration_type :string           not null

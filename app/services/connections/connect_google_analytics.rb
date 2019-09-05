@@ -27,7 +27,12 @@ class Connections::ConnectGoogleAnalytics
   end
 
   def list_views(ga_credential)
-    existing_configured_view_ids = @account.google_analytics_credentials.where(configured: true).pluck(:view_id).map(&:to_s).to_set
+    existing_configured_view_ids = @account.google_analytics_credentials
+      .includes(:connection)
+      .where({ configured: true })
+      .to_a
+      .filter { |credential| credential.connection.present? && !credential.connection.discarded? }
+      .map { |credential| credential.view_id.to_s }
 
     service = service_for_credential(ga_credential)
     service.list_account_summaries.items.flat_map do |account|
@@ -70,7 +75,7 @@ class Connections::ConnectGoogleAnalytics
         ga_credential.configured = true
         ga_credential.save!
 
-        connection = @account.connections.find_or_initialize_by(integration: ga_credential)
+        connection = @account.connections.kept.find_or_initialize_by(integration: ga_credential)
         connection.strategy = "singer"
         connection.display_name = "Google Analytics Account #{ga_credential.ga_account_name} - #{ga_credential.property_name} (View ID: #{ga_credential.view_id})"
         connection.save!

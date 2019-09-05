@@ -8,7 +8,8 @@ import {
   useRestartConnectionSyncMutation,
   useSyncConnectionNowMutation,
   useSetConnectionEnabledMutation,
-  GetConnectionsIndexPageDocument
+  GetConnectionsIndexPageDocument,
+  useDiscardConnectionMutation
 } from "app/app-graph";
 import { Restart, Trash, CloudGo, Test, Pause, Play } from "app/components/common/SuperproIcons";
 
@@ -65,6 +66,15 @@ gql`
       errors
     }
   }
+
+  mutation DiscardConnection($connectionId: ID!) {
+    discardConnection(connectionId: $connectionId) {
+      connection {
+        id
+      }
+      errors
+    }
+  }
 `;
 
 const ConnectionEnabledIndicator = (props: { enabled: boolean }) => {
@@ -82,6 +92,7 @@ export const ConnectionIndexEntry = (props: { connection: ConnectionIndexEntryFr
   const restartConnectionSync = useRestartConnectionSyncMutation();
   const syncConnectionNow = useSyncConnectionNowMutation();
   const setConnectionEnabled = useSetConnectionEnabledMutation();
+  const discardConnection = useDiscardConnectionMutation();
 
   const onRestartClick = React.useCallback(async () => {
     let result;
@@ -128,6 +139,21 @@ export const ConnectionIndexEntry = (props: { connection: ConnectionIndexEntryFr
     [props.connection.id, setConnectionEnabled]
   );
 
+  const onDiscardClick = React.useCallback(async () => {
+    let result;
+    try {
+      result = await discardConnection({
+        variables: { connectionId: props.connection.id },
+        refetchQueries: [{ query: GetConnectionsIndexPageDocument }]
+      });
+      const data = mutationSuccess(result, "discardConnection");
+      if (data) {
+        return toast.success("Connection deleted successfully.");
+      }
+    } catch (e) {}
+    toast.error("There was an error deleting this connection.");
+  }, [props.connection.id, discardConnection]);
+
   return (
     <Box pad="small" key={props.connection.id}>
       <Heading level="3">{props.connection.displayName}</Heading>
@@ -145,7 +171,7 @@ export const ConnectionIndexEntry = (props: { connection: ConnectionIndexEntryFr
               label: props.connection.enabled ? "Pause" : "Resume",
               onClick: () => onToggleEnabled(!props.connection.enabled)
             },
-            { icon: <Trash />, label: "Delete" }
+            { icon: <Trash />, label: "Delete", onClick: onDiscardClick }
           ]}
         />
       </Row>

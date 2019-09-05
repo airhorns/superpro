@@ -30,7 +30,7 @@ FactoryBot.define do
     association :account
 
     after(:build) do |connection|
-      connection.integration = build(:google_analytics_credential, account: connection.account)
+      connection.integration ||= build(:google_analytics_credential, account: connection.account)
     end
   end
 end

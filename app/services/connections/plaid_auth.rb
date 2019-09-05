@@ -17,7 +17,7 @@ class Connections::PlaidAuth
       sync_accounts(item)
       item.save!
 
-      connection = @account.connections.find_or_initialize_by(integration: item)
+      connection = @account.connections.kept.find_or_initialize_by(integration: item)
       connection.strategy = "plaid"
       connection.display_name = "Plaid Account (Item ID: #{item_id})"
       connection.save!

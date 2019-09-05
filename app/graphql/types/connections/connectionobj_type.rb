@@ -8,6 +8,7 @@ class Types::Connections::ConnectionobjType < Types::BaseObject
   field :supports_test, Boolean, null: false
   field :sync_attempts, Types::Connections::SyncAttemptType.connection_type, null: false
 
+  field :discarded_at, GraphQL::Types::ISO8601DateTime, null: true
   field :created_at, GraphQL::Types::ISO8601DateTime, null: false
   field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
 
