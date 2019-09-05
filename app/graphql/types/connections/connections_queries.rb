@@ -13,15 +13,15 @@ module Types::Connections::ConnectionsQueries
   end
 
   def plaid_items
-    context[:current_account].plaid_items
+    context[:current_account].plaid_items.order("created_at DESC")
   end
 
   def shopify_shops
-    context[:current_account].shopify_shops
+    context[:current_account].shopify_shops.order("created_at DESC")
   end
 
   def account_connections
-    context[:current_account].connections
+    context[:current_account].connections.order("created_at DESC")
   end
 
   def google_analytics_views(credential_id:)
@@ -30,6 +30,6 @@ module Types::Connections::ConnectionsQueries
   end
 
   def google_analytics_credentials
-    context[:current_account].google_analytics_credentials.where(configured: true)
+    context[:current_account].google_analytics_credentials.where(configured: true).order("created_at DESC")
   end
 end

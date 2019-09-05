@@ -54,7 +54,7 @@ export default (props: RouteComponentProps<{ credentialId: string }>) => {
       try {
         result = await completeSetup({
           variables: { credentialId: props.match.params.credentialId, viewId: form.viewId },
-          refetchQueries: [GetConnectionsIndexPageDocument]
+          refetchQueries: [{ query: GetConnectionsIndexPageDocument }]
         });
       } catch (e) {}
 
