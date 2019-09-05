@@ -11,12 +11,20 @@ jobs:
       - checkout
       - run:
           name: Build docker container
-          command: docker build --tag gcr.io/superpro-production/core:$CIRCLE_SHA1 --build-arg RELEASE=$CIRCLE_SHA1 .
+          command: |
+            docker pull gcr.io/superpro-production/core:latest || true
+            docker build --cache-from gcr.io/superpro-production/core:latest --tag gcr.io/superpro-production/core:$CIRCLE_SHA1 --build-arg RELEASE=$CIRCLE_SHA1 .
       - gcp-cli/install
       - gcp-cli/initialize
       - run:
           name: Push docker container
-          command: gcloud auth configure-docker && docker push gcr.io/superpro-production/core:$CIRCLE_SHA1
+          command: |
+            gcloud auth configure-docker
+            docker push gcr.io/superpro-production/core:$CIRCLE_SHA1
+            if [ $CIRCLE_BRANCH = 'master' ]; then
+              docker tag gcr.io/superpro-production/core:$CIRCLE_SHA1 gcr.io/superpro-production/core:latest
+              docker push gcr.io/superpro-production/core:latest
+            fi
 
   lint_javascript:
     docker:
