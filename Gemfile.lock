@@ -531,7 +531,7 @@ GEM
       concurrent-ruby (~> 1.0)
     sentry-raven (2.11.0)
       faraday (>= 0.7.6, < 1.0)
-    shopify_api (7.1.0)
+    shopify_api (8.0.0)
       activeresource (>= 4.1.0, < 6.0.0)
       graphql-client
       rack
@@ -611,7 +611,7 @@ GEM
     yajl-ruby (1.4.1)
     yaml-safe_load_stream (0.1.1)
     yard (0.9.20)
-    zeitwerk (2.1.9)
+    zeitwerk (2.1.10)
 
 PLATFORMS
   ruby
