@@ -18,7 +18,7 @@ Honeycomb.configure do |config|
     deliver.action_mailer
   ].freeze
 
-  config.sample_hook do |fields|
+  config.sample_hook do |_fields|
     if Rails.env.production?
       [true, 1]
     else
