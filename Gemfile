@@ -3,7 +3,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.6.2'
 
 # Core web app
-gem 'devise', '~> 4.7.0'
+gem 'devise', '~> 4.7.1'
 gem 'devise_invitable'
 gem 'discard'
 gem 'graphiql-rails'
