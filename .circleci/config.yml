@@ -12,11 +12,14 @@ jobs:
       - gcp-cli/install
       - gcp-cli/initialize
       - run:
+          name: Authorize gcloud
+          command: gcloud auth configure-docker
+      - run:
+          name: Download latest docker container from registry for caching
+          command: docker pull gcr.io/superpro-production/core:latest || true
+      - run:
           name: Build docker container
-          command: |
-            gcloud auth configure-docker
-            docker pull gcr.io/superpro-production/core:latest || true
-            docker build --cache-from gcr.io/superpro-production/core:latest --tag gcr.io/superpro-production/core:$CIRCLE_SHA1 --build-arg RELEASE=$CIRCLE_SHA1 .
+          command: docker build --cache-from gcr.io/superpro-production/core:latest --tag gcr.io/superpro-production/core:$CIRCLE_SHA1 --build-arg RELEASE=$CIRCLE_SHA1 .
       - run:
           name: Push docker container
           command: |
