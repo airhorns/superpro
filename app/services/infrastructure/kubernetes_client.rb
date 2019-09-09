@@ -48,6 +48,7 @@ class Infrastructure::KubernetesClient
         completions: 1,
         parallelism: 1,
         backoffLimit: 0,
+        ttlSecondsAfterFinished: 7.days.to_i,
         template: {
           metadata: {
             name: name,
