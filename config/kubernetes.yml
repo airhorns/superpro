@@ -17,5 +17,5 @@ integration_test:
 production:
   pod_template_data: <%= JSON.dump(YAML.load(ENV['RAILS_POD_TEMPLATE_YAML'] || "") || {}) %>
   rails_image: "gcr.io/superpro-production/core:<%= ENV['RELEASE'] %>"
-  namespace: "core-production-jobs"
+  namespace: "core-production"
   in_cluster_config: true
