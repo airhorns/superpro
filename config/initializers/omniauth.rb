@@ -13,5 +13,5 @@ end
 Rails.application.config.middleware.use OmniAuth::Builder do
   options path_prefix: "/connection_auth"
 
-  provider :google_oauth2, Rails.configuration.google[:google_oauth_client_id], Rails.configuration.google[:google_oauth_client_secret], name: "google_analytics_oauth", scope: "analytics.readonly", access_type: "offline", include_granted_scopes: "true", setup: HOST_CONSTRAINT_SETUP
+  provider :google_oauth2, Rails.configuration.google[:google_oauth_client_id], Rails.configuration.google[:google_oauth_client_secret], name: "google_analytics_oauth", scope: "analytics.readonly", access_type: "offline", prompt: "consent", include_granted_scopes: "true", setup: HOST_CONSTRAINT_SETUP
 end
