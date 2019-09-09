@@ -60,6 +60,7 @@ gem 'request_store'
 gem "safely"
 gem "scenic"
 gem "sentry-raven"
+gem "honeycomb-beeline", '~> 1.0.1', require: false # needs custom requiring in order to set up middleware properly, see initializer
 gem 'k8s-client'
 
 # Admin

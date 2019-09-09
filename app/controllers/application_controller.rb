@@ -28,14 +28,18 @@ class ApplicationController < ActionController::Base
 
   def set_instrumentation_context
     Raven.tags_context(client_session_id: client_session_id)
+    Honeycomb.add_field("client_session_id", client_session_id)
 
     if current_user.present?
       Raven.user_context(user_id: current_user.id, email: current_user.email)
+      Honeycomb.add_field("user_id", current_user.id)
     end
 
     current_account = respond_to?(:current_account) && current_account.present?
     if current_account
       Raven.tags_context(account_id: current_account.id, account_name: current_account.name)
+      Honeycomb.add_field("account_id", current_account.id)
+      Honeycomb.add_field("account_name", current_account.name)
     end
 
     yield
