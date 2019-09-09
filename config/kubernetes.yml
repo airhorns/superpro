@@ -10,8 +10,10 @@ development: &development
   kube_config: "~/.kube/config"
 test:
   <<: *development
+  kube_config: <%= Rails.root.join('.circleci', 'kube-config') %>
 integration_test:
   <<: *development
+  kube_config: <%= Rails.root.join('.circleci', 'kube-config') %>
 production:
   pod_template_data: <%= JSON.dump(YAML.load(ENV['RAILS_POD_TEMPLATE_YAML'] || "") || {}) %>
   rails_image: "gcr.io/superpro-production/core:<%= ENV['RELEASE'] %>"

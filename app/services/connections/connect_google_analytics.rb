@@ -13,7 +13,7 @@ class Connections::ConnectGoogleAnalytics
       configured: false,
       creator: @user,
       token: auth_hash[:credentials][:token],
-      refresh_token: auth_hash[:credentials][:token],
+      refresh_token: auth_hash[:credentials][:refresh_token],
       expires_at: auth_hash[:credentials][:expires_at],
       grantor_email: auth_hash[:info][:email],
       grantor_name: auth_hash[:info][:name],
