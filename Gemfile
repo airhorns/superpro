@@ -12,7 +12,7 @@ gem 'graphql-batch', require: "graphql/batch"
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 4.1'
 gem 'rack-cors'
-gem 'rails', '6.0.0.rc2'
+gem 'rails', '6.0.0'
 gem 'webpacker'
 
 # Functionality
@@ -37,9 +37,9 @@ gem "fog-google", '~> 1.9.1'
 gem 'bcrypt', '~> 3.1.7'
 gem 'bootsnap', '>= 1.1.0', require: false
 gem "bullet", "~> 6.0.2"
-gem "flipper"
-gem "flipper-active_record"
-gem "flipper-active_support_cache_store"
+gem "flipper", '~> 0.16', github: 'mokhan/flipper', branch: 'rails-6'
+gem 'flipper-active_record', '~> 0.16', github: 'mokhan/flipper', branch: 'rails-6'
+gem 'flipper-active_support_cache_store', '~> 0.16', github: 'mokhan/flipper', branch: 'rails-6'
 gem 'flipper-ui'
 gem "google-cloud-storage", require: false
 gem "health_check"
