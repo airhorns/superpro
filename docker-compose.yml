@@ -56,7 +56,7 @@ services:
       REDIS_URL: redis://redis:6379/2
 
   singer-importer:
-    image: gcr.io/superpro-production/singer-importer:66bf6cdd92bcf9f98d65650c83361fec453af44c
+    image: gcr.io/superpro-production/singer-importer:56385aee920eb9757c5f6dc01e2f9fe66056e795
     ports:
       - 4002:5000
     restart: on-failure
