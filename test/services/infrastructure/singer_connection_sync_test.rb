@@ -2,8 +2,8 @@ require "test_helper"
 
 class Infrastructure::SingerConnectionSyncTest < ActiveSupport::TestCase
   setup do
-    @account = create(:account)
-    @sync = Infrastructure::SingerConnectionSync.new(@account, start_date: "2019-09-01")
+    @account = create(:account, business_epoch: Time.utc(2019, 9, 1))
+    @sync = Infrastructure::SingerConnectionSync.new(@account)
     @connection = create(:shopify_hrsn_connection, account: @account)
 
     # Reset this sequence so the IDs are the same for VCR every time

@@ -13,9 +13,8 @@ module Infrastructure
       end
     end
 
-    def initialize(account, start_date: "2017-01-01")
+    def initialize(account)
       @account = account
-      @start_date = start_date
     end
 
     def reset_state(connection)
@@ -79,9 +78,27 @@ module Infrastructure
 
     def config_for_connection(connection)
       case connection.integration
-      when ShopifyShop then { "private_app_api_key" => connection.integration.api_key, "private_app_password" => connection.integration.password, "shop" => connection.integration.shopify_domain, "start_date" => @start_date }
-      when GoogleAnalyticsCredential then { "oauth_credentials" => { "access_token" => connection.integration.token, "refresh_token" => connection.integration.refresh_token, "client_id" => Rails.configuration.google[:google_oauth_client_id], "client_secret" => Rails.configuration.google[:google_oauth_client_secret] }, "start_date": @start_date, "view_id": connection.integration.view_id.to_s, "quota_user": "sp-accountid-#{connection.account_id}" }
-      else raise RuntimeError.new("Unknown connection integration class #{connection.integration.class} for connection #{connection.id}")
+      when ShopifyShop
+        {
+          "private_app_api_key" => connection.integration.api_key,
+          "private_app_password" => connection.integration.password,
+          "shop" => connection.integration.shopify_domain,
+          "start_date" => start_date,
+        }
+      when GoogleAnalyticsCredential
+        {
+          "oauth_credentials" => {
+            "access_token" => connection.integration.token,
+            "refresh_token" => connection.integration.refresh_token,
+            "client_id" => Rails.configuration.google[:google_oauth_client_id],
+            "client_secret" => Rails.configuration.google[:google_oauth_client_secret],
+          },
+          "view_id": connection.integration.view_id.to_s,
+          "quota_user": "sp-accountid-#{connection.account_id}",
+          "start_date": start_date,
+        }
+      else
+        raise RuntimeError.new("Unknown connection integration class #{connection.integration.class} for connection #{connection.id}")
       end
     end
 
@@ -95,6 +112,10 @@ module Infrastructure
       end
 
       field_values
+    end
+
+    def start_date
+      @account.business_epoch.strftime("%Y-%m-%d")
     end
   end
 end
