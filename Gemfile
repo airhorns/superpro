@@ -91,7 +91,7 @@ group :development do
   gem 'solargraph'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
-  gem 'web-console', github: 'rails/web-console'
+  gem 'web-console'
 end
 
 group :test do

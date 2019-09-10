@@ -36,16 +36,6 @@ GIT
       rack-protection (>= 1.5.3, < 2.1.0)
 
 GIT
-  remote: https://github.com/rails/web-console.git
-  revision: 95bcf59d5c14ead1c886fe83e2ac9ebc41e08e02
-  specs:
-    web-console (4.0.0)
-      actionview (>= 6.0.0.a)
-      activemodel (>= 6.0.0.a)
-      bindex (>= 0.4.0)
-      railties (>= 6.0.0.a)
-
-GIT
   remote: https://github.com/superpro-inc/que-locks.git
   revision: f2b72a0a5cfd8ed553530d998431017ac9fc8bb8
   ref: f2b72a0a5cfd8ed553530d998431017ac9fc8bb8
@@ -607,6 +597,11 @@ GEM
     vcr (5.0.0)
     warden (1.2.8)
       rack (>= 2.0.6)
+    web-console (4.0.1)
+      actionview (>= 6.0.0)
+      activemodel (>= 6.0.0)
+      bindex (>= 0.4.0)
+      railties (>= 6.0.0)
     webmock (3.7.2)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
@@ -707,7 +702,7 @@ DEPENDENCIES
   trestle
   trestle-omniauth
   vcr
-  web-console!
+  web-console
   webmock
   webpacker
 
