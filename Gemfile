@@ -47,6 +47,7 @@ gem "google-cloud-storage", require: false
 gem "health_check"
 gem 'hiredis'
 gem 'jwt'
+gem 'json-schema'
 gem "lru_redux"
 gem "marginalia"
 gem "mini_magick"
@@ -99,6 +100,7 @@ end
 group :test do
   gem 'timecop'
   gem 'minitest-ci', require: !ENV['CI'].nil?
+  gem 'minitest-snapshots', '~> 0.2.0'
   gem 'mocha'
   gem 'webmock'
   gem 'vcr'

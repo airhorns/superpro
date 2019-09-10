@@ -35,6 +35,7 @@ module Superpro
 
     config.autoload_paths << Rails.root.join("app", "services")
     config.autoload_paths << Rails.root.join("app", "graphql")
+    config.autoload_paths << Rails.root.join("app", "warehouse")
     config.autoload_paths << Rails.root.join("app", "lib")
     config.autoload_paths << Rails.root.join("test", "lib")
 

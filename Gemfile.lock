@@ -286,6 +286,8 @@ GEM
       concurrent-ruby (~> 1.0)
     ice_nine (0.11.2)
     jaro_winkler (1.5.3)
+    json-schema (2.8.1)
+      addressable (>= 2.4)
     jsonpath (0.9.9)
       multi_json
       to_regexp (~> 0.2.1)
@@ -364,6 +366,7 @@ GEM
     minitest (5.11.3)
     minitest-ci (3.4.0)
       minitest (>= 5.0.6)
+    minitest-snapshots (0.2.0)
     mocha (1.9.0)
       metaclass (~> 0.0.1)
     monetize (1.9.2)
@@ -652,6 +655,7 @@ DEPENDENCIES
   health_check
   hiredis
   honeycomb-beeline (~> 1.0.1)
+  json-schema
   jwt
   k8s-client
   kubernetes-deploy
@@ -662,6 +666,7 @@ DEPENDENCIES
   marginalia
   mini_magick
   minitest-ci
+  minitest-snapshots (~> 0.2.0)
   mocha
   money-rails
   oj

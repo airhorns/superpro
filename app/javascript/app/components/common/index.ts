@@ -11,7 +11,6 @@ export * from "./AddButton";
 export * from "./ScenarioInput";
 export * from "./SavingNotice";
 export * from "./HoverEditor";
-export * from "./CubeChart";
 export * from "./UserAvatar";
 export * from "./UserCard";
 export * from "../../../superlib/Link";
