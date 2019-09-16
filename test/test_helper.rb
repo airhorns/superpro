@@ -9,6 +9,7 @@ ENV["GA_OAUTH_REFRESH_TOKEN"] ||= "test_refresh_token"
 
 VCR.configure do |config|
   config.cassette_library_dir = Rails.root.join("test", "vcr_cassettes").to_s
+  config.allow_http_connections_when_no_cassette = true
   config.hook_into :webmock
   config.filter_sensitive_data("<GA_OAUTH_ACCESS_TOKEN>") { ENV["GA_OAUTH_ACCESS_TOKEN"] }
   config.filter_sensitive_data("<GA_OAUTH_REFRESH_TOKEN>") { ENV["GA_OAUTH_REFRESH_TOKEN"] }
@@ -29,11 +30,19 @@ class ActiveSupport::TestCase
 
   setup do
     ActionMailer::Base.deliveries.clear
-    VCR.insert_cassette("#{self.class.name.underscore}/#{name.downcase}", record: :none)
+    VCR.insert_cassette("#{self.class.name.underscore}/#{name.downcase}")
   end
 
   teardown do
     VCR.eject_cassette
+  end
+
+  def with_synchronous_jobs
+    old_value = Que::Job.run_synchronously
+    Que::Job.run_synchronously = true
+    yield
+  ensure
+    Que::Job.run_synchronously = old_value
   end
 
   def raise_on_unoptimized_queries

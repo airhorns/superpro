@@ -1,5 +1,8 @@
 "Infrastructure::PeriodicSyncAllConnectionsJob":
   cron: "*/30 * * * *"
 
+"Infrastructure::PeriodicShopifyScriptTagSetupJob":
+  cron: "@daily"
+
 "Infrastructure::TruncateSingerConnectionSyncAttemptsJob":
   cron: "@daily"

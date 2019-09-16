@@ -2,16 +2,17 @@
 #
 # Table name: shopify_shops
 #
-#  id             :bigint(8)        not null, primary key
-#  api_key        :string           not null
-#  name           :string           not null
-#  password       :string           not null
-#  shopify_domain :string           not null
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
-#  account_id     :bigint(8)        not null
-#  creator_id     :bigint(8)        not null
-#  shop_id        :bigint(8)        not null
+#  id                  :bigint(8)        not null, primary key
+#  api_key             :string           not null
+#  name                :string           not null
+#  password            :string           not null
+#  script_tag_setup_at :datetime
+#  shopify_domain      :string           not null
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  account_id          :bigint(8)        not null
+#  creator_id          :bigint(8)        not null
+#  shop_id             :bigint(8)        not null
 #
 # Indexes
 #

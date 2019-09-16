@@ -1,0 +1,1047 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://sole-destroyer.myshopify.com/admin/api/2019-04/script_tags.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Authorization:
+      - "<AUTHORIZATION>"
+      Accept:
+      - application/json
+      User-Agent:
+      - ShopifyAPI/8.0.0 ActiveResource/5.1.0 Ruby/2.6.2
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Mon, 16 Sep 2019 22:46:41 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Set-Cookie:
+      - __cfduid=d0c41da13734eafe4c37e9d859ab73f581568674000; expires=Tue, 15-Sep-20
+        22:46:40 GMT; path=/; domain=.myshopify.com; HttpOnly
+      X-Sorting-Hat-Podid:
+      - '54'
+      X-Sorting-Hat-Shopid:
+      - '10572333111'
+      Vary:
+      - Accept-Encoding
+      Referrer-Policy:
+      - origin-when-cross-origin
+      X-Frame-Options:
+      - DENY
+      X-Shopid:
+      - '10572333111'
+      X-Shardid:
+      - '54'
+      X-Stats-Userid:
+      - ''
+      X-Stats-Apiclientid:
+      - '3141129'
+      X-Stats-Apipermissionid:
+      - '191963299895'
+      X-Shopify-Api-Terms:
+      - By accessing or using the Shopify API you agree to the Shopify API License
+        and Terms of Use at https://www.shopify.com/legal/api-terms
+      Http-X-Shopify-Shop-Api-Call-Limit:
+      - 1/40
+      X-Shopify-Shop-Api-Call-Limit:
+      - 1/40
+      X-Shopify-Api-Version:
+      - 2019-04
+      Strict-Transport-Security:
+      - max-age=7889238
+      X-Shopify-Stage:
+      - production
+      Content-Security-Policy:
+      - 'default-src ''self'' data: blob: ''unsafe-inline'' ''unsafe-eval'' https://*
+        shopify-pos://*; block-all-mixed-content; child-src ''self'' https://* shopify-pos://*;
+        connect-src ''self'' wss://* https://*; frame-ancestors ''none''; img-src
+        ''self'' data: blob: https:; script-src https://cdn.shopify.com https://cdn.shopify.cn
+        https://checkout.shopifycs.com https://js-agent.newrelic.com https://bam.nr-data.net
+        https://dme0ih8comzn4.cloudfront.net https://api.stripe.com https://mpsnare.iesnare.com
+        https://appcenter.intuit.com https://www.paypal.com https://js.braintreegateway.com
+        https://c.paypal.com https://maps.googleapis.com https://www.google-analytics.com
+        https://v.shopify.com https://widget.intercom.io https://js.intercomcdn.com
+        ''self'' ''unsafe-inline'' ''unsafe-eval''; upgrade-insecure-requests; report-uri
+        /csp-report?source%5Baction%5D=index&source%5Bapp%5D=Shopify&source%5Bcontroller%5D=admin%2Fscript_tags&source%5Bsection%5D=admin_api&source%5Buuid%5D=a659a2df-de2d-4a23-8d70-3453678a5c15'
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Xss-Protection:
+      - 1; mode=block; report=/xss-report?source%5Baction%5D=index&source%5Bapp%5D=Shopify&source%5Bcontroller%5D=admin%2Fscript_tags&source%5Bsection%5D=admin_api&source%5Buuid%5D=a659a2df-de2d-4a23-8d70-3453678a5c15
+      X-Dc:
+      - gcp-us-east1,gcp-us-central1,gcp-us-central1
+      Nel:
+      - '{"report_to":"network-errors","max_age":2592000,"failure_fraction":0.01,"success_fraction":0.0001}'
+      - '{"report_to":"network-errors","max_age":2592000,"failure_fraction":0.01,"success_fraction":0.0001}'
+      Report-To:
+      - '{"group":"network-errors","max_age":2592000,"endpoints":[{"url":"https://monorail-edge.shopifycloud.com/v1/reports/nel/20190325/shopify"}]}'
+      - '{"group":"network-errors","max_age":2592000,"endpoints":[{"url":"https://monorail-edge.shopifycloud.com/v1/reports/nel/20190325/shopify"}]}'
+      X-Request-Id:
+      - a659a2df-de2d-4a23-8d70-3453678a5c15
+      Expect-Ct:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 517660b9d8e0caa8-YYZ
+    body:
+      encoding: ASCII-8BIT
+      string: '{"script_tags":[{"id":62007607351,"src":"https:\/\/sp-assets.superpro.io\/shopify-script-tag.js","event":"onload","created_at":"2019-09-16T18:45:12-04:00","updated_at":"2019-09-16T18:45:12-04:00","display_scope":"all"}]}'
+    http_version: 
+  recorded_at: Mon, 16 Sep 2019 22:46:41 GMT
+- request:
+    method: delete
+    uri: https://sole-destroyer.myshopify.com/admin/api/2019-04/script_tags/62007607351.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Authorization:
+      - "<AUTHORIZATION>"
+      Accept:
+      - application/json
+      User-Agent:
+      - ShopifyAPI/8.0.0 ActiveResource/5.1.0 Ruby/2.6.2
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Mon, 16 Sep 2019 22:46:41 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Set-Cookie:
+      - __cfduid=da63f43ded700171ee5a814b61b3d3a171568674001; expires=Tue, 15-Sep-20
+        22:46:41 GMT; path=/; domain=.myshopify.com; HttpOnly
+      X-Sorting-Hat-Podid:
+      - '54'
+      X-Sorting-Hat-Shopid:
+      - '10572333111'
+      Vary:
+      - Accept-Encoding
+      Referrer-Policy:
+      - origin-when-cross-origin
+      X-Frame-Options:
+      - DENY
+      X-Shopid:
+      - '10572333111'
+      X-Shardid:
+      - '54'
+      X-Stats-Userid:
+      - ''
+      X-Stats-Apiclientid:
+      - '3141129'
+      X-Stats-Apipermissionid:
+      - '191963299895'
+      X-Shopify-Api-Terms:
+      - By accessing or using the Shopify API you agree to the Shopify API License
+        and Terms of Use at https://www.shopify.com/legal/api-terms
+      Http-X-Shopify-Shop-Api-Call-Limit:
+      - 1/40
+      X-Shopify-Shop-Api-Call-Limit:
+      - 1/40
+      X-Shopify-Api-Version:
+      - 2019-04
+      Strict-Transport-Security:
+      - max-age=7889238
+      X-Request-Id:
+      - 881ad85a-a1d3-4537-8201-de1fef3ab123
+      X-Shopify-Stage:
+      - production
+      Content-Security-Policy:
+      - 'default-src ''self'' data: blob: ''unsafe-inline'' ''unsafe-eval'' https://*
+        shopify-pos://*; block-all-mixed-content; child-src ''self'' https://* shopify-pos://*;
+        connect-src ''self'' wss://* https://*; frame-ancestors ''none''; img-src
+        ''self'' data: blob: https:; script-src https://cdn.shopify.com https://cdn.shopify.cn
+        https://checkout.shopifycs.com https://js-agent.newrelic.com https://bam.nr-data.net
+        https://dme0ih8comzn4.cloudfront.net https://api.stripe.com https://mpsnare.iesnare.com
+        https://appcenter.intuit.com https://www.paypal.com https://js.braintreegateway.com
+        https://c.paypal.com https://maps.googleapis.com https://www.google-analytics.com
+        https://v.shopify.com https://widget.intercom.io https://js.intercomcdn.com
+        ''self'' ''unsafe-inline'' ''unsafe-eval''; upgrade-insecure-requests; report-uri
+        /csp-report?source%5Baction%5D=destroy&source%5Bapp%5D=Shopify&source%5Bcontroller%5D=admin%2Fscript_tags&source%5Bsection%5D=admin_api&source%5Buuid%5D=881ad85a-a1d3-4537-8201-de1fef3ab123'
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Xss-Protection:
+      - 1; mode=block; report=/xss-report?source%5Baction%5D=destroy&source%5Bapp%5D=Shopify&source%5Bcontroller%5D=admin%2Fscript_tags&source%5Bsection%5D=admin_api&source%5Buuid%5D=881ad85a-a1d3-4537-8201-de1fef3ab123
+      X-Dc:
+      - gcp-us-central1,gcp-us-central1
+      Nel:
+      - '{"report_to":"network-errors","max_age":2592000,"failure_fraction":0.01,"success_fraction":0.0001}'
+      Report-To:
+      - '{"group":"network-errors","max_age":2592000,"endpoints":[{"url":"https://monorail-edge.shopifycloud.com/v1/reports/nel/20190325/shopify"}]}'
+      Expect-Ct:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 517660bbce45ab9a-YYZ
+    body:
+      encoding: ASCII-8BIT
+      string: "{}"
+    http_version: 
+  recorded_at: Mon, 16 Sep 2019 22:46:41 GMT
+- request:
+    method: get
+    uri: https://sole-destroyer.myshopify.com/admin/api/2019-04/script_tags.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Authorization:
+      - "<AUTHORIZATION>"
+      Accept:
+      - application/json
+      User-Agent:
+      - ShopifyAPI/8.0.0 ActiveResource/5.1.0 Ruby/2.6.2
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Mon, 16 Sep 2019 22:46:41 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Set-Cookie:
+      - __cfduid=dcd1e11eb232a4a855c0945121b206f281568674001; expires=Tue, 15-Sep-20
+        22:46:41 GMT; path=/; domain=.myshopify.com; HttpOnly
+      X-Sorting-Hat-Podid:
+      - '54'
+      X-Sorting-Hat-Shopid:
+      - '10572333111'
+      Vary:
+      - Accept-Encoding
+      Referrer-Policy:
+      - origin-when-cross-origin
+      X-Frame-Options:
+      - DENY
+      X-Shopid:
+      - '10572333111'
+      X-Shardid:
+      - '54'
+      X-Stats-Userid:
+      - ''
+      X-Stats-Apiclientid:
+      - '3141129'
+      X-Stats-Apipermissionid:
+      - '191963299895'
+      X-Shopify-Api-Terms:
+      - By accessing or using the Shopify API you agree to the Shopify API License
+        and Terms of Use at https://www.shopify.com/legal/api-terms
+      Http-X-Shopify-Shop-Api-Call-Limit:
+      - 2/40
+      X-Shopify-Shop-Api-Call-Limit:
+      - 2/40
+      X-Shopify-Api-Version:
+      - 2019-04
+      Strict-Transport-Security:
+      - max-age=7889238
+      X-Request-Id:
+      - 32382b5f-946c-4529-8a1d-cc936f974e4b
+      X-Shopify-Stage:
+      - production
+      Content-Security-Policy:
+      - 'default-src ''self'' data: blob: ''unsafe-inline'' ''unsafe-eval'' https://*
+        shopify-pos://*; block-all-mixed-content; child-src ''self'' https://* shopify-pos://*;
+        connect-src ''self'' wss://* https://*; frame-ancestors ''none''; img-src
+        ''self'' data: blob: https:; script-src https://cdn.shopify.com https://cdn.shopify.cn
+        https://checkout.shopifycs.com https://js-agent.newrelic.com https://bam.nr-data.net
+        https://dme0ih8comzn4.cloudfront.net https://api.stripe.com https://mpsnare.iesnare.com
+        https://appcenter.intuit.com https://www.paypal.com https://js.braintreegateway.com
+        https://c.paypal.com https://maps.googleapis.com https://www.google-analytics.com
+        https://v.shopify.com https://widget.intercom.io https://js.intercomcdn.com
+        ''self'' ''unsafe-inline'' ''unsafe-eval''; upgrade-insecure-requests; report-uri
+        /csp-report?source%5Baction%5D=index&source%5Bapp%5D=Shopify&source%5Bcontroller%5D=admin%2Fscript_tags&source%5Bsection%5D=admin_api&source%5Buuid%5D=32382b5f-946c-4529-8a1d-cc936f974e4b'
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Xss-Protection:
+      - 1; mode=block; report=/xss-report?source%5Baction%5D=index&source%5Bapp%5D=Shopify&source%5Bcontroller%5D=admin%2Fscript_tags&source%5Bsection%5D=admin_api&source%5Buuid%5D=32382b5f-946c-4529-8a1d-cc936f974e4b
+      X-Dc:
+      - gcp-us-central1,gcp-us-central1
+      Nel:
+      - '{"report_to":"network-errors","max_age":2592000,"failure_fraction":0.01,"success_fraction":0.0001}'
+      Report-To:
+      - '{"group":"network-errors","max_age":2592000,"endpoints":[{"url":"https://monorail-edge.shopifycloud.com/v1/reports/nel/20190325/shopify"}]}'
+      Expect-Ct:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 517660bd891cca90-YYZ
+    body:
+      encoding: ASCII-8BIT
+      string: '{"script_tags":[]}'
+    http_version: 
+  recorded_at: Mon, 16 Sep 2019 22:46:41 GMT
+- request:
+    method: get
+    uri: https://sole-destroyer.myshopify.com/admin/api/2019-04/script_tags.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Authorization:
+      - "<AUTHORIZATION>"
+      Accept:
+      - application/json
+      User-Agent:
+      - ShopifyAPI/8.0.0 ActiveResource/5.1.0 Ruby/2.6.2
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Mon, 16 Sep 2019 22:46:42 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Set-Cookie:
+      - __cfduid=de75779b98323535c00d9c44fa627c7811568674001; expires=Tue, 15-Sep-20
+        22:46:41 GMT; path=/; domain=.myshopify.com; HttpOnly
+      X-Sorting-Hat-Podid:
+      - '54'
+      X-Sorting-Hat-Shopid:
+      - '10572333111'
+      Vary:
+      - Accept-Encoding
+      Referrer-Policy:
+      - origin-when-cross-origin
+      X-Frame-Options:
+      - DENY
+      X-Shopid:
+      - '10572333111'
+      X-Shardid:
+      - '54'
+      X-Stats-Userid:
+      - ''
+      X-Stats-Apiclientid:
+      - '3141129'
+      X-Stats-Apipermissionid:
+      - '191963299895'
+      X-Shopify-Api-Terms:
+      - By accessing or using the Shopify API you agree to the Shopify API License
+        and Terms of Use at https://www.shopify.com/legal/api-terms
+      Http-X-Shopify-Shop-Api-Call-Limit:
+      - 2/40
+      X-Shopify-Shop-Api-Call-Limit:
+      - 2/40
+      X-Shopify-Api-Version:
+      - 2019-04
+      Strict-Transport-Security:
+      - max-age=7889238
+      X-Shopify-Stage:
+      - production
+      Content-Security-Policy:
+      - 'default-src ''self'' data: blob: ''unsafe-inline'' ''unsafe-eval'' https://*
+        shopify-pos://*; block-all-mixed-content; child-src ''self'' https://* shopify-pos://*;
+        connect-src ''self'' wss://* https://*; frame-ancestors ''none''; img-src
+        ''self'' data: blob: https:; script-src https://cdn.shopify.com https://cdn.shopify.cn
+        https://checkout.shopifycs.com https://js-agent.newrelic.com https://bam.nr-data.net
+        https://dme0ih8comzn4.cloudfront.net https://api.stripe.com https://mpsnare.iesnare.com
+        https://appcenter.intuit.com https://www.paypal.com https://js.braintreegateway.com
+        https://c.paypal.com https://maps.googleapis.com https://www.google-analytics.com
+        https://v.shopify.com https://widget.intercom.io https://js.intercomcdn.com
+        ''self'' ''unsafe-inline'' ''unsafe-eval''; upgrade-insecure-requests; report-uri
+        /csp-report?source%5Baction%5D=index&source%5Bapp%5D=Shopify&source%5Bcontroller%5D=admin%2Fscript_tags&source%5Bsection%5D=admin_api&source%5Buuid%5D=31f1a601-1039-44be-b365-b81dbb245a94'
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Xss-Protection:
+      - 1; mode=block; report=/xss-report?source%5Baction%5D=index&source%5Bapp%5D=Shopify&source%5Bcontroller%5D=admin%2Fscript_tags&source%5Bsection%5D=admin_api&source%5Buuid%5D=31f1a601-1039-44be-b365-b81dbb245a94
+      X-Dc:
+      - gcp-us-east1,gcp-us-central1,gcp-us-central1
+      Nel:
+      - '{"report_to":"network-errors","max_age":2592000,"failure_fraction":0.01,"success_fraction":0.0001}'
+      - '{"report_to":"network-errors","max_age":2592000,"failure_fraction":0.01,"success_fraction":0.0001}'
+      Report-To:
+      - '{"group":"network-errors","max_age":2592000,"endpoints":[{"url":"https://monorail-edge.shopifycloud.com/v1/reports/nel/20190325/shopify"}]}'
+      - '{"group":"network-errors","max_age":2592000,"endpoints":[{"url":"https://monorail-edge.shopifycloud.com/v1/reports/nel/20190325/shopify"}]}'
+      X-Request-Id:
+      - 31f1a601-1039-44be-b365-b81dbb245a94
+      Expect-Ct:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 517660bfa951ca94-YYZ
+    body:
+      encoding: ASCII-8BIT
+      string: '{"script_tags":[]}'
+    http_version: 
+  recorded_at: Mon, 16 Sep 2019 22:46:42 GMT
+- request:
+    method: post
+    uri: https://sole-destroyer.myshopify.com/admin/api/2019-04/script_tags.json
+    body:
+      encoding: UTF-8
+      string: '{"script_tag":{"src":"https://sp-assets.superpro.io/shopify-script-tag.js","event":"onload","display_scope":"all"}}'
+    headers:
+      Authorization:
+      - "<AUTHORIZATION>"
+      Content-Type:
+      - application/json
+      User-Agent:
+      - ShopifyAPI/8.0.0 ActiveResource/5.1.0 Ruby/2.6.2
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 201
+      message: Created
+    headers:
+      Date:
+      - Mon, 16 Sep 2019 22:46:42 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Set-Cookie:
+      - __cfduid=dea7bba609aecd8d137a6f7e976684fee1568674002; expires=Tue, 15-Sep-20
+        22:46:42 GMT; path=/; domain=.myshopify.com; HttpOnly
+      X-Sorting-Hat-Podid:
+      - '54'
+      X-Sorting-Hat-Shopid:
+      - '10572333111'
+      Referrer-Policy:
+      - origin-when-cross-origin
+      X-Frame-Options:
+      - DENY
+      X-Shopid:
+      - '10572333111'
+      X-Shardid:
+      - '54'
+      X-Stats-Userid:
+      - ''
+      X-Stats-Apiclientid:
+      - '3141129'
+      X-Stats-Apipermissionid:
+      - '191963299895'
+      X-Shopify-Api-Terms:
+      - By accessing or using the Shopify API you agree to the Shopify API License
+        and Terms of Use at https://www.shopify.com/legal/api-terms
+      Http-X-Shopify-Shop-Api-Call-Limit:
+      - 3/40
+      X-Shopify-Shop-Api-Call-Limit:
+      - 3/40
+      X-Shopify-Api-Version:
+      - 2019-04
+      Location:
+      - https://sole-destroyer.myshopify.com/admin/script_tags/62007705655
+      Strict-Transport-Security:
+      - max-age=7889238
+      X-Request-Id:
+      - 96e3265d-68e1-4b67-839b-f55d734f10b1
+      X-Shopify-Stage:
+      - production
+      Content-Security-Policy:
+      - 'default-src ''self'' data: blob: ''unsafe-inline'' ''unsafe-eval'' https://*
+        shopify-pos://*; block-all-mixed-content; child-src ''self'' https://* shopify-pos://*;
+        connect-src ''self'' wss://* https://*; frame-ancestors ''none''; img-src
+        ''self'' data: blob: https:; script-src https://cdn.shopify.com https://cdn.shopify.cn
+        https://checkout.shopifycs.com https://js-agent.newrelic.com https://bam.nr-data.net
+        https://dme0ih8comzn4.cloudfront.net https://api.stripe.com https://mpsnare.iesnare.com
+        https://appcenter.intuit.com https://www.paypal.com https://js.braintreegateway.com
+        https://c.paypal.com https://maps.googleapis.com https://www.google-analytics.com
+        https://v.shopify.com https://widget.intercom.io https://js.intercomcdn.com
+        ''self'' ''unsafe-inline'' ''unsafe-eval''; upgrade-insecure-requests; report-uri
+        /csp-report?source%5Baction%5D=create&source%5Bapp%5D=Shopify&source%5Bcontroller%5D=admin%2Fscript_tags&source%5Bsection%5D=admin_api&source%5Buuid%5D=96e3265d-68e1-4b67-839b-f55d734f10b1'
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Xss-Protection:
+      - 1; mode=block; report=/xss-report?source%5Baction%5D=create&source%5Bapp%5D=Shopify&source%5Bcontroller%5D=admin%2Fscript_tags&source%5Bsection%5D=admin_api&source%5Buuid%5D=96e3265d-68e1-4b67-839b-f55d734f10b1
+      X-Dc:
+      - gcp-us-central1,gcp-us-central1
+      Nel:
+      - '{"report_to":"network-errors","max_age":2592000,"failure_fraction":0.01,"success_fraction":0.0001}'
+      Report-To:
+      - '{"group":"network-errors","max_age":2592000,"endpoints":[{"url":"https://monorail-edge.shopifycloud.com/v1/reports/nel/20190325/shopify"}]}'
+      Expect-Ct:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 517660c16acbcaa8-YYZ
+    body:
+      encoding: UTF-8
+      string: '{"script_tag":{"id":62007705655,"src":"https:\/\/sp-assets.superpro.io\/shopify-script-tag.js","event":"onload","created_at":"2019-09-16T18:46:42-04:00","updated_at":"2019-09-16T18:46:42-04:00","display_scope":"all"}}'
+    http_version: 
+  recorded_at: Mon, 16 Sep 2019 22:46:42 GMT
+- request:
+    method: get
+    uri: https://sole-destroyer.myshopify.com/admin/api/2019-04/script_tags.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Authorization:
+      - "<AUTHORIZATION>"
+      Accept:
+      - application/json
+      User-Agent:
+      - ShopifyAPI/8.0.0 ActiveResource/5.1.0 Ruby/2.6.2
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Mon, 16 Sep 2019 22:46:42 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Set-Cookie:
+      - __cfduid=d178625eaaa2c81046d3f8dfc06b1dfc61568674002; expires=Tue, 15-Sep-20
+        22:46:42 GMT; path=/; domain=.myshopify.com; HttpOnly
+      X-Sorting-Hat-Podid:
+      - '54'
+      X-Sorting-Hat-Shopid:
+      - '10572333111'
+      Vary:
+      - Accept-Encoding
+      Referrer-Policy:
+      - origin-when-cross-origin
+      X-Frame-Options:
+      - DENY
+      X-Shopid:
+      - '10572333111'
+      X-Shardid:
+      - '54'
+      X-Stats-Userid:
+      - ''
+      X-Stats-Apiclientid:
+      - '3141129'
+      X-Stats-Apipermissionid:
+      - '191963299895'
+      X-Shopify-Api-Terms:
+      - By accessing or using the Shopify API you agree to the Shopify API License
+        and Terms of Use at https://www.shopify.com/legal/api-terms
+      Http-X-Shopify-Shop-Api-Call-Limit:
+      - 3/40
+      X-Shopify-Shop-Api-Call-Limit:
+      - 3/40
+      X-Shopify-Api-Version:
+      - 2019-04
+      Strict-Transport-Security:
+      - max-age=7889238
+      X-Shopify-Stage:
+      - production
+      Content-Security-Policy:
+      - 'default-src ''self'' data: blob: ''unsafe-inline'' ''unsafe-eval'' https://*
+        shopify-pos://*; block-all-mixed-content; child-src ''self'' https://* shopify-pos://*;
+        connect-src ''self'' wss://* https://*; frame-ancestors ''none''; img-src
+        ''self'' data: blob: https:; script-src https://cdn.shopify.com https://cdn.shopify.cn
+        https://checkout.shopifycs.com https://js-agent.newrelic.com https://bam.nr-data.net
+        https://dme0ih8comzn4.cloudfront.net https://api.stripe.com https://mpsnare.iesnare.com
+        https://appcenter.intuit.com https://www.paypal.com https://js.braintreegateway.com
+        https://c.paypal.com https://maps.googleapis.com https://www.google-analytics.com
+        https://v.shopify.com https://widget.intercom.io https://js.intercomcdn.com
+        ''self'' ''unsafe-inline'' ''unsafe-eval''; upgrade-insecure-requests; report-uri
+        /csp-report?source%5Baction%5D=index&source%5Bapp%5D=Shopify&source%5Bcontroller%5D=admin%2Fscript_tags&source%5Bsection%5D=admin_api&source%5Buuid%5D=2061ad5b-4def-4f22-8de5-00e0e03de782'
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Xss-Protection:
+      - 1; mode=block; report=/xss-report?source%5Baction%5D=index&source%5Bapp%5D=Shopify&source%5Bcontroller%5D=admin%2Fscript_tags&source%5Bsection%5D=admin_api&source%5Buuid%5D=2061ad5b-4def-4f22-8de5-00e0e03de782
+      X-Dc:
+      - gcp-us-east1,gcp-us-central1,gcp-us-central1
+      Nel:
+      - '{"report_to":"network-errors","max_age":2592000,"failure_fraction":0.01,"success_fraction":0.0001}'
+      - '{"report_to":"network-errors","max_age":2592000,"failure_fraction":0.01,"success_fraction":0.0001}'
+      Report-To:
+      - '{"group":"network-errors","max_age":2592000,"endpoints":[{"url":"https://monorail-edge.shopifycloud.com/v1/reports/nel/20190325/shopify"}]}'
+      - '{"group":"network-errors","max_age":2592000,"endpoints":[{"url":"https://monorail-edge.shopifycloud.com/v1/reports/nel/20190325/shopify"}]}'
+      X-Request-Id:
+      - 2061ad5b-4def-4f22-8de5-00e0e03de782
+      Expect-Ct:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 517660c3b9a6aba6-YYZ
+    body:
+      encoding: ASCII-8BIT
+      string: '{"script_tags":[{"id":62007705655,"src":"https:\/\/sp-assets.superpro.io\/shopify-script-tag.js","event":"onload","created_at":"2019-09-16T18:46:42-04:00","updated_at":"2019-09-16T18:46:42-04:00","display_scope":"all"}]}'
+    http_version: 
+  recorded_at: Mon, 16 Sep 2019 22:46:42 GMT
+- request:
+    method: get
+    uri: https://sole-destroyer.myshopify.com/admin/api/2019-04/script_tags.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Authorization:
+      - "<AUTHORIZATION>"
+      Accept:
+      - application/json
+      User-Agent:
+      - ShopifyAPI/8.0.0 ActiveResource/5.1.0 Ruby/2.6.2
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Mon, 16 Sep 2019 22:46:43 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Set-Cookie:
+      - __cfduid=d150556a897d79cb46ba318741eda92b51568674002; expires=Tue, 15-Sep-20
+        22:46:42 GMT; path=/; domain=.myshopify.com; HttpOnly
+      X-Sorting-Hat-Podid:
+      - '54'
+      X-Sorting-Hat-Shopid:
+      - '10572333111'
+      Vary:
+      - Accept-Encoding
+      Referrer-Policy:
+      - origin-when-cross-origin
+      X-Frame-Options:
+      - DENY
+      X-Shopid:
+      - '10572333111'
+      X-Shardid:
+      - '54'
+      X-Stats-Userid:
+      - ''
+      X-Stats-Apiclientid:
+      - '3141129'
+      X-Stats-Apipermissionid:
+      - '191963299895'
+      X-Shopify-Api-Terms:
+      - By accessing or using the Shopify API you agree to the Shopify API License
+        and Terms of Use at https://www.shopify.com/legal/api-terms
+      Http-X-Shopify-Shop-Api-Call-Limit:
+      - 3/40
+      X-Shopify-Shop-Api-Call-Limit:
+      - 3/40
+      X-Shopify-Api-Version:
+      - 2019-04
+      Strict-Transport-Security:
+      - max-age=7889238
+      X-Request-Id:
+      - 854279db-daaf-468f-9a7c-c6290d58b455
+      X-Shopify-Stage:
+      - production
+      Content-Security-Policy:
+      - 'default-src ''self'' data: blob: ''unsafe-inline'' ''unsafe-eval'' https://*
+        shopify-pos://*; block-all-mixed-content; child-src ''self'' https://* shopify-pos://*;
+        connect-src ''self'' wss://* https://*; frame-ancestors ''none''; img-src
+        ''self'' data: blob: https:; script-src https://cdn.shopify.com https://cdn.shopify.cn
+        https://checkout.shopifycs.com https://js-agent.newrelic.com https://bam.nr-data.net
+        https://dme0ih8comzn4.cloudfront.net https://api.stripe.com https://mpsnare.iesnare.com
+        https://appcenter.intuit.com https://www.paypal.com https://js.braintreegateway.com
+        https://c.paypal.com https://maps.googleapis.com https://www.google-analytics.com
+        https://v.shopify.com https://widget.intercom.io https://js.intercomcdn.com
+        ''self'' ''unsafe-inline'' ''unsafe-eval''; upgrade-insecure-requests; report-uri
+        /csp-report?source%5Baction%5D=index&source%5Bapp%5D=Shopify&source%5Bcontroller%5D=admin%2Fscript_tags&source%5Bsection%5D=admin_api&source%5Buuid%5D=854279db-daaf-468f-9a7c-c6290d58b455'
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Xss-Protection:
+      - 1; mode=block; report=/xss-report?source%5Baction%5D=index&source%5Bapp%5D=Shopify&source%5Bcontroller%5D=admin%2Fscript_tags&source%5Bsection%5D=admin_api&source%5Buuid%5D=854279db-daaf-468f-9a7c-c6290d58b455
+      X-Dc:
+      - gcp-us-central1,gcp-us-central1
+      Nel:
+      - '{"report_to":"network-errors","max_age":2592000,"failure_fraction":0.01,"success_fraction":0.0001}'
+      Report-To:
+      - '{"group":"network-errors","max_age":2592000,"endpoints":[{"url":"https://monorail-edge.shopifycloud.com/v1/reports/nel/20190325/shopify"}]}'
+      Expect-Ct:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 517660c6b948ab3a-YYZ
+    body:
+      encoding: ASCII-8BIT
+      string: '{"script_tags":[{"id":62007705655,"src":"https:\/\/sp-assets.superpro.io\/shopify-script-tag.js","event":"onload","created_at":"2019-09-16T18:46:42-04:00","updated_at":"2019-09-16T18:46:42-04:00","display_scope":"all"}]}'
+    http_version: 
+  recorded_at: Mon, 16 Sep 2019 22:46:43 GMT
+- request:
+    method: delete
+    uri: https://sole-destroyer.myshopify.com/admin/api/2019-04/script_tags/62007705655.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Authorization:
+      - "<AUTHORIZATION>"
+      Accept:
+      - application/json
+      User-Agent:
+      - ShopifyAPI/8.0.0 ActiveResource/5.1.0 Ruby/2.6.2
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Mon, 16 Sep 2019 22:46:43 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Set-Cookie:
+      - __cfduid=df6b97189cb396c654c9526e9873980fa1568674003; expires=Tue, 15-Sep-20
+        22:46:43 GMT; path=/; domain=.myshopify.com; HttpOnly
+      X-Sorting-Hat-Podid:
+      - '54'
+      X-Sorting-Hat-Shopid:
+      - '10572333111'
+      Vary:
+      - Accept-Encoding
+      Referrer-Policy:
+      - origin-when-cross-origin
+      X-Frame-Options:
+      - DENY
+      X-Shopid:
+      - '10572333111'
+      X-Shardid:
+      - '54'
+      X-Stats-Userid:
+      - ''
+      X-Stats-Apiclientid:
+      - '3141129'
+      X-Stats-Apipermissionid:
+      - '191963299895'
+      X-Shopify-Api-Terms:
+      - By accessing or using the Shopify API you agree to the Shopify API License
+        and Terms of Use at https://www.shopify.com/legal/api-terms
+      Http-X-Shopify-Shop-Api-Call-Limit:
+      - 3/40
+      X-Shopify-Shop-Api-Call-Limit:
+      - 3/40
+      X-Shopify-Api-Version:
+      - 2019-04
+      Strict-Transport-Security:
+      - max-age=7889238
+      X-Shopify-Stage:
+      - production
+      Content-Security-Policy:
+      - 'default-src ''self'' data: blob: ''unsafe-inline'' ''unsafe-eval'' https://*
+        shopify-pos://*; block-all-mixed-content; child-src ''self'' https://* shopify-pos://*;
+        connect-src ''self'' wss://* https://*; frame-ancestors ''none''; img-src
+        ''self'' data: blob: https:; script-src https://cdn.shopify.com https://cdn.shopify.cn
+        https://checkout.shopifycs.com https://js-agent.newrelic.com https://bam.nr-data.net
+        https://dme0ih8comzn4.cloudfront.net https://api.stripe.com https://mpsnare.iesnare.com
+        https://appcenter.intuit.com https://www.paypal.com https://js.braintreegateway.com
+        https://c.paypal.com https://maps.googleapis.com https://www.google-analytics.com
+        https://v.shopify.com https://widget.intercom.io https://js.intercomcdn.com
+        ''self'' ''unsafe-inline'' ''unsafe-eval''; upgrade-insecure-requests; report-uri
+        /csp-report?source%5Baction%5D=destroy&source%5Bapp%5D=Shopify&source%5Bcontroller%5D=admin%2Fscript_tags&source%5Bsection%5D=admin_api&source%5Buuid%5D=78865450-6464-49bc-b343-469c61e69cd9'
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Xss-Protection:
+      - 1; mode=block; report=/xss-report?source%5Baction%5D=destroy&source%5Bapp%5D=Shopify&source%5Bcontroller%5D=admin%2Fscript_tags&source%5Bsection%5D=admin_api&source%5Buuid%5D=78865450-6464-49bc-b343-469c61e69cd9
+      X-Dc:
+      - gcp-us-east1,gcp-us-central1,gcp-us-central1
+      Nel:
+      - '{"report_to":"network-errors","max_age":2592000,"failure_fraction":0.01,"success_fraction":0.0001}'
+      - '{"report_to":"network-errors","max_age":2592000,"failure_fraction":0.01,"success_fraction":0.0001}'
+      Report-To:
+      - '{"group":"network-errors","max_age":2592000,"endpoints":[{"url":"https://monorail-edge.shopifycloud.com/v1/reports/nel/20190325/shopify"}]}'
+      - '{"group":"network-errors","max_age":2592000,"endpoints":[{"url":"https://monorail-edge.shopifycloud.com/v1/reports/nel/20190325/shopify"}]}'
+      X-Request-Id:
+      - 78865450-6464-49bc-b343-469c61e69cd9
+      Expect-Ct:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 517660c87b71ca90-YYZ
+    body:
+      encoding: ASCII-8BIT
+      string: "{}"
+    http_version: 
+  recorded_at: Mon, 16 Sep 2019 22:46:43 GMT
+- request:
+    method: post
+    uri: https://sole-destroyer.myshopify.com/admin/api/2019-04/script_tags.json
+    body:
+      encoding: UTF-8
+      string: '{"script_tag":{"src":"https://sp-assets.superpro.io/shopify-script-tag.js","event":"onload","display_scope":"all"}}'
+    headers:
+      Authorization:
+      - "<AUTHORIZATION>"
+      Content-Type:
+      - application/json
+      User-Agent:
+      - ShopifyAPI/8.0.0 ActiveResource/5.1.0 Ruby/2.6.2
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 201
+      message: Created
+    headers:
+      Date:
+      - Mon, 16 Sep 2019 22:46:43 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Set-Cookie:
+      - __cfduid=d74532df2a94ea2d15ce802f423dd7ea01568674003; expires=Tue, 15-Sep-20
+        22:46:43 GMT; path=/; domain=.myshopify.com; HttpOnly
+      X-Sorting-Hat-Podid:
+      - '54'
+      X-Sorting-Hat-Shopid:
+      - '10572333111'
+      Referrer-Policy:
+      - origin-when-cross-origin
+      X-Frame-Options:
+      - DENY
+      X-Shopid:
+      - '10572333111'
+      X-Shardid:
+      - '54'
+      X-Stats-Userid:
+      - ''
+      X-Stats-Apiclientid:
+      - '3141129'
+      X-Stats-Apipermissionid:
+      - '191963299895'
+      X-Shopify-Api-Terms:
+      - By accessing or using the Shopify API you agree to the Shopify API License
+        and Terms of Use at https://www.shopify.com/legal/api-terms
+      Http-X-Shopify-Shop-Api-Call-Limit:
+      - 3/40
+      X-Shopify-Shop-Api-Call-Limit:
+      - 3/40
+      X-Shopify-Api-Version:
+      - 2019-04
+      Location:
+      - https://sole-destroyer.myshopify.com/admin/script_tags/62007738423
+      Strict-Transport-Security:
+      - max-age=7889238
+      X-Shopify-Stage:
+      - production
+      Content-Security-Policy:
+      - 'default-src ''self'' data: blob: ''unsafe-inline'' ''unsafe-eval'' https://*
+        shopify-pos://*; block-all-mixed-content; child-src ''self'' https://* shopify-pos://*;
+        connect-src ''self'' wss://* https://*; frame-ancestors ''none''; img-src
+        ''self'' data: blob: https:; script-src https://cdn.shopify.com https://cdn.shopify.cn
+        https://checkout.shopifycs.com https://js-agent.newrelic.com https://bam.nr-data.net
+        https://dme0ih8comzn4.cloudfront.net https://api.stripe.com https://mpsnare.iesnare.com
+        https://appcenter.intuit.com https://www.paypal.com https://js.braintreegateway.com
+        https://c.paypal.com https://maps.googleapis.com https://www.google-analytics.com
+        https://v.shopify.com https://widget.intercom.io https://js.intercomcdn.com
+        ''self'' ''unsafe-inline'' ''unsafe-eval''; upgrade-insecure-requests; report-uri
+        /csp-report?source%5Baction%5D=create&source%5Bapp%5D=Shopify&source%5Bcontroller%5D=admin%2Fscript_tags&source%5Bsection%5D=admin_api&source%5Buuid%5D=2fb0dd5a-fa9a-44bf-a465-7ebf0dd8e4d7'
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Xss-Protection:
+      - 1; mode=block; report=/xss-report?source%5Baction%5D=create&source%5Bapp%5D=Shopify&source%5Bcontroller%5D=admin%2Fscript_tags&source%5Bsection%5D=admin_api&source%5Buuid%5D=2fb0dd5a-fa9a-44bf-a465-7ebf0dd8e4d7
+      X-Dc:
+      - gcp-us-east1,gcp-us-central1,gcp-us-central1
+      Nel:
+      - '{"report_to":"network-errors","max_age":2592000,"failure_fraction":0.01,"success_fraction":0.0001}'
+      - '{"report_to":"network-errors","max_age":2592000,"failure_fraction":0.01,"success_fraction":0.0001}'
+      Report-To:
+      - '{"group":"network-errors","max_age":2592000,"endpoints":[{"url":"https://monorail-edge.shopifycloud.com/v1/reports/nel/20190325/shopify"}]}'
+      - '{"group":"network-errors","max_age":2592000,"endpoints":[{"url":"https://monorail-edge.shopifycloud.com/v1/reports/nel/20190325/shopify"}]}'
+      X-Request-Id:
+      - 2fb0dd5a-fa9a-44bf-a465-7ebf0dd8e4d7
+      Expect-Ct:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 517660ca6fe2ab82-YYZ
+    body:
+      encoding: UTF-8
+      string: '{"script_tag":{"id":62007738423,"src":"https:\/\/sp-assets.superpro.io\/shopify-script-tag.js","event":"onload","created_at":"2019-09-16T18:46:43-04:00","updated_at":"2019-09-16T18:46:43-04:00","display_scope":"all"}}'
+    http_version: 
+  recorded_at: Mon, 16 Sep 2019 22:46:44 GMT
+- request:
+    method: get
+    uri: https://sole-destroyer.myshopify.com/admin/api/2019-04/script_tags.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Authorization:
+      - "<AUTHORIZATION>"
+      Accept:
+      - application/json
+      User-Agent:
+      - ShopifyAPI/8.0.0 ActiveResource/5.1.0 Ruby/2.6.2
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Mon, 16 Sep 2019 22:46:44 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Set-Cookie:
+      - __cfduid=dba09888592d48264ac0e4f87aa1abbf41568674004; expires=Tue, 15-Sep-20
+        22:46:44 GMT; path=/; domain=.myshopify.com; HttpOnly
+      X-Sorting-Hat-Podid:
+      - '54'
+      X-Sorting-Hat-Shopid:
+      - '10572333111'
+      Vary:
+      - Accept-Encoding
+      Referrer-Policy:
+      - origin-when-cross-origin
+      X-Frame-Options:
+      - DENY
+      X-Shopid:
+      - '10572333111'
+      X-Shardid:
+      - '54'
+      X-Stats-Userid:
+      - ''
+      X-Stats-Apiclientid:
+      - '3141129'
+      X-Stats-Apipermissionid:
+      - '191963299895'
+      X-Shopify-Api-Terms:
+      - By accessing or using the Shopify API you agree to the Shopify API License
+        and Terms of Use at https://www.shopify.com/legal/api-terms
+      Http-X-Shopify-Shop-Api-Call-Limit:
+      - 3/40
+      X-Shopify-Shop-Api-Call-Limit:
+      - 3/40
+      X-Shopify-Api-Version:
+      - 2019-04
+      Strict-Transport-Security:
+      - max-age=7889238
+      X-Request-Id:
+      - bd3ee7f3-abd7-4552-a93c-c1fb6463063b
+      X-Shopify-Stage:
+      - production
+      Content-Security-Policy:
+      - 'default-src ''self'' data: blob: ''unsafe-inline'' ''unsafe-eval'' https://*
+        shopify-pos://*; block-all-mixed-content; child-src ''self'' https://* shopify-pos://*;
+        connect-src ''self'' wss://* https://*; frame-ancestors ''none''; img-src
+        ''self'' data: blob: https:; script-src https://cdn.shopify.com https://cdn.shopify.cn
+        https://checkout.shopifycs.com https://js-agent.newrelic.com https://bam.nr-data.net
+        https://dme0ih8comzn4.cloudfront.net https://api.stripe.com https://mpsnare.iesnare.com
+        https://appcenter.intuit.com https://www.paypal.com https://js.braintreegateway.com
+        https://c.paypal.com https://maps.googleapis.com https://www.google-analytics.com
+        https://v.shopify.com https://widget.intercom.io https://js.intercomcdn.com
+        ''self'' ''unsafe-inline'' ''unsafe-eval''; upgrade-insecure-requests; report-uri
+        /csp-report?source%5Baction%5D=index&source%5Bapp%5D=Shopify&source%5Bcontroller%5D=admin%2Fscript_tags&source%5Bsection%5D=admin_api&source%5Buuid%5D=bd3ee7f3-abd7-4552-a93c-c1fb6463063b'
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Xss-Protection:
+      - 1; mode=block; report=/xss-report?source%5Baction%5D=index&source%5Bapp%5D=Shopify&source%5Bcontroller%5D=admin%2Fscript_tags&source%5Bsection%5D=admin_api&source%5Buuid%5D=bd3ee7f3-abd7-4552-a93c-c1fb6463063b
+      X-Dc:
+      - gcp-us-central1,gcp-us-central1
+      Nel:
+      - '{"report_to":"network-errors","max_age":2592000,"failure_fraction":0.01,"success_fraction":0.0001}'
+      Report-To:
+      - '{"group":"network-errors","max_age":2592000,"endpoints":[{"url":"https://monorail-edge.shopifycloud.com/v1/reports/nel/20190325/shopify"}]}'
+      Expect-Ct:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 517660cdce47cab4-YYZ
+    body:
+      encoding: ASCII-8BIT
+      string: '{"script_tags":[{"id":62007738423,"src":"https:\/\/sp-assets.superpro.io\/shopify-script-tag.js","event":"onload","created_at":"2019-09-16T18:46:43-04:00","updated_at":"2019-09-16T18:46:43-04:00","display_scope":"all"}]}'
+    http_version: 
+  recorded_at: Mon, 16 Sep 2019 22:46:44 GMT
+recorded_with: VCR 5.0.0

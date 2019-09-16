@@ -16,10 +16,24 @@ CREATE SCHEMA dbt_harry;
 
 
 --
+-- Name: tap_csv; Type: SCHEMA; Schema: -; Owner: -
+--
+
+CREATE SCHEMA tap_csv;
+
+
+--
 -- Name: tap_google_analytics; Type: SCHEMA; Schema: -; Owner: -
 --
 
 CREATE SCHEMA tap_google_analytics;
+
+
+--
+-- Name: tap_shopify; Type: SCHEMA; Schema: -; Owner: -
+--
+
+CREATE SCHEMA tap_shopify;
 
 
 --
@@ -249,12 +263,194 @@ $$;
 
 
 --
+-- Name: months_between(timestamp with time zone, timestamp with time zone); Type: FUNCTION; Schema: warehouse; Owner: -
+--
+
+CREATE FUNCTION warehouse.months_between(t_start timestamp with time zone, t_end timestamp with time zone) RETURNS integer
+    LANGUAGE sql IMMUTABLE STRICT
+    AS $_$
+select ((extract('years' from $2)::int -  extract('years' from $1)::int) * 12)
+    - extract('month' from $1)::int + extract('month' from $2)::int
+$_$;
+
+
+--
 -- Name: gapfill(anyelement); Type: AGGREGATE; Schema: public; Owner: -
 --
 
 CREATE AGGREGATE public.gapfill(anyelement) (
     SFUNC = public.gapfillinternal,
     STYPE = anyelement
+);
+
+
+--
+-- Name: dim_shopify_customers; Type: TABLE; Schema: dbt_harry; Owner: -
+--
+
+CREATE TABLE dbt_harry.dim_shopify_customers (
+    customer_id bigint,
+    account_id bigint,
+    email text,
+    verified_email boolean,
+    first_name text,
+    last_name text,
+    accepts_marketing boolean,
+    state text,
+    tags text,
+    tax_exempt boolean,
+    default_address_id bigint,
+    created_at timestamp with time zone,
+    updated_at timestamp with time zone,
+    total_order_count bigint,
+    total_successful_order_count bigint,
+    total_cancelled_order_count bigint,
+    total_spend double precision,
+    previous_1_month_spend double precision,
+    previous_3_month_spend double precision,
+    previous_6_month_spend double precision,
+    previous_12_month_spend double precision,
+    most_recent_order_id bigint,
+    most_recent_order_number bigint,
+    most_recent_order_at timestamp with time zone,
+    most_recent_order_total_price double precision,
+    rfm_recency_quintile integer,
+    rfm_frequency_quintile integer,
+    rfm_monetary_quintile integer,
+    rfm_score text,
+    rfm_label text
+);
+
+
+--
+-- Name: fct_shopify_orders; Type: TABLE; Schema: dbt_harry; Owner: -
+--
+
+CREATE TABLE dbt_harry.fct_shopify_orders (
+    order_id bigint,
+    account_id bigint,
+    shop_id bigint,
+    app_id bigint,
+    order_name text,
+    user_id bigint,
+    customer_id bigint,
+    checkout_id bigint,
+    checkout_token text,
+    cart_token text,
+    token text,
+    email text,
+    contact_email text,
+    buyer_accepts_marketing boolean,
+    confirmed boolean,
+    internal_number text,
+    order_number bigint,
+    currency text,
+    presentment_currency text,
+    financial_status text,
+    fulfillment_status text,
+    gateway text,
+    processing_method text,
+    total_tip_received text,
+    total_weight bigint,
+    total_discounts_base numeric,
+    subtotal_price numeric(38,6),
+    total_line_items_price double precision,
+    total_price double precision,
+    total_price_usd double precision,
+    total_tax double precision,
+    total_shipping_cost_base numeric(38,6),
+    shipping_currency_code character varying(128),
+    tags text,
+    taxes_included boolean,
+    order_status_url text,
+    location_id bigint,
+    shipping_city character varying(256),
+    shipping_province character varying(256),
+    shipping_province_code character varying(256),
+    shipping_country character varying(256),
+    shipping_country_code character varying(256),
+    shipping_zip_code character varying(256),
+    shipping_address_address1 character varying(256),
+    shipping_address_address2 character varying(256),
+    shipping_company character varying(256),
+    shipping_first_name character varying(256),
+    shipping_last_name character varying(256),
+    shipping_latitude bigint,
+    shipping_longitude bigint,
+    shipping_name character varying(256),
+    shipping_phone character varying(256),
+    billing_city character varying(256),
+    billing_province character varying(256),
+    billing_province_code character varying(256),
+    billing_country character varying(256),
+    billing_country_code character varying(256),
+    billing_zip_code character varying(256),
+    billing_address_address1 character varying(256),
+    billing_address_address2 character varying(256),
+    billing_company character varying(256),
+    billing_first_name character varying(256),
+    billing_last_name character varying(256),
+    billing_latitude bigint,
+    billing_longitude bigint,
+    billing_name character varying(256),
+    billing_phone character varying(256),
+    referring_site text,
+    browser_ip text,
+    landing_site text,
+    source_name text,
+    created_at timestamp with time zone,
+    processed_at timestamp with time zone,
+    closed_at timestamp with time zone,
+    cancelled_at timestamp with time zone,
+    cancel_reason text,
+    updated_at timestamp with time zone,
+    discount_code text,
+    discount_type text,
+    shipping_discount double precision,
+    final_discounts double precision,
+    final_shipping_cost double precision,
+    order_seq_number bigint,
+    new_vs_repeat text,
+    cancelled boolean
+);
+
+
+--
+-- Name: stg_shopify_customer_order_aggregates; Type: TABLE; Schema: dbt_harry; Owner: -
+--
+
+CREATE TABLE dbt_harry.stg_shopify_customer_order_aggregates (
+    customer_id bigint,
+    account_id bigint,
+    total_order_count bigint,
+    total_successful_order_count bigint,
+    total_cancelled_order_count bigint,
+    total_spend double precision,
+    previous_1_month_spend double precision,
+    previous_3_month_spend double precision,
+    previous_6_month_spend double precision,
+    previous_12_month_spend double precision,
+    most_recent_order_id bigint,
+    most_recent_order_number bigint,
+    most_recent_order_at timestamp with time zone,
+    most_recent_order_total_price double precision
+);
+
+
+--
+-- Name: stg_shopify_customer_rfm; Type: TABLE; Schema: dbt_harry; Owner: -
+--
+
+CREATE TABLE dbt_harry.stg_shopify_customer_rfm (
+    customer_id bigint,
+    total_order_count bigint,
+    total_spend double precision,
+    days_since_last_order double precision,
+    recency_quintile integer,
+    frequency_quintile integer,
+    monetary_quintile integer,
+    rfm_score text,
+    rfm_label text
 );
 
 
@@ -1254,7 +1450,8 @@ CREATE TABLE public.shopify_shops (
     account_id bigint NOT NULL,
     creator_id bigint NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    script_tag_setup_at timestamp without time zone
 );
 
 
@@ -1433,6 +1630,40 @@ CREATE SEQUENCE public.users_id_seq
 --
 
 ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
+
+
+--
+-- Name: sales; Type: TABLE; Schema: tap_csv; Owner: -
+--
+
+CREATE TABLE tap_csv.sales (
+    region text NOT NULL,
+    country text NOT NULL,
+    item_type text NOT NULL,
+    sales_channel text NOT NULL,
+    order_priority text NOT NULL,
+    order_date text NOT NULL,
+    order_id text NOT NULL,
+    ship_date text NOT NULL,
+    units_sold text NOT NULL,
+    unit_price text NOT NULL,
+    unit_cost text NOT NULL,
+    total_revenue text NOT NULL,
+    total_cost text NOT NULL,
+    total_profit text NOT NULL,
+    account_id bigint NOT NULL,
+    _sdc_received_at timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_table_version bigint,
+    _sdc_batched_at timestamp with time zone
+);
+
+
+--
+-- Name: TABLE sales; Type: COMMENT; Schema: tap_csv; Owner: -
+--
+
+COMMENT ON TABLE tap_csv.sales IS '{"path": ["sales"], "version": null, "schema_version": 2, "key_properties": ["Order ID"], "mappings": {"region": {"type": ["string"], "from": ["Region"]}, "country": {"type": ["string"], "from": ["Country"]}, "item_type": {"type": ["string"], "from": ["Item Type"]}, "sales_channel": {"type": ["string"], "from": ["Sales Channel"]}, "order_priority": {"type": ["string"], "from": ["Order Priority"]}, "order_date": {"type": ["string"], "from": ["Order Date"]}, "order_id": {"type": ["string"], "from": ["Order ID"]}, "ship_date": {"type": ["string"], "from": ["Ship Date"]}, "units_sold": {"type": ["string"], "from": ["Units Sold"]}, "unit_price": {"type": ["string"], "from": ["Unit Price"]}, "unit_cost": {"type": ["string"], "from": ["Unit Cost"]}, "total_revenue": {"type": ["string"], "from": ["Total Revenue"]}, "total_cost": {"type": ["string"], "from": ["Total Cost"]}, "total_profit": {"type": ["string"], "from": ["Total Profit"]}, "account_id": {"type": ["integer"], "from": ["account_id"]}, "_sdc_received_at": {"type": ["string", "null"], "from": ["_sdc_received_at"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_table_version": {"type": ["integer", "null"], "from": ["_sdc_table_version"]}, "_sdc_batched_at": {"type": ["string", "null"], "from": ["_sdc_batched_at"], "format": "date-time"}}}';
 
 
 --
@@ -1690,6 +1921,2469 @@ CREATE TABLE tap_google_analytics.weekly_active_users (
 --
 
 COMMENT ON TABLE tap_google_analytics.weekly_active_users IS '{"version": null, "schema_version": 2, "key_properties": ["ga_date"], "mappings": {"ga_date": {"type": ["string"], "from": ["ga_date"]}, "ga_7dayusers": {"type": ["integer", "null"], "from": ["ga_7dayUsers"]}, "report_start_date": {"type": ["string"], "from": ["report_start_date"]}, "report_end_date": {"type": ["string"], "from": ["report_end_date"]}, "account_id": {"type": ["integer"], "from": ["account_id"]}, "view_id": {"type": ["integer"], "from": ["view_id"]}, "_sdc_received_at": {"type": ["string", "null"], "from": ["_sdc_received_at"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_table_version": {"type": ["integer", "null"], "from": ["_sdc_table_version"]}, "_sdc_batched_at": {"type": ["string", "null"], "from": ["_sdc_batched_at"], "format": "date-time"}}, "path": ["weekly_active_users"]}';
+
+
+--
+-- Name: abandoned_checkouts; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.abandoned_checkouts (
+    location_id bigint,
+    buyer_accepts_marketing boolean,
+    currency text,
+    completed_at timestamp with time zone,
+    token text,
+    billing_address__phone text,
+    billing_address__country text,
+    billing_address__first_name text,
+    billing_address__name text,
+    billing_address__latitude double precision,
+    billing_address__zip text,
+    billing_address__last_name text,
+    billing_address__province text,
+    billing_address__address2 text,
+    billing_address__address1 text,
+    billing_address__country_code text,
+    billing_address__city text,
+    billing_address__company text,
+    billing_address__province_code text,
+    billing_address__longitude double precision,
+    email text,
+    customer_locale text,
+    created_at timestamp with time zone,
+    updated_at timestamp with time zone,
+    gateway text,
+    referring_site text,
+    source_identifier text,
+    total_weight bigint,
+    total_line_items_price double precision,
+    closed_at timestamp with time zone,
+    device_id bigint,
+    phone text,
+    source_name text,
+    id bigint,
+    name text,
+    total_tax double precision,
+    subtotal_price double precision,
+    source_url text,
+    total_discounts double precision,
+    note text,
+    presentment_currency text,
+    user_id bigint,
+    source text,
+    shipping_address__phone text,
+    shipping_address__country text,
+    shipping_address__first_name text,
+    shipping_address__name text,
+    shipping_address__latitude double precision,
+    shipping_address__zip text,
+    shipping_address__last_name text,
+    shipping_address__province text,
+    shipping_address__address2 text,
+    shipping_address__address1 text,
+    shipping_address__country_code text,
+    shipping_address__city text,
+    shipping_address__company text,
+    shipping_address__province_code text,
+    shipping_address__longitude double precision,
+    abandoned_checkout_url text,
+    landing_site text,
+    customer__last_order_name text,
+    customer__currency text,
+    customer__email text,
+    customer__multipass_identifier text,
+    customer__default_address__city text,
+    customer__default_address__address1 text,
+    customer__default_address__zip text,
+    customer__default_address__id bigint,
+    customer__default_address__country_name text,
+    customer__default_address__province text,
+    customer__default_address__phone text,
+    customer__default_address__country text,
+    customer__default_address__first_name text,
+    customer__default_address__customer_id bigint,
+    customer__default_address__default boolean,
+    customer__default_address__last_name text,
+    customer__default_address__country_code text,
+    customer__default_address__name text,
+    customer__default_address__province_code text,
+    customer__default_address__address2 text,
+    customer__default_address__company text,
+    customer__orders_count bigint,
+    customer__state text,
+    customer__verified_email boolean,
+    customer__total_spent text,
+    customer__last_order_id bigint,
+    customer__first_name text,
+    customer__updated_at timestamp with time zone,
+    customer__note text,
+    customer__phone text,
+    customer__admin_graphql_api_id text,
+    customer__last_name text,
+    customer__tags text,
+    customer__tax_exempt boolean,
+    customer__id bigint,
+    customer__accepts_marketing boolean,
+    customer__created_at timestamp with time zone,
+    total_price double precision,
+    cart_token text,
+    taxes_included boolean,
+    account_id bigint NOT NULL,
+    shop_id bigint NOT NULL,
+    _sdc_received_at timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_table_version bigint,
+    _sdc_batched_at timestamp with time zone
+);
+
+
+--
+-- Name: TABLE abandoned_checkouts; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.abandoned_checkouts IS '{"path": ["abandoned_checkouts"], "version": null, "schema_version": 2, "key_properties": ["id"], "mappings": {"location_id": {"type": ["integer", "null"], "from": ["location_id"]}, "buyer_accepts_marketing": {"type": ["boolean", "null"], "from": ["buyer_accepts_marketing"]}, "currency": {"type": ["string", "null"], "from": ["currency"]}, "completed_at": {"type": ["string", "null"], "from": ["completed_at"], "format": "date-time"}, "token": {"type": ["string", "null"], "from": ["token"]}, "billing_address__phone": {"type": ["string", "null"], "from": ["billing_address", "phone"]}, "billing_address__country": {"type": ["string", "null"], "from": ["billing_address", "country"]}, "billing_address__first_name": {"type": ["string", "null"], "from": ["billing_address", "first_name"]}, "billing_address__name": {"type": ["string", "null"], "from": ["billing_address", "name"]}, "billing_address__latitude": {"type": ["number", "null"], "from": ["billing_address", "latitude"]}, "billing_address__zip": {"type": ["string", "null"], "from": ["billing_address", "zip"]}, "billing_address__last_name": {"type": ["string", "null"], "from": ["billing_address", "last_name"]}, "billing_address__province": {"type": ["string", "null"], "from": ["billing_address", "province"]}, "billing_address__address2": {"type": ["string", "null"], "from": ["billing_address", "address2"]}, "billing_address__address1": {"type": ["string", "null"], "from": ["billing_address", "address1"]}, "billing_address__country_code": {"type": ["string", "null"], "from": ["billing_address", "country_code"]}, "billing_address__city": {"type": ["string", "null"], "from": ["billing_address", "city"]}, "billing_address__company": {"type": ["string", "null"], "from": ["billing_address", "company"]}, "billing_address__province_code": {"type": ["string", "null"], "from": ["billing_address", "province_code"]}, "billing_address__longitude": {"type": ["number", "null"], "from": ["billing_address", "longitude"]}, "email": {"type": ["string", "null"], "from": ["email"]}, "customer_locale": {"type": ["string", "null"], "from": ["customer_locale"]}, "created_at": {"type": ["string", "null"], "from": ["created_at"], "format": "date-time"}, "updated_at": {"type": ["string", "null"], "from": ["updated_at"], "format": "date-time"}, "gateway": {"type": ["string", "null"], "from": ["gateway"]}, "referring_site": {"type": ["string", "null"], "from": ["referring_site"]}, "source_identifier": {"type": ["string", "null"], "from": ["source_identifier"]}, "total_weight": {"type": ["integer", "null"], "from": ["total_weight"]}, "total_line_items_price": {"type": ["number", "null"], "from": ["total_line_items_price"]}, "closed_at": {"type": ["string", "null"], "from": ["closed_at"], "format": "date-time"}, "device_id": {"type": ["integer", "null"], "from": ["device_id"]}, "phone": {"type": ["string", "null"], "from": ["phone"]}, "source_name": {"type": ["string", "null"], "from": ["source_name"]}, "id": {"type": ["integer", "null"], "from": ["id"]}, "name": {"type": ["string", "null"], "from": ["name"]}, "total_tax": {"type": ["number", "null"], "from": ["total_tax"]}, "subtotal_price": {"type": ["number", "null"], "from": ["subtotal_price"]}, "source_url": {"type": ["string", "null"], "from": ["source_url"]}, "total_discounts": {"type": ["number", "null"], "from": ["total_discounts"]}, "note": {"type": ["string", "null"], "from": ["note"]}, "presentment_currency": {"type": ["string", "null"], "from": ["presentment_currency"]}, "user_id": {"type": ["integer", "null"], "from": ["user_id"]}, "source": {"type": ["string", "null"], "from": ["source"]}, "shipping_address__phone": {"type": ["string", "null"], "from": ["shipping_address", "phone"]}, "shipping_address__country": {"type": ["string", "null"], "from": ["shipping_address", "country"]}, "shipping_address__first_name": {"type": ["string", "null"], "from": ["shipping_address", "first_name"]}, "shipping_address__name": {"type": ["string", "null"], "from": ["shipping_address", "name"]}, "shipping_address__latitude": {"type": ["number", "null"], "from": ["shipping_address", "latitude"]}, "shipping_address__zip": {"type": ["string", "null"], "from": ["shipping_address", "zip"]}, "shipping_address__last_name": {"type": ["string", "null"], "from": ["shipping_address", "last_name"]}, "shipping_address__province": {"type": ["string", "null"], "from": ["shipping_address", "province"]}, "shipping_address__address2": {"type": ["string", "null"], "from": ["shipping_address", "address2"]}, "shipping_address__address1": {"type": ["string", "null"], "from": ["shipping_address", "address1"]}, "shipping_address__country_code": {"type": ["string", "null"], "from": ["shipping_address", "country_code"]}, "shipping_address__city": {"type": ["string", "null"], "from": ["shipping_address", "city"]}, "shipping_address__company": {"type": ["string", "null"], "from": ["shipping_address", "company"]}, "shipping_address__province_code": {"type": ["string", "null"], "from": ["shipping_address", "province_code"]}, "shipping_address__longitude": {"type": ["number", "null"], "from": ["shipping_address", "longitude"]}, "abandoned_checkout_url": {"type": ["string", "null"], "from": ["abandoned_checkout_url"]}, "landing_site": {"type": ["string", "null"], "from": ["landing_site"]}, "customer__last_order_name": {"type": ["string", "null"], "from": ["customer", "last_order_name"]}, "customer__currency": {"type": ["string", "null"], "from": ["customer", "currency"]}, "customer__email": {"type": ["string", "null"], "from": ["customer", "email"]}, "customer__multipass_identifier": {"type": ["string", "null"], "from": ["customer", "multipass_identifier"]}, "customer__default_address__city": {"type": ["string", "null"], "from": ["customer", "default_address", "city"]}, "customer__default_address__address1": {"type": ["string", "null"], "from": ["customer", "default_address", "address1"]}, "customer__default_address__zip": {"type": ["string", "null"], "from": ["customer", "default_address", "zip"]}, "customer__default_address__id": {"type": ["integer", "null"], "from": ["customer", "default_address", "id"]}, "customer__default_address__country_name": {"type": ["string", "null"], "from": ["customer", "default_address", "country_name"]}, "customer__default_address__province": {"type": ["string", "null"], "from": ["customer", "default_address", "province"]}, "customer__default_address__phone": {"type": ["string", "null"], "from": ["customer", "default_address", "phone"]}, "customer__default_address__country": {"type": ["string", "null"], "from": ["customer", "default_address", "country"]}, "customer__default_address__first_name": {"type": ["string", "null"], "from": ["customer", "default_address", "first_name"]}, "customer__default_address__customer_id": {"type": ["integer", "null"], "from": ["customer", "default_address", "customer_id"]}, "customer__default_address__default": {"type": ["boolean", "null"], "from": ["customer", "default_address", "default"]}, "customer__default_address__last_name": {"type": ["string", "null"], "from": ["customer", "default_address", "last_name"]}, "customer__default_address__country_code": {"type": ["string", "null"], "from": ["customer", "default_address", "country_code"]}, "customer__default_address__name": {"type": ["string", "null"], "from": ["customer", "default_address", "name"]}, "customer__default_address__province_code": {"type": ["string", "null"], "from": ["customer", "default_address", "province_code"]}, "customer__default_address__address2": {"type": ["string", "null"], "from": ["customer", "default_address", "address2"]}, "customer__default_address__company": {"type": ["string", "null"], "from": ["customer", "default_address", "company"]}, "customer__orders_count": {"type": ["integer", "null"], "from": ["customer", "orders_count"]}, "customer__state": {"type": ["string", "null"], "from": ["customer", "state"]}, "customer__verified_email": {"type": ["boolean", "null"], "from": ["customer", "verified_email"]}, "customer__total_spent": {"type": ["string", "null"], "from": ["customer", "total_spent"]}, "customer__last_order_id": {"type": ["integer", "null"], "from": ["customer", "last_order_id"]}, "customer__first_name": {"type": ["string", "null"], "from": ["customer", "first_name"]}, "customer__updated_at": {"type": ["string", "null"], "from": ["customer", "updated_at"], "format": "date-time"}, "customer__note": {"type": ["string", "null"], "from": ["customer", "note"]}, "customer__phone": {"type": ["string", "null"], "from": ["customer", "phone"]}, "customer__admin_graphql_api_id": {"type": ["string", "null"], "from": ["customer", "admin_graphql_api_id"]}, "customer__last_name": {"type": ["string", "null"], "from": ["customer", "last_name"]}, "customer__tags": {"type": ["string", "null"], "from": ["customer", "tags"]}, "customer__tax_exempt": {"type": ["boolean", "null"], "from": ["customer", "tax_exempt"]}, "customer__id": {"type": ["integer", "null"], "from": ["customer", "id"]}, "customer__accepts_marketing": {"type": ["boolean", "null"], "from": ["customer", "accepts_marketing"]}, "customer__created_at": {"type": ["string", "null"], "from": ["customer", "created_at"], "format": "date-time"}, "total_price": {"type": ["number", "null"], "from": ["total_price"]}, "cart_token": {"type": ["string", "null"], "from": ["cart_token"]}, "taxes_included": {"type": ["boolean", "null"], "from": ["taxes_included"]}, "account_id": {"type": ["integer"], "from": ["account_id"]}, "shop_id": {"type": ["integer"], "from": ["shop_id"]}, "_sdc_received_at": {"type": ["string", "null"], "from": ["_sdc_received_at"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_table_version": {"type": ["integer", "null"], "from": ["_sdc_table_version"]}, "_sdc_batched_at": {"type": ["string", "null"], "from": ["_sdc_batched_at"], "format": "date-time"}}}';
+
+
+--
+-- Name: abandoned_checkouts__customer__addresses; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.abandoned_checkouts__customer__addresses (
+    city text,
+    address1 text,
+    zip text,
+    id bigint,
+    country_name text,
+    province text,
+    phone text,
+    country text,
+    first_name text,
+    customer_id bigint,
+    "default" boolean,
+    last_name text,
+    country_code text,
+    name text,
+    province_code text,
+    address2 text,
+    company text,
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE abandoned_checkouts__customer__addresses; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.abandoned_checkouts__customer__addresses IS '{"path": ["abandoned_checkouts", "customer", "addresses"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"city": {"type": ["string", "null"], "from": ["city"]}, "address1": {"type": ["string", "null"], "from": ["address1"]}, "zip": {"type": ["string", "null"], "from": ["zip"]}, "id": {"type": ["integer", "null"], "from": ["id"]}, "country_name": {"type": ["string", "null"], "from": ["country_name"]}, "province": {"type": ["string", "null"], "from": ["province"]}, "phone": {"type": ["string", "null"], "from": ["phone"]}, "country": {"type": ["string", "null"], "from": ["country"]}, "first_name": {"type": ["string", "null"], "from": ["first_name"]}, "customer_id": {"type": ["integer", "null"], "from": ["customer_id"]}, "default": {"type": ["boolean", "null"], "from": ["default"]}, "last_name": {"type": ["string", "null"], "from": ["last_name"]}, "country_code": {"type": ["string", "null"], "from": ["country_code"]}, "name": {"type": ["string", "null"], "from": ["name"]}, "province_code": {"type": ["string", "null"], "from": ["province_code"]}, "address2": {"type": ["string", "null"], "from": ["address2"]}, "company": {"type": ["string", "null"], "from": ["company"]}, "_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: abandoned_checkouts__discount_codes; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.abandoned_checkouts__discount_codes (
+    type text,
+    amount double precision,
+    code text,
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE abandoned_checkouts__discount_codes; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.abandoned_checkouts__discount_codes IS '{"path": ["abandoned_checkouts", "discount_codes"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"type": {"type": ["string", "null"], "from": ["type"]}, "amount": {"type": ["number", "null"], "from": ["amount"]}, "code": {"type": ["string", "null"], "from": ["code"]}, "_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: abandoned_checkouts__line_items; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.abandoned_checkouts__line_items (
+    total_discount_set__shop_money__amount text,
+    total_discount_set__shop_money__currency_code text,
+    total_discount_set__presentment_money__amount text,
+    total_discount_set__presentment_money__currency_code text,
+    pre_tax_price_set__shop_money__amount text,
+    pre_tax_price_set__shop_money__currency_code text,
+    pre_tax_price_set__presentment_money__amount text,
+    pre_tax_price_set__presentment_money__currency_code text,
+    price_set__shop_money__amount text,
+    price_set__shop_money__currency_code text,
+    price_set__presentment_money__amount text,
+    price_set__presentment_money__currency_code text,
+    grams bigint,
+    compare_at_price text,
+    destination_location_id bigint,
+    key text,
+    line_price text,
+    origin_location_id bigint,
+    applied_discount bigint,
+    fulfillable_quantity bigint,
+    variant_title text,
+    tax_code text,
+    admin_graphql_api_id text,
+    pre_tax_price double precision,
+    sku text,
+    product_exists boolean,
+    total_discount double precision,
+    name text,
+    fulfillment_status text,
+    gift_card boolean,
+    id__i bigint,
+    id__s text,
+    taxable boolean,
+    vendor text,
+    origin_location__country_code text,
+    origin_location__name text,
+    origin_location__address1 text,
+    origin_location__city text,
+    origin_location__id bigint,
+    origin_location__address2 text,
+    origin_location__province_code text,
+    origin_location__zip text,
+    price double precision,
+    requires_shipping boolean,
+    fulfillment_service text,
+    variant_inventory_management text,
+    title text,
+    destination_location__country_code text,
+    destination_location__name text,
+    destination_location__address1 text,
+    destination_location__city text,
+    destination_location__id bigint,
+    destination_location__address2 text,
+    destination_location__province_code text,
+    destination_location__zip text,
+    quantity bigint,
+    product_id bigint,
+    variant_id bigint,
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE abandoned_checkouts__line_items; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.abandoned_checkouts__line_items IS '{"path": ["abandoned_checkouts", "line_items"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"total_discount_set__shop_money__amount": {"type": ["string", "null"], "from": ["total_discount_set", "shop_money", "amount"]}, "total_discount_set__shop_money__currency_code": {"type": ["string", "null"], "from": ["total_discount_set", "shop_money", "currency_code"]}, "total_discount_set__presentment_money__amount": {"type": ["string", "null"], "from": ["total_discount_set", "presentment_money", "amount"]}, "total_discount_set__presentment_money__currency_code": {"type": ["string", "null"], "from": ["total_discount_set", "presentment_money", "currency_code"]}, "pre_tax_price_set__shop_money__amount": {"type": ["string", "null"], "from": ["pre_tax_price_set", "shop_money", "amount"]}, "pre_tax_price_set__shop_money__currency_code": {"type": ["string", "null"], "from": ["pre_tax_price_set", "shop_money", "currency_code"]}, "pre_tax_price_set__presentment_money__amount": {"type": ["string", "null"], "from": ["pre_tax_price_set", "presentment_money", "amount"]}, "pre_tax_price_set__presentment_money__currency_code": {"type": ["string", "null"], "from": ["pre_tax_price_set", "presentment_money", "currency_code"]}, "price_set__shop_money__amount": {"type": ["string", "null"], "from": ["price_set", "shop_money", "amount"]}, "price_set__shop_money__currency_code": {"type": ["string", "null"], "from": ["price_set", "shop_money", "currency_code"]}, "price_set__presentment_money__amount": {"type": ["string", "null"], "from": ["price_set", "presentment_money", "amount"]}, "price_set__presentment_money__currency_code": {"type": ["string", "null"], "from": ["price_set", "presentment_money", "currency_code"]}, "grams": {"type": ["integer", "null"], "from": ["grams"]}, "compare_at_price": {"type": ["string", "null"], "from": ["compare_at_price"]}, "destination_location_id": {"type": ["integer", "null"], "from": ["destination_location_id"]}, "key": {"type": ["string", "null"], "from": ["key"]}, "line_price": {"type": ["string", "null"], "from": ["line_price"]}, "origin_location_id": {"type": ["integer", "null"], "from": ["origin_location_id"]}, "applied_discount": {"type": ["integer", "null"], "from": ["applied_discount"]}, "fulfillable_quantity": {"type": ["integer", "null"], "from": ["fulfillable_quantity"]}, "variant_title": {"type": ["string", "null"], "from": ["variant_title"]}, "tax_code": {"type": ["string", "null"], "from": ["tax_code"]}, "admin_graphql_api_id": {"type": ["string", "null"], "from": ["admin_graphql_api_id"]}, "pre_tax_price": {"type": ["number", "null"], "from": ["pre_tax_price"]}, "sku": {"type": ["string", "null"], "from": ["sku"]}, "product_exists": {"type": ["boolean", "null"], "from": ["product_exists"]}, "total_discount": {"type": ["number", "null"], "from": ["total_discount"]}, "name": {"type": ["string", "null"], "from": ["name"]}, "fulfillment_status": {"type": ["string", "null"], "from": ["fulfillment_status"]}, "gift_card": {"type": ["boolean", "null"], "from": ["gift_card"]}, "id__i": {"type": ["integer", "null"], "from": ["id"]}, "id__s": {"type": ["string", "null"], "from": ["id"]}, "taxable": {"type": ["boolean", "null"], "from": ["taxable"]}, "vendor": {"type": ["string", "null"], "from": ["vendor"]}, "origin_location__country_code": {"type": ["string", "null"], "from": ["origin_location", "country_code"]}, "origin_location__name": {"type": ["string", "null"], "from": ["origin_location", "name"]}, "origin_location__address1": {"type": ["string", "null"], "from": ["origin_location", "address1"]}, "origin_location__city": {"type": ["string", "null"], "from": ["origin_location", "city"]}, "origin_location__id": {"type": ["integer", "null"], "from": ["origin_location", "id"]}, "origin_location__address2": {"type": ["string", "null"], "from": ["origin_location", "address2"]}, "origin_location__province_code": {"type": ["string", "null"], "from": ["origin_location", "province_code"]}, "origin_location__zip": {"type": ["string", "null"], "from": ["origin_location", "zip"]}, "price": {"type": ["number", "null"], "from": ["price"]}, "requires_shipping": {"type": ["boolean", "null"], "from": ["requires_shipping"]}, "fulfillment_service": {"type": ["string", "null"], "from": ["fulfillment_service"]}, "variant_inventory_management": {"type": ["string", "null"], "from": ["variant_inventory_management"]}, "title": {"type": ["string", "null"], "from": ["title"]}, "destination_location__country_code": {"type": ["string", "null"], "from": ["destination_location", "country_code"]}, "destination_location__name": {"type": ["string", "null"], "from": ["destination_location", "name"]}, "destination_location__address1": {"type": ["string", "null"], "from": ["destination_location", "address1"]}, "destination_location__city": {"type": ["string", "null"], "from": ["destination_location", "city"]}, "destination_location__id": {"type": ["integer", "null"], "from": ["destination_location", "id"]}, "destination_location__address2": {"type": ["string", "null"], "from": ["destination_location", "address2"]}, "destination_location__province_code": {"type": ["string", "null"], "from": ["destination_location", "province_code"]}, "destination_location__zip": {"type": ["string", "null"], "from": ["destination_location", "zip"]}, "quantity": {"type": ["integer", "null"], "from": ["quantity"]}, "product_id": {"type": ["integer", "null"], "from": ["product_id"]}, "variant_id": {"type": ["integer", "null"], "from": ["variant_id"]}, "_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: abandoned_checkouts__line_items__applied_discounts; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.abandoned_checkouts__line_items__applied_discounts (
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE abandoned_checkouts__line_items__applied_discounts; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.abandoned_checkouts__line_items__applied_discounts IS '{"path": ["abandoned_checkouts", "line_items", "applied_discounts"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: abandoned_checkouts__line_items__discount_allocations; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.abandoned_checkouts__line_items__discount_allocations (
+    discount_application_index bigint,
+    amount double precision,
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE abandoned_checkouts__line_items__discount_allocations; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.abandoned_checkouts__line_items__discount_allocations IS '{"path": ["abandoned_checkouts", "line_items", "discount_allocations"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"discount_application_index": {"type": ["integer", "null"], "from": ["discount_application_index"]}, "amount": {"type": ["number", "null"], "from": ["amount"]}, "_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: abandoned_checkouts__line_items__properties; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.abandoned_checkouts__line_items__properties (
+    name text,
+    value text,
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE abandoned_checkouts__line_items__properties; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.abandoned_checkouts__line_items__properties IS '{"path": ["abandoned_checkouts", "line_items", "properties"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "value": {"type": ["string", "null"], "from": ["value"]}, "_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: abandoned_checkouts__line_items__tax_lines; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.abandoned_checkouts__line_items__tax_lines (
+    price_set__shop_money__amount text,
+    price_set__shop_money__currency_code text,
+    price_set__presentment_money__amount text,
+    price_set__presentment_money__currency_code text,
+    price double precision,
+    title text,
+    rate double precision,
+    compare_at text,
+    "position" bigint,
+    source text,
+    zone text,
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE abandoned_checkouts__line_items__tax_lines; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.abandoned_checkouts__line_items__tax_lines IS '{"path": ["abandoned_checkouts", "line_items", "tax_lines"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"price_set__shop_money__amount": {"type": ["string", "null"], "from": ["price_set", "shop_money", "amount"]}, "price_set__shop_money__currency_code": {"type": ["string", "null"], "from": ["price_set", "shop_money", "currency_code"]}, "price_set__presentment_money__amount": {"type": ["string", "null"], "from": ["price_set", "presentment_money", "amount"]}, "price_set__presentment_money__currency_code": {"type": ["string", "null"], "from": ["price_set", "presentment_money", "currency_code"]}, "price": {"type": ["number", "null"], "from": ["price"]}, "title": {"type": ["string", "null"], "from": ["title"]}, "rate": {"type": ["number", "null"], "from": ["rate"]}, "compare_at": {"type": ["string", "null"], "from": ["compare_at"]}, "position": {"type": ["integer", "null"], "from": ["position"]}, "source": {"type": ["string", "null"], "from": ["source"]}, "zone": {"type": ["string", "null"], "from": ["zone"]}, "_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: abandoned_checkouts__note_attributes; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.abandoned_checkouts__note_attributes (
+    name text,
+    value text,
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE abandoned_checkouts__note_attributes; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.abandoned_checkouts__note_attributes IS '{"path": ["abandoned_checkouts", "note_attributes"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "value": {"type": ["string", "null"], "from": ["value"]}, "_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: abandoned_checkouts__shipping_lines; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.abandoned_checkouts__shipping_lines (
+    phone text,
+    validation_context text,
+    id text,
+    carrier_identifier text,
+    api_client_id bigint,
+    price double precision,
+    requested_fulfillment_service_id text,
+    title text,
+    code text,
+    carrier_service_id bigint,
+    delivery_category text,
+    markup text,
+    source text,
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE abandoned_checkouts__shipping_lines; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.abandoned_checkouts__shipping_lines IS '{"path": ["abandoned_checkouts", "shipping_lines"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"phone": {"type": ["string", "null"], "from": ["phone"]}, "validation_context": {"type": ["string", "null"], "from": ["validation_context"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "carrier_identifier": {"type": ["string", "null"], "from": ["carrier_identifier"]}, "api_client_id": {"type": ["integer", "null"], "from": ["api_client_id"]}, "price": {"type": ["number", "null"], "from": ["price"]}, "requested_fulfillment_service_id": {"type": ["string", "null"], "from": ["requested_fulfillment_service_id"]}, "title": {"type": ["string", "null"], "from": ["title"]}, "code": {"type": ["string", "null"], "from": ["code"]}, "carrier_service_id": {"type": ["integer", "null"], "from": ["carrier_service_id"]}, "delivery_category": {"type": ["string", "null"], "from": ["delivery_category"]}, "markup": {"type": ["string", "null"], "from": ["markup"]}, "source": {"type": ["string", "null"], "from": ["source"]}, "_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: abandoned_checkouts__shipping_lines__applied_discounts; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.abandoned_checkouts__shipping_lines__applied_discounts (
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE abandoned_checkouts__shipping_lines__applied_discounts; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.abandoned_checkouts__shipping_lines__applied_discounts IS '{"path": ["abandoned_checkouts", "shipping_lines", "applied_discounts"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: abandoned_checkouts__shipping_lines__custom_tax_lines; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.abandoned_checkouts__shipping_lines__custom_tax_lines (
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE abandoned_checkouts__shipping_lines__custom_tax_lines; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.abandoned_checkouts__shipping_lines__custom_tax_lines IS '{"path": ["abandoned_checkouts", "shipping_lines", "custom_tax_lines"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: abandoned_checkouts__shipping_lines__tax_lines; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.abandoned_checkouts__shipping_lines__tax_lines (
+    price_set__shop_money__amount text,
+    price_set__shop_money__currency_code text,
+    price_set__presentment_money__amount text,
+    price_set__presentment_money__currency_code text,
+    price double precision,
+    title text,
+    rate double precision,
+    compare_at text,
+    "position" bigint,
+    source text,
+    zone text,
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE abandoned_checkouts__shipping_lines__tax_lines; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.abandoned_checkouts__shipping_lines__tax_lines IS '{"path": ["abandoned_checkouts", "shipping_lines", "tax_lines"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"price_set__shop_money__amount": {"type": ["string", "null"], "from": ["price_set", "shop_money", "amount"]}, "price_set__shop_money__currency_code": {"type": ["string", "null"], "from": ["price_set", "shop_money", "currency_code"]}, "price_set__presentment_money__amount": {"type": ["string", "null"], "from": ["price_set", "presentment_money", "amount"]}, "price_set__presentment_money__currency_code": {"type": ["string", "null"], "from": ["price_set", "presentment_money", "currency_code"]}, "price": {"type": ["number", "null"], "from": ["price"]}, "title": {"type": ["string", "null"], "from": ["title"]}, "rate": {"type": ["number", "null"], "from": ["rate"]}, "compare_at": {"type": ["string", "null"], "from": ["compare_at"]}, "position": {"type": ["integer", "null"], "from": ["position"]}, "source": {"type": ["string", "null"], "from": ["source"]}, "zone": {"type": ["string", "null"], "from": ["zone"]}, "_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: abandoned_checkouts__tax_lines; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.abandoned_checkouts__tax_lines (
+    price_set__shop_money__amount text,
+    price_set__shop_money__currency_code text,
+    price_set__presentment_money__amount text,
+    price_set__presentment_money__currency_code text,
+    price double precision,
+    title text,
+    rate double precision,
+    compare_at text,
+    "position" bigint,
+    source text,
+    zone text,
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE abandoned_checkouts__tax_lines; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.abandoned_checkouts__tax_lines IS '{"path": ["abandoned_checkouts", "tax_lines"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"price_set__shop_money__amount": {"type": ["string", "null"], "from": ["price_set", "shop_money", "amount"]}, "price_set__shop_money__currency_code": {"type": ["string", "null"], "from": ["price_set", "shop_money", "currency_code"]}, "price_set__presentment_money__amount": {"type": ["string", "null"], "from": ["price_set", "presentment_money", "amount"]}, "price_set__presentment_money__currency_code": {"type": ["string", "null"], "from": ["price_set", "presentment_money", "currency_code"]}, "price": {"type": ["number", "null"], "from": ["price"]}, "title": {"type": ["string", "null"], "from": ["title"]}, "rate": {"type": ["number", "null"], "from": ["rate"]}, "compare_at": {"type": ["string", "null"], "from": ["compare_at"]}, "position": {"type": ["integer", "null"], "from": ["position"]}, "source": {"type": ["string", "null"], "from": ["source"]}, "zone": {"type": ["string", "null"], "from": ["zone"]}, "_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: customers; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.customers (
+    last_order_name text,
+    currency text,
+    email text,
+    multipass_identifier text,
+    default_address__city text,
+    default_address__address1 text,
+    default_address__zip text,
+    default_address__id bigint,
+    default_address__country_name text,
+    default_address__province text,
+    default_address__phone text,
+    default_address__country text,
+    default_address__first_name text,
+    default_address__customer_id bigint,
+    default_address__default boolean,
+    default_address__last_name text,
+    default_address__country_code text,
+    default_address__name text,
+    default_address__province_code text,
+    default_address__address2 text,
+    default_address__company text,
+    orders_count bigint,
+    state text,
+    verified_email boolean,
+    total_spent text,
+    last_order_id bigint,
+    first_name text,
+    updated_at timestamp with time zone,
+    note text,
+    phone text,
+    admin_graphql_api_id text,
+    last_name text,
+    tags text,
+    tax_exempt boolean,
+    id bigint,
+    accepts_marketing boolean,
+    created_at timestamp with time zone,
+    account_id bigint NOT NULL,
+    shop_id bigint NOT NULL,
+    _sdc_received_at timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_table_version bigint,
+    _sdc_batched_at timestamp with time zone
+);
+
+
+--
+-- Name: TABLE customers; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.customers IS '{"path": ["customers"], "version": null, "schema_version": 2, "key_properties": ["id"], "mappings": {"last_order_name": {"type": ["string", "null"], "from": ["last_order_name"]}, "currency": {"type": ["string", "null"], "from": ["currency"]}, "email": {"type": ["string", "null"], "from": ["email"]}, "multipass_identifier": {"type": ["string", "null"], "from": ["multipass_identifier"]}, "default_address__city": {"type": ["string", "null"], "from": ["default_address", "city"]}, "default_address__address1": {"type": ["string", "null"], "from": ["default_address", "address1"]}, "default_address__zip": {"type": ["string", "null"], "from": ["default_address", "zip"]}, "default_address__id": {"type": ["integer", "null"], "from": ["default_address", "id"]}, "default_address__country_name": {"type": ["string", "null"], "from": ["default_address", "country_name"]}, "default_address__province": {"type": ["string", "null"], "from": ["default_address", "province"]}, "default_address__phone": {"type": ["string", "null"], "from": ["default_address", "phone"]}, "default_address__country": {"type": ["string", "null"], "from": ["default_address", "country"]}, "default_address__first_name": {"type": ["string", "null"], "from": ["default_address", "first_name"]}, "default_address__customer_id": {"type": ["integer", "null"], "from": ["default_address", "customer_id"]}, "default_address__default": {"type": ["boolean", "null"], "from": ["default_address", "default"]}, "default_address__last_name": {"type": ["string", "null"], "from": ["default_address", "last_name"]}, "default_address__country_code": {"type": ["string", "null"], "from": ["default_address", "country_code"]}, "default_address__name": {"type": ["string", "null"], "from": ["default_address", "name"]}, "default_address__province_code": {"type": ["string", "null"], "from": ["default_address", "province_code"]}, "default_address__address2": {"type": ["string", "null"], "from": ["default_address", "address2"]}, "default_address__company": {"type": ["string", "null"], "from": ["default_address", "company"]}, "orders_count": {"type": ["integer", "null"], "from": ["orders_count"]}, "state": {"type": ["string", "null"], "from": ["state"]}, "verified_email": {"type": ["boolean", "null"], "from": ["verified_email"]}, "total_spent": {"type": ["string", "null"], "from": ["total_spent"]}, "last_order_id": {"type": ["integer", "null"], "from": ["last_order_id"]}, "first_name": {"type": ["string", "null"], "from": ["first_name"]}, "updated_at": {"type": ["string", "null"], "from": ["updated_at"], "format": "date-time"}, "note": {"type": ["string", "null"], "from": ["note"]}, "phone": {"type": ["string", "null"], "from": ["phone"]}, "admin_graphql_api_id": {"type": ["string", "null"], "from": ["admin_graphql_api_id"]}, "last_name": {"type": ["string", "null"], "from": ["last_name"]}, "tags": {"type": ["string", "null"], "from": ["tags"]}, "tax_exempt": {"type": ["boolean", "null"], "from": ["tax_exempt"]}, "id": {"type": ["integer", "null"], "from": ["id"]}, "accepts_marketing": {"type": ["boolean", "null"], "from": ["accepts_marketing"]}, "created_at": {"type": ["string", "null"], "from": ["created_at"], "format": "date-time"}, "account_id": {"type": ["integer"], "from": ["account_id"]}, "shop_id": {"type": ["integer"], "from": ["shop_id"]}, "_sdc_received_at": {"type": ["string", "null"], "from": ["_sdc_received_at"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_table_version": {"type": ["integer", "null"], "from": ["_sdc_table_version"]}, "_sdc_batched_at": {"type": ["string", "null"], "from": ["_sdc_batched_at"], "format": "date-time"}}}';
+
+
+--
+-- Name: customers__addresses; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.customers__addresses (
+    city text,
+    address1 text,
+    zip text,
+    id bigint,
+    country_name text,
+    province text,
+    phone text,
+    country text,
+    first_name text,
+    customer_id bigint,
+    "default" boolean,
+    last_name text,
+    country_code text,
+    name text,
+    province_code text,
+    address2 text,
+    company text,
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE customers__addresses; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.customers__addresses IS '{"path": ["customers", "addresses"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"city": {"type": ["string", "null"], "from": ["city"]}, "address1": {"type": ["string", "null"], "from": ["address1"]}, "zip": {"type": ["string", "null"], "from": ["zip"]}, "id": {"type": ["integer", "null"], "from": ["id"]}, "country_name": {"type": ["string", "null"], "from": ["country_name"]}, "province": {"type": ["string", "null"], "from": ["province"]}, "phone": {"type": ["string", "null"], "from": ["phone"]}, "country": {"type": ["string", "null"], "from": ["country"]}, "first_name": {"type": ["string", "null"], "from": ["first_name"]}, "customer_id": {"type": ["integer", "null"], "from": ["customer_id"]}, "default": {"type": ["boolean", "null"], "from": ["default"]}, "last_name": {"type": ["string", "null"], "from": ["last_name"]}, "country_code": {"type": ["string", "null"], "from": ["country_code"]}, "name": {"type": ["string", "null"], "from": ["name"]}, "province_code": {"type": ["string", "null"], "from": ["province_code"]}, "address2": {"type": ["string", "null"], "from": ["address2"]}, "company": {"type": ["string", "null"], "from": ["company"]}, "_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: orders; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.orders (
+    presentment_currency text,
+    subtotal_price_set__shop_money__amount text,
+    subtotal_price_set__shop_money__currency_code text,
+    subtotal_price_set__presentment_money__amount text,
+    subtotal_price_set__presentment_money__currency_code text,
+    total_discounts_set__shop_money__amount text,
+    total_discounts_set__shop_money__currency_code text,
+    total_discounts_set__presentment_money__amount text,
+    total_discounts_set__presentment_money__currency_code text,
+    total_line_items_price_set__shop_money__amount text,
+    total_line_items_price_set__shop_money__currency_code text,
+    total_line_items_price_set__presentment_money__amount text,
+    total_line_items_price_set__presentment_money__currency_code text,
+    total_price_set__shop_money__amount text,
+    total_price_set__shop_money__currency_code text,
+    total_price_set__presentment_money__amount text,
+    total_price_set__presentment_money__currency_code text,
+    total_shipping_price_set__shop_money__amount text,
+    total_shipping_price_set__shop_money__currency_code text,
+    total_shipping_price_set__presentment_money__amount text,
+    total_shipping_price_set__presentment_money__currency_code text,
+    total_tax_set__shop_money__amount text,
+    total_tax_set__shop_money__currency_code text,
+    total_tax_set__presentment_money__amount text,
+    total_tax_set__presentment_money__currency_code text,
+    total_price double precision,
+    processing_method text,
+    order_number bigint,
+    confirmed boolean,
+    total_discounts double precision,
+    total_line_items_price double precision,
+    admin_graphql_api_id text,
+    device_id bigint,
+    cancel_reason text,
+    currency text,
+    source_identifier text,
+    id bigint,
+    processed_at timestamp with time zone,
+    referring_site text,
+    contact_email text,
+    location_id bigint,
+    customer__last_order_name text,
+    customer__currency text,
+    customer__email text,
+    customer__multipass_identifier text,
+    customer__default_address__city text,
+    customer__default_address__address1 text,
+    customer__default_address__zip text,
+    customer__default_address__id bigint,
+    customer__default_address__country_name text,
+    customer__default_address__province text,
+    customer__default_address__phone text,
+    customer__default_address__country text,
+    customer__default_address__first_name text,
+    customer__default_address__customer_id bigint,
+    customer__default_address__default boolean,
+    customer__default_address__last_name text,
+    customer__default_address__country_code text,
+    customer__default_address__name text,
+    customer__default_address__province_code text,
+    customer__default_address__address2 text,
+    customer__default_address__company text,
+    customer__orders_count bigint,
+    customer__state text,
+    customer__verified_email boolean,
+    customer__total_spent text,
+    customer__last_order_id bigint,
+    customer__first_name text,
+    customer__updated_at timestamp with time zone,
+    customer__note text,
+    customer__phone text,
+    customer__admin_graphql_api_id text,
+    customer__last_name text,
+    customer__tags text,
+    customer__tax_exempt boolean,
+    customer__id bigint,
+    customer__accepts_marketing boolean,
+    customer__created_at timestamp with time zone,
+    test boolean,
+    total_tax double precision,
+    payment_details__avs_result_code text,
+    payment_details__credit_card_company text,
+    payment_details__cvv_result_code text,
+    payment_details__credit_card_bin text,
+    payment_details__credit_card_number text,
+    number bigint,
+    email text,
+    source_name text,
+    landing_site_ref text,
+    shipping_address__phone text,
+    shipping_address__country text,
+    shipping_address__name text,
+    shipping_address__address1 text,
+    shipping_address__longitude double precision,
+    shipping_address__address2 text,
+    shipping_address__last_name text,
+    shipping_address__first_name text,
+    shipping_address__province text,
+    shipping_address__city text,
+    shipping_address__company text,
+    shipping_address__latitude double precision,
+    shipping_address__country_code text,
+    shipping_address__province_code text,
+    shipping_address__zip text,
+    total_price_usd double precision,
+    closed_at timestamp with time zone,
+    name text,
+    note text,
+    user_id bigint,
+    source_url text,
+    subtotal_price double precision,
+    billing_address__phone text,
+    billing_address__country text,
+    billing_address__name text,
+    billing_address__address1 text,
+    billing_address__longitude double precision,
+    billing_address__address2 text,
+    billing_address__last_name text,
+    billing_address__first_name text,
+    billing_address__province text,
+    billing_address__city text,
+    billing_address__company text,
+    billing_address__latitude double precision,
+    billing_address__country_code text,
+    billing_address__province_code text,
+    billing_address__zip text,
+    landing_site text,
+    taxes_included boolean,
+    token text,
+    app_id bigint,
+    total_tip_received text,
+    browser_ip text,
+    phone text,
+    fulfillment_status text,
+    order_status_url text,
+    client_details__session_hash text,
+    client_details__accept_language text,
+    client_details__browser_width bigint,
+    client_details__user_agent text,
+    client_details__browser_ip text,
+    client_details__browser_height bigint,
+    buyer_accepts_marketing boolean,
+    checkout_token text,
+    tags text,
+    financial_status text,
+    customer_locale text,
+    checkout_id bigint,
+    total_weight bigint,
+    gateway text,
+    cart_token text,
+    cancelled_at timestamp with time zone,
+    created_at timestamp with time zone,
+    updated_at timestamp with time zone,
+    reference text,
+    account_id bigint NOT NULL,
+    shop_id bigint NOT NULL,
+    _sdc_received_at timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_table_version bigint,
+    _sdc_batched_at timestamp with time zone
+);
+
+
+--
+-- Name: TABLE orders; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.orders IS '{"path": ["orders"], "version": null, "schema_version": 2, "key_properties": ["id"], "mappings": {"presentment_currency": {"type": ["string", "null"], "from": ["presentment_currency"]}, "subtotal_price_set__shop_money__amount": {"type": ["string", "null"], "from": ["subtotal_price_set", "shop_money", "amount"]}, "subtotal_price_set__shop_money__currency_code": {"type": ["string", "null"], "from": ["subtotal_price_set", "shop_money", "currency_code"]}, "subtotal_price_set__presentment_money__amount": {"type": ["string", "null"], "from": ["subtotal_price_set", "presentment_money", "amount"]}, "subtotal_price_set__presentment_money__currency_code": {"type": ["string", "null"], "from": ["subtotal_price_set", "presentment_money", "currency_code"]}, "total_discounts_set__shop_money__amount": {"type": ["string", "null"], "from": ["total_discounts_set", "shop_money", "amount"]}, "total_discounts_set__shop_money__currency_code": {"type": ["string", "null"], "from": ["total_discounts_set", "shop_money", "currency_code"]}, "total_discounts_set__presentment_money__amount": {"type": ["string", "null"], "from": ["total_discounts_set", "presentment_money", "amount"]}, "total_discounts_set__presentment_money__currency_code": {"type": ["string", "null"], "from": ["total_discounts_set", "presentment_money", "currency_code"]}, "total_line_items_price_set__shop_money__amount": {"type": ["string", "null"], "from": ["total_line_items_price_set", "shop_money", "amount"]}, "total_line_items_price_set__shop_money__currency_code": {"type": ["string", "null"], "from": ["total_line_items_price_set", "shop_money", "currency_code"]}, "total_line_items_price_set__presentment_money__amount": {"type": ["string", "null"], "from": ["total_line_items_price_set", "presentment_money", "amount"]}, "total_line_items_price_set__presentment_money__currency_code": {"type": ["string", "null"], "from": ["total_line_items_price_set", "presentment_money", "currency_code"]}, "total_price_set__shop_money__amount": {"type": ["string", "null"], "from": ["total_price_set", "shop_money", "amount"]}, "total_price_set__shop_money__currency_code": {"type": ["string", "null"], "from": ["total_price_set", "shop_money", "currency_code"]}, "total_price_set__presentment_money__amount": {"type": ["string", "null"], "from": ["total_price_set", "presentment_money", "amount"]}, "total_price_set__presentment_money__currency_code": {"type": ["string", "null"], "from": ["total_price_set", "presentment_money", "currency_code"]}, "total_shipping_price_set__shop_money__amount": {"type": ["string", "null"], "from": ["total_shipping_price_set", "shop_money", "amount"]}, "total_shipping_price_set__shop_money__currency_code": {"type": ["string", "null"], "from": ["total_shipping_price_set", "shop_money", "currency_code"]}, "total_shipping_price_set__presentment_money__amount": {"type": ["string", "null"], "from": ["total_shipping_price_set", "presentment_money", "amount"]}, "total_shipping_price_set__presentment_money__currency_code": {"type": ["string", "null"], "from": ["total_shipping_price_set", "presentment_money", "currency_code"]}, "total_tax_set__shop_money__amount": {"type": ["string", "null"], "from": ["total_tax_set", "shop_money", "amount"]}, "total_tax_set__shop_money__currency_code": {"type": ["string", "null"], "from": ["total_tax_set", "shop_money", "currency_code"]}, "total_tax_set__presentment_money__amount": {"type": ["string", "null"], "from": ["total_tax_set", "presentment_money", "amount"]}, "total_tax_set__presentment_money__currency_code": {"type": ["string", "null"], "from": ["total_tax_set", "presentment_money", "currency_code"]}, "total_price": {"type": ["number", "null"], "from": ["total_price"]}, "processing_method": {"type": ["string", "null"], "from": ["processing_method"]}, "order_number": {"type": ["integer", "null"], "from": ["order_number"]}, "confirmed": {"type": ["boolean", "null"], "from": ["confirmed"]}, "total_discounts": {"type": ["number", "null"], "from": ["total_discounts"]}, "total_line_items_price": {"type": ["number", "null"], "from": ["total_line_items_price"]}, "admin_graphql_api_id": {"type": ["string", "null"], "from": ["admin_graphql_api_id"]}, "device_id": {"type": ["integer", "null"], "from": ["device_id"]}, "cancel_reason": {"type": ["string", "null"], "from": ["cancel_reason"]}, "currency": {"type": ["string", "null"], "from": ["currency"]}, "source_identifier": {"type": ["string", "null"], "from": ["source_identifier"]}, "id": {"type": ["integer", "null"], "from": ["id"]}, "processed_at": {"type": ["string", "null"], "from": ["processed_at"], "format": "date-time"}, "referring_site": {"type": ["string", "null"], "from": ["referring_site"]}, "contact_email": {"type": ["string", "null"], "from": ["contact_email"]}, "location_id": {"type": ["integer", "null"], "from": ["location_id"]}, "customer__last_order_name": {"type": ["string", "null"], "from": ["customer", "last_order_name"]}, "customer__currency": {"type": ["string", "null"], "from": ["customer", "currency"]}, "customer__email": {"type": ["string", "null"], "from": ["customer", "email"]}, "customer__multipass_identifier": {"type": ["string", "null"], "from": ["customer", "multipass_identifier"]}, "customer__default_address__city": {"type": ["string", "null"], "from": ["customer", "default_address", "city"]}, "customer__default_address__address1": {"type": ["string", "null"], "from": ["customer", "default_address", "address1"]}, "customer__default_address__zip": {"type": ["string", "null"], "from": ["customer", "default_address", "zip"]}, "customer__default_address__id": {"type": ["integer", "null"], "from": ["customer", "default_address", "id"]}, "customer__default_address__country_name": {"type": ["string", "null"], "from": ["customer", "default_address", "country_name"]}, "customer__default_address__province": {"type": ["string", "null"], "from": ["customer", "default_address", "province"]}, "customer__default_address__phone": {"type": ["string", "null"], "from": ["customer", "default_address", "phone"]}, "customer__default_address__country": {"type": ["string", "null"], "from": ["customer", "default_address", "country"]}, "customer__default_address__first_name": {"type": ["string", "null"], "from": ["customer", "default_address", "first_name"]}, "customer__default_address__customer_id": {"type": ["integer", "null"], "from": ["customer", "default_address", "customer_id"]}, "customer__default_address__default": {"type": ["boolean", "null"], "from": ["customer", "default_address", "default"]}, "customer__default_address__last_name": {"type": ["string", "null"], "from": ["customer", "default_address", "last_name"]}, "customer__default_address__country_code": {"type": ["string", "null"], "from": ["customer", "default_address", "country_code"]}, "customer__default_address__name": {"type": ["string", "null"], "from": ["customer", "default_address", "name"]}, "customer__default_address__province_code": {"type": ["string", "null"], "from": ["customer", "default_address", "province_code"]}, "customer__default_address__address2": {"type": ["string", "null"], "from": ["customer", "default_address", "address2"]}, "customer__default_address__company": {"type": ["string", "null"], "from": ["customer", "default_address", "company"]}, "customer__orders_count": {"type": ["integer", "null"], "from": ["customer", "orders_count"]}, "customer__state": {"type": ["string", "null"], "from": ["customer", "state"]}, "customer__verified_email": {"type": ["boolean", "null"], "from": ["customer", "verified_email"]}, "customer__total_spent": {"type": ["string", "null"], "from": ["customer", "total_spent"]}, "customer__last_order_id": {"type": ["integer", "null"], "from": ["customer", "last_order_id"]}, "customer__first_name": {"type": ["string", "null"], "from": ["customer", "first_name"]}, "customer__updated_at": {"type": ["string", "null"], "from": ["customer", "updated_at"], "format": "date-time"}, "customer__note": {"type": ["string", "null"], "from": ["customer", "note"]}, "customer__phone": {"type": ["string", "null"], "from": ["customer", "phone"]}, "customer__admin_graphql_api_id": {"type": ["string", "null"], "from": ["customer", "admin_graphql_api_id"]}, "customer__last_name": {"type": ["string", "null"], "from": ["customer", "last_name"]}, "customer__tags": {"type": ["string", "null"], "from": ["customer", "tags"]}, "customer__tax_exempt": {"type": ["boolean", "null"], "from": ["customer", "tax_exempt"]}, "customer__id": {"type": ["integer", "null"], "from": ["customer", "id"]}, "customer__accepts_marketing": {"type": ["boolean", "null"], "from": ["customer", "accepts_marketing"]}, "customer__created_at": {"type": ["string", "null"], "from": ["customer", "created_at"], "format": "date-time"}, "test": {"type": ["boolean", "null"], "from": ["test"]}, "total_tax": {"type": ["number", "null"], "from": ["total_tax"]}, "payment_details__avs_result_code": {"type": ["string", "null"], "from": ["payment_details", "avs_result_code"]}, "payment_details__credit_card_company": {"type": ["string", "null"], "from": ["payment_details", "credit_card_company"]}, "payment_details__cvv_result_code": {"type": ["string", "null"], "from": ["payment_details", "cvv_result_code"]}, "payment_details__credit_card_bin": {"type": ["string", "null"], "from": ["payment_details", "credit_card_bin"]}, "payment_details__credit_card_number": {"type": ["string", "null"], "from": ["payment_details", "credit_card_number"]}, "number": {"type": ["integer", "null"], "from": ["number"]}, "email": {"type": ["string", "null"], "from": ["email"]}, "source_name": {"type": ["string", "null"], "from": ["source_name"]}, "landing_site_ref": {"type": ["string", "null"], "from": ["landing_site_ref"]}, "shipping_address__phone": {"type": ["string", "null"], "from": ["shipping_address", "phone"]}, "shipping_address__country": {"type": ["string", "null"], "from": ["shipping_address", "country"]}, "shipping_address__name": {"type": ["string", "null"], "from": ["shipping_address", "name"]}, "shipping_address__address1": {"type": ["string", "null"], "from": ["shipping_address", "address1"]}, "shipping_address__longitude": {"type": ["number", "null"], "from": ["shipping_address", "longitude"]}, "shipping_address__address2": {"type": ["string", "null"], "from": ["shipping_address", "address2"]}, "shipping_address__last_name": {"type": ["string", "null"], "from": ["shipping_address", "last_name"]}, "shipping_address__first_name": {"type": ["string", "null"], "from": ["shipping_address", "first_name"]}, "shipping_address__province": {"type": ["string", "null"], "from": ["shipping_address", "province"]}, "shipping_address__city": {"type": ["string", "null"], "from": ["shipping_address", "city"]}, "shipping_address__company": {"type": ["string", "null"], "from": ["shipping_address", "company"]}, "shipping_address__latitude": {"type": ["number", "null"], "from": ["shipping_address", "latitude"]}, "shipping_address__country_code": {"type": ["string", "null"], "from": ["shipping_address", "country_code"]}, "shipping_address__province_code": {"type": ["string", "null"], "from": ["shipping_address", "province_code"]}, "shipping_address__zip": {"type": ["string", "null"], "from": ["shipping_address", "zip"]}, "total_price_usd": {"type": ["number", "null"], "from": ["total_price_usd"]}, "closed_at": {"type": ["string", "null"], "from": ["closed_at"], "format": "date-time"}, "name": {"type": ["string", "null"], "from": ["name"]}, "note": {"type": ["string", "null"], "from": ["note"]}, "user_id": {"type": ["integer", "null"], "from": ["user_id"]}, "source_url": {"type": ["string", "null"], "from": ["source_url"]}, "subtotal_price": {"type": ["number", "null"], "from": ["subtotal_price"]}, "billing_address__phone": {"type": ["string", "null"], "from": ["billing_address", "phone"]}, "billing_address__country": {"type": ["string", "null"], "from": ["billing_address", "country"]}, "billing_address__name": {"type": ["string", "null"], "from": ["billing_address", "name"]}, "billing_address__address1": {"type": ["string", "null"], "from": ["billing_address", "address1"]}, "billing_address__longitude": {"type": ["number", "null"], "from": ["billing_address", "longitude"]}, "billing_address__address2": {"type": ["string", "null"], "from": ["billing_address", "address2"]}, "billing_address__last_name": {"type": ["string", "null"], "from": ["billing_address", "last_name"]}, "billing_address__first_name": {"type": ["string", "null"], "from": ["billing_address", "first_name"]}, "billing_address__province": {"type": ["string", "null"], "from": ["billing_address", "province"]}, "billing_address__city": {"type": ["string", "null"], "from": ["billing_address", "city"]}, "billing_address__company": {"type": ["string", "null"], "from": ["billing_address", "company"]}, "billing_address__latitude": {"type": ["number", "null"], "from": ["billing_address", "latitude"]}, "billing_address__country_code": {"type": ["string", "null"], "from": ["billing_address", "country_code"]}, "billing_address__province_code": {"type": ["string", "null"], "from": ["billing_address", "province_code"]}, "billing_address__zip": {"type": ["string", "null"], "from": ["billing_address", "zip"]}, "landing_site": {"type": ["string", "null"], "from": ["landing_site"]}, "taxes_included": {"type": ["boolean", "null"], "from": ["taxes_included"]}, "token": {"type": ["string", "null"], "from": ["token"]}, "app_id": {"type": ["integer", "null"], "from": ["app_id"]}, "total_tip_received": {"type": ["string", "null"], "from": ["total_tip_received"]}, "browser_ip": {"type": ["string", "null"], "from": ["browser_ip"]}, "phone": {"type": ["string", "null"], "from": ["phone"]}, "fulfillment_status": {"type": ["string", "null"], "from": ["fulfillment_status"]}, "order_status_url": {"type": ["string", "null"], "from": ["order_status_url"]}, "client_details__session_hash": {"type": ["string", "null"], "from": ["client_details", "session_hash"]}, "client_details__accept_language": {"type": ["string", "null"], "from": ["client_details", "accept_language"]}, "client_details__browser_width": {"type": ["integer", "null"], "from": ["client_details", "browser_width"]}, "client_details__user_agent": {"type": ["string", "null"], "from": ["client_details", "user_agent"]}, "client_details__browser_ip": {"type": ["string", "null"], "from": ["client_details", "browser_ip"]}, "client_details__browser_height": {"type": ["integer", "null"], "from": ["client_details", "browser_height"]}, "buyer_accepts_marketing": {"type": ["boolean", "null"], "from": ["buyer_accepts_marketing"]}, "checkout_token": {"type": ["string", "null"], "from": ["checkout_token"]}, "tags": {"type": ["string", "null"], "from": ["tags"]}, "financial_status": {"type": ["string", "null"], "from": ["financial_status"]}, "customer_locale": {"type": ["string", "null"], "from": ["customer_locale"]}, "checkout_id": {"type": ["integer", "null"], "from": ["checkout_id"]}, "total_weight": {"type": ["integer", "null"], "from": ["total_weight"]}, "gateway": {"type": ["string", "null"], "from": ["gateway"]}, "cart_token": {"type": ["string", "null"], "from": ["cart_token"]}, "cancelled_at": {"type": ["string", "null"], "from": ["cancelled_at"], "format": "date-time"}, "created_at": {"type": ["string", "null"], "from": ["created_at"], "format": "date-time"}, "updated_at": {"type": ["string", "null"], "from": ["updated_at"], "format": "date-time"}, "reference": {"type": ["string", "null"], "from": ["reference"]}, "account_id": {"type": ["integer"], "from": ["account_id"]}, "shop_id": {"type": ["integer"], "from": ["shop_id"]}, "_sdc_received_at": {"type": ["string", "null"], "from": ["_sdc_received_at"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_table_version": {"type": ["integer", "null"], "from": ["_sdc_table_version"]}, "_sdc_batched_at": {"type": ["string", "null"], "from": ["_sdc_batched_at"], "format": "date-time"}}}';
+
+
+--
+-- Name: orders__customer__addresses; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.orders__customer__addresses (
+    city text,
+    address1 text,
+    zip text,
+    id bigint,
+    country_name text,
+    province text,
+    phone text,
+    country text,
+    first_name text,
+    customer_id bigint,
+    "default" boolean,
+    last_name text,
+    country_code text,
+    name text,
+    province_code text,
+    address2 text,
+    company text,
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE orders__customer__addresses; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.orders__customer__addresses IS '{"path": ["orders", "customer", "addresses"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"city": {"type": ["string", "null"], "from": ["city"]}, "address1": {"type": ["string", "null"], "from": ["address1"]}, "zip": {"type": ["string", "null"], "from": ["zip"]}, "id": {"type": ["integer", "null"], "from": ["id"]}, "country_name": {"type": ["string", "null"], "from": ["country_name"]}, "province": {"type": ["string", "null"], "from": ["province"]}, "phone": {"type": ["string", "null"], "from": ["phone"]}, "country": {"type": ["string", "null"], "from": ["country"]}, "first_name": {"type": ["string", "null"], "from": ["first_name"]}, "customer_id": {"type": ["integer", "null"], "from": ["customer_id"]}, "default": {"type": ["boolean", "null"], "from": ["default"]}, "last_name": {"type": ["string", "null"], "from": ["last_name"]}, "country_code": {"type": ["string", "null"], "from": ["country_code"]}, "name": {"type": ["string", "null"], "from": ["name"]}, "province_code": {"type": ["string", "null"], "from": ["province_code"]}, "address2": {"type": ["string", "null"], "from": ["address2"]}, "company": {"type": ["string", "null"], "from": ["company"]}, "_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: orders__discount_applications; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.orders__discount_applications (
+    target_type text,
+    code text,
+    description text,
+    type text,
+    target_selection text,
+    allocation_method text,
+    title text,
+    value_type text,
+    value double precision,
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE orders__discount_applications; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.orders__discount_applications IS '{"path": ["orders", "discount_applications"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"target_type": {"type": ["string", "null"], "from": ["target_type"]}, "code": {"type": ["string", "null"], "from": ["code"]}, "description": {"type": ["string", "null"], "from": ["description"]}, "type": {"type": ["string", "null"], "from": ["type"]}, "target_selection": {"type": ["string", "null"], "from": ["target_selection"]}, "allocation_method": {"type": ["string", "null"], "from": ["allocation_method"]}, "title": {"type": ["string", "null"], "from": ["title"]}, "value_type": {"type": ["string", "null"], "from": ["value_type"]}, "value": {"type": ["number", "null"], "from": ["value"]}, "_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: orders__discount_codes; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.orders__discount_codes (
+    code text,
+    amount double precision,
+    type text,
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE orders__discount_codes; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.orders__discount_codes IS '{"path": ["orders", "discount_codes"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"code": {"type": ["string", "null"], "from": ["code"]}, "amount": {"type": ["number", "null"], "from": ["amount"]}, "type": {"type": ["string", "null"], "from": ["type"]}, "_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: orders__fulfillments; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.orders__fulfillments (
+    location_id bigint,
+    receipt__testcase boolean,
+    receipt__authorization text,
+    tracking_number text,
+    created_at timestamp with time zone,
+    shipment_status text,
+    tracking_url text,
+    service text,
+    status text,
+    admin_graphql_api_id text,
+    name text,
+    id bigint,
+    tracking_company text,
+    updated_at timestamp with time zone,
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE orders__fulfillments; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.orders__fulfillments IS '{"path": ["orders", "fulfillments"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"location_id": {"type": ["integer", "null"], "from": ["location_id"]}, "receipt__testcase": {"type": ["boolean", "null"], "from": ["receipt", "testcase"]}, "receipt__authorization": {"type": ["string", "null"], "from": ["receipt", "authorization"]}, "tracking_number": {"type": ["string", "null"], "from": ["tracking_number"]}, "created_at": {"type": ["string", "null"], "from": ["created_at"], "format": "date-time"}, "shipment_status": {"type": ["string", "null"], "from": ["shipment_status"]}, "tracking_url": {"type": ["string", "null"], "from": ["tracking_url"]}, "service": {"type": ["string", "null"], "from": ["service"]}, "status": {"type": ["string", "null"], "from": ["status"]}, "admin_graphql_api_id": {"type": ["string", "null"], "from": ["admin_graphql_api_id"]}, "name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["integer", "null"], "from": ["id"]}, "tracking_company": {"type": ["string", "null"], "from": ["tracking_company"]}, "updated_at": {"type": ["string", "null"], "from": ["updated_at"], "format": "date-time"}, "_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: orders__fulfillments__line_items; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.orders__fulfillments__line_items (
+    total_discount_set__shop_money__amount text,
+    total_discount_set__shop_money__currency_code text,
+    total_discount_set__presentment_money__amount text,
+    total_discount_set__presentment_money__currency_code text,
+    pre_tax_price_set__shop_money__amount text,
+    pre_tax_price_set__shop_money__currency_code text,
+    pre_tax_price_set__presentment_money__amount text,
+    pre_tax_price_set__presentment_money__currency_code text,
+    price_set__shop_money__amount text,
+    price_set__shop_money__currency_code text,
+    price_set__presentment_money__amount text,
+    price_set__presentment_money__currency_code text,
+    grams bigint,
+    compare_at_price text,
+    destination_location_id bigint,
+    key text,
+    line_price text,
+    origin_location_id bigint,
+    applied_discount bigint,
+    fulfillable_quantity bigint,
+    variant_title text,
+    tax_code text,
+    admin_graphql_api_id text,
+    pre_tax_price double precision,
+    sku text,
+    product_exists boolean,
+    total_discount double precision,
+    name text,
+    fulfillment_status text,
+    gift_card boolean,
+    id__i bigint,
+    id__s text,
+    taxable boolean,
+    vendor text,
+    origin_location__country_code text,
+    origin_location__name text,
+    origin_location__address1 text,
+    origin_location__city text,
+    origin_location__id bigint,
+    origin_location__address2 text,
+    origin_location__province_code text,
+    origin_location__zip text,
+    price double precision,
+    requires_shipping boolean,
+    fulfillment_service text,
+    variant_inventory_management text,
+    title text,
+    destination_location__country_code text,
+    destination_location__name text,
+    destination_location__address1 text,
+    destination_location__city text,
+    destination_location__id bigint,
+    destination_location__address2 text,
+    destination_location__province_code text,
+    destination_location__zip text,
+    quantity bigint,
+    product_id bigint,
+    variant_id bigint,
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE orders__fulfillments__line_items; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.orders__fulfillments__line_items IS '{"path": ["orders", "fulfillments", "line_items"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"total_discount_set__shop_money__amount": {"type": ["string", "null"], "from": ["total_discount_set", "shop_money", "amount"]}, "total_discount_set__shop_money__currency_code": {"type": ["string", "null"], "from": ["total_discount_set", "shop_money", "currency_code"]}, "total_discount_set__presentment_money__amount": {"type": ["string", "null"], "from": ["total_discount_set", "presentment_money", "amount"]}, "total_discount_set__presentment_money__currency_code": {"type": ["string", "null"], "from": ["total_discount_set", "presentment_money", "currency_code"]}, "pre_tax_price_set__shop_money__amount": {"type": ["string", "null"], "from": ["pre_tax_price_set", "shop_money", "amount"]}, "pre_tax_price_set__shop_money__currency_code": {"type": ["string", "null"], "from": ["pre_tax_price_set", "shop_money", "currency_code"]}, "pre_tax_price_set__presentment_money__amount": {"type": ["string", "null"], "from": ["pre_tax_price_set", "presentment_money", "amount"]}, "pre_tax_price_set__presentment_money__currency_code": {"type": ["string", "null"], "from": ["pre_tax_price_set", "presentment_money", "currency_code"]}, "price_set__shop_money__amount": {"type": ["string", "null"], "from": ["price_set", "shop_money", "amount"]}, "price_set__shop_money__currency_code": {"type": ["string", "null"], "from": ["price_set", "shop_money", "currency_code"]}, "price_set__presentment_money__amount": {"type": ["string", "null"], "from": ["price_set", "presentment_money", "amount"]}, "price_set__presentment_money__currency_code": {"type": ["string", "null"], "from": ["price_set", "presentment_money", "currency_code"]}, "grams": {"type": ["integer", "null"], "from": ["grams"]}, "compare_at_price": {"type": ["string", "null"], "from": ["compare_at_price"]}, "destination_location_id": {"type": ["integer", "null"], "from": ["destination_location_id"]}, "key": {"type": ["string", "null"], "from": ["key"]}, "line_price": {"type": ["string", "null"], "from": ["line_price"]}, "origin_location_id": {"type": ["integer", "null"], "from": ["origin_location_id"]}, "applied_discount": {"type": ["integer", "null"], "from": ["applied_discount"]}, "fulfillable_quantity": {"type": ["integer", "null"], "from": ["fulfillable_quantity"]}, "variant_title": {"type": ["string", "null"], "from": ["variant_title"]}, "tax_code": {"type": ["string", "null"], "from": ["tax_code"]}, "admin_graphql_api_id": {"type": ["string", "null"], "from": ["admin_graphql_api_id"]}, "pre_tax_price": {"type": ["number", "null"], "from": ["pre_tax_price"]}, "sku": {"type": ["string", "null"], "from": ["sku"]}, "product_exists": {"type": ["boolean", "null"], "from": ["product_exists"]}, "total_discount": {"type": ["number", "null"], "from": ["total_discount"]}, "name": {"type": ["string", "null"], "from": ["name"]}, "fulfillment_status": {"type": ["string", "null"], "from": ["fulfillment_status"]}, "gift_card": {"type": ["boolean", "null"], "from": ["gift_card"]}, "id__i": {"type": ["integer", "null"], "from": ["id"]}, "id__s": {"type": ["string", "null"], "from": ["id"]}, "taxable": {"type": ["boolean", "null"], "from": ["taxable"]}, "vendor": {"type": ["string", "null"], "from": ["vendor"]}, "origin_location__country_code": {"type": ["string", "null"], "from": ["origin_location", "country_code"]}, "origin_location__name": {"type": ["string", "null"], "from": ["origin_location", "name"]}, "origin_location__address1": {"type": ["string", "null"], "from": ["origin_location", "address1"]}, "origin_location__city": {"type": ["string", "null"], "from": ["origin_location", "city"]}, "origin_location__id": {"type": ["integer", "null"], "from": ["origin_location", "id"]}, "origin_location__address2": {"type": ["string", "null"], "from": ["origin_location", "address2"]}, "origin_location__province_code": {"type": ["string", "null"], "from": ["origin_location", "province_code"]}, "origin_location__zip": {"type": ["string", "null"], "from": ["origin_location", "zip"]}, "price": {"type": ["number", "null"], "from": ["price"]}, "requires_shipping": {"type": ["boolean", "null"], "from": ["requires_shipping"]}, "fulfillment_service": {"type": ["string", "null"], "from": ["fulfillment_service"]}, "variant_inventory_management": {"type": ["string", "null"], "from": ["variant_inventory_management"]}, "title": {"type": ["string", "null"], "from": ["title"]}, "destination_location__country_code": {"type": ["string", "null"], "from": ["destination_location", "country_code"]}, "destination_location__name": {"type": ["string", "null"], "from": ["destination_location", "name"]}, "destination_location__address1": {"type": ["string", "null"], "from": ["destination_location", "address1"]}, "destination_location__city": {"type": ["string", "null"], "from": ["destination_location", "city"]}, "destination_location__id": {"type": ["integer", "null"], "from": ["destination_location", "id"]}, "destination_location__address2": {"type": ["string", "null"], "from": ["destination_location", "address2"]}, "destination_location__province_code": {"type": ["string", "null"], "from": ["destination_location", "province_code"]}, "destination_location__zip": {"type": ["string", "null"], "from": ["destination_location", "zip"]}, "quantity": {"type": ["integer", "null"], "from": ["quantity"]}, "product_id": {"type": ["integer", "null"], "from": ["product_id"]}, "variant_id": {"type": ["integer", "null"], "from": ["variant_id"]}, "_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: orders__fulfillments__line_items__applied_discounts; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.orders__fulfillments__line_items__applied_discounts (
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL,
+    _sdc_level_2_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE orders__fulfillments__line_items__applied_discounts; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.orders__fulfillments__line_items__applied_discounts IS '{"path": ["orders", "fulfillments", "line_items", "applied_discounts"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}, "_sdc_level_2_id": {"type": ["integer"], "from": ["_sdc_level_2_id"]}}}';
+
+
+--
+-- Name: orders__fulfillments__line_items__discount_allocations; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.orders__fulfillments__line_items__discount_allocations (
+    discount_application_index bigint,
+    amount double precision,
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL,
+    _sdc_level_2_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE orders__fulfillments__line_items__discount_allocations; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.orders__fulfillments__line_items__discount_allocations IS '{"path": ["orders", "fulfillments", "line_items", "discount_allocations"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"discount_application_index": {"type": ["integer", "null"], "from": ["discount_application_index"]}, "amount": {"type": ["number", "null"], "from": ["amount"]}, "_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}, "_sdc_level_2_id": {"type": ["integer"], "from": ["_sdc_level_2_id"]}}}';
+
+
+--
+-- Name: orders__fulfillments__line_items__properties; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.orders__fulfillments__line_items__properties (
+    name text,
+    value text,
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL,
+    _sdc_level_2_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE orders__fulfillments__line_items__properties; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.orders__fulfillments__line_items__properties IS '{"path": ["orders", "fulfillments", "line_items", "properties"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "value": {"type": ["string", "null"], "from": ["value"]}, "_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}, "_sdc_level_2_id": {"type": ["integer"], "from": ["_sdc_level_2_id"]}}}';
+
+
+--
+-- Name: orders__fulfillments__line_items__tax_lines; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.orders__fulfillments__line_items__tax_lines (
+    price_set__shop_money__amount text,
+    price_set__shop_money__currency_code text,
+    price_set__presentment_money__amount text,
+    price_set__presentment_money__currency_code text,
+    price double precision,
+    title text,
+    rate double precision,
+    compare_at text,
+    "position" bigint,
+    source text,
+    zone text,
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL,
+    _sdc_level_2_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE orders__fulfillments__line_items__tax_lines; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.orders__fulfillments__line_items__tax_lines IS '{"path": ["orders", "fulfillments", "line_items", "tax_lines"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"price_set__shop_money__amount": {"type": ["string", "null"], "from": ["price_set", "shop_money", "amount"]}, "price_set__shop_money__currency_code": {"type": ["string", "null"], "from": ["price_set", "shop_money", "currency_code"]}, "price_set__presentment_money__amount": {"type": ["string", "null"], "from": ["price_set", "presentment_money", "amount"]}, "price_set__presentment_money__currency_code": {"type": ["string", "null"], "from": ["price_set", "presentment_money", "currency_code"]}, "price": {"type": ["number", "null"], "from": ["price"]}, "title": {"type": ["string", "null"], "from": ["title"]}, "rate": {"type": ["number", "null"], "from": ["rate"]}, "compare_at": {"type": ["string", "null"], "from": ["compare_at"]}, "position": {"type": ["integer", "null"], "from": ["position"]}, "source": {"type": ["string", "null"], "from": ["source"]}, "zone": {"type": ["string", "null"], "from": ["zone"]}, "_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}, "_sdc_level_2_id": {"type": ["integer"], "from": ["_sdc_level_2_id"]}}}';
+
+
+--
+-- Name: orders__fulfillments__tracking_numbers; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.orders__fulfillments__tracking_numbers (
+    _sdc_value text,
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE orders__fulfillments__tracking_numbers; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.orders__fulfillments__tracking_numbers IS '{"path": ["orders", "fulfillments", "tracking_numbers"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: orders__fulfillments__tracking_urls; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.orders__fulfillments__tracking_urls (
+    _sdc_value text,
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE orders__fulfillments__tracking_urls; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.orders__fulfillments__tracking_urls IS '{"path": ["orders", "fulfillments", "tracking_urls"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: orders__line_items; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.orders__line_items (
+    total_discount_set__shop_money__amount text,
+    total_discount_set__shop_money__currency_code text,
+    total_discount_set__presentment_money__amount text,
+    total_discount_set__presentment_money__currency_code text,
+    pre_tax_price_set__shop_money__amount text,
+    pre_tax_price_set__shop_money__currency_code text,
+    pre_tax_price_set__presentment_money__amount text,
+    pre_tax_price_set__presentment_money__currency_code text,
+    price_set__shop_money__amount text,
+    price_set__shop_money__currency_code text,
+    price_set__presentment_money__amount text,
+    price_set__presentment_money__currency_code text,
+    grams bigint,
+    compare_at_price text,
+    destination_location_id bigint,
+    key text,
+    line_price text,
+    origin_location_id bigint,
+    applied_discount bigint,
+    fulfillable_quantity bigint,
+    variant_title text,
+    tax_code text,
+    admin_graphql_api_id text,
+    pre_tax_price double precision,
+    sku text,
+    product_exists boolean,
+    total_discount double precision,
+    name text,
+    fulfillment_status text,
+    gift_card boolean,
+    id__i bigint,
+    id__s text,
+    taxable boolean,
+    vendor text,
+    origin_location__country_code text,
+    origin_location__name text,
+    origin_location__address1 text,
+    origin_location__city text,
+    origin_location__id bigint,
+    origin_location__address2 text,
+    origin_location__province_code text,
+    origin_location__zip text,
+    price double precision,
+    requires_shipping boolean,
+    fulfillment_service text,
+    variant_inventory_management text,
+    title text,
+    destination_location__country_code text,
+    destination_location__name text,
+    destination_location__address1 text,
+    destination_location__city text,
+    destination_location__id bigint,
+    destination_location__address2 text,
+    destination_location__province_code text,
+    destination_location__zip text,
+    quantity bigint,
+    product_id bigint,
+    variant_id bigint,
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE orders__line_items; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.orders__line_items IS '{"path": ["orders", "line_items"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"total_discount_set__shop_money__amount": {"type": ["string", "null"], "from": ["total_discount_set", "shop_money", "amount"]}, "total_discount_set__shop_money__currency_code": {"type": ["string", "null"], "from": ["total_discount_set", "shop_money", "currency_code"]}, "total_discount_set__presentment_money__amount": {"type": ["string", "null"], "from": ["total_discount_set", "presentment_money", "amount"]}, "total_discount_set__presentment_money__currency_code": {"type": ["string", "null"], "from": ["total_discount_set", "presentment_money", "currency_code"]}, "pre_tax_price_set__shop_money__amount": {"type": ["string", "null"], "from": ["pre_tax_price_set", "shop_money", "amount"]}, "pre_tax_price_set__shop_money__currency_code": {"type": ["string", "null"], "from": ["pre_tax_price_set", "shop_money", "currency_code"]}, "pre_tax_price_set__presentment_money__amount": {"type": ["string", "null"], "from": ["pre_tax_price_set", "presentment_money", "amount"]}, "pre_tax_price_set__presentment_money__currency_code": {"type": ["string", "null"], "from": ["pre_tax_price_set", "presentment_money", "currency_code"]}, "price_set__shop_money__amount": {"type": ["string", "null"], "from": ["price_set", "shop_money", "amount"]}, "price_set__shop_money__currency_code": {"type": ["string", "null"], "from": ["price_set", "shop_money", "currency_code"]}, "price_set__presentment_money__amount": {"type": ["string", "null"], "from": ["price_set", "presentment_money", "amount"]}, "price_set__presentment_money__currency_code": {"type": ["string", "null"], "from": ["price_set", "presentment_money", "currency_code"]}, "grams": {"type": ["integer", "null"], "from": ["grams"]}, "compare_at_price": {"type": ["string", "null"], "from": ["compare_at_price"]}, "destination_location_id": {"type": ["integer", "null"], "from": ["destination_location_id"]}, "key": {"type": ["string", "null"], "from": ["key"]}, "line_price": {"type": ["string", "null"], "from": ["line_price"]}, "origin_location_id": {"type": ["integer", "null"], "from": ["origin_location_id"]}, "applied_discount": {"type": ["integer", "null"], "from": ["applied_discount"]}, "fulfillable_quantity": {"type": ["integer", "null"], "from": ["fulfillable_quantity"]}, "variant_title": {"type": ["string", "null"], "from": ["variant_title"]}, "tax_code": {"type": ["string", "null"], "from": ["tax_code"]}, "admin_graphql_api_id": {"type": ["string", "null"], "from": ["admin_graphql_api_id"]}, "pre_tax_price": {"type": ["number", "null"], "from": ["pre_tax_price"]}, "sku": {"type": ["string", "null"], "from": ["sku"]}, "product_exists": {"type": ["boolean", "null"], "from": ["product_exists"]}, "total_discount": {"type": ["number", "null"], "from": ["total_discount"]}, "name": {"type": ["string", "null"], "from": ["name"]}, "fulfillment_status": {"type": ["string", "null"], "from": ["fulfillment_status"]}, "gift_card": {"type": ["boolean", "null"], "from": ["gift_card"]}, "id__i": {"type": ["integer", "null"], "from": ["id"]}, "id__s": {"type": ["string", "null"], "from": ["id"]}, "taxable": {"type": ["boolean", "null"], "from": ["taxable"]}, "vendor": {"type": ["string", "null"], "from": ["vendor"]}, "origin_location__country_code": {"type": ["string", "null"], "from": ["origin_location", "country_code"]}, "origin_location__name": {"type": ["string", "null"], "from": ["origin_location", "name"]}, "origin_location__address1": {"type": ["string", "null"], "from": ["origin_location", "address1"]}, "origin_location__city": {"type": ["string", "null"], "from": ["origin_location", "city"]}, "origin_location__id": {"type": ["integer", "null"], "from": ["origin_location", "id"]}, "origin_location__address2": {"type": ["string", "null"], "from": ["origin_location", "address2"]}, "origin_location__province_code": {"type": ["string", "null"], "from": ["origin_location", "province_code"]}, "origin_location__zip": {"type": ["string", "null"], "from": ["origin_location", "zip"]}, "price": {"type": ["number", "null"], "from": ["price"]}, "requires_shipping": {"type": ["boolean", "null"], "from": ["requires_shipping"]}, "fulfillment_service": {"type": ["string", "null"], "from": ["fulfillment_service"]}, "variant_inventory_management": {"type": ["string", "null"], "from": ["variant_inventory_management"]}, "title": {"type": ["string", "null"], "from": ["title"]}, "destination_location__country_code": {"type": ["string", "null"], "from": ["destination_location", "country_code"]}, "destination_location__name": {"type": ["string", "null"], "from": ["destination_location", "name"]}, "destination_location__address1": {"type": ["string", "null"], "from": ["destination_location", "address1"]}, "destination_location__city": {"type": ["string", "null"], "from": ["destination_location", "city"]}, "destination_location__id": {"type": ["integer", "null"], "from": ["destination_location", "id"]}, "destination_location__address2": {"type": ["string", "null"], "from": ["destination_location", "address2"]}, "destination_location__province_code": {"type": ["string", "null"], "from": ["destination_location", "province_code"]}, "destination_location__zip": {"type": ["string", "null"], "from": ["destination_location", "zip"]}, "quantity": {"type": ["integer", "null"], "from": ["quantity"]}, "product_id": {"type": ["integer", "null"], "from": ["product_id"]}, "variant_id": {"type": ["integer", "null"], "from": ["variant_id"]}, "_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: orders__line_items__applied_discounts; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.orders__line_items__applied_discounts (
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE orders__line_items__applied_discounts; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.orders__line_items__applied_discounts IS '{"path": ["orders", "line_items", "applied_discounts"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: orders__line_items__discount_allocations; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.orders__line_items__discount_allocations (
+    discount_application_index bigint,
+    amount double precision,
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE orders__line_items__discount_allocations; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.orders__line_items__discount_allocations IS '{"path": ["orders", "line_items", "discount_allocations"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"discount_application_index": {"type": ["integer", "null"], "from": ["discount_application_index"]}, "amount": {"type": ["number", "null"], "from": ["amount"]}, "_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: orders__line_items__properties; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.orders__line_items__properties (
+    name text,
+    value text,
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE orders__line_items__properties; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.orders__line_items__properties IS '{"path": ["orders", "line_items", "properties"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "value": {"type": ["string", "null"], "from": ["value"]}, "_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: orders__line_items__tax_lines; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.orders__line_items__tax_lines (
+    price_set__shop_money__amount text,
+    price_set__shop_money__currency_code text,
+    price_set__presentment_money__amount text,
+    price_set__presentment_money__currency_code text,
+    price double precision,
+    title text,
+    rate double precision,
+    compare_at text,
+    "position" bigint,
+    source text,
+    zone text,
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE orders__line_items__tax_lines; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.orders__line_items__tax_lines IS '{"path": ["orders", "line_items", "tax_lines"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"price_set__shop_money__amount": {"type": ["string", "null"], "from": ["price_set", "shop_money", "amount"]}, "price_set__shop_money__currency_code": {"type": ["string", "null"], "from": ["price_set", "shop_money", "currency_code"]}, "price_set__presentment_money__amount": {"type": ["string", "null"], "from": ["price_set", "presentment_money", "amount"]}, "price_set__presentment_money__currency_code": {"type": ["string", "null"], "from": ["price_set", "presentment_money", "currency_code"]}, "price": {"type": ["number", "null"], "from": ["price"]}, "title": {"type": ["string", "null"], "from": ["title"]}, "rate": {"type": ["number", "null"], "from": ["rate"]}, "compare_at": {"type": ["string", "null"], "from": ["compare_at"]}, "position": {"type": ["integer", "null"], "from": ["position"]}, "source": {"type": ["string", "null"], "from": ["source"]}, "zone": {"type": ["string", "null"], "from": ["zone"]}, "_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: orders__note_attributes; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.orders__note_attributes (
+    name text,
+    value text,
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE orders__note_attributes; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.orders__note_attributes IS '{"path": ["orders", "note_attributes"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "value": {"type": ["string", "null"], "from": ["value"]}, "_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: orders__order_adjustments; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.orders__order_adjustments (
+    order_id bigint,
+    tax_amount double precision,
+    refund_id bigint,
+    amount double precision,
+    kind text,
+    id bigint,
+    reason text,
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE orders__order_adjustments; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.orders__order_adjustments IS '{"path": ["orders", "order_adjustments"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"order_id": {"type": ["integer", "null"], "from": ["order_id"]}, "tax_amount": {"type": ["number", "null"], "from": ["tax_amount"]}, "refund_id": {"type": ["integer", "null"], "from": ["refund_id"]}, "amount": {"type": ["number", "null"], "from": ["amount"]}, "kind": {"type": ["string", "null"], "from": ["kind"]}, "id": {"type": ["integer", "null"], "from": ["id"]}, "reason": {"type": ["string", "null"], "from": ["reason"]}, "_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: orders__payment_gateway_names; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.orders__payment_gateway_names (
+    _sdc_value text,
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE orders__payment_gateway_names; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.orders__payment_gateway_names IS '{"path": ["orders", "payment_gateway_names"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: orders__refunds; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.orders__refunds (
+    admin_graphql_api_id text,
+    restock boolean,
+    note text,
+    id bigint,
+    user_id bigint,
+    created_at timestamp with time zone,
+    processed_at timestamp with time zone,
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE orders__refunds; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.orders__refunds IS '{"path": ["orders", "refunds"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"admin_graphql_api_id": {"type": ["string", "null"], "from": ["admin_graphql_api_id"]}, "restock": {"type": ["boolean", "null"], "from": ["restock"]}, "note": {"type": ["string", "null"], "from": ["note"]}, "id": {"type": ["integer", "null"], "from": ["id"]}, "user_id": {"type": ["integer", "null"], "from": ["user_id"]}, "created_at": {"type": ["string", "null"], "from": ["created_at"], "format": "date-time"}, "processed_at": {"type": ["string", "null"], "from": ["processed_at"], "format": "date-time"}, "_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: orders__refunds__order_adjustments; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.orders__refunds__order_adjustments (
+    order_id bigint,
+    tax_amount double precision,
+    refund_id bigint,
+    amount double precision,
+    kind text,
+    id bigint,
+    reason text,
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE orders__refunds__order_adjustments; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.orders__refunds__order_adjustments IS '{"path": ["orders", "refunds", "order_adjustments"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"order_id": {"type": ["integer", "null"], "from": ["order_id"]}, "tax_amount": {"type": ["number", "null"], "from": ["tax_amount"]}, "refund_id": {"type": ["integer", "null"], "from": ["refund_id"]}, "amount": {"type": ["number", "null"], "from": ["amount"]}, "kind": {"type": ["string", "null"], "from": ["kind"]}, "id": {"type": ["integer", "null"], "from": ["id"]}, "reason": {"type": ["string", "null"], "from": ["reason"]}, "_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: orders__refunds__refund_line_items; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.orders__refunds__refund_line_items (
+    line_item__total_discount_set__shop_money__amount text,
+    line_item__total_discount_set__shop_money__currency_code text,
+    line_item__total_discount_set__presentment_money__amount text,
+    line_item__total_discount_set__presentment_money__currency_code text,
+    line_item__pre_tax_price_set__shop_money__amount text,
+    line_item__pre_tax_price_set__shop_money__currency_code text,
+    line_item__pre_tax_price_set__presentment_money__amount text,
+    line_item__pre_tax_price_set__presentment_money__currency_code text,
+    line_item__price_set__shop_money__amount text,
+    line_item__price_set__shop_money__currency_code text,
+    line_item__price_set__presentment_money__amount text,
+    line_item__price_set__presentment_money__currency_code text,
+    line_item__grams bigint,
+    line_item__compare_at_price text,
+    line_item__destination_location_id bigint,
+    line_item__key text,
+    line_item__line_price text,
+    line_item__origin_location_id bigint,
+    line_item__applied_discount bigint,
+    line_item__fulfillable_quantity bigint,
+    line_item__variant_title text,
+    line_item__tax_code text,
+    line_item__admin_graphql_api_id text,
+    line_item__pre_tax_price double precision,
+    line_item__sku text,
+    line_item__product_exists boolean,
+    line_item__total_discount double precision,
+    line_item__name text,
+    line_item__fulfillment_status text,
+    line_item__gift_card boolean,
+    line_item__id__i bigint,
+    line_item__id__s text,
+    line_item__taxable boolean,
+    line_item__vendor text,
+    line_item__origin_location__country_code text,
+    line_item__origin_location__name text,
+    line_item__origin_location__address1 text,
+    line_item__origin_location__city text,
+    line_item__origin_location__id bigint,
+    line_item__origin_location__address2 text,
+    line_item__origin_location__province_code text,
+    line_item__origin_location__zip text,
+    line_item__price double precision,
+    line_item__requires_shipping boolean,
+    line_item__fulfillment_service text,
+    line_item__variant_inventory_management text,
+    line_item__title text,
+    line_item__destination_location__country_code text,
+    line_item__destination_location__name text,
+    line_item__destination_location__address1 text,
+    line_item__destination_location__city text,
+    line_item__destination_location__id bigint,
+    line_item__destination_location__address2 text,
+    line_item__destination_location__province_code text,
+    line_item__destination_location__zip text,
+    line_item__quantity bigint,
+    line_item__product_id bigint,
+    line_item__variant_id bigint,
+    location_id bigint,
+    line_item_id bigint,
+    quantity bigint,
+    id bigint,
+    total_tax double precision,
+    restock_type text,
+    subtotal double precision,
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE orders__refunds__refund_line_items; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.orders__refunds__refund_line_items IS '{"path": ["orders", "refunds", "refund_line_items"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"line_item__total_discount_set__shop_money__amount": {"type": ["string", "null"], "from": ["line_item", "total_discount_set", "shop_money", "amount"]}, "line_item__total_discount_set__shop_money__currency_code": {"type": ["string", "null"], "from": ["line_item", "total_discount_set", "shop_money", "currency_code"]}, "line_item__total_discount_set__presentment_money__amount": {"type": ["string", "null"], "from": ["line_item", "total_discount_set", "presentment_money", "amount"]}, "line_item__total_discount_set__presentment_money__currency_code": {"type": ["string", "null"], "from": ["line_item", "total_discount_set", "presentment_money", "currency_code"]}, "line_item__pre_tax_price_set__shop_money__amount": {"type": ["string", "null"], "from": ["line_item", "pre_tax_price_set", "shop_money", "amount"]}, "line_item__pre_tax_price_set__shop_money__currency_code": {"type": ["string", "null"], "from": ["line_item", "pre_tax_price_set", "shop_money", "currency_code"]}, "line_item__pre_tax_price_set__presentment_money__amount": {"type": ["string", "null"], "from": ["line_item", "pre_tax_price_set", "presentment_money", "amount"]}, "line_item__pre_tax_price_set__presentment_money__currency_code": {"type": ["string", "null"], "from": ["line_item", "pre_tax_price_set", "presentment_money", "currency_code"]}, "line_item__price_set__shop_money__amount": {"type": ["string", "null"], "from": ["line_item", "price_set", "shop_money", "amount"]}, "line_item__price_set__shop_money__currency_code": {"type": ["string", "null"], "from": ["line_item", "price_set", "shop_money", "currency_code"]}, "line_item__price_set__presentment_money__amount": {"type": ["string", "null"], "from": ["line_item", "price_set", "presentment_money", "amount"]}, "line_item__price_set__presentment_money__currency_code": {"type": ["string", "null"], "from": ["line_item", "price_set", "presentment_money", "currency_code"]}, "line_item__grams": {"type": ["integer", "null"], "from": ["line_item", "grams"]}, "line_item__compare_at_price": {"type": ["string", "null"], "from": ["line_item", "compare_at_price"]}, "line_item__destination_location_id": {"type": ["integer", "null"], "from": ["line_item", "destination_location_id"]}, "line_item__key": {"type": ["string", "null"], "from": ["line_item", "key"]}, "line_item__line_price": {"type": ["string", "null"], "from": ["line_item", "line_price"]}, "line_item__origin_location_id": {"type": ["integer", "null"], "from": ["line_item", "origin_location_id"]}, "line_item__applied_discount": {"type": ["integer", "null"], "from": ["line_item", "applied_discount"]}, "line_item__fulfillable_quantity": {"type": ["integer", "null"], "from": ["line_item", "fulfillable_quantity"]}, "line_item__variant_title": {"type": ["string", "null"], "from": ["line_item", "variant_title"]}, "line_item__tax_code": {"type": ["string", "null"], "from": ["line_item", "tax_code"]}, "line_item__admin_graphql_api_id": {"type": ["string", "null"], "from": ["line_item", "admin_graphql_api_id"]}, "line_item__pre_tax_price": {"type": ["number", "null"], "from": ["line_item", "pre_tax_price"]}, "line_item__sku": {"type": ["string", "null"], "from": ["line_item", "sku"]}, "line_item__product_exists": {"type": ["boolean", "null"], "from": ["line_item", "product_exists"]}, "line_item__total_discount": {"type": ["number", "null"], "from": ["line_item", "total_discount"]}, "line_item__name": {"type": ["string", "null"], "from": ["line_item", "name"]}, "line_item__fulfillment_status": {"type": ["string", "null"], "from": ["line_item", "fulfillment_status"]}, "line_item__gift_card": {"type": ["boolean", "null"], "from": ["line_item", "gift_card"]}, "line_item__id__i": {"type": ["integer", "null"], "from": ["line_item", "id"]}, "line_item__id__s": {"type": ["string", "null"], "from": ["line_item", "id"]}, "line_item__taxable": {"type": ["boolean", "null"], "from": ["line_item", "taxable"]}, "line_item__vendor": {"type": ["string", "null"], "from": ["line_item", "vendor"]}, "line_item__origin_location__country_code": {"type": ["string", "null"], "from": ["line_item", "origin_location", "country_code"]}, "line_item__origin_location__name": {"type": ["string", "null"], "from": ["line_item", "origin_location", "name"]}, "line_item__origin_location__address1": {"type": ["string", "null"], "from": ["line_item", "origin_location", "address1"]}, "line_item__origin_location__city": {"type": ["string", "null"], "from": ["line_item", "origin_location", "city"]}, "line_item__origin_location__id": {"type": ["integer", "null"], "from": ["line_item", "origin_location", "id"]}, "line_item__origin_location__address2": {"type": ["string", "null"], "from": ["line_item", "origin_location", "address2"]}, "line_item__origin_location__province_code": {"type": ["string", "null"], "from": ["line_item", "origin_location", "province_code"]}, "line_item__origin_location__zip": {"type": ["string", "null"], "from": ["line_item", "origin_location", "zip"]}, "line_item__price": {"type": ["number", "null"], "from": ["line_item", "price"]}, "line_item__requires_shipping": {"type": ["boolean", "null"], "from": ["line_item", "requires_shipping"]}, "line_item__fulfillment_service": {"type": ["string", "null"], "from": ["line_item", "fulfillment_service"]}, "line_item__variant_inventory_management": {"type": ["string", "null"], "from": ["line_item", "variant_inventory_management"]}, "line_item__title": {"type": ["string", "null"], "from": ["line_item", "title"]}, "line_item__destination_location__country_code": {"type": ["string", "null"], "from": ["line_item", "destination_location", "country_code"]}, "line_item__destination_location__name": {"type": ["string", "null"], "from": ["line_item", "destination_location", "name"]}, "line_item__destination_location__address1": {"type": ["string", "null"], "from": ["line_item", "destination_location", "address1"]}, "line_item__destination_location__city": {"type": ["string", "null"], "from": ["line_item", "destination_location", "city"]}, "line_item__destination_location__id": {"type": ["integer", "null"], "from": ["line_item", "destination_location", "id"]}, "line_item__destination_location__address2": {"type": ["string", "null"], "from": ["line_item", "destination_location", "address2"]}, "line_item__destination_location__province_code": {"type": ["string", "null"], "from": ["line_item", "destination_location", "province_code"]}, "line_item__destination_location__zip": {"type": ["string", "null"], "from": ["line_item", "destination_location", "zip"]}, "line_item__quantity": {"type": ["integer", "null"], "from": ["line_item", "quantity"]}, "line_item__product_id": {"type": ["integer", "null"], "from": ["line_item", "product_id"]}, "line_item__variant_id": {"type": ["integer", "null"], "from": ["line_item", "variant_id"]}, "location_id": {"type": ["integer", "null"], "from": ["location_id"]}, "line_item_id": {"type": ["integer", "null"], "from": ["line_item_id"]}, "quantity": {"type": ["integer", "null"], "from": ["quantity"]}, "id": {"type": ["integer", "null"], "from": ["id"]}, "total_tax": {"type": ["number", "null"], "from": ["total_tax"]}, "restock_type": {"type": ["string", "null"], "from": ["restock_type"]}, "subtotal": {"type": ["number", "null"], "from": ["subtotal"]}, "_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: orders__refunds__refund_line_items__line_item__applied_discount; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.orders__refunds__refund_line_items__line_item__applied_discount (
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL,
+    _sdc_level_2_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE orders__refunds__refund_line_items__line_item__applied_discount; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.orders__refunds__refund_line_items__line_item__applied_discount IS '{"path": ["orders", "refunds", "refund_line_items", "line_item", "applied_discounts"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}, "_sdc_level_2_id": {"type": ["integer"], "from": ["_sdc_level_2_id"]}}}';
+
+
+--
+-- Name: orders__refunds__refund_line_items__line_item__discount_allocat; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.orders__refunds__refund_line_items__line_item__discount_allocat (
+    discount_application_index bigint,
+    amount double precision,
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL,
+    _sdc_level_2_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE orders__refunds__refund_line_items__line_item__discount_allocat; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.orders__refunds__refund_line_items__line_item__discount_allocat IS '{"path": ["orders", "refunds", "refund_line_items", "line_item", "discount_allocations"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"discount_application_index": {"type": ["integer", "null"], "from": ["discount_application_index"]}, "amount": {"type": ["number", "null"], "from": ["amount"]}, "_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}, "_sdc_level_2_id": {"type": ["integer"], "from": ["_sdc_level_2_id"]}}}';
+
+
+--
+-- Name: orders__refunds__refund_line_items__line_item__properties; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.orders__refunds__refund_line_items__line_item__properties (
+    name text,
+    value text,
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL,
+    _sdc_level_2_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE orders__refunds__refund_line_items__line_item__properties; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.orders__refunds__refund_line_items__line_item__properties IS '{"path": ["orders", "refunds", "refund_line_items", "line_item", "properties"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "value": {"type": ["string", "null"], "from": ["value"]}, "_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}, "_sdc_level_2_id": {"type": ["integer"], "from": ["_sdc_level_2_id"]}}}';
+
+
+--
+-- Name: orders__refunds__refund_line_items__line_item__tax_lines; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.orders__refunds__refund_line_items__line_item__tax_lines (
+    price_set__shop_money__amount text,
+    price_set__shop_money__currency_code text,
+    price_set__presentment_money__amount text,
+    price_set__presentment_money__currency_code text,
+    price double precision,
+    title text,
+    rate double precision,
+    compare_at text,
+    "position" bigint,
+    source text,
+    zone text,
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL,
+    _sdc_level_2_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE orders__refunds__refund_line_items__line_item__tax_lines; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.orders__refunds__refund_line_items__line_item__tax_lines IS '{"path": ["orders", "refunds", "refund_line_items", "line_item", "tax_lines"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"price_set__shop_money__amount": {"type": ["string", "null"], "from": ["price_set", "shop_money", "amount"]}, "price_set__shop_money__currency_code": {"type": ["string", "null"], "from": ["price_set", "shop_money", "currency_code"]}, "price_set__presentment_money__amount": {"type": ["string", "null"], "from": ["price_set", "presentment_money", "amount"]}, "price_set__presentment_money__currency_code": {"type": ["string", "null"], "from": ["price_set", "presentment_money", "currency_code"]}, "price": {"type": ["number", "null"], "from": ["price"]}, "title": {"type": ["string", "null"], "from": ["title"]}, "rate": {"type": ["number", "null"], "from": ["rate"]}, "compare_at": {"type": ["string", "null"], "from": ["compare_at"]}, "position": {"type": ["integer", "null"], "from": ["position"]}, "source": {"type": ["string", "null"], "from": ["source"]}, "zone": {"type": ["string", "null"], "from": ["zone"]}, "_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}, "_sdc_level_2_id": {"type": ["integer"], "from": ["_sdc_level_2_id"]}}}';
+
+
+--
+-- Name: orders__shipping_lines; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.orders__shipping_lines (
+    phone text,
+    discounted_price_set__shop_money__amount text,
+    discounted_price_set__shop_money__currency_code text,
+    discounted_price_set__presentment_money__amount text,
+    discounted_price_set__presentment_money__currency_code text,
+    price_set__shop_money__amount text,
+    price_set__shop_money__currency_code text,
+    price_set__presentment_money__amount text,
+    price_set__presentment_money__currency_code text,
+    price double precision,
+    title text,
+    delivery_category text,
+    discounted_price double precision,
+    code text,
+    requested_fulfillment_service_id text,
+    carrier_identifier text,
+    id bigint,
+    source text,
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE orders__shipping_lines; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.orders__shipping_lines IS '{"path": ["orders", "shipping_lines"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"phone": {"type": ["string", "null"], "from": ["phone"]}, "discounted_price_set__shop_money__amount": {"type": ["string", "null"], "from": ["discounted_price_set", "shop_money", "amount"]}, "discounted_price_set__shop_money__currency_code": {"type": ["string", "null"], "from": ["discounted_price_set", "shop_money", "currency_code"]}, "discounted_price_set__presentment_money__amount": {"type": ["string", "null"], "from": ["discounted_price_set", "presentment_money", "amount"]}, "discounted_price_set__presentment_money__currency_code": {"type": ["string", "null"], "from": ["discounted_price_set", "presentment_money", "currency_code"]}, "price_set__shop_money__amount": {"type": ["string", "null"], "from": ["price_set", "shop_money", "amount"]}, "price_set__shop_money__currency_code": {"type": ["string", "null"], "from": ["price_set", "shop_money", "currency_code"]}, "price_set__presentment_money__amount": {"type": ["string", "null"], "from": ["price_set", "presentment_money", "amount"]}, "price_set__presentment_money__currency_code": {"type": ["string", "null"], "from": ["price_set", "presentment_money", "currency_code"]}, "price": {"type": ["number", "null"], "from": ["price"]}, "title": {"type": ["string", "null"], "from": ["title"]}, "delivery_category": {"type": ["string", "null"], "from": ["delivery_category"]}, "discounted_price": {"type": ["number", "null"], "from": ["discounted_price"]}, "code": {"type": ["string", "null"], "from": ["code"]}, "requested_fulfillment_service_id": {"type": ["string", "null"], "from": ["requested_fulfillment_service_id"]}, "carrier_identifier": {"type": ["string", "null"], "from": ["carrier_identifier"]}, "id": {"type": ["integer", "null"], "from": ["id"]}, "source": {"type": ["string", "null"], "from": ["source"]}, "_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: orders__shipping_lines__discount_allocations; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.orders__shipping_lines__discount_allocations (
+    discount_application_index bigint,
+    amount double precision,
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE orders__shipping_lines__discount_allocations; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.orders__shipping_lines__discount_allocations IS '{"path": ["orders", "shipping_lines", "discount_allocations"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"discount_application_index": {"type": ["integer", "null"], "from": ["discount_application_index"]}, "amount": {"type": ["number", "null"], "from": ["amount"]}, "_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: orders__shipping_lines__tax_lines; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.orders__shipping_lines__tax_lines (
+    price_set__shop_money__amount text,
+    price_set__shop_money__currency_code text,
+    price_set__presentment_money__amount text,
+    price_set__presentment_money__currency_code text,
+    price double precision,
+    title text,
+    rate double precision,
+    compare_at text,
+    "position" bigint,
+    source text,
+    zone text,
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE orders__shipping_lines__tax_lines; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.orders__shipping_lines__tax_lines IS '{"path": ["orders", "shipping_lines", "tax_lines"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"price_set__shop_money__amount": {"type": ["string", "null"], "from": ["price_set", "shop_money", "amount"]}, "price_set__shop_money__currency_code": {"type": ["string", "null"], "from": ["price_set", "shop_money", "currency_code"]}, "price_set__presentment_money__amount": {"type": ["string", "null"], "from": ["price_set", "presentment_money", "amount"]}, "price_set__presentment_money__currency_code": {"type": ["string", "null"], "from": ["price_set", "presentment_money", "currency_code"]}, "price": {"type": ["number", "null"], "from": ["price"]}, "title": {"type": ["string", "null"], "from": ["title"]}, "rate": {"type": ["number", "null"], "from": ["rate"]}, "compare_at": {"type": ["string", "null"], "from": ["compare_at"]}, "position": {"type": ["integer", "null"], "from": ["position"]}, "source": {"type": ["string", "null"], "from": ["source"]}, "zone": {"type": ["string", "null"], "from": ["zone"]}, "_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: orders__tax_lines; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.orders__tax_lines (
+    price_set__shop_money__amount text,
+    price_set__shop_money__currency_code text,
+    price_set__presentment_money__amount text,
+    price_set__presentment_money__currency_code text,
+    price double precision,
+    title text,
+    rate double precision,
+    compare_at text,
+    "position" bigint,
+    source text,
+    zone text,
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE orders__tax_lines; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.orders__tax_lines IS '{"path": ["orders", "tax_lines"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"price_set__shop_money__amount": {"type": ["string", "null"], "from": ["price_set", "shop_money", "amount"]}, "price_set__shop_money__currency_code": {"type": ["string", "null"], "from": ["price_set", "shop_money", "currency_code"]}, "price_set__presentment_money__amount": {"type": ["string", "null"], "from": ["price_set", "presentment_money", "amount"]}, "price_set__presentment_money__currency_code": {"type": ["string", "null"], "from": ["price_set", "presentment_money", "currency_code"]}, "price": {"type": ["number", "null"], "from": ["price"]}, "title": {"type": ["string", "null"], "from": ["title"]}, "rate": {"type": ["number", "null"], "from": ["rate"]}, "compare_at": {"type": ["string", "null"], "from": ["compare_at"]}, "position": {"type": ["integer", "null"], "from": ["position"]}, "source": {"type": ["string", "null"], "from": ["source"]}, "zone": {"type": ["string", "null"], "from": ["zone"]}, "_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: transactions; Type: TABLE; Schema: tap_shopify; Owner: -
+--
+
+CREATE TABLE tap_shopify.transactions (
+    error_code text,
+    device_id bigint,
+    user_id bigint,
+    parent_id bigint,
+    test boolean,
+    kind text,
+    order_id bigint,
+    amount double precision,
+    "authorization" text,
+    currency text,
+    source_name text,
+    message text,
+    id bigint,
+    created_at text,
+    status text,
+    payment_details__cvv_result_code text,
+    payment_details__credit_card_bin text,
+    payment_details__credit_card_company text,
+    payment_details__credit_card_number text,
+    payment_details__avs_result_code text,
+    gateway text,
+    admin_graphql_api_id text,
+    receipt__fee_amount double precision,
+    receipt__gross_amount double precision,
+    receipt__tax_amount double precision,
+    location_id bigint,
+    account_id bigint NOT NULL,
+    shop_id bigint NOT NULL,
+    _sdc_received_at timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_table_version bigint,
+    _sdc_batched_at timestamp with time zone
+);
+
+
+--
+-- Name: TABLE transactions; Type: COMMENT; Schema: tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE tap_shopify.transactions IS '{"path": ["transactions"], "version": null, "schema_version": 2, "key_properties": ["id"], "mappings": {"error_code": {"type": ["string", "null"], "from": ["error_code"]}, "device_id": {"type": ["integer", "null"], "from": ["device_id"]}, "user_id": {"type": ["integer", "null"], "from": ["user_id"]}, "parent_id": {"type": ["integer", "null"], "from": ["parent_id"]}, "test": {"type": ["boolean", "null"], "from": ["test"]}, "kind": {"type": ["string", "null"], "from": ["kind"]}, "order_id": {"type": ["integer", "null"], "from": ["order_id"]}, "amount": {"type": ["number", "null"], "from": ["amount"]}, "authorization": {"type": ["string", "null"], "from": ["authorization"]}, "currency": {"type": ["string", "null"], "from": ["currency"]}, "source_name": {"type": ["string", "null"], "from": ["source_name"]}, "message": {"type": ["string", "null"], "from": ["message"]}, "id": {"type": ["integer", "null"], "from": ["id"]}, "created_at": {"type": ["string", "null"], "from": ["created_at"]}, "status": {"type": ["string", "null"], "from": ["status"]}, "payment_details__cvv_result_code": {"type": ["string", "null"], "from": ["payment_details", "cvv_result_code"]}, "payment_details__credit_card_bin": {"type": ["string", "null"], "from": ["payment_details", "credit_card_bin"]}, "payment_details__credit_card_company": {"type": ["string", "null"], "from": ["payment_details", "credit_card_company"]}, "payment_details__credit_card_number": {"type": ["string", "null"], "from": ["payment_details", "credit_card_number"]}, "payment_details__avs_result_code": {"type": ["string", "null"], "from": ["payment_details", "avs_result_code"]}, "gateway": {"type": ["string", "null"], "from": ["gateway"]}, "admin_graphql_api_id": {"type": ["string", "null"], "from": ["admin_graphql_api_id"]}, "receipt__fee_amount": {"type": ["number", "null"], "from": ["receipt", "fee_amount"]}, "receipt__gross_amount": {"type": ["number", "null"], "from": ["receipt", "gross_amount"]}, "receipt__tax_amount": {"type": ["number", "null"], "from": ["receipt", "tax_amount"]}, "location_id": {"type": ["integer", "null"], "from": ["location_id"]}, "account_id": {"type": ["integer"], "from": ["account_id"]}, "shop_id": {"type": ["integer"], "from": ["shop_id"]}, "_sdc_received_at": {"type": ["string", "null"], "from": ["_sdc_received_at"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_table_version": {"type": ["integer", "null"], "from": ["_sdc_table_version"]}, "_sdc_batched_at": {"type": ["string", "null"], "from": ["_sdc_batched_at"], "format": "date-time"}}}';
+
+
+--
+-- Name: base_shopify_orders; Type: VIEW; Schema: warehouse; Owner: -
+--
+
+CREATE VIEW warehouse.base_shopify_orders AS
+ SELECT orders.account_id,
+    orders.shop_id,
+    orders.id AS order_id,
+    orders.app_id,
+    orders.name AS order_name,
+    orders.user_id,
+    orders.customer__id AS customer_id,
+    orders.checkout_id,
+    orders.checkout_token,
+    orders.cart_token,
+    orders.token,
+    lower(orders.email) AS email,
+    orders.contact_email,
+    orders.buyer_accepts_marketing,
+    orders.confirmed,
+    'number'::text AS internal_number,
+    orders.order_number,
+    orders.currency,
+    orders.presentment_currency,
+    orders.financial_status,
+    orders.fulfillment_status,
+    orders.gateway,
+    orders.processing_method,
+    orders.total_tip_received,
+    orders.total_weight,
+    ((orders.total_discounts)::numeric(38,6) * ('-1'::integer)::numeric) AS total_discounts_base,
+    (orders.subtotal_price)::numeric(38,6) AS subtotal_price,
+    orders.total_line_items_price,
+    orders.total_price,
+    orders.total_price_usd,
+    orders.total_tax,
+    (orders.total_shipping_price_set__presentment_money__amount)::numeric(38,6) AS total_shipping_cost_base,
+    (orders.total_shipping_price_set__presentment_money__currency_code)::character varying(128) AS shipping_currency_code,
+    orders.tags,
+    orders.taxes_included,
+    orders.order_status_url,
+    orders.location_id,
+    (orders.shipping_address__city)::character varying(256) AS shipping_city,
+    (orders.shipping_address__province)::character varying(256) AS shipping_province,
+    (orders.shipping_address__province_code)::character varying(256) AS shipping_province_code,
+    (orders.shipping_address__country)::character varying(256) AS shipping_country,
+    (orders.shipping_address__country_code)::character varying(256) AS shipping_country_code,
+    (orders.shipping_address__zip)::character varying(256) AS shipping_zip_code,
+    (orders.shipping_address__address1)::character varying(256) AS shipping_address_address1,
+    (orders.shipping_address__address2)::character varying(256) AS shipping_address_address2,
+    (orders.shipping_address__company)::character varying(256) AS shipping_company,
+    (orders.shipping_address__first_name)::character varying(256) AS shipping_first_name,
+    (orders.shipping_address__last_name)::character varying(256) AS shipping_last_name,
+    (orders.shipping_address__latitude)::bigint AS shipping_latitude,
+    (orders.shipping_address__longitude)::bigint AS shipping_longitude,
+    (orders.shipping_address__name)::character varying(256) AS shipping_name,
+    (orders.shipping_address__phone)::character varying(256) AS shipping_phone,
+    (orders.billing_address__city)::character varying(256) AS billing_city,
+    (orders.billing_address__province)::character varying(256) AS billing_province,
+    (orders.billing_address__province_code)::character varying(256) AS billing_province_code,
+    (orders.billing_address__country)::character varying(256) AS billing_country,
+    (orders.billing_address__country_code)::character varying(256) AS billing_country_code,
+    (orders.billing_address__zip)::character varying(256) AS billing_zip_code,
+    (orders.billing_address__address1)::character varying(256) AS billing_address_address1,
+    (orders.billing_address__address2)::character varying(256) AS billing_address_address2,
+    (orders.billing_address__company)::character varying(256) AS billing_company,
+    (orders.billing_address__first_name)::character varying(256) AS billing_first_name,
+    (orders.billing_address__last_name)::character varying(256) AS billing_last_name,
+    (orders.billing_address__latitude)::bigint AS billing_latitude,
+    (orders.billing_address__longitude)::bigint AS billing_longitude,
+    (orders.billing_address__name)::character varying(256) AS billing_name,
+    (orders.billing_address__phone)::character varying(256) AS billing_phone,
+    orders.referring_site,
+    orders.browser_ip,
+    orders.landing_site,
+    orders.source_name,
+    orders.created_at,
+    orders.processed_at,
+    orders.closed_at,
+    orders.cancelled_at,
+    orders.cancel_reason,
+    orders.updated_at
+   FROM tap_shopify.orders
+  WHERE (orders.test = false);
+
+
+--
+-- Name: base_superpro_accounts; Type: VIEW; Schema: warehouse; Owner: -
+--
+
+CREATE VIEW warehouse.base_superpro_accounts AS
+ SELECT accounts.id AS account_id,
+    accounts.name,
+    accounts.created_at,
+    accounts.updated_at,
+    accounts.discarded_at
+   FROM public.accounts;
+
+
+--
+-- Name: dim_date; Type: VIEW; Schema: warehouse; Owner: -
+--
+
+CREATE VIEW warehouse.dim_date AS
+ SELECT (to_char((dq.datum)::timestamp with time zone, 'yyyymmdd'::text))::integer AS id,
+    dq.datum AS full_date,
+    date_part('epoch'::text, dq.datum) AS epoch,
+    to_char((dq.datum)::timestamp with time zone, 'fmDDth'::text) AS day_suffix,
+    to_char((dq.datum)::timestamp with time zone, 'Day'::text) AS day_name,
+    date_part('isodow'::text, dq.datum) AS day_of_week,
+    date_part('day'::text, dq.datum) AS day_of_month,
+    ((dq.datum - (date_trunc('quarter'::text, (dq.datum)::timestamp with time zone))::date) + 1) AS day_of_quarter,
+    date_part('doy'::text, dq.datum) AS day_of_year,
+    (to_char((dq.datum)::timestamp with time zone, 'W'::text))::integer AS week_of_month,
+    date_part('week'::text, dq.datum) AS week_of_year,
+    (to_char((dq.datum)::timestamp with time zone, 'YYYY"-W"IW-'::text) || date_part('isodow'::text, dq.datum)) AS week_of_year_iso,
+    date_part('month'::text, dq.datum) AS month_actual,
+    to_char((dq.datum)::timestamp with time zone, 'Month'::text) AS month_name,
+    to_char((dq.datum)::timestamp with time zone, 'Mon'::text) AS month_name_abbreviated,
+    date_part('quarter'::text, dq.datum) AS quarter_actual,
+        CASE
+            WHEN (date_part('quarter'::text, dq.datum) = (1)::double precision) THEN 'First'::text
+            WHEN (date_part('quarter'::text, dq.datum) = (2)::double precision) THEN 'Second'::text
+            WHEN (date_part('quarter'::text, dq.datum) = (3)::double precision) THEN 'Third'::text
+            WHEN (date_part('quarter'::text, dq.datum) = (4)::double precision) THEN 'Fourth'::text
+            ELSE NULL::text
+        END AS quarter_name,
+    date_part('isoyear'::text, dq.datum) AS year_actual,
+    (dq.datum + (((1)::double precision - date_part('isodow'::text, dq.datum)))::integer) AS first_day_of_week,
+    (dq.datum + (((7)::double precision - date_part('isodow'::text, dq.datum)))::integer) AS last_day_of_week,
+    (dq.datum + (((1)::double precision - date_part('day'::text, dq.datum)))::integer) AS first_day_of_month,
+    ((date_trunc('MONTH'::text, (dq.datum)::timestamp with time zone) + '1 mon -1 days'::interval))::date AS last_day_of_month,
+    (date_trunc('quarter'::text, (dq.datum)::timestamp with time zone))::date AS first_day_of_quarter,
+    ((date_trunc('quarter'::text, (dq.datum)::timestamp with time zone) + '3 mons -1 days'::interval))::date AS last_day_of_quarter,
+    to_date((date_part('isoyear'::text, dq.datum) || '-01-01'::text), 'YYYY-MM-DD'::text) AS first_day_of_year,
+    to_date((date_part('isoyear'::text, dq.datum) || '-12-31'::text), 'YYYY-MM-DD'::text) AS last_day_of_year,
+    to_char((dq.datum)::timestamp with time zone, 'mmyyyy'::text) AS mmyyyy,
+    to_char((dq.datum)::timestamp with time zone, 'mmddyyyy'::text) AS mmddyyyy,
+        CASE
+            WHEN (date_part('isodow'::text, dq.datum) = ANY (ARRAY[(6)::double precision, (7)::double precision])) THEN true
+            ELSE false
+        END AS weekend_indr
+   FROM ( SELECT ('1970-01-01'::date + sequence.day) AS datum
+           FROM generate_series(0, 29219) sequence(day)
+          GROUP BY sequence.day) dq
+  ORDER BY (to_char((dq.datum)::timestamp with time zone, 'yyyymmdd'::text))::integer;
+
+
+--
+-- Name: dim_shopify_customers; Type: TABLE; Schema: warehouse; Owner: -
+--
+
+CREATE TABLE warehouse.dim_shopify_customers (
+    customer_id bigint,
+    account_id bigint,
+    email text,
+    verified_email boolean,
+    first_name text,
+    last_name text,
+    accepts_marketing boolean,
+    state text,
+    tax_exempt boolean,
+    tags text[],
+    default_address_id bigint,
+    created_at timestamp with time zone,
+    updated_at timestamp with time zone,
+    total_order_count bigint,
+    total_successful_order_count bigint,
+    total_cancelled_order_count bigint,
+    total_spend double precision,
+    previous_1_month_spend double precision,
+    previous_3_month_spend double precision,
+    previous_6_month_spend double precision,
+    previous_12_month_spend double precision,
+    most_recent_order_id bigint,
+    most_recent_order_number bigint,
+    most_recent_order_at timestamp with time zone,
+    most_recent_order_total_price double precision,
+    first_order_id bigint,
+    first_order_number bigint,
+    first_order_at timestamp with time zone,
+    first_order_total_price double precision,
+    rfm_recency_quintile integer,
+    rfm_frequency_quintile integer,
+    rfm_monetary_quintile integer,
+    rfm_score text,
+    rfm_label text,
+    rfm_value_label text,
+    rfm_desirability_score integer,
+    business_line text
+);
+
+
+--
+-- Name: fct_shopify_customer_retention; Type: TABLE; Schema: warehouse; Owner: -
+--
+
+CREATE TABLE warehouse.fct_shopify_customer_retention (
+    total_customers bigint,
+    total_active_customers bigint,
+    total_orders numeric,
+    total_spend double precision,
+    months_since_genesis integer,
+    genesis_month timestamp with time zone,
+    account_id bigint,
+    pct_active_customers bigint
+);
+
+
+--
+-- Name: fct_shopify_orders; Type: TABLE; Schema: warehouse; Owner: -
+--
+
+CREATE TABLE warehouse.fct_shopify_orders (
+    order_id bigint,
+    account_id bigint,
+    shop_id bigint,
+    app_id bigint,
+    order_name text,
+    user_id bigint,
+    customer_id bigint,
+    checkout_id bigint,
+    checkout_token text,
+    cart_token text,
+    token text,
+    email text,
+    contact_email text,
+    buyer_accepts_marketing boolean,
+    confirmed boolean,
+    internal_number text,
+    order_number bigint,
+    currency text,
+    presentment_currency text,
+    financial_status text,
+    fulfillment_status text,
+    gateway text,
+    processing_method text,
+    total_tip_received text,
+    total_weight bigint,
+    total_discounts_base numeric,
+    subtotal_price numeric(38,6),
+    total_line_items_price double precision,
+    total_price double precision,
+    total_price_usd double precision,
+    total_tax double precision,
+    total_shipping_cost_base numeric(38,6),
+    shipping_currency_code character varying(128),
+    tags text,
+    taxes_included boolean,
+    order_status_url text,
+    location_id bigint,
+    shipping_city character varying(256),
+    shipping_province character varying(256),
+    shipping_province_code character varying(256),
+    shipping_country character varying(256),
+    shipping_country_code character varying(256),
+    shipping_zip_code character varying(256),
+    shipping_address_address1 character varying(256),
+    shipping_address_address2 character varying(256),
+    shipping_company character varying(256),
+    shipping_first_name character varying(256),
+    shipping_last_name character varying(256),
+    shipping_latitude bigint,
+    shipping_longitude bigint,
+    shipping_name character varying(256),
+    shipping_phone character varying(256),
+    billing_city character varying(256),
+    billing_province character varying(256),
+    billing_province_code character varying(256),
+    billing_country character varying(256),
+    billing_country_code character varying(256),
+    billing_zip_code character varying(256),
+    billing_address_address1 character varying(256),
+    billing_address_address2 character varying(256),
+    billing_company character varying(256),
+    billing_first_name character varying(256),
+    billing_last_name character varying(256),
+    billing_latitude bigint,
+    billing_longitude bigint,
+    billing_name character varying(256),
+    billing_phone character varying(256),
+    referring_site text,
+    browser_ip text,
+    landing_site text,
+    source_name text,
+    created_at timestamp with time zone,
+    processed_at timestamp with time zone,
+    closed_at timestamp with time zone,
+    cancelled_at timestamp with time zone,
+    cancel_reason text,
+    updated_at timestamp with time zone,
+    discount_code text,
+    discount_type text,
+    shipping_discount double precision,
+    final_discounts double precision,
+    final_shipping_cost double precision,
+    order_seq_number bigint,
+    new_vs_repeat text,
+    cancelled boolean
+);
+
+
+--
+-- Name: stg_shopify_refund_items; Type: VIEW; Schema: warehouse; Owner: -
+--
+
+CREATE VIEW warehouse.stg_shopify_refund_items AS
+ SELECT orders__refunds__refund_line_items.id AS refund_line_item_id,
+    orders__refunds__refund_line_items._sdc_source_key_id AS refund_id,
+    orders__refunds__refund_line_items.line_item_id,
+    (orders__refunds__refund_line_items.subtotal * ('-1'::integer)::double precision) AS refund_amount,
+    (orders__refunds__refund_line_items.total_tax * ('-1'::integer)::double precision) AS refund_tax_amount
+   FROM tap_shopify.orders__refunds__refund_line_items;
+
+
+--
+-- Name: stg_shopify_refunds; Type: VIEW; Schema: warehouse; Owner: -
+--
+
+CREATE VIEW warehouse.stg_shopify_refunds AS
+ WITH refunds AS (
+         SELECT orders__refunds.admin_graphql_api_id,
+            orders__refunds.restock,
+            orders__refunds.note,
+            orders__refunds.id,
+            orders__refunds.user_id,
+            orders__refunds.created_at,
+            orders__refunds.processed_at,
+            orders__refunds._sdc_source_key_id,
+            orders__refunds._sdc_sequence,
+            orders__refunds._sdc_level_0_id
+           FROM tap_shopify.orders__refunds
+        ), adjustments AS (
+         SELECT orders__refunds__order_adjustments.order_id,
+            orders__refunds__order_adjustments.tax_amount,
+            orders__refunds__order_adjustments.refund_id,
+            orders__refunds__order_adjustments.amount,
+            orders__refunds__order_adjustments.kind,
+            orders__refunds__order_adjustments.id,
+            orders__refunds__order_adjustments.reason,
+            orders__refunds__order_adjustments._sdc_source_key_id,
+            orders__refunds__order_adjustments._sdc_sequence,
+            orders__refunds__order_adjustments._sdc_level_0_id,
+            orders__refunds__order_adjustments._sdc_level_1_id
+           FROM tap_shopify.orders__refunds__order_adjustments
+        ), item_refunds AS (
+         SELECT stg_shopify_refund_items.refund_id,
+            sum(stg_shopify_refund_items.refund_amount) AS refund_amount,
+            sum(stg_shopify_refund_items.refund_tax_amount) AS refund_tax_amount
+           FROM warehouse.stg_shopify_refund_items
+          GROUP BY stg_shopify_refund_items.refund_id
+        ), joined AS (
+         SELECT adjustments.order_id,
+            adjustments.tax_amount,
+            adjustments.refund_id,
+            adjustments.amount,
+            adjustments.kind,
+            adjustments.id,
+            adjustments.reason,
+            adjustments._sdc_source_key_id,
+            adjustments._sdc_sequence,
+            adjustments._sdc_level_0_id,
+            adjustments._sdc_level_1_id,
+            (refunds.processed_at)::timestamp without time zone AS processed_at
+           FROM (adjustments
+             LEFT JOIN refunds ON ((refunds.id = adjustments.refund_id)))
+        ), adjustments_flattened AS (
+         SELECT DISTINCT joined.refund_id,
+            joined._sdc_source_key_id AS order_id,
+            sum(
+                CASE
+                    WHEN (joined.reason ~~* '%ship%'::text) THEN joined.amount
+                    ELSE (0)::double precision
+                END) OVER (PARTITION BY joined.refund_id ORDER BY joined.processed_at ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS refund_shipping_amount,
+            sum(
+                CASE
+                    WHEN (joined.reason ~~* '%refund discrepancy%'::text) THEN joined.amount
+                    ELSE (0)::double precision
+                END) OVER (PARTITION BY joined.refund_id ORDER BY joined.processed_at ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS adjustment_refund_amount,
+            sum(joined.tax_amount) OVER (PARTITION BY joined.refund_id ORDER BY joined.processed_at ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS refund_tax_amount,
+            joined.processed_at AS refund_processed_at
+           FROM joined
+        ), final AS (
+         SELECT adjustments_flattened.refund_id,
+            adjustments_flattened.order_id,
+            (COALESCE(adjustments_flattened.adjustment_refund_amount, (0)::double precision) + COALESCE(item_refunds.refund_amount, (0)::double precision)) AS refund_amount,
+            (COALESCE(adjustments_flattened.refund_tax_amount, (0)::double precision) + COALESCE(item_refunds.refund_tax_amount, (0)::double precision)) AS refund_tax_amount,
+            COALESCE(adjustments_flattened.refund_shipping_amount, (0)::double precision) AS refund_shipping_amount,
+            adjustments_flattened.refund_processed_at
+           FROM (adjustments_flattened
+             LEFT JOIN item_refunds USING (refund_id))
+        )
+ SELECT final.refund_id,
+    final.order_id,
+    final.refund_amount,
+    final.refund_tax_amount,
+    final.refund_shipping_amount,
+    final.refund_processed_at
+   FROM final;
+
+
+--
+-- Name: fct_shopify_sales_daily_summary; Type: VIEW; Schema: warehouse; Owner: -
+--
+
+CREATE VIEW warehouse.fct_shopify_sales_daily_summary AS
+ WITH orders AS (
+         SELECT (fct_shopify_orders.created_at)::date AS date_day,
+            count(*) AS total_orders,
+            sum(fct_shopify_orders.total_line_items_price) AS total_gross_revenue,
+            sum(fct_shopify_orders.final_discounts) AS total_discounts,
+            sum(fct_shopify_orders.final_shipping_cost) AS total_shipping_cost,
+            sum(fct_shopify_orders.total_tax) AS total_tax
+           FROM warehouse.fct_shopify_orders
+          GROUP BY ((fct_shopify_orders.created_at)::date)
+        ), refunds AS (
+         SELECT (stg_shopify_refunds.refund_processed_at)::date AS date_day,
+            sum(stg_shopify_refunds.refund_amount) AS total_refund_amount,
+            sum(stg_shopify_refunds.refund_tax_amount) AS total_refund_tax_amount,
+            sum(stg_shopify_refunds.refund_shipping_amount) AS total_refund_shipping_amount
+           FROM warehouse.stg_shopify_refunds
+          GROUP BY ((stg_shopify_refunds.refund_processed_at)::date)
+        ), calculated AS (
+         SELECT md5(((concat(COALESCE((orders.date_day)::character varying, ''::character varying)))::character varying)::text) AS id,
+            orders.date_day,
+            orders.total_orders,
+            orders.total_gross_revenue,
+            orders.total_discounts,
+            COALESCE(refunds.total_refund_amount, (0)::double precision) AS total_refund_amount,
+            (COALESCE(refunds.total_refund_shipping_amount, (0)::double precision) + COALESCE(orders.total_shipping_cost, (0)::double precision)) AS total_shipping_costs,
+            (COALESCE(refunds.total_refund_tax_amount, (0)::double precision) + COALESCE(orders.total_tax, (0)::double precision)) AS total_tax,
+            ((COALESCE(orders.total_gross_revenue, (0)::double precision) + COALESCE(orders.total_discounts, (0)::double precision)) + COALESCE(refunds.total_refund_amount, (0)::double precision)) AS total_net_sales,
+            ((((((COALESCE(orders.total_gross_revenue, (0)::double precision) + COALESCE(refunds.total_refund_amount, (0)::double precision)) + COALESCE(orders.total_discounts, (0)::double precision)) + COALESCE(refunds.total_refund_shipping_amount, (0)::double precision)) + COALESCE(orders.total_shipping_cost, (0)::double precision)) + COALESCE(refunds.total_refund_tax_amount, (0)::double precision)) + COALESCE(orders.total_tax, (0)::double precision)) AS total_sales
+           FROM (orders
+             LEFT JOIN refunds USING (date_day))
+        )
+ SELECT calculated.id,
+    calculated.date_day,
+    calculated.total_orders,
+    calculated.total_gross_revenue,
+    calculated.total_discounts,
+    calculated.total_refund_amount,
+    calculated.total_shipping_costs,
+    calculated.total_tax,
+    calculated.total_net_sales,
+    calculated.total_sales
+   FROM calculated;
+
+
+--
+-- Name: stg_shopify_customers; Type: VIEW; Schema: warehouse; Owner: -
+--
+
+CREATE VIEW warehouse.stg_shopify_customers AS
+ WITH raw_customers AS (
+         SELECT customers.last_order_name,
+            customers.currency,
+            customers.email,
+            customers.multipass_identifier,
+            customers.default_address__city,
+            customers.default_address__address1,
+            customers.default_address__zip,
+            customers.default_address__id,
+            customers.default_address__country_name,
+            customers.default_address__province,
+            customers.default_address__phone,
+            customers.default_address__country,
+            customers.default_address__first_name,
+            customers.default_address__customer_id,
+            customers.default_address__default,
+            customers.default_address__last_name,
+            customers.default_address__country_code,
+            customers.default_address__name,
+            customers.default_address__province_code,
+            customers.default_address__address2,
+            customers.default_address__company,
+            customers.orders_count,
+            customers.state,
+            customers.verified_email,
+            customers.total_spent,
+            customers.last_order_id,
+            customers.first_name,
+            customers.updated_at,
+            customers.note,
+            customers.phone,
+            customers.admin_graphql_api_id,
+            customers.last_name,
+            customers.tags,
+            customers.tax_exempt,
+            customers.id,
+            customers.accepts_marketing,
+            customers.created_at,
+            customers.account_id,
+            customers.shop_id,
+            customers._sdc_received_at,
+            customers._sdc_sequence,
+            customers._sdc_table_version,
+            customers._sdc_batched_at
+           FROM tap_shopify.customers
+        ), trimmed_tags AS (
+         SELECT t.id,
+            array_agg(btrim(t.tag)) AS tags
+           FROM ( SELECT raw_customers_1.id,
+                    row_number() OVER () AS rn,
+                    unnest(string_to_array(raw_customers_1.tags, ', '::text)) AS tag
+                   FROM raw_customers raw_customers_1) t
+          GROUP BY t.id, t.rn
+        )
+ SELECT raw_customers.id AS customer_id,
+    raw_customers.account_id,
+    NULLIF(lower(raw_customers.email), ''::text) AS email,
+    raw_customers.verified_email,
+    NULLIF(raw_customers.first_name, ''::text) AS first_name,
+    NULLIF(raw_customers.last_name, ''::text) AS last_name,
+    raw_customers.accepts_marketing,
+    raw_customers.state,
+    raw_customers.tax_exempt,
+    trimmed_tags.tags,
+    raw_customers.default_address__id AS default_address_id,
+    raw_customers.created_at,
+    raw_customers.updated_at
+   FROM (raw_customers
+     LEFT JOIN trimmed_tags ON ((trimmed_tags.id = raw_customers.id)));
+
+
+--
+-- Name: stg_shopify_business_lines; Type: VIEW; Schema: warehouse; Owner: -
+--
+
+CREATE VIEW warehouse.stg_shopify_business_lines AS
+ WITH customers AS (
+         SELECT stg_shopify_customers.customer_id,
+            stg_shopify_customers.account_id,
+            stg_shopify_customers.email,
+            stg_shopify_customers.verified_email,
+            stg_shopify_customers.first_name,
+            stg_shopify_customers.last_name,
+            stg_shopify_customers.accepts_marketing,
+            stg_shopify_customers.state,
+            stg_shopify_customers.tax_exempt,
+            stg_shopify_customers.tags,
+            stg_shopify_customers.default_address_id,
+            stg_shopify_customers.created_at,
+            stg_shopify_customers.updated_at
+           FROM warehouse.stg_shopify_customers
+        )
+ SELECT customers.customer_id,
+    customers.account_id,
+        CASE
+            WHEN ((customers.tags @> ARRAY['wholesale'::text]) OR (customers.tags @> ARRAY['Wholesale'::text])) THEN 'Wholesale'::text
+            ELSE 'Direct to Consumer'::text
+        END AS business_line
+   FROM customers;
+
+
+--
+-- Name: stg_shopify_checkouts; Type: VIEW; Schema: warehouse; Owner: -
+--
+
+CREATE VIEW warehouse.stg_shopify_checkouts AS
+ SELECT abandoned_checkouts.account_id,
+    abandoned_checkouts.shop_id,
+    abandoned_checkouts.id AS checkout_id,
+    abandoned_checkouts.customer__id AS customer_id,
+    NULLIF(lower(abandoned_checkouts.email), ''::text) AS email,
+    NULLIF(abandoned_checkouts.cart_token, ''::text) AS cart_token,
+    NULLIF(abandoned_checkouts.token, ''::text) AS token,
+    abandoned_checkouts.abandoned_checkout_url,
+    abandoned_checkouts.name,
+    abandoned_checkouts.currency,
+    abandoned_checkouts.gateway,
+    abandoned_checkouts.landing_site,
+    abandoned_checkouts.source_name,
+    abandoned_checkouts.referring_site,
+    abandoned_checkouts.subtotal_price,
+    abandoned_checkouts.taxes_included,
+    abandoned_checkouts.total_discounts,
+    abandoned_checkouts.total_line_items_price,
+    abandoned_checkouts.total_price,
+    abandoned_checkouts.total_tax,
+    abandoned_checkouts.total_weight,
+    (abandoned_checkouts.billing_address__city)::character varying(256) AS billing_city,
+    (abandoned_checkouts.billing_address__province)::character varying(256) AS billing_province,
+    (abandoned_checkouts.billing_address__province_code)::character varying(256) AS billing_province_code,
+    (abandoned_checkouts.billing_address__country)::character varying(256) AS billing_country,
+    (abandoned_checkouts.billing_address__country_code)::character varying(256) AS billing_country_code,
+    (abandoned_checkouts.billing_address__zip)::character varying(256) AS billing_zip_code,
+    (abandoned_checkouts.billing_address__address1)::character varying(256) AS billing_address_address1,
+    (abandoned_checkouts.billing_address__address2)::character varying(256) AS billing_address_address2,
+    (abandoned_checkouts.billing_address__company)::character varying(256) AS billing_company,
+    (abandoned_checkouts.billing_address__first_name)::character varying(256) AS billing_first_name,
+    (abandoned_checkouts.billing_address__last_name)::character varying(256) AS billing_last_name,
+    (abandoned_checkouts.billing_address__latitude)::bigint AS billing_latitude,
+    (abandoned_checkouts.billing_address__longitude)::bigint AS billing_longitude,
+    (abandoned_checkouts.billing_address__name)::character varying(256) AS billing_name,
+    (abandoned_checkouts.billing_address__phone)::character varying(256) AS billing_phone,
+    (abandoned_checkouts.shipping_address__city)::character varying(256) AS shipping_city,
+    (abandoned_checkouts.shipping_address__province)::character varying(256) AS shipping_province,
+    (abandoned_checkouts.shipping_address__province_code)::character varying(256) AS shipping_province_code,
+    (abandoned_checkouts.shipping_address__country)::character varying(256) AS shipping_country,
+    (abandoned_checkouts.shipping_address__country_code)::character varying(256) AS shipping_country_code,
+    (abandoned_checkouts.shipping_address__zip)::character varying(256) AS shipping_zip_code,
+    (abandoned_checkouts.shipping_address__address1)::character varying(256) AS shipping_address_address1,
+    (abandoned_checkouts.shipping_address__address2)::character varying(256) AS shipping_address_address2,
+    (abandoned_checkouts.shipping_address__company)::character varying(256) AS shipping_company,
+    (abandoned_checkouts.shipping_address__first_name)::character varying(256) AS shipping_first_name,
+    (abandoned_checkouts.shipping_address__last_name)::character varying(256) AS shipping_last_name,
+    (abandoned_checkouts.shipping_address__latitude)::bigint AS shipping_latitude,
+    (abandoned_checkouts.shipping_address__longitude)::bigint AS shipping_longitude,
+    (abandoned_checkouts.shipping_address__name)::character varying(256) AS shipping_name,
+    (abandoned_checkouts.shipping_address__phone)::character varying(256) AS shipping_phone,
+    abandoned_checkouts.completed_at,
+    abandoned_checkouts.created_at,
+    abandoned_checkouts.updated_at
+   FROM tap_shopify.abandoned_checkouts;
+
+
+--
+-- Name: stg_shopify_customer_order_aggregates; Type: TABLE; Schema: warehouse; Owner: -
+--
+
+CREATE TABLE warehouse.stg_shopify_customer_order_aggregates (
+    customer_id bigint,
+    account_id bigint,
+    total_order_count bigint,
+    total_successful_order_count bigint,
+    total_cancelled_order_count bigint,
+    total_spend double precision,
+    previous_1_month_spend double precision,
+    previous_3_month_spend double precision,
+    previous_6_month_spend double precision,
+    previous_12_month_spend double precision,
+    most_recent_order_id bigint,
+    most_recent_order_number bigint,
+    most_recent_order_at timestamp with time zone,
+    most_recent_order_total_price double precision,
+    first_order_id bigint,
+    first_order_number bigint,
+    first_order_at timestamp with time zone,
+    first_order_total_price double precision
+);
+
+
+--
+-- Name: stg_shopify_customer_rfm; Type: TABLE; Schema: warehouse; Owner: -
+--
+
+CREATE TABLE warehouse.stg_shopify_customer_rfm (
+    customer_id bigint,
+    account_id bigint,
+    total_order_count bigint,
+    total_spend double precision,
+    days_since_last_order double precision,
+    recency_quintile integer,
+    frequency_quintile integer,
+    monetary_quintile integer,
+    rfm_score text,
+    rfm_label text,
+    rfm_desirability_score integer,
+    rfm_value_label text
+);
+
+
+--
+-- Name: stg_shopify_customer_rolling_rfm; Type: TABLE; Schema: warehouse; Owner: -
+--
+
+CREATE TABLE warehouse.stg_shopify_customer_rolling_rfm (
+    customer_id bigint,
+    week timestamp with time zone,
+    account_id bigint,
+    total_order_count bigint,
+    total_spend double precision,
+    frequency_quintile integer,
+    monetary_quintile integer,
+    previous_order_date timestamp with time zone,
+    days_since_last_order double precision,
+    recency_quintile integer,
+    rfm_score text,
+    rfm_label text,
+    rfm_desirability_score integer,
+    rfm_value_label text
+);
+
+
+--
+-- Name: stg_shopify_discount_codes; Type: VIEW; Schema: warehouse; Owner: -
+--
+
+CREATE VIEW warehouse.stg_shopify_discount_codes AS
+ SELECT orders__discount_codes._sdc_source_key_id AS order_id,
+    orders__discount_codes.code,
+    (orders__discount_codes.amount * ('-1'::integer)::double precision) AS amount,
+    orders__discount_codes.type
+   FROM tap_shopify.orders__discount_codes;
+
+
+--
+-- Name: stg_shopify_order_items; Type: VIEW; Schema: warehouse; Owner: -
+--
+
+CREATE VIEW warehouse.stg_shopify_order_items AS
+ SELECT orders__line_items.id__i AS order_item_id,
+    orders__line_items._sdc_source_key_id AS order_id,
+    orders__line_items._sdc_level_0_id AS item_id,
+    orders__line_items.product_id,
+    orders__line_items.sku,
+    orders__line_items.name,
+    orders__line_items.title,
+    orders__line_items.vendor,
+    orders__line_items.quantity,
+    orders__line_items.pre_tax_price,
+    orders__line_items.price,
+    orders__line_items.taxable,
+    orders__line_items.gift_card,
+    orders__line_items.total_discount,
+    orders__line_items.grams,
+    orders__line_items.fulfillable_quantity,
+    orders__line_items.fulfillment_service,
+    orders__line_items.fulfillment_status,
+    orders__line_items.product_exists,
+    orders__line_items.requires_shipping,
+    orders__line_items.variant_id,
+    orders__line_items.variant_inventory_management,
+    orders__line_items.variant_title
+   FROM tap_shopify.orders__line_items;
+
+
+--
+-- Name: stg_shopify_transactions; Type: VIEW; Schema: warehouse; Owner: -
+--
+
+CREATE VIEW warehouse.stg_shopify_transactions AS
+ SELECT transactions.account_id,
+    transactions.shop_id,
+    transactions.id AS transaction_id,
+    transactions.parent_id,
+    transactions.order_id,
+    transactions.status,
+    transactions.error_code,
+    transactions.message,
+    transactions.kind,
+    transactions.amount,
+    'authorization'::text AS transaction_authorization,
+    transactions.currency,
+    transactions.gateway,
+    transactions.source_name,
+    transactions.created_at
+   FROM tap_shopify.transactions
+  WHERE (transactions.test = false);
 
 
 --
@@ -2123,6 +4817,20 @@ ALTER TABLE ONLY public.users
 
 
 --
+-- Name: dim_shopify_customers__index_on_customer_id; Type: INDEX; Schema: dbt_harry; Owner: -
+--
+
+CREATE INDEX dim_shopify_customers__index_on_customer_id ON dbt_harry.dim_shopify_customers USING btree (customer_id);
+
+
+--
+-- Name: fct_shopify_orders__index_on_customer_id; Type: INDEX; Schema: dbt_harry; Owner: -
+--
+
+CREATE INDEX fct_shopify_orders__index_on_customer_id ON dbt_harry.fct_shopify_orders USING btree (customer_id);
+
+
+--
 -- Name: idx_scenarios_to_fixed_descriptors; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2302,6 +5010,951 @@ CREATE INDEX que_scheduler_audit_enqueued_job_class ON public.que_scheduler_audi
 --
 
 CREATE INDEX que_scheduler_audit_enqueued_job_id ON public.que_scheduler_audit_enqueued USING btree (job_id);
+
+
+--
+-- Name: tp_sales_order_id__sdc_sequence_idx; Type: INDEX; Schema: tap_csv; Owner: -
+--
+
+CREATE INDEX tp_sales_order_id__sdc_sequence_idx ON tap_csv.sales USING btree (order_id, _sdc_sequence);
+
+
+--
+-- Name: tp_0172fa4f32bd1f8f5e64409fb801f356ad3dfcfe; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_0172fa4f32bd1f8f5e64409fb801f356ad3dfcfe ON tap_shopify.abandoned_checkouts__shipping_lines__applied_discounts USING btree (_sdc_level_1_id);
+
+
+--
+-- Name: tp_033f532b5d56006694bc8d224e63a0a88f9b11d8; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_033f532b5d56006694bc8d224e63a0a88f9b11d8 ON tap_shopify.orders__fulfillments__line_items__applied_discounts USING btree (_sdc_level_1_id);
+
+
+--
+-- Name: tp_03b2235d3d044452dd2270109eeb94c6ce6fee81; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_03b2235d3d044452dd2270109eeb94c6ce6fee81 ON tap_shopify.orders__fulfillments__line_items__discount_allocations USING btree (_sdc_level_1_id);
+
+
+--
+-- Name: tp_0d5b9d35578acf40fbedc511e7c6c0bc90094c2f; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_0d5b9d35578acf40fbedc511e7c6c0bc90094c2f ON tap_shopify.orders__refunds__refund_line_items__line_item__applied_discount USING btree (_sdc_level_1_id);
+
+
+--
+-- Name: tp_0f5851b2764d58d2da7823aeea3eaa45e209ad1c; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_0f5851b2764d58d2da7823aeea3eaa45e209ad1c ON tap_shopify.orders__refunds__refund_line_items__line_item__tax_lines USING btree (_sdc_level_0_id);
+
+
+--
+-- Name: tp_13f9fab2425b549ba1059118caa14878086eb8a2; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_13f9fab2425b549ba1059118caa14878086eb8a2 ON tap_shopify.abandoned_checkouts__line_items__applied_discounts USING btree (_sdc_level_1_id);
+
+
+--
+-- Name: tp_164e68e767ed4af603d634f4c08e89230ac8b45c; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_164e68e767ed4af603d634f4c08e89230ac8b45c ON tap_shopify.orders__fulfillments__line_items__properties USING btree (_sdc_level_1_id);
+
+
+--
+-- Name: tp_173fa6ccd90a74ac30c9eaf2c3a1773b92439547; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_173fa6ccd90a74ac30c9eaf2c3a1773b92439547 ON tap_shopify.orders__shipping_lines__discount_allocations USING btree (_sdc_level_0_id);
+
+
+--
+-- Name: tp_2668dafa4f842c044dd6341a40895965606b144b; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_2668dafa4f842c044dd6341a40895965606b144b ON tap_shopify.abandoned_checkouts__shipping_lines__tax_lines USING btree (_sdc_level_1_id);
+
+
+--
+-- Name: tp_269e658df3eaa23f68e88ff47a37454ccd635db6; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_269e658df3eaa23f68e88ff47a37454ccd635db6 ON tap_shopify.orders__fulfillments__line_items__applied_discounts USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_3258977e77416f9ded2f2be89ab593da5feccf37; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_3258977e77416f9ded2f2be89ab593da5feccf37 ON tap_shopify.orders__fulfillments__line_items__applied_discounts USING btree (_sdc_level_2_id);
+
+
+--
+-- Name: tp_3272e10a1fcdc4d035e9fa7830a561d099ac1965; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_3272e10a1fcdc4d035e9fa7830a561d099ac1965 ON tap_shopify.abandoned_checkouts__line_items__applied_discounts USING btree (_sdc_level_0_id);
+
+
+--
+-- Name: tp_5653baf058e3ef736740cc3c47ef05ce48936c5e; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_5653baf058e3ef736740cc3c47ef05ce48936c5e ON tap_shopify.orders__refunds__refund_line_items__line_item__properties USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_59a77436be470f5d4d048e177f4fb53aa2b8c407; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_59a77436be470f5d4d048e177f4fb53aa2b8c407 ON tap_shopify.orders__fulfillments__line_items__tax_lines USING btree (_sdc_level_1_id);
+
+
+--
+-- Name: tp_5b5a948b3dc8e368e089ad12c7d9844ede66d0f3; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_5b5a948b3dc8e368e089ad12c7d9844ede66d0f3 ON tap_shopify.orders__refunds__refund_line_items__line_item__tax_lines USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_5edc189f99db534109edb8f5e35461fe1e20834f; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_5edc189f99db534109edb8f5e35461fe1e20834f ON tap_shopify.abandoned_checkouts__line_items__applied_discounts USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_60a2812f547167416e0b84c1decd458c617bab31; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_60a2812f547167416e0b84c1decd458c617bab31 ON tap_shopify.abandoned_checkouts__line_items__discount_allocations USING btree (_sdc_level_0_id);
+
+
+--
+-- Name: tp_6d5dbf61b5ff64d0ea4998aac532891653a135c4; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_6d5dbf61b5ff64d0ea4998aac532891653a135c4 ON tap_shopify.orders__refunds__refund_line_items__line_item__discount_allocat USING btree (_sdc_level_0_id);
+
+
+--
+-- Name: tp_6de0893e763fe82469139d5e5c7a64c46cb994e5; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_6de0893e763fe82469139d5e5c7a64c46cb994e5 ON tap_shopify.abandoned_checkouts__line_items__discount_allocations USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_70ef50a4dd042b9f53ab01523af1d923553100bc; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_70ef50a4dd042b9f53ab01523af1d923553100bc ON tap_shopify.abandoned_checkouts__shipping_lines__tax_lines USING btree (_sdc_level_0_id);
+
+
+--
+-- Name: tp_728f136ad2ac91cce00665659add10b8b13f3fc6; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_728f136ad2ac91cce00665659add10b8b13f3fc6 ON tap_shopify.orders__fulfillments__line_items__properties USING btree (_sdc_level_2_id);
+
+
+--
+-- Name: tp_7ae28f7c885baa7ec1a917d9deae2e564e4b148a; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_7ae28f7c885baa7ec1a917d9deae2e564e4b148a ON tap_shopify.abandoned_checkouts__line_items__properties USING btree (_sdc_level_1_id);
+
+
+--
+-- Name: tp_7b6c95fa881d691d85f9a6a337bbe355007be0ec; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_7b6c95fa881d691d85f9a6a337bbe355007be0ec ON tap_shopify.abandoned_checkouts__shipping_lines__tax_lines USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_7d4f50072260cc52b587b5617a2445d19fdbcf03; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_7d4f50072260cc52b587b5617a2445d19fdbcf03 ON tap_shopify.orders__refunds__refund_line_items__line_item__applied_discount USING btree (_sdc_level_0_id);
+
+
+--
+-- Name: tp_813e4bcc960883994f17ba1ebd9c72ed0df78458; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_813e4bcc960883994f17ba1ebd9c72ed0df78458 ON tap_shopify.orders__fulfillments__line_items__discount_allocations USING btree (_sdc_level_2_id);
+
+
+--
+-- Name: tp_83545941ba52a977c24a61845c5433234914ee6d; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_83545941ba52a977c24a61845c5433234914ee6d ON tap_shopify.orders__refunds__refund_line_items__line_item__tax_lines USING btree (_sdc_level_2_id);
+
+
+--
+-- Name: tp_8a1a374b38bb2c229de8dc2f7d10ba15d763bd07; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_8a1a374b38bb2c229de8dc2f7d10ba15d763bd07 ON tap_shopify.abandoned_checkouts__line_items__tax_lines USING btree (_sdc_level_0_id);
+
+
+--
+-- Name: tp_8c1807ff13cf8187d17159859e2ab38a3d355578; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_8c1807ff13cf8187d17159859e2ab38a3d355578 ON tap_shopify.orders__fulfillments__line_items__tax_lines USING btree (_sdc_level_2_id);
+
+
+--
+-- Name: tp_8dc0c99490f1f5ff86fa8408bdf4578b2f49c0fc; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_8dc0c99490f1f5ff86fa8408bdf4578b2f49c0fc ON tap_shopify.abandoned_checkouts__shipping_lines__applied_discounts USING btree (_sdc_level_0_id);
+
+
+--
+-- Name: tp_94103dbee5052ab7661578df75f1a9a3e2e52243; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_94103dbee5052ab7661578df75f1a9a3e2e52243 ON tap_shopify.abandoned_checkouts__shipping_lines__custom_tax_lines USING btree (_sdc_level_0_id);
+
+
+--
+-- Name: tp_9aca659138874e84c9eeefa8a687554f12688281; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_9aca659138874e84c9eeefa8a687554f12688281 ON tap_shopify.orders__fulfillments__line_items__applied_discounts USING btree (_sdc_level_0_id);
+
+
+--
+-- Name: tp_aa7ecdaf2c4eb4b5c0ab256c84b748e7d91617bc; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_aa7ecdaf2c4eb4b5c0ab256c84b748e7d91617bc ON tap_shopify.orders__refunds__refund_line_items__line_item__discount_allocat USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_abandoned_checkouts__customer__addresses__sdc_level_0_id_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_abandoned_checkouts__customer__addresses__sdc_level_0_id_idx ON tap_shopify.abandoned_checkouts__customer__addresses USING btree (_sdc_level_0_id);
+
+
+--
+-- Name: tp_abandoned_checkouts__customer__addresses__sdc_sequence_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_abandoned_checkouts__customer__addresses__sdc_sequence_idx ON tap_shopify.abandoned_checkouts__customer__addresses USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_abandoned_checkouts__discount_codes__sdc_level_0_id_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_abandoned_checkouts__discount_codes__sdc_level_0_id_idx ON tap_shopify.abandoned_checkouts__discount_codes USING btree (_sdc_level_0_id);
+
+
+--
+-- Name: tp_abandoned_checkouts__discount_codes__sdc_sequence_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_abandoned_checkouts__discount_codes__sdc_sequence_idx ON tap_shopify.abandoned_checkouts__discount_codes USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_abandoned_checkouts__line_items__sdc_level_0_id_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_abandoned_checkouts__line_items__sdc_level_0_id_idx ON tap_shopify.abandoned_checkouts__line_items USING btree (_sdc_level_0_id);
+
+
+--
+-- Name: tp_abandoned_checkouts__line_items__sdc_sequence_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_abandoned_checkouts__line_items__sdc_sequence_idx ON tap_shopify.abandoned_checkouts__line_items USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_abandoned_checkouts__line_items__tax_lines__sdc_sequence_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_abandoned_checkouts__line_items__tax_lines__sdc_sequence_idx ON tap_shopify.abandoned_checkouts__line_items__tax_lines USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_abandoned_checkouts__note_attributes__sdc_level_0_id_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_abandoned_checkouts__note_attributes__sdc_level_0_id_idx ON tap_shopify.abandoned_checkouts__note_attributes USING btree (_sdc_level_0_id);
+
+
+--
+-- Name: tp_abandoned_checkouts__note_attributes__sdc_sequence_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_abandoned_checkouts__note_attributes__sdc_sequence_idx ON tap_shopify.abandoned_checkouts__note_attributes USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_abandoned_checkouts__sdc_sequence_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_abandoned_checkouts__sdc_sequence_idx ON tap_shopify.abandoned_checkouts USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_abandoned_checkouts__shipping_lines__sdc_level_0_id_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_abandoned_checkouts__shipping_lines__sdc_level_0_id_idx ON tap_shopify.abandoned_checkouts__shipping_lines USING btree (_sdc_level_0_id);
+
+
+--
+-- Name: tp_abandoned_checkouts__shipping_lines__sdc_sequence_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_abandoned_checkouts__shipping_lines__sdc_sequence_idx ON tap_shopify.abandoned_checkouts__shipping_lines USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_abandoned_checkouts__tax_lines__sdc_level_0_id_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_abandoned_checkouts__tax_lines__sdc_level_0_id_idx ON tap_shopify.abandoned_checkouts__tax_lines USING btree (_sdc_level_0_id);
+
+
+--
+-- Name: tp_abandoned_checkouts__tax_lines__sdc_sequence_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_abandoned_checkouts__tax_lines__sdc_sequence_idx ON tap_shopify.abandoned_checkouts__tax_lines USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_b228b29917dc32e4f964ab67394c8ce1c594d3ec; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_b228b29917dc32e4f964ab67394c8ce1c594d3ec ON tap_shopify.orders__refunds__refund_line_items__line_item__tax_lines USING btree (_sdc_level_1_id);
+
+
+--
+-- Name: tp_b2a8a3cfec4d17df6247ada1ff3f61d08e37ac48; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_b2a8a3cfec4d17df6247ada1ff3f61d08e37ac48 ON tap_shopify.orders__refunds__refund_line_items__line_item__applied_discount USING btree (_sdc_level_2_id);
+
+
+--
+-- Name: tp_b51bcbedbbb3a75508927d3a8e7b727ab4d4b4b7; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_b51bcbedbbb3a75508927d3a8e7b727ab4d4b4b7 ON tap_shopify.orders__refunds__refund_line_items__line_item__discount_allocat USING btree (_sdc_level_2_id);
+
+
+--
+-- Name: tp_b79f012b07dde112c364d5f050d5b3a0da54e457; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_b79f012b07dde112c364d5f050d5b3a0da54e457 ON tap_shopify.orders__refunds__refund_line_items__line_item__properties USING btree (_sdc_level_1_id);
+
+
+--
+-- Name: tp_bd207c88468c6a3e854ced2fa699eb856e92ce74; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_bd207c88468c6a3e854ced2fa699eb856e92ce74 ON tap_shopify.abandoned_checkouts__line_items__discount_allocations USING btree (_sdc_level_1_id);
+
+
+--
+-- Name: tp_bd6ffeb7c8d74194d4dd094eef50fa3a8c4aa475; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_bd6ffeb7c8d74194d4dd094eef50fa3a8c4aa475 ON tap_shopify.orders__fulfillments__line_items__discount_allocations USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_c3f873d1f3df4e27777782d9f2ae68bcd99592b1; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_c3f873d1f3df4e27777782d9f2ae68bcd99592b1 ON tap_shopify.orders__fulfillments__line_items__tax_lines USING btree (_sdc_level_0_id);
+
+
+--
+-- Name: tp_c4067e650b998253b76941d3dc9c5652507ac4b0; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_c4067e650b998253b76941d3dc9c5652507ac4b0 ON tap_shopify.orders__fulfillments__line_items__properties USING btree (_sdc_level_0_id);
+
+
+--
+-- Name: tp_c8520ca8c5b4c4e9058688df92f83a62e66f9d1f; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_c8520ca8c5b4c4e9058688df92f83a62e66f9d1f ON tap_shopify.orders__refunds__refund_line_items__line_item__discount_allocat USING btree (_sdc_level_1_id);
+
+
+--
+-- Name: tp_c8f347dbf06beb89f94911c58b1c7fa590678ab9; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_c8f347dbf06beb89f94911c58b1c7fa590678ab9 ON tap_shopify.abandoned_checkouts__line_items__properties USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_cd7ed69e31affd2879b3d13380869465dd4d46a2; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_cd7ed69e31affd2879b3d13380869465dd4d46a2 ON tap_shopify.abandoned_checkouts__line_items__properties USING btree (_sdc_level_0_id);
+
+
+--
+-- Name: tp_customers__addresses__sdc_level_0_id_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_customers__addresses__sdc_level_0_id_idx ON tap_shopify.customers__addresses USING btree (_sdc_level_0_id);
+
+
+--
+-- Name: tp_customers__addresses__sdc_sequence_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_customers__addresses__sdc_sequence_idx ON tap_shopify.customers__addresses USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_customers__sdc_sequence_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_customers__sdc_sequence_idx ON tap_shopify.customers USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_d4e34ae625ab1b3e879e8da0c232558b3237d5b4; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_d4e34ae625ab1b3e879e8da0c232558b3237d5b4 ON tap_shopify.abandoned_checkouts__shipping_lines__custom_tax_lines USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_d4fb854a8c572cb6bcf95da07a68bce7f9f086c4; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_d4fb854a8c572cb6bcf95da07a68bce7f9f086c4 ON tap_shopify.orders__fulfillments__line_items__discount_allocations USING btree (_sdc_level_0_id);
+
+
+--
+-- Name: tp_d4fe15794898517fa1207d20e100d76e5b454bdf; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_d4fe15794898517fa1207d20e100d76e5b454bdf ON tap_shopify.orders__fulfillments__line_items__tax_lines USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_d6ba65372861c361eef04deeeacc58b5f3c7d98e; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_d6ba65372861c361eef04deeeacc58b5f3c7d98e ON tap_shopify.orders__fulfillments__line_items__properties USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_d75d73cc07dbe33517028b7f654f324acc217c0a; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_d75d73cc07dbe33517028b7f654f324acc217c0a ON tap_shopify.orders__refunds__refund_line_items__line_item__applied_discount USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_e9aa2db26effd5ed50b8904e8f2f4c2c0c9e561f; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_e9aa2db26effd5ed50b8904e8f2f4c2c0c9e561f ON tap_shopify.orders__refunds__refund_line_items__line_item__properties USING btree (_sdc_level_0_id);
+
+
+--
+-- Name: tp_ebf21412f85b806600af7e2082c3bd52cfc64434; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_ebf21412f85b806600af7e2082c3bd52cfc64434 ON tap_shopify.orders__shipping_lines__discount_allocations USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_ec9a2aa19815adf12ac9463f9f7e9f93182934df; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_ec9a2aa19815adf12ac9463f9f7e9f93182934df ON tap_shopify.abandoned_checkouts__shipping_lines__custom_tax_lines USING btree (_sdc_level_1_id);
+
+
+--
+-- Name: tp_ef02a87e8e7f7f183f12844461715da74a43e4c5; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_ef02a87e8e7f7f183f12844461715da74a43e4c5 ON tap_shopify.orders__shipping_lines__discount_allocations USING btree (_sdc_level_1_id);
+
+
+--
+-- Name: tp_f4635ca64b7c7fb7477500845421d5860a30e24a; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_f4635ca64b7c7fb7477500845421d5860a30e24a ON tap_shopify.abandoned_checkouts__shipping_lines__applied_discounts USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_f98d2fe54abbcea384d0a7d9e3517faeb46f55d8; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_f98d2fe54abbcea384d0a7d9e3517faeb46f55d8 ON tap_shopify.orders__refunds__refund_line_items__line_item__properties USING btree (_sdc_level_2_id);
+
+
+--
+-- Name: tp_fe0e0645b9940fbd0b328ac66c34d1c8a5c1d774; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_fe0e0645b9940fbd0b328ac66c34d1c8a5c1d774 ON tap_shopify.abandoned_checkouts__line_items__tax_lines USING btree (_sdc_level_1_id);
+
+
+--
+-- Name: tp_orders__customer__addresses__sdc_level_0_id_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__customer__addresses__sdc_level_0_id_idx ON tap_shopify.orders__customer__addresses USING btree (_sdc_level_0_id);
+
+
+--
+-- Name: tp_orders__customer__addresses__sdc_sequence_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__customer__addresses__sdc_sequence_idx ON tap_shopify.orders__customer__addresses USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_orders__discount_applications__sdc_level_0_id_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__discount_applications__sdc_level_0_id_idx ON tap_shopify.orders__discount_applications USING btree (_sdc_level_0_id);
+
+
+--
+-- Name: tp_orders__discount_applications__sdc_sequence_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__discount_applications__sdc_sequence_idx ON tap_shopify.orders__discount_applications USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_orders__discount_codes__sdc_level_0_id_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__discount_codes__sdc_level_0_id_idx ON tap_shopify.orders__discount_codes USING btree (_sdc_level_0_id);
+
+
+--
+-- Name: tp_orders__discount_codes__sdc_sequence_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__discount_codes__sdc_sequence_idx ON tap_shopify.orders__discount_codes USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_orders__fulfillments__line_items__sdc_level_0_id_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__fulfillments__line_items__sdc_level_0_id_idx ON tap_shopify.orders__fulfillments__line_items USING btree (_sdc_level_0_id);
+
+
+--
+-- Name: tp_orders__fulfillments__line_items__sdc_level_1_id_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__fulfillments__line_items__sdc_level_1_id_idx ON tap_shopify.orders__fulfillments__line_items USING btree (_sdc_level_1_id);
+
+
+--
+-- Name: tp_orders__fulfillments__line_items__sdc_sequence_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__fulfillments__line_items__sdc_sequence_idx ON tap_shopify.orders__fulfillments__line_items USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_orders__fulfillments__sdc_level_0_id_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__fulfillments__sdc_level_0_id_idx ON tap_shopify.orders__fulfillments USING btree (_sdc_level_0_id);
+
+
+--
+-- Name: tp_orders__fulfillments__sdc_sequence_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__fulfillments__sdc_sequence_idx ON tap_shopify.orders__fulfillments USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_orders__fulfillments__tracking_numbers__sdc_level_0_id_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__fulfillments__tracking_numbers__sdc_level_0_id_idx ON tap_shopify.orders__fulfillments__tracking_numbers USING btree (_sdc_level_0_id);
+
+
+--
+-- Name: tp_orders__fulfillments__tracking_numbers__sdc_level_1_id_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__fulfillments__tracking_numbers__sdc_level_1_id_idx ON tap_shopify.orders__fulfillments__tracking_numbers USING btree (_sdc_level_1_id);
+
+
+--
+-- Name: tp_orders__fulfillments__tracking_numbers__sdc_sequence_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__fulfillments__tracking_numbers__sdc_sequence_idx ON tap_shopify.orders__fulfillments__tracking_numbers USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_orders__fulfillments__tracking_urls__sdc_level_0_id_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__fulfillments__tracking_urls__sdc_level_0_id_idx ON tap_shopify.orders__fulfillments__tracking_urls USING btree (_sdc_level_0_id);
+
+
+--
+-- Name: tp_orders__fulfillments__tracking_urls__sdc_level_1_id_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__fulfillments__tracking_urls__sdc_level_1_id_idx ON tap_shopify.orders__fulfillments__tracking_urls USING btree (_sdc_level_1_id);
+
+
+--
+-- Name: tp_orders__fulfillments__tracking_urls__sdc_sequence_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__fulfillments__tracking_urls__sdc_sequence_idx ON tap_shopify.orders__fulfillments__tracking_urls USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_orders__line_items__applied_discounts__sdc_level_0_id_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__line_items__applied_discounts__sdc_level_0_id_idx ON tap_shopify.orders__line_items__applied_discounts USING btree (_sdc_level_0_id);
+
+
+--
+-- Name: tp_orders__line_items__applied_discounts__sdc_level_1_id_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__line_items__applied_discounts__sdc_level_1_id_idx ON tap_shopify.orders__line_items__applied_discounts USING btree (_sdc_level_1_id);
+
+
+--
+-- Name: tp_orders__line_items__applied_discounts__sdc_sequence_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__line_items__applied_discounts__sdc_sequence_idx ON tap_shopify.orders__line_items__applied_discounts USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_orders__line_items__discount_allocations__sdc_level_0_id_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__line_items__discount_allocations__sdc_level_0_id_idx ON tap_shopify.orders__line_items__discount_allocations USING btree (_sdc_level_0_id);
+
+
+--
+-- Name: tp_orders__line_items__discount_allocations__sdc_level_1_id_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__line_items__discount_allocations__sdc_level_1_id_idx ON tap_shopify.orders__line_items__discount_allocations USING btree (_sdc_level_1_id);
+
+
+--
+-- Name: tp_orders__line_items__discount_allocations__sdc_sequence_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__line_items__discount_allocations__sdc_sequence_idx ON tap_shopify.orders__line_items__discount_allocations USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_orders__line_items__properties__sdc_level_0_id_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__line_items__properties__sdc_level_0_id_idx ON tap_shopify.orders__line_items__properties USING btree (_sdc_level_0_id);
+
+
+--
+-- Name: tp_orders__line_items__properties__sdc_level_1_id_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__line_items__properties__sdc_level_1_id_idx ON tap_shopify.orders__line_items__properties USING btree (_sdc_level_1_id);
+
+
+--
+-- Name: tp_orders__line_items__properties__sdc_sequence_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__line_items__properties__sdc_sequence_idx ON tap_shopify.orders__line_items__properties USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_orders__line_items__sdc_level_0_id_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__line_items__sdc_level_0_id_idx ON tap_shopify.orders__line_items USING btree (_sdc_level_0_id);
+
+
+--
+-- Name: tp_orders__line_items__sdc_sequence_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__line_items__sdc_sequence_idx ON tap_shopify.orders__line_items USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_orders__line_items__tax_lines__sdc_level_0_id_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__line_items__tax_lines__sdc_level_0_id_idx ON tap_shopify.orders__line_items__tax_lines USING btree (_sdc_level_0_id);
+
+
+--
+-- Name: tp_orders__line_items__tax_lines__sdc_level_1_id_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__line_items__tax_lines__sdc_level_1_id_idx ON tap_shopify.orders__line_items__tax_lines USING btree (_sdc_level_1_id);
+
+
+--
+-- Name: tp_orders__line_items__tax_lines__sdc_sequence_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__line_items__tax_lines__sdc_sequence_idx ON tap_shopify.orders__line_items__tax_lines USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_orders__note_attributes__sdc_level_0_id_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__note_attributes__sdc_level_0_id_idx ON tap_shopify.orders__note_attributes USING btree (_sdc_level_0_id);
+
+
+--
+-- Name: tp_orders__note_attributes__sdc_sequence_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__note_attributes__sdc_sequence_idx ON tap_shopify.orders__note_attributes USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_orders__order_adjustments__sdc_level_0_id_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__order_adjustments__sdc_level_0_id_idx ON tap_shopify.orders__order_adjustments USING btree (_sdc_level_0_id);
+
+
+--
+-- Name: tp_orders__order_adjustments__sdc_sequence_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__order_adjustments__sdc_sequence_idx ON tap_shopify.orders__order_adjustments USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_orders__payment_gateway_names__sdc_level_0_id_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__payment_gateway_names__sdc_level_0_id_idx ON tap_shopify.orders__payment_gateway_names USING btree (_sdc_level_0_id);
+
+
+--
+-- Name: tp_orders__payment_gateway_names__sdc_sequence_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__payment_gateway_names__sdc_sequence_idx ON tap_shopify.orders__payment_gateway_names USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_orders__refunds__order_adjustments__sdc_level_0_id_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__refunds__order_adjustments__sdc_level_0_id_idx ON tap_shopify.orders__refunds__order_adjustments USING btree (_sdc_level_0_id);
+
+
+--
+-- Name: tp_orders__refunds__order_adjustments__sdc_level_1_id_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__refunds__order_adjustments__sdc_level_1_id_idx ON tap_shopify.orders__refunds__order_adjustments USING btree (_sdc_level_1_id);
+
+
+--
+-- Name: tp_orders__refunds__order_adjustments__sdc_sequence_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__refunds__order_adjustments__sdc_sequence_idx ON tap_shopify.orders__refunds__order_adjustments USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_orders__refunds__refund_line_items__sdc_level_0_id_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__refunds__refund_line_items__sdc_level_0_id_idx ON tap_shopify.orders__refunds__refund_line_items USING btree (_sdc_level_0_id);
+
+
+--
+-- Name: tp_orders__refunds__refund_line_items__sdc_level_1_id_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__refunds__refund_line_items__sdc_level_1_id_idx ON tap_shopify.orders__refunds__refund_line_items USING btree (_sdc_level_1_id);
+
+
+--
+-- Name: tp_orders__refunds__refund_line_items__sdc_sequence_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__refunds__refund_line_items__sdc_sequence_idx ON tap_shopify.orders__refunds__refund_line_items USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_orders__refunds__sdc_level_0_id_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__refunds__sdc_level_0_id_idx ON tap_shopify.orders__refunds USING btree (_sdc_level_0_id);
+
+
+--
+-- Name: tp_orders__refunds__sdc_sequence_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__refunds__sdc_sequence_idx ON tap_shopify.orders__refunds USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_orders__sdc_sequence_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__sdc_sequence_idx ON tap_shopify.orders USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_orders__shipping_lines__sdc_level_0_id_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__shipping_lines__sdc_level_0_id_idx ON tap_shopify.orders__shipping_lines USING btree (_sdc_level_0_id);
+
+
+--
+-- Name: tp_orders__shipping_lines__sdc_sequence_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__shipping_lines__sdc_sequence_idx ON tap_shopify.orders__shipping_lines USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_orders__shipping_lines__tax_lines__sdc_level_0_id_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__shipping_lines__tax_lines__sdc_level_0_id_idx ON tap_shopify.orders__shipping_lines__tax_lines USING btree (_sdc_level_0_id);
+
+
+--
+-- Name: tp_orders__shipping_lines__tax_lines__sdc_level_1_id_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__shipping_lines__tax_lines__sdc_level_1_id_idx ON tap_shopify.orders__shipping_lines__tax_lines USING btree (_sdc_level_1_id);
+
+
+--
+-- Name: tp_orders__shipping_lines__tax_lines__sdc_sequence_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__shipping_lines__tax_lines__sdc_sequence_idx ON tap_shopify.orders__shipping_lines__tax_lines USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_orders__tax_lines__sdc_level_0_id_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__tax_lines__sdc_level_0_id_idx ON tap_shopify.orders__tax_lines USING btree (_sdc_level_0_id);
+
+
+--
+-- Name: tp_orders__tax_lines__sdc_sequence_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_orders__tax_lines__sdc_sequence_idx ON tap_shopify.orders__tax_lines USING btree (_sdc_sequence);
+
+
+--
+-- Name: tp_transactions__sdc_sequence_idx; Type: INDEX; Schema: tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_transactions__sdc_sequence_idx ON tap_shopify.transactions USING btree (_sdc_sequence);
+
+
+--
+-- Name: dim_shopify_customers__index_on_customer_id; Type: INDEX; Schema: warehouse; Owner: -
+--
+
+CREATE INDEX dim_shopify_customers__index_on_customer_id ON warehouse.dim_shopify_customers USING btree (customer_id);
+
+
+--
+-- Name: fct_shopify_orders__index_on_account_id__customer_id__created_a; Type: INDEX; Schema: warehouse; Owner: -
+--
+
+CREATE INDEX fct_shopify_orders__index_on_account_id__customer_id__created_a ON warehouse.fct_shopify_orders USING btree (account_id, customer_id, created_at);
+
+
+--
+-- Name: fct_shopify_orders__index_on_cancelled_at; Type: INDEX; Schema: warehouse; Owner: -
+--
+
+CREATE INDEX fct_shopify_orders__index_on_cancelled_at ON warehouse.fct_shopify_orders USING btree (cancelled_at);
+
+
+--
+-- Name: fct_shopify_orders__index_on_customer_id__created_at; Type: INDEX; Schema: warehouse; Owner: -
+--
+
+CREATE INDEX fct_shopify_orders__index_on_customer_id__created_at ON warehouse.fct_shopify_orders USING btree (customer_id, created_at);
+
+
+--
+-- Name: stg_shopify_customer_order_aggregates__index_on_account_id__cus; Type: INDEX; Schema: warehouse; Owner: -
+--
+
+CREATE INDEX stg_shopify_customer_order_aggregates__index_on_account_id__cus ON warehouse.stg_shopify_customer_order_aggregates USING btree (account_id, customer_id);
+
+
+--
+-- Name: stg_shopify_customer_order_aggregates__index_on_customer_id; Type: INDEX; Schema: warehouse; Owner: -
+--
+
+CREATE INDEX stg_shopify_customer_order_aggregates__index_on_customer_id ON warehouse.stg_shopify_customer_order_aggregates USING btree (customer_id);
+
+
+--
+-- Name: stg_shopify_customer_rfm__index_on_account_id__customer_id; Type: INDEX; Schema: warehouse; Owner: -
+--
+
+CREATE INDEX stg_shopify_customer_rfm__index_on_account_id__customer_id ON warehouse.stg_shopify_customer_rfm USING btree (account_id, customer_id);
+
+
+--
+-- Name: stg_shopify_customer_rolling_rfm__index_on_account_id__week__rf; Type: INDEX; Schema: warehouse; Owner: -
+--
+
+CREATE INDEX stg_shopify_customer_rolling_rfm__index_on_account_id__week__rf ON warehouse.stg_shopify_customer_rolling_rfm USING btree (account_id, week, rfm_label);
 
 
 --
@@ -2696,6 +6349,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190821203957'),
 ('20190903210744'),
 ('20190905191310'),
-('20190910185603');
+('20190910185603'),
+('20190916215131');
 
 

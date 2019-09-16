@@ -14,5 +14,12 @@ FactoryBot.define do
       password { "c313f81fe851b89b369f797cf99e3476" }
       shopify_domain { "hrsn.myshopify.com" }
     end
+
+    factory :sole_destroyer_shopify_shop do
+      name { "Sole Destroyer" }
+      api_key { "578a7c46941e7ed14ca5cca1d7244085" }
+      password { "2707fc0219a6ce609c3481e53bb0947b" }
+      shopify_domain { "sole-destroyer.myshopify.com" }
+    end
   end
 end

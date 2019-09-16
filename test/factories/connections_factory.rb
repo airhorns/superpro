@@ -5,12 +5,12 @@ FactoryBot.define do
     association :account
 
     after(:build) do |connection|
-      connection.integration = build(:shopify_shop, account: connection.account)
+      connection.integration ||= build(:shopify_shop, account: connection.account)
     end
 
     factory :shopify_hrsn_connection do
       after(:build) do |connection|
-        connection.integration = build(:hrsn_shopify_shop, account: connection.account)
+        connection.integration ||= build(:hrsn_shopify_shop, account: connection.account)
       end
     end
   end

@@ -19,6 +19,9 @@ Rails.application.configure do
   config.cache_store = :redis_cache_store, { url: "redis://localhost:6379/2" }
   config.session_store :cache_store, key: "superpro_integration_test_sessions"
 
+  # We use ejson instead of the master key
+  config.require_master_key = false
+
   # Raise exceptions instead of rendering exception templates.
   config.action_dispatch.show_exceptions = false
 
