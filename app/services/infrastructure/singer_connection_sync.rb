@@ -42,14 +42,21 @@ module Infrastructure
 
           logger.info "Beginning Singer sync for connection", importer: importer
 
-          SingerImporterClient.client.import(importer, config, state, { import_id: attempt_record.id }, transform_for_connection(connection)) do |new_state|
-            SingerSyncAttempt.transaction do
-              state_record.state = new_state
-              state_record.save!
-              attempt_record.update!(last_progress_at: Time.now.utc)
+          SingerImporterClient.client.import(
+            importer,
+            config: config,
+            state: state,
+            url_params: { import_id: attempt_record.id },
+            transform: transform_for_connection(connection),
+            on_state_message: Proc.new do |new_state|
+              SingerSyncAttempt.transaction do
+                state_record.state = new_state
+                state_record.save!
+                attempt_record.update!(last_progress_at: Time.now.utc)
+              end
               logger.info "State updated to #{new_state}"
-            end
-          end
+            end,
+          )
         rescue StandardError => e
           attempt_record.update!(finished_at: Time.now.utc, success: false, failure_reason: e.message)
           raise

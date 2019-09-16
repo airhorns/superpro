@@ -10,7 +10,7 @@ class Infrastructure::SingerImporterClient
     @auth_token = auth_token
   end
 
-  def import(importer, config, state = {}, url_params = {}, transform = {})
+  def import(importer, config:, state: {}, url_params: {}, transform: {}, on_state_message: nil)
     RestClient::Request.execute(
       method: :post,
       url: @base_url + "/import/#{importer}?#{url_params.to_query}",
@@ -23,8 +23,8 @@ class Infrastructure::SingerImporterClient
 
           if blob["stream"] == "STDOUT" && blob["tag"] == "target"
             message = JSON.parse(blob["message"])
-            if message["type"] == "STATE"
-              yield message["value"]
+            if on_state_message.present?
+              on_state_message.call(message)
             end
           end
 

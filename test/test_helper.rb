@@ -29,7 +29,7 @@ class ActiveSupport::TestCase
 
   setup do
     ActionMailer::Base.deliveries.clear
-    VCR.insert_cassette(name)
+    VCR.insert_cassette("#{self.class.name.underscore}/#{name.downcase}", record: :none)
   end
 
   teardown do
