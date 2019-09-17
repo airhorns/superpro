@@ -4,12 +4,10 @@ orbs:
 jobs:
   build_docker:
     docker:
-      - image: circleci/node
-    working_directory: ~/repo
+      - image: superpro/deploy-container
     steps:
       - setup_remote_docker
       - checkout
-      - gcp-cli/install
       - gcp-cli/initialize
       - run:
           name: Authorize gcloud
@@ -28,6 +26,7 @@ jobs:
               docker tag gcr.io/superpro-production/core:$CIRCLE_SHA1 gcr.io/superpro-production/core:latest
               docker push gcr.io/superpro-production/core:latest
             fi
+
   lint_javascript:
     docker:
       - image: circleci/node:11.15
