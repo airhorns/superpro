@@ -200,19 +200,16 @@ jobs:
 
   deploy:
     docker:
-      - image: circleci/ruby:2.6.2-node
+      - image: superpro/deploy-container
     working_directory: ~/repo
     steps:
-      - gcp-cli/install
       - gcp-cli/initialize
       - checkout
       - restore_cache: *ruby_dependencies_restore_cache
       - run: *ruby_dependencies
       - run:
           name: Configure gcloud k8s context
-          command: |
-            sudo apt-get install kubectl
-            gcloud container clusters get-credentials alpha
+          command: gcloud container clusters get-credentials alpha
       - run:
           name: Deploy
           command: config/deploy/deploy.sh
