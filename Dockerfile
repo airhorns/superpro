@@ -2,7 +2,7 @@
 FROM node:11.15.0-stretch as nodejs
 
 # Get all the ruby dependencies installed as they are needed for both building assets and the final output container
-FROM ruby:2.6.2-stretch as ruby_environment
+FROM ruby:2.6.4-stretch as ruby_environment
 RUN mkdir /app
 WORKDIR /app
 

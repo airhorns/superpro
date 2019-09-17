@@ -12,7 +12,7 @@ http_interactions:
       Accept:
       - application/json
       User-Agent:
-      - ShopifyAPI/7.0.1 ActiveResource/5.1.0 Ruby/2.6.2
+      - ShopifyAPI/7.0.1 ActiveResource/5.1.0 Ruby/2.6.4
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
   response:
@@ -107,6 +107,6 @@ http_interactions:
         Brundage","money_format":"${{amount}}","money_with_currency_format":"${{amount}}
         CAD","weight_unit":"kg","province_code":"ON","taxes_included":false,"tax_shipping":null,"county_taxes":true,"plan_display_name":"staff_business","plan_name":"staff_business","has_discounts":false,"has_gift_cards":false,"myshopify_domain":"hrsn.myshopify.com","google_apps_domain":null,"google_apps_login_enabled":null,"money_in_emails_format":"${{amount}}","money_with_currency_in_emails_format":"${{amount}}
         CAD","eligible_for_payments":true,"requires_extra_payments_agreement":false,"password_enabled":false,"has_storefront":true,"eligible_for_card_reader_giveaway":true,"finances":true,"primary_location_id":40483778,"checkout_api_supported":true,"multi_location_enabled":true,"setup_required":false,"force_ssl":true,"pre_launch_enabled":false,"enabled_presentment_currencies":["CAD"]}}'
-    http_version: 
+    http_version:
   recorded_at: Wed, 31 Jul 2019 13:32:42 GMT
 recorded_with: VCR 5.0.0

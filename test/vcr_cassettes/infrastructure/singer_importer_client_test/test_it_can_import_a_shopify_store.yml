@@ -10,7 +10,7 @@ http_interactions:
       Accept:
       - "*/*"
       User-Agent:
-      - rest-client/2.1.0 (darwin18.2.0 x86_64) ruby/2.6.2p47
+      - rest-client/2.1.0 (darwin18.2.0 x86_64) ruby/2.6.4p47
       Authorization:
       - "<AUTHORIZATION>"
       Content-Type:
@@ -201,6 +201,6 @@ http_interactions:
         {"stream": "STDERR", "tag": "target", "message": "WARNING EMITTING-STATE {'bookmarks': {'orders': {'updated_at': '2019-09-16T13:32:58.000000Z'}, 'metafields': {'updated_at': '2019-09-16T13:32:58.000000Z'}, 'metafield_orders': {'updated_at': '2019-09-16T13:32:59.000000Z'}, 'metafield_customers': {'updated_at': '2019-09-16T13:33:00.000000Z'}, 'metafield_products': {'updated_at': '2019-09-16T13:33:00.000000Z'}, 'metafield_custom_collections': {'updated_at': '2019-09-16T13:33:01.000000Z'}, 'custom_collections': {'updated_at': '2019-09-16T13:33:02.000000Z'}, 'abandoned_checkouts': {'updated_at': '2019-09-16T13:33:02.000000Z'}, 'collects': {'updated_at': '2019-09-16T13:33:03.399137Z'}, 'transaction_orders': {'updated_at': '2019-09-16T13:33:03.000000Z'}, 'customers': {'updated_at': '2019-09-16T13:33:04.000000Z'}, 'products': {'updated_at': '2019-09-16T13:33:04.000000Z'}, 'refund_orders': {'updated_at': '2019-09-16T13:33:05.000000Z'}}}\n"}
         {"stream": "STDOUT", "tag": "target", "message": "{\"bookmarks\": {\"orders\": {\"updated_at\": \"2019-09-16T13:32:58.000000Z\"}, \"metafields\": {\"updated_at\": \"2019-09-16T13:32:58.000000Z\"}, \"metafield_orders\": {\"updated_at\": \"2019-09-16T13:32:59.000000Z\"}, \"metafield_customers\": {\"updated_at\": \"2019-09-16T13:33:00.000000Z\"}, \"metafield_products\": {\"updated_at\": \"2019-09-16T13:33:00.000000Z\"}, \"metafield_custom_collections\": {\"updated_at\": \"2019-09-16T13:33:01.000000Z\"}, \"custom_collections\": {\"updated_at\": \"2019-09-16T13:33:02.000000Z\"}, \"abandoned_checkouts\": {\"updated_at\": \"2019-09-16T13:33:02.000000Z\"}, \"collects\": {\"updated_at\": \"2019-09-16T13:33:03.399137Z\"}, \"transaction_orders\": {\"updated_at\": \"2019-09-16T13:33:03.000000Z\"}, \"customers\": {\"updated_at\": \"2019-09-16T13:33:04.000000Z\"}, \"products\": {\"updated_at\": \"2019-09-16T13:33:04.000000Z\"}, \"refund_orders\": {\"updated_at\": \"2019-09-16T13:33:05.000000Z\"}}}\n"}
         {"stream": "SYSTEM", "success": true}
-    http_version: 
+    http_version:
   recorded_at: Mon, 16 Sep 2019 13:33:06 GMT
 recorded_with: VCR 5.0.0
