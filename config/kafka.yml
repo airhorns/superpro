@@ -1,0 +1,10 @@
+development: &kafka_config
+  bootstrap_servers: pkc-43n10.us-central1.gcp.confluent.cloud:9092
+  sasl_plain_username: "TQAEH2LA3GBUO3HD"
+  sasl_plain_password: <%= ENV['KAFKA_SASL_PLAIN_PASSWORD'] %>
+test:
+  <<: *kafka_config
+integration_test:
+  <<: *kafka_config
+production:
+  <<: *kafka_config

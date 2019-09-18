@@ -16,6 +16,41 @@ CREATE SCHEMA dbt_harry;
 
 
 --
+-- Name: raw_snowplow; Type: SCHEMA; Schema: -; Owner: -
+--
+
+CREATE SCHEMA raw_snowplow;
+
+
+--
+-- Name: raw_tap_csv; Type: SCHEMA; Schema: -; Owner: -
+--
+
+CREATE SCHEMA raw_tap_csv;
+
+
+--
+-- Name: raw_tap_google_analytics; Type: SCHEMA; Schema: -; Owner: -
+--
+
+CREATE SCHEMA raw_tap_google_analytics;
+
+
+--
+-- Name: raw_tap_kafka; Type: SCHEMA; Schema: -; Owner: -
+--
+
+CREATE SCHEMA raw_tap_kafka;
+
+
+--
+-- Name: raw_tap_shopify; Type: SCHEMA; Schema: -; Owner: -
+--
+
+CREATE SCHEMA raw_tap_shopify;
+
+
+--
 -- Name: tap_csv; Type: SCHEMA; Schema: -; Owner: -
 --
 
@@ -1475,6 +1510,74 @@ ALTER SEQUENCE public.shopify_shops_id_seq OWNED BY public.shopify_shops.id;
 
 
 --
+-- Name: singer_global_sync_attempts; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.singer_global_sync_attempts (
+    id bigint NOT NULL,
+    key character varying NOT NULL,
+    failure_reason character varying,
+    finished_at timestamp without time zone,
+    last_progress_at timestamp without time zone,
+    started_at timestamp without time zone,
+    success boolean,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: singer_global_sync_attempts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.singer_global_sync_attempts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: singer_global_sync_attempts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.singer_global_sync_attempts_id_seq OWNED BY public.singer_global_sync_attempts.id;
+
+
+--
+-- Name: singer_global_sync_states; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.singer_global_sync_states (
+    id bigint NOT NULL,
+    key character varying NOT NULL,
+    state jsonb NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: singer_global_sync_states_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.singer_global_sync_states_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: singer_global_sync_states_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.singer_global_sync_states_id_seq OWNED BY public.singer_global_sync_states.id;
+
+
+--
 -- Name: singer_sync_attempts; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1630,6 +1733,225 @@ CREATE SEQUENCE public.users_id_seq
 --
 
 ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
+
+
+--
+-- Name: snowplow_production_enriched; Type: TABLE; Schema: raw_tap_kafka; Owner: -
+--
+
+CREATE TABLE raw_tap_kafka.snowplow_production_enriched (
+    app_id text,
+    platform text,
+    etl_tstamp text,
+    collector_tstamp text,
+    dvce_tstamp text,
+    event text,
+    event_id text,
+    txn_id bigint,
+    name_tracker text,
+    v_tracker text,
+    v_collector text,
+    v_etl text,
+    user_id text,
+    user_ipaddress text,
+    user_fingerprint text,
+    domain_userid text,
+    domain_sessionidx bigint,
+    network_userid text,
+    geo_country text,
+    geo_region text,
+    geo_city text,
+    geo_zipcode text,
+    geo_latitude double precision,
+    geo_longitude double precision,
+    geo_region_name text,
+    geo_location text,
+    ip_isp text,
+    ip_org text,
+    ip_domain text,
+    ip_netspeed text,
+    page_url text,
+    page_title text,
+    page_referrer text,
+    page_urlscheme text,
+    page_urlhost text,
+    page_urlport bigint,
+    page_urlpath text,
+    page_urlquery text,
+    page_urlfragment text,
+    refr_urlscheme text,
+    refr_urlhost text,
+    refr_urlport bigint,
+    refr_urlpath text,
+    refr_urlquery text,
+    refr_urlfragment text,
+    refr_medium text,
+    refr_source text,
+    refr_term text,
+    mkt_medium text,
+    mkt_source text,
+    mkt_term text,
+    mkt_content text,
+    mkt_campaign text,
+    se_category text,
+    se_action text,
+    se_label text,
+    se_property text,
+    se_value text,
+    tr_orderid text,
+    tr_affiliation text,
+    tr_total double precision,
+    tr_tax double precision,
+    tr_shipping double precision,
+    tr_city text,
+    tr_state text,
+    tr_country text,
+    ti_orderid text,
+    ti_sku text,
+    ti_name text,
+    ti_category text,
+    ti_price double precision,
+    ti_quantity bigint,
+    pp_xoffset_min bigint,
+    pp_xoffset_max bigint,
+    pp_yoffset_min bigint,
+    pp_yoffset_max bigint,
+    useragent text,
+    br_name text,
+    br_family text,
+    br_version text,
+    br_type text,
+    br_renderengine text,
+    br_lang text,
+    br_features_pdf boolean,
+    br_features_flash boolean,
+    br_features_java boolean,
+    br_features_director boolean,
+    br_features_quicktime boolean,
+    br_features_realplayer boolean,
+    br_features_windowsmedia boolean,
+    br_features_gears boolean,
+    br_features_silverlight boolean,
+    br_cookies boolean,
+    br_colordepth text,
+    br_viewwidth bigint,
+    br_viewheight bigint,
+    os_name text,
+    os_family text,
+    os_manufacturer text,
+    os_timezone text,
+    dvce_type text,
+    dvce_ismobile boolean,
+    dvce_screenwidth bigint,
+    dvce_screenheight bigint,
+    doc_charset text,
+    doc_width bigint,
+    doc_height bigint,
+    tr_currency text,
+    tr_total_base double precision,
+    tr_tax_base double precision,
+    tr_shipping_base double precision,
+    ti_currency text,
+    ti_price_base double precision,
+    base_currency text,
+    geo_timezone text,
+    mkt_clickid text,
+    mkt_network text,
+    etl_tags text,
+    dvce_sent_tstamp text,
+    refr_domain_userid text,
+    refr_dvce_tstamp text,
+    session_id text,
+    _sdc_received_at timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_table_version bigint,
+    _sdc_batched_at timestamp with time zone,
+    _sdc_primary_key text NOT NULL
+);
+
+
+--
+-- Name: TABLE snowplow_production_enriched; Type: COMMENT; Schema: raw_tap_kafka; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_kafka.snowplow_production_enriched IS '{"path": ["snowplow-production-enriched"], "version": null, "schema_version": 2, "key_properties": ["_sdc_primary_key"], "mappings": {"app_id": {"type": ["string", "null"], "from": ["app_id"]}, "platform": {"type": ["string", "null"], "from": ["platform"]}, "etl_tstamp": {"type": ["string", "null"], "from": ["etl_tstamp"]}, "collector_tstamp": {"type": ["string", "null"], "from": ["collector_tstamp"]}, "dvce_tstamp": {"type": ["string", "null"], "from": ["dvce_tstamp"]}, "event": {"type": ["string", "null"], "from": ["event"]}, "event_id": {"type": ["string", "null"], "from": ["event_id"]}, "txn_id": {"type": ["integer", "null"], "from": ["txn_id"]}, "name_tracker": {"type": ["string", "null"], "from": ["name_tracker"]}, "v_tracker": {"type": ["string", "null"], "from": ["v_tracker"]}, "v_collector": {"type": ["string", "null"], "from": ["v_collector"]}, "v_etl": {"type": ["string", "null"], "from": ["v_etl"]}, "user_id": {"type": ["string", "null"], "from": ["user_id"]}, "user_ipaddress": {"type": ["string", "null"], "from": ["user_ipaddress"]}, "user_fingerprint": {"type": ["string", "null"], "from": ["user_fingerprint"]}, "domain_userid": {"type": ["string", "null"], "from": ["domain_userid"]}, "domain_sessionidx": {"type": ["integer", "null"], "from": ["domain_sessionidx"]}, "network_userid": {"type": ["string", "null"], "from": ["network_userid"]}, "geo_country": {"type": ["string", "null"], "from": ["geo_country"]}, "geo_region": {"type": ["string", "null"], "from": ["geo_region"]}, "geo_city": {"type": ["string", "null"], "from": ["geo_city"]}, "geo_zipcode": {"type": ["string", "null"], "from": ["geo_zipcode"]}, "geo_latitude": {"type": ["number", "null"], "from": ["geo_latitude"]}, "geo_longitude": {"type": ["number", "null"], "from": ["geo_longitude"]}, "geo_region_name": {"type": ["string", "null"], "from": ["geo_region_name"]}, "geo_location": {"type": ["string", "null"], "from": ["geo_location"]}, "ip_isp": {"type": ["string", "null"], "from": ["ip_isp"]}, "ip_org": {"type": ["string", "null"], "from": ["ip_org"]}, "ip_domain": {"type": ["string", "null"], "from": ["ip_domain"]}, "ip_netspeed": {"type": ["string", "null"], "from": ["ip_netspeed"]}, "page_url": {"type": ["string", "null"], "from": ["page_url"]}, "page_title": {"type": ["string", "null"], "from": ["page_title"]}, "page_referrer": {"type": ["string", "null"], "from": ["page_referrer"]}, "page_urlscheme": {"type": ["string", "null"], "from": ["page_urlscheme"]}, "page_urlhost": {"type": ["string", "null"], "from": ["page_urlhost"]}, "page_urlport": {"type": ["integer", "null"], "from": ["page_urlport"]}, "page_urlpath": {"type": ["string", "null"], "from": ["page_urlpath"]}, "page_urlquery": {"type": ["string", "null"], "from": ["page_urlquery"]}, "page_urlfragment": {"type": ["string", "null"], "from": ["page_urlfragment"]}, "refr_urlscheme": {"type": ["string", "null"], "from": ["refr_urlscheme"]}, "refr_urlhost": {"type": ["string", "null"], "from": ["refr_urlhost"]}, "refr_urlport": {"type": ["integer", "null"], "from": ["refr_urlport"]}, "refr_urlpath": {"type": ["string", "null"], "from": ["refr_urlpath"]}, "refr_urlquery": {"type": ["string", "null"], "from": ["refr_urlquery"]}, "refr_urlfragment": {"type": ["string", "null"], "from": ["refr_urlfragment"]}, "refr_medium": {"type": ["string", "null"], "from": ["refr_medium"]}, "refr_source": {"type": ["string", "null"], "from": ["refr_source"]}, "refr_term": {"type": ["string", "null"], "from": ["refr_term"]}, "mkt_medium": {"type": ["string", "null"], "from": ["mkt_medium"]}, "mkt_source": {"type": ["string", "null"], "from": ["mkt_source"]}, "mkt_term": {"type": ["string", "null"], "from": ["mkt_term"]}, "mkt_content": {"type": ["string", "null"], "from": ["mkt_content"]}, "mkt_campaign": {"type": ["string", "null"], "from": ["mkt_campaign"]}, "se_category": {"type": ["string", "null"], "from": ["se_category"]}, "se_action": {"type": ["string", "null"], "from": ["se_action"]}, "se_label": {"type": ["string", "null"], "from": ["se_label"]}, "se_property": {"type": ["string", "null"], "from": ["se_property"]}, "se_value": {"type": ["string", "null"], "from": ["se_value"]}, "tr_orderid": {"type": ["string", "null"], "from": ["tr_orderid"]}, "tr_affiliation": {"type": ["string", "null"], "from": ["tr_affiliation"]}, "tr_total": {"type": ["number", "null"], "from": ["tr_total"]}, "tr_tax": {"type": ["number", "null"], "from": ["tr_tax"]}, "tr_shipping": {"type": ["number", "null"], "from": ["tr_shipping"]}, "tr_city": {"type": ["string", "null"], "from": ["tr_city"]}, "tr_state": {"type": ["string", "null"], "from": ["tr_state"]}, "tr_country": {"type": ["string", "null"], "from": ["tr_country"]}, "ti_orderid": {"type": ["string", "null"], "from": ["ti_orderid"]}, "ti_sku": {"type": ["string", "null"], "from": ["ti_sku"]}, "ti_name": {"type": ["string", "null"], "from": ["ti_name"]}, "ti_category": {"type": ["string", "null"], "from": ["ti_category"]}, "ti_price": {"type": ["number", "null"], "from": ["ti_price"]}, "ti_quantity": {"type": ["integer", "null"], "from": ["ti_quantity"]}, "pp_xoffset_min": {"type": ["integer", "null"], "from": ["pp_xoffset_min"]}, "pp_xoffset_max": {"type": ["integer", "null"], "from": ["pp_xoffset_max"]}, "pp_yoffset_min": {"type": ["integer", "null"], "from": ["pp_yoffset_min"]}, "pp_yoffset_max": {"type": ["integer", "null"], "from": ["pp_yoffset_max"]}, "useragent": {"type": ["string", "null"], "from": ["useragent"]}, "br_name": {"type": ["string", "null"], "from": ["br_name"]}, "br_family": {"type": ["string", "null"], "from": ["br_family"]}, "br_version": {"type": ["string", "null"], "from": ["br_version"]}, "br_type": {"type": ["string", "null"], "from": ["br_type"]}, "br_renderengine": {"type": ["string", "null"], "from": ["br_renderengine"]}, "br_lang": {"type": ["string", "null"], "from": ["br_lang"]}, "br_features_pdf": {"type": ["boolean", "null"], "from": ["br_features_pdf"]}, "br_features_flash": {"type": ["boolean", "null"], "from": ["br_features_flash"]}, "br_features_java": {"type": ["boolean", "null"], "from": ["br_features_java"]}, "br_features_director": {"type": ["boolean", "null"], "from": ["br_features_director"]}, "br_features_quicktime": {"type": ["boolean", "null"], "from": ["br_features_quicktime"]}, "br_features_realplayer": {"type": ["boolean", "null"], "from": ["br_features_realplayer"]}, "br_features_windowsmedia": {"type": ["boolean", "null"], "from": ["br_features_windowsmedia"]}, "br_features_gears": {"type": ["boolean", "null"], "from": ["br_features_gears"]}, "br_features_silverlight": {"type": ["boolean", "null"], "from": ["br_features_silverlight"]}, "br_cookies": {"type": ["boolean", "null"], "from": ["br_cookies"]}, "br_colordepth": {"type": ["string", "null"], "from": ["br_colordepth"]}, "br_viewwidth": {"type": ["integer", "null"], "from": ["br_viewwidth"]}, "br_viewheight": {"type": ["integer", "null"], "from": ["br_viewheight"]}, "os_name": {"type": ["string", "null"], "from": ["os_name"]}, "os_family": {"type": ["string", "null"], "from": ["os_family"]}, "os_manufacturer": {"type": ["string", "null"], "from": ["os_manufacturer"]}, "os_timezone": {"type": ["string", "null"], "from": ["os_timezone"]}, "dvce_type": {"type": ["string", "null"], "from": ["dvce_type"]}, "dvce_ismobile": {"type": ["boolean", "null"], "from": ["dvce_ismobile"]}, "dvce_screenwidth": {"type": ["integer", "null"], "from": ["dvce_screenwidth"]}, "dvce_screenheight": {"type": ["integer", "null"], "from": ["dvce_screenheight"]}, "doc_charset": {"type": ["string", "null"], "from": ["doc_charset"]}, "doc_width": {"type": ["integer", "null"], "from": ["doc_width"]}, "doc_height": {"type": ["integer", "null"], "from": ["doc_height"]}, "tr_currency": {"type": ["string", "null"], "from": ["tr_currency"]}, "tr_total_base": {"type": ["number", "null"], "from": ["tr_total_base"]}, "tr_tax_base": {"type": ["number", "null"], "from": ["tr_tax_base"]}, "tr_shipping_base": {"type": ["number", "null"], "from": ["tr_shipping_base"]}, "ti_currency": {"type": ["string", "null"], "from": ["ti_currency"]}, "ti_price_base": {"type": ["number", "null"], "from": ["ti_price_base"]}, "base_currency": {"type": ["string", "null"], "from": ["base_currency"]}, "geo_timezone": {"type": ["string", "null"], "from": ["geo_timezone"]}, "mkt_clickid": {"type": ["string", "null"], "from": ["mkt_clickid"]}, "mkt_network": {"type": ["string", "null"], "from": ["mkt_network"]}, "etl_tags": {"type": ["string", "null"], "from": ["etl_tags"]}, "dvce_sent_tstamp": {"type": ["string", "null"], "from": ["dvce_sent_tstamp"]}, "refr_domain_userid": {"type": ["string", "null"], "from": ["refr_domain_userid"]}, "refr_dvce_tstamp": {"type": ["string", "null"], "from": ["refr_dvce_tstamp"]}, "session_id": {"type": ["string", "null"], "from": ["session_id"]}, "_sdc_received_at": {"type": ["string", "null"], "from": ["_sdc_received_at"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_table_version": {"type": ["integer", "null"], "from": ["_sdc_table_version"]}, "_sdc_batched_at": {"type": ["string", "null"], "from": ["_sdc_batched_at"], "format": "date-time"}, "_sdc_primary_key": {"type": ["string"], "from": ["_sdc_primary_key"]}}}';
+
+
+--
+-- Name: snowplow_production_enriched__contexts_com_google_analytics_coo; Type: TABLE; Schema: raw_tap_kafka; Owner: -
+--
+
+CREATE TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_google_analytics_coo (
+    _ga text,
+    _sdc_source_key__sdc_primary_key text NOT NULL,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE snowplow_production_enriched__contexts_com_google_analytics_coo; Type: COMMENT; Schema: raw_tap_kafka; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_google_analytics_coo IS '{"path": ["snowplow-production-enriched", "contexts_com_google_analytics_cookies_1"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key__sdc_primary_key"], "mappings": {"_ga": {"type": ["string", "null"], "from": ["_ga"]}, "_sdc_source_key__sdc_primary_key": {"type": ["string"], "from": ["_sdc_source_key__sdc_primary_key"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: snowplow_production_enriched__contexts_com_snowplowanalytics_sn; Type: TABLE; Schema: raw_tap_kafka; Owner: -
+--
+
+CREATE TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_snowplowanalytics_sn (
+    id text,
+    _sdc_source_key__sdc_primary_key text NOT NULL,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE snowplow_production_enriched__contexts_com_snowplowanalytics_sn; Type: COMMENT; Schema: raw_tap_kafka; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_snowplowanalytics_sn IS '{"path": ["snowplow-production-enriched", "contexts_com_snowplowanalytics_snowplow_web_page_1"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key__sdc_primary_key"], "mappings": {"id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key__sdc_primary_key": {"type": ["string"], "from": ["_sdc_source_key__sdc_primary_key"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: snowplow_production_enriched__contexts_org_w3_performance_timin; Type: TABLE; Schema: raw_tap_kafka; Owner: -
+--
+
+CREATE TABLE raw_tap_kafka.snowplow_production_enriched__contexts_org_w3_performance_timin (
+    navigationstart double precision,
+    unloadeventstart double precision,
+    unloadeventend double precision,
+    redirectstart double precision,
+    redirectend double precision,
+    fetchstart double precision,
+    domainlookupstart double precision,
+    domainlookupend double precision,
+    connectstart double precision,
+    connectend double precision,
+    secureconnectionstart double precision,
+    requeststart double precision,
+    responsestart double precision,
+    responseend double precision,
+    domloading double precision,
+    dominteractive double precision,
+    domcontentloadedeventstart double precision,
+    domcontentloadedeventend double precision,
+    domcomplete double precision,
+    loadeventstart double precision,
+    loadeventend double precision,
+    _sdc_source_key__sdc_primary_key text NOT NULL,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE snowplow_production_enriched__contexts_org_w3_performance_timin; Type: COMMENT; Schema: raw_tap_kafka; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_kafka.snowplow_production_enriched__contexts_org_w3_performance_timin IS '{"path": ["snowplow-production-enriched", "contexts_org_w3_performance_timing_1"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key__sdc_primary_key"], "mappings": {"navigationstart": {"type": ["number", "null"], "from": ["navigationStart"]}, "unloadeventstart": {"type": ["number", "null"], "from": ["unloadEventStart"]}, "unloadeventend": {"type": ["number", "null"], "from": ["unloadEventEnd"]}, "redirectstart": {"type": ["number", "null"], "from": ["redirectStart"]}, "redirectend": {"type": ["number", "null"], "from": ["redirectEnd"]}, "fetchstart": {"type": ["number", "null"], "from": ["fetchStart"]}, "domainlookupstart": {"type": ["number", "null"], "from": ["domainLookupStart"]}, "domainlookupend": {"type": ["number", "null"], "from": ["domainLookupEnd"]}, "connectstart": {"type": ["number", "null"], "from": ["connectStart"]}, "connectend": {"type": ["number", "null"], "from": ["connectEnd"]}, "secureconnectionstart": {"type": ["number", "null"], "from": ["secureConnectionStart"]}, "requeststart": {"type": ["number", "null"], "from": ["requestStart"]}, "responsestart": {"type": ["number", "null"], "from": ["responseStart"]}, "responseend": {"type": ["number", "null"], "from": ["responseEnd"]}, "domloading": {"type": ["number", "null"], "from": ["domLoading"]}, "dominteractive": {"type": ["number", "null"], "from": ["domInteractive"]}, "domcontentloadedeventstart": {"type": ["number", "null"], "from": ["domContentLoadedEventStart"]}, "domcontentloadedeventend": {"type": ["number", "null"], "from": ["domContentLoadedEventEnd"]}, "domcomplete": {"type": ["number", "null"], "from": ["domComplete"]}, "loadeventstart": {"type": ["number", "null"], "from": ["loadEventStart"]}, "loadeventend": {"type": ["number", "null"], "from": ["loadEventEnd"]}, "_sdc_source_key__sdc_primary_key": {"type": ["string"], "from": ["_sdc_source_key__sdc_primary_key"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
 
 
 --
@@ -4548,6 +4870,20 @@ ALTER TABLE ONLY public.shopify_shops ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
+-- Name: singer_global_sync_attempts id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.singer_global_sync_attempts ALTER COLUMN id SET DEFAULT nextval('public.singer_global_sync_attempts_id_seq'::regclass);
+
+
+--
+-- Name: singer_global_sync_states id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.singer_global_sync_states ALTER COLUMN id SET DEFAULT nextval('public.singer_global_sync_states_id_seq'::regclass);
+
+
+--
 -- Name: singer_sync_attempts id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -4793,6 +5129,22 @@ ALTER TABLE ONLY public.shopify_shops
 
 
 --
+-- Name: singer_global_sync_attempts singer_global_sync_attempts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.singer_global_sync_attempts
+    ADD CONSTRAINT singer_global_sync_attempts_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: singer_global_sync_states singer_global_sync_states_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.singer_global_sync_states
+    ADD CONSTRAINT singer_global_sync_states_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: singer_sync_attempts singer_sync_attempts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -5010,6 +5362,34 @@ CREATE INDEX que_scheduler_audit_enqueued_job_class ON public.que_scheduler_audi
 --
 
 CREATE INDEX que_scheduler_audit_enqueued_job_id ON public.que_scheduler_audit_enqueued USING btree (job_id);
+
+
+--
+-- Name: tp_1b9996ac3d9bfa38a194b7f90058d6267acc74be; Type: INDEX; Schema: raw_tap_kafka; Owner: -
+--
+
+CREATE INDEX tp_1b9996ac3d9bfa38a194b7f90058d6267acc74be ON raw_tap_kafka.snowplow_production_enriched USING btree (_sdc_primary_key, _sdc_sequence);
+
+
+--
+-- Name: tp_599bbd259081e52e887f982c90b4ff45f11cff32; Type: INDEX; Schema: raw_tap_kafka; Owner: -
+--
+
+CREATE INDEX tp_599bbd259081e52e887f982c90b4ff45f11cff32 ON raw_tap_kafka.snowplow_production_enriched__contexts_com_google_analytics_coo USING btree (_sdc_source_key__sdc_primary_key, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_7b5fa05192875198b44852b01f3b063feddbf07b; Type: INDEX; Schema: raw_tap_kafka; Owner: -
+--
+
+CREATE INDEX tp_7b5fa05192875198b44852b01f3b063feddbf07b ON raw_tap_kafka.snowplow_production_enriched__contexts_com_snowplowanalytics_sn USING btree (_sdc_source_key__sdc_primary_key, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_c5053d20eb12c8f09f21a55c8c980cb1f1befc98; Type: INDEX; Schema: raw_tap_kafka; Owner: -
+--
+
+CREATE INDEX tp_c5053d20eb12c8f09f21a55c8c980cb1f1befc98 ON raw_tap_kafka.snowplow_production_enriched__contexts_org_w3_performance_timin USING btree (_sdc_source_key__sdc_primary_key, _sdc_sequence, _sdc_level_0_id);
 
 
 --
@@ -6350,6 +6730,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190903210744'),
 ('20190905191310'),
 ('20190910185603'),
-('20190916215131');
+('20190916215131'),
+('20190917231914'),
+('20190917231933');
 
 
