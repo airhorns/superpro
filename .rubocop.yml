@@ -1,5 +1,6 @@
 AllCops:
   Exclude:
+    - "bin/**/*"
     - "vendor/**/*"
     - "node_modules/**/*"
     - "test/scratch/**/*"
@@ -24,9 +25,6 @@ Layout:
 Metrics:
   Enabled: false
 
-Style:
-  Enabled: false
-
 Naming/MemoizedInstanceVariableName:
   Enabled: false
 
@@ -41,4 +39,67 @@ Rails/UnknownEnv:
     - integration_test
 
 Bundler/OrderedGems:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: true
+  EnforcedStyle: always
+
+Style/StringLiterals:
+  Enabled: false
+
+Style/TrailingCommaInHashLiteral:
+  Enabled: false
+
+Style/TrailingCommaInArguments:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Style/HashSyntax:
+  Enabled: false
+
+Style/NumericLiterals:
+  Enabled: false
+
+Style/IfUnlessModifier:
+  Enabled: false
+
+Style/RedundantParentheses:
+  Enabled: false
+
+Style/GuardClause:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+  Exclude:
+    - spec/**/*
+    - test/**/*
+    - db/**/*
+    - app/graphql/types/**/*
+    - app/graphql/mutations/**/*
+    - app/helpers/**/*
+    - app/jobs/**/*
+
+Style/RedundantSelf:
+  Enabled: false
+
+Style/DoubleNegation:
+  Enabled: false
+
+Style/NegatedIf:
+  Enabled: false
+
+Style/TrailingUnderscoreVariable:
+  Enabled: false
+
+Style/EmptyMethod:
+  Enabled: false
+
+Style/StringLiteralsInInterpolation:
+  Enabled: false
+
+Style/TrailingCommaInArrayLiteral:
   Enabled: false

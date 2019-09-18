@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Types::Infrastructure::AttachmentContainerEnum < Types::BaseEnum
   value "NOT_IMPLEMENTED", "Not yet implemented"
   # value "PROCESS_EXECUTION", "A process execution", value: ProcessExecution

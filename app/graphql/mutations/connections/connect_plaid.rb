@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Mutations::Connections::ConnectPlaid < Mutations::BaseMutation
   argument :public_token, String, required: true
 

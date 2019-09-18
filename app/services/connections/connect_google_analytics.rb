@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "google/apis/analyticsreporting_v4"
 require "google/apis/analytics_v3"
 require "google/api_client/client_secrets"
@@ -29,7 +31,7 @@ class Connections::ConnectGoogleAnalytics
   def list_views(ga_credential)
     existing_configured_view_ids = @account.google_analytics_credentials
       .includes(:connection)
-      .where({ configured: true })
+      .where(configured: true)
       .to_a
       .filter { |credential| credential.connection.present? && !credential.connection.discarded? }
       .map { |credential| credential.view_id.to_s }
@@ -58,14 +60,13 @@ class Connections::ConnectGoogleAnalytics
     service.list_account_summaries.items.each do |account|
       account.web_properties.each do |property|
         property.profiles.each do |profile|
-          if profile.id == view_id
-            ga_credential.view_id = profile.id
-            ga_credential.view_name = profile.name
-            ga_credential.property_id = property.id
-            ga_credential.property_name = property.name
-            ga_credential.ga_account_id = account.id
-            ga_credential.ga_account_name = account.name
-          end
+          next unless profile.id == view_id
+          ga_credential.view_id = profile.id
+          ga_credential.view_name = profile.name
+          ga_credential.property_id = property.id
+          ga_credential.property_name = property.name
+          ga_credential.ga_account_id = account.id
+          ga_credential.ga_account_name = account.name
         end
       end
     end
@@ -99,12 +100,12 @@ class Connections::ConnectGoogleAnalytics
   private
 
   def secrets_for_credential(ga_credential)
-    Google::APIClient::ClientSecrets.new({
+    Google::APIClient::ClientSecrets.new(
       "web" => { "access_token" => ga_credential.token,
                 "refresh_token" => ga_credential.refresh_token,
                 "client_id" => Rails.configuration.google[:google_oauth_client_id],
                 "client_secret" => Rails.configuration.google[:google_oauth_client_secret] },
-    })
+    )
   end
 
   def service_for_credential(ga_credential)

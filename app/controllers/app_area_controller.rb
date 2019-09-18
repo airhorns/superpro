@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AppAreaController < ApplicationController
   before_action :authenticate_user!
   before_action :set_current_account
@@ -15,11 +17,11 @@ class AppAreaController < ApplicationController
       account_id = session[:current_account_id]
     end
 
-    if account_id.present?
-      account = current_user.permissioned_accounts.kept.find(account_id)
-    else
-      account = current_user.permissioned_accounts.kept.first!
-    end
+    account = if account_id.present?
+                current_user.permissioned_accounts.kept.find(account_id)
+              else
+                current_user.permissioned_accounts.kept.first!
+              end
 
     @current_account = account
     session[:current_account_id] = @current_account.id

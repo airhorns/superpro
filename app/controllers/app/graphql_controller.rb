@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class App::GraphQLController < AppAreaController
   skip_before_action :verify_authenticity_token, if: :trusted_dev_request?
   skip_before_action :authenticate_user!, if: :trusted_dev_request?

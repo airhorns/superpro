@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class Auth::SessionsController < Devise::SessionsController
   clear_respond_to
   respond_to :json
 
   def create
-    self.resource = warden.authenticate!({ scope: resource_name, recall: "#{controller_path}#failure" })
+    self.resource = warden.authenticate!(scope: resource_name, recall: "#{controller_path}#failure")
     sign_in(resource_name, resource)
     render json: { success: true, redirect_url: after_sign_in_path_for(resource) }
   end

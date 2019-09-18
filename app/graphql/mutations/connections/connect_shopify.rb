@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Mutations::Connections::ConnectShopify < Mutations::BaseMutation
   argument :api_key, String, required: true
   argument :password, String, required: true

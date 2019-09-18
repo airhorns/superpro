@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Types::JSONScalar < GraphQL::Schema::Scalar
   description "Untyped JSON output useful for bags of values who's keys or types can't be predicted ahead of time."
 

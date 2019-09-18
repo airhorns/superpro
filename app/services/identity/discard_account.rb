@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Identity::DiscardAccount
   def initialize(user)
     @user = user
@@ -8,6 +10,6 @@ class Identity::DiscardAccount
       account.discard
     end
 
-    return account, nil
+    [account, nil]
   end
 end

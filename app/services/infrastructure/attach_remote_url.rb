@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "uri"
 
 class Infrastructure::AttachRemoteUrl
@@ -16,6 +18,6 @@ class Infrastructure::AttachRemoteUrl
     resource.files.attach(io: file, filename: File.basename(uri.path))
 
     attachment = resource.files_attachments.order("created_at DESC").first
-    return attachment, nil
+    [attachment, nil]
   end
 end

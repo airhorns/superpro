@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "factory_bot_rails"
 require "faker"
 Rails.logger = ActiveSupport::Logger.new(STDOUT)

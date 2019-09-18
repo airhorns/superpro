@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateSingerSyncAttempts < ActiveRecord::Migration[6.0]
   def change
     create_table :singer_sync_attempts do |t|

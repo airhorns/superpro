@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Types::Connections::ConnectionIntegrationUnion < Types::BaseUnion
   description "Objects which may be connected to the system"
   possible_types Types::Connections::PlaidItemType, Types::Connections::ShopifyShopType, Types::Connections::GoogleAnalyticsCredentialType
@@ -11,7 +13,7 @@ class Types::Connections::ConnectionIntegrationUnion < Types::BaseUnion
     elsif object.is_a?(GoogleAnalyticsCredential)
       Types::Connections::GoogleAnalyticsCredentialType
     else
-      raise RuntimeError.new("Unknown object type #{object.class}")
+      raise "Unknown object type #{object.class}"
     end
   end
 end

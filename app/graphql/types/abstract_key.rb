@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Types::AbstractKey < Types::BaseScalar
   def self.coerce_input(input_value, _context)
     input_value

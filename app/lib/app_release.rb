@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module AppRelease
   def self.current
     @current ||= begin

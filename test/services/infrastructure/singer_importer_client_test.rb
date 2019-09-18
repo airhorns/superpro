@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "test_helper"
 
 class Infrastructure::SingerImporterClientTest < ActiveSupport::TestCase
@@ -20,7 +22,7 @@ class Infrastructure::SingerImporterClientTest < ActiveSupport::TestCase
       on_state_message: ->(state) { states << state },
     )
 
-    assert states.size > 0
+    assert_not states.empty?
     assert_not_nil states[-1]["bookmarks"]["orders"]
   end
 

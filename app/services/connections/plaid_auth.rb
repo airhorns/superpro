@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Connections::PlaidAuth
   def initialize(account, user)
     @account = account

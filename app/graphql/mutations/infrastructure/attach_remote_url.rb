@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Mutations::Infrastructure::AttachRemoteUrl < Mutations::BaseMutation
   argument :url, String, required: true
   argument :attachment_container_id, GraphQL::Types::ID, required: true

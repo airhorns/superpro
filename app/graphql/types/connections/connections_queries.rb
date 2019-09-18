@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Types::Connections::ConnectionsQueries
   extend ActiveSupport::Concern
 

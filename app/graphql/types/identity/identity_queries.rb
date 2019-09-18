@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Types::Identity::IdentityQueries
   extend ActiveSupport::Concern
 

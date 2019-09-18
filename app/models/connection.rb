@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: connections
@@ -24,7 +26,7 @@ class Connection < ApplicationRecord
 
   belongs_to :integration, polymorphic: true, optional: false, autosave: true
   enum strategy: { singer: "singer", plaid: "plaid" }, _prefix: true
-  validates :strategy, inclusion: { in: ["singer", "plaid"] }
+  validates :strategy, inclusion: { in: %w[singer plaid] }
 
   has_one :singer_sync_state, dependent: :destroy
   has_many :singer_sync_attempts, dependent: :destroy

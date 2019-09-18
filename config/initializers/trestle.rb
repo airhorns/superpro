@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Trestle.configure do |config|
   # == Customization Options
   #

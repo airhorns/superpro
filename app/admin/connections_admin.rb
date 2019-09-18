@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Trestle.resource(:connections) do
   menu do
     item :connections, icon: "fa fa-star"

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Types::Connections::PlaidItemType < Types::BaseObject
   field :id, GraphQL::Types::ID, null: false
   field :account_id, String, null: false

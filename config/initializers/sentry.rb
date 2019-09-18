@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Raven.configure do |config|
   if Rails.env.production?
     config.dsn = ENV["BACKEND_SENTRY_DSN"]

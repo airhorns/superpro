@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Mutations::Infrastructure::AttachDirectUploadedFile < Mutations::BaseMutation
   argument :direct_upload_signed_id, String, required: true
   argument :attachment_container_id, GraphQL::Types::ID, required: true

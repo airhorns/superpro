@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApplicationController < ActionController::Base
   around_action :set_instrumentation_context
   after_action :track_server_side_page_view

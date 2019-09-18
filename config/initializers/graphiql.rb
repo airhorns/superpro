@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module GraphiQL
   module Rails
     class EditorsController < ActionController::Base
@@ -5,7 +7,7 @@ module GraphiQL
 
       def graphql_endpoint_path
         if !params[:graphql_path]
-          raise(%|You must include `graphql_path: "/my/endpoint"` when mounting GraphiQL::Rails::Engine|)
+          raise(%(You must include `graphql_path: "/my/endpoint"` when mounting GraphiQL::Rails::Engine))
         end
         if params[:graphql_path].respond_to?(:call)
           params[:graphql_path].call(params)

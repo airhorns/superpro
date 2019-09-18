@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Types::Identity::UserType < Types::BaseObject
   field :id, GraphQL::Types::ID, null: false
   field :full_name, String, null: true

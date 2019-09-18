@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class App::ClientSideAppController < AppAreaController
   include BaseClientSideAppSettings
 
@@ -6,7 +8,7 @@ class App::ClientSideAppController < AppAreaController
     currency_details = currency.as_json.slice("id", "symbol", "iso_code", "symbol").transform_keys! { |k| k.camelize(:lower) }
     currency_details[:exponent] = currency.exponent
 
-    @settings = base_settings.merge({
+    @settings = base_settings.merge(
       accountId: current_account.id,
       baseUrl: app_root_path(current_account),
       cubeJs: {
@@ -19,6 +21,6 @@ class App::ClientSideAppController < AppAreaController
         webhookUrl: connections_plaid_webhook_url,
       },
       reportingCurrency: currency_details,
-    })
+    )
   end
 end

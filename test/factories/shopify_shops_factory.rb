@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :shopify_shop do
     sequence(:shopify_domain) { |n| "test-shop-#{n}.myshopify.com" }

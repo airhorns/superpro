@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 # Pared down, JSON responder version of the invitations controller from devise_invitable
 # Devise powers the Superpro auth API, but not the actual views, so this has to be pretty customized
 class Auth::InvitationsController < DeviseController
-  prepend_before_action :require_no_authentication, only: [:edit, :update]
+  prepend_before_action :require_no_authentication, only: %i[edit update]
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   clear_respond_to
@@ -58,6 +60,6 @@ class Auth::InvitationsController < DeviseController
   end
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:accept_invitation, keys: [:full_name, :mutation_client_id])
+    devise_parameter_sanitizer.permit(:accept_invitation, keys: %i[full_name mutation_client_id])
   end
 end

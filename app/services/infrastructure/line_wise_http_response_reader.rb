@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Infrastructure::LineWiseHttpResponseReader
   def initialize(response)
     @response = response
@@ -16,7 +18,7 @@ class Infrastructure::LineWiseHttpResponseReader
       remainings = chunk
     end
 
-    if remainings.size > 0
+    if !remainings.empty?
       yield remainings
     end
   end

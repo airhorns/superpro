@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Infrastructure::PeriodicShopifyScriptTagSetupJob < Que::Job
   def run
     Connection.kept.includes(:account).where(strategy: "singer", integration_type: "ShopifyShop", enabled: true).find_each do |connection|

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Mutations::Identity::CreateAccount < Mutations::BaseMutation
   argument :account, Types::Identity::AccountAttributes, required: true
 

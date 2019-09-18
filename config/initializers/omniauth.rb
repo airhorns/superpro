@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 OmniAuth.config.logger = Rails.logger
 
 HOST_CONSTRAINT_SETUP = lambda do |env|
   req = Rack::Request.new(env)
   if req.host != Rails.configuration.x.domains.app
-    raise ActionController::RoutingError.new("Not Found")
+    raise ActionController::RoutingError, "Not Found"
   end
 end
 

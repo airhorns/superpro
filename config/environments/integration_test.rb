@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Test-like environment for integration tests that tries to mimic production but
 # is set up to run a webserver for Cypress.
 

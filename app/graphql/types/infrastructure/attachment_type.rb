@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Types::Infrastructure::AttachmentType < Types::BaseObject
   field :id, GraphQL::Types::ID, null: false
   field :content_type, String, null: false
@@ -6,15 +8,15 @@ class Types::Infrastructure::AttachmentType < Types::BaseObject
   field :url, String, null: false
 
   def content_type
-    load_blob.then { |blob| blob.content_type }
+    load_blob.then(&:content_type)
   end
 
   def filename
-    load_blob.then { |blob| blob.filename }
+    load_blob.then(&:filename)
   end
 
   def bytesize
-    load_blob.then { |blob| blob.byte_size }
+    load_blob.then(&:byte_size)
   end
 
   def url

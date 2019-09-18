@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "que"
 
 # Monkeypatch the Que logger to send log events with the event as the first parameter, and all it's semantic juicy goodness as keyword arguments to the semantic-logger gem

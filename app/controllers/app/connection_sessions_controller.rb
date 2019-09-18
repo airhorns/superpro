@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class App::ConnectionSessionsController < AppAreaController
   def create
     case params[:provider]
@@ -9,7 +11,7 @@ class App::ConnectionSessionsController < AppAreaController
         redirect_to "/settings/connections/google_analytics/#{ga_credential.id}/complete"
       end
     else
-      raise RuntimeError.new("Unknown connection session provider callback")
+      raise "Unknown connection session provider callback"
     end
   end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative "boot"
 
 require "rails"
@@ -60,14 +62,14 @@ module Superpro
 
     config.log_tags = {
       request_id: :request_id,
-      user_id: ->request { request.session[:current_user_id] },
-      account_id: ->request { request.session[:current_account_id] },
-      client_session_id: ->request { request.headers["X-Client-Session-Id"] },
+      user_id: ->(request) { request.session[:current_user_id] },
+      account_id: ->(request) { request.session[:current_account_id] },
+      client_session_id: ->(request) { request.headers["X-Client-Session-Id"] },
     }
 
     # Make sure that the semantic logger middleware which evaluats the above log_tags procs has a session on the request
     config.middleware.move_after ActionDispatch::Session::CacheStore, RailsSemanticLogger::Rack::Logger, config.log_tags
-    config.middleware.insert_before ActionDispatch::Static, SilentLogMiddleware, { silence: ["/health_check", %r{^/assets/}, "/favicon.ico"] }
+    config.middleware.insert_before ActionDispatch::Static, SilentLogMiddleware, silence: ["/health_check", %r{^/assets/}, "/favicon.ico"]
     config.middleware.use Flipper::Middleware::Memoizer
   end
 end

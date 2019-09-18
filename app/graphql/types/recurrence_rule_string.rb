@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Types::RecurrenceRuleString < GraphQL::Types::String
   def self.coerce_input(input_value, context)
     str = super(input_value, context)

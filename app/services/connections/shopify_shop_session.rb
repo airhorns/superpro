@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Connections::ShopifyShopSession
   def self.with_session(api_key, password, domain)
     shop_url = "https://#{api_key}:#{password}@#{domain}"

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Connections
   class ConnectShopify
     VALID_SHOPIFY_DOMAIN_SUFFIX = "myshopify.com"

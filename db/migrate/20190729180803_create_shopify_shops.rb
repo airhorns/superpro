@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateShopifyShops < ActiveRecord::Migration[6.0]
   def change
     create_table :shopify_shops do |t|
@@ -14,6 +16,6 @@ class CreateShopifyShops < ActiveRecord::Migration[6.0]
 
     add_foreign_key :shopify_shops, :accounts
     add_foreign_key :shopify_shops, :users, column: :creator_id
-    add_index :shopify_shops, [:account_id, :shopify_domain], unique: true
+    add_index :shopify_shops, %i[account_id shopify_domain], unique: true
   end
 end

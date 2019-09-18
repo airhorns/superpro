@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Mutations::Connections::SetConnectionEnabled < Mutations::BaseMutation
   argument :connection_id, GraphQL::Types::ID, required: true
   argument :enabled, Boolean, required: true

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "test_helper"
 
 class Connections::PlaidAuthTest < ActiveSupport::TestCase
@@ -11,7 +13,7 @@ class Connections::PlaidAuthTest < ActiveSupport::TestCase
     assert_not_nil item.item_id
     assert_not_nil item.access_token
 
-    assert item.plaid_item_accounts.size > 0
+    assert_not item.plaid_item_accounts.empty?
     assert_not_nil item.plaid_item_accounts[0].name
     assert_not_nil item.plaid_item_accounts[0].type
     assert_not_nil item.plaid_item_accounts[0].subtype

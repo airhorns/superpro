@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Types::AuthQueryType < Types::BaseObject
   field :accounts, [Types::Identity::AccountType], null: false
   field :discarded_accounts, [Types::Identity::AccountType], null: false

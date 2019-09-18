@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Types::AppMutationType < Types::BaseObject
   # Identity
   field :invite_user, mutation: Mutations::Identity::InviteUser

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Connections::PlaidTransactionSync
   def self.date_range_for_initial_sync(item)
     [item.created_at - 30.days, item.created_at]

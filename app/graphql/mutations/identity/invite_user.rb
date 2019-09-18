@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Mutations::Identity::InviteUser < Mutations::BaseMutation
   argument :user, Types::Identity::UserInviteAttributes, required: true
 

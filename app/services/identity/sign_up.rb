@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Identity::SignUp
   def create_user_and_account(attributes)
     new_user = User.new(attributes[:user])

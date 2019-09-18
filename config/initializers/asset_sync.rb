@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 if defined?(AssetSync)
   AssetSync.configure do |config|
     config.run_on_precompile = false

@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class AdminAuthConstraint
   def matches?(request)
-    return !!request.session[:trestle_user]
+    !!request.session[:trestle_user]
   end
 end

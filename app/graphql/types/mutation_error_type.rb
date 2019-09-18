@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Types::MutationErrorType < Types::BaseObject
   description "Error object describing a reason why a mutation was unsuccessful, specific to a particular field."
   field :field, String, null: false, description: "The absolute name of the field relative to the root object that caused this error"
@@ -31,7 +33,7 @@ class Types::MutationErrorType < Types::BaseObject
     object_path = segments[0...-1]
     object = errors.base
 
-    if object_path.size > 0
+    if !object_path.empty?
       object = Rodash.get(object, object_path.join("."))
     end
 

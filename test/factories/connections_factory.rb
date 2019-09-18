@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :shopify_connection, class: Connection do
     display_name { "Test Shopify Connection" }

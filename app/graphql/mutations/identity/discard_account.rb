@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Mutations::Identity::DiscardAccount < Mutations::BaseMutation
   argument :id, GraphQL::Types::ID, required: true
 

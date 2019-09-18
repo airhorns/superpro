@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Superpro definition of the base connection in order to customize it.
 # Makes the `edges` and `nodes` fields non-nullable, and the contents of the array nonullable as well.
 class Types::BaseRelayConnectionType < Types::BaseObject

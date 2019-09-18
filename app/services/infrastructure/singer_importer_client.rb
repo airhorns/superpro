@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Infrastructure::SingerImporterClient
   class UncleanExitException < RuntimeError; end
 
@@ -31,7 +33,7 @@ class Infrastructure::SingerImporterClient
 
           if blob["stream"] == "SYSTEM"
             if !blob["success"].nil? && !blob["success"]
-              raise UncleanExitException.new("Process #{blob["tag"]} exited with exit code #{blob["exit_code"]}")
+              raise UncleanExitException, "Process #{blob["tag"]} exited with exit code #{blob["exit_code"]}"
             else
               got_success_message = true
             end
@@ -41,7 +43,7 @@ class Infrastructure::SingerImporterClient
     )
 
     if !got_success_message
-      raise UncleanExitException.new("singer-importer response ended prematurely without signalling success")
+      raise UncleanExitException, "singer-importer response ended prematurely without signalling success"
     end
   end
 end

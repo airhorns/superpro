@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "securerandom"
 
 module Infrastructure
@@ -22,7 +24,7 @@ module Infrastructure
         },
         transform: {},
       },
-    }
+    }.freeze
 
     def self.run_in_background(global_sync_key)
       args = [{ global_sync_key: global_sync_key }]
@@ -63,7 +65,7 @@ module Infrastructure
             state: state,
             url_params: { global_import_id: attempt_record.id },
             transform: details.fetch(:transform),
-            on_state_message: Proc.new do |new_state|
+            on_state_message: proc do |new_state|
               SingerGlobalSyncAttempt.transaction do
                 state_record.state = new_state
                 state_record.save!

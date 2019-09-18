@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This implements a version of the form processing done by Rails' own direct upload functionality
 # in a way that we can invoke it easier from the client side.
 # See https://edgeguides.rubyonrails.org/active_storage_overview.html#direct-uploads for more details.
@@ -15,6 +17,6 @@ class Infrastructure::AttachDirectUploadedFile
     blob = ActiveStorage::Blob.find_signed(direct_upload_signed_id)
     resource.files.attach(blob)
     attachment = resource.files_attachments.find_by(blob_id: blob.id)
-    return attachment, nil
+    [attachment, nil]
   end
 end

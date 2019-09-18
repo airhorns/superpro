@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Infrastructure::PeriodicSyncAllConnectionsJob < Que::Job
   def run
     Connection.kept.where(strategy: "singer", enabled: true).find_each do |connection|

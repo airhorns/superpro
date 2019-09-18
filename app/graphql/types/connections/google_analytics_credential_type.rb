@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Types::Connections::GoogleAnalyticsCredentialType < Types::BaseObject
   field :id, String, null: false
   field :configured, String, null: false

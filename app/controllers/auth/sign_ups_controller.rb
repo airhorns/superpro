@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 class Auth::SignUpsController < ApplicationController
   respond_to :json
   prepend_before_action :require_no_signed_in_user, only: [:sign_up]
 
   def sign_up
     user, account, errors = Identity::SignUp.new.create_user_and_account(params.require(:sign_up).permit(
-      user: [:email, :full_name, :password, :password_confirmation, :mutation_client_id],
-      account: [:name, :mutation_client_id],
+      user: %i[email full_name password password_confirmation mutation_client_id],
+      account: %i[name mutation_client_id],
     ))
 
     success = user.present?

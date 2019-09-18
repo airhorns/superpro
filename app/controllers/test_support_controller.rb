@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TestSupportController < ActionController::Base
   skip_before_action :verify_authenticity_token
 

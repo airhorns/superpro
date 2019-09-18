@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Trestle.resource(:singer_global_sync_attempts) do
   menu do
     item :singer_global_sync_attempts, icon: "fa fa-star"

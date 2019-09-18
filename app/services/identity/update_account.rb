@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Identity::UpdateAccount
   def initialize(account, user)
     @account = account

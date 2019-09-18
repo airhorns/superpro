@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Mutations::Connections::CompleteGoogleAnalyticsSetup < Mutations::BaseMutation
   argument :credential_id, GraphQL::Types::ID, required: true
   argument :view_id, String, required: true

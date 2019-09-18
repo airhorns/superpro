@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "digest"
 require "subprocess"
 require "test_helper"
@@ -6,7 +8,7 @@ class UncommittedChangesTest < ActiveSupport::TestCase
   test "graphql components can be built and doesn't have uncommitted changes" do
     skip("no dev server running") unless dev_server_running?
     assert_no_filesystem_changes(Rails.root.join("app", "assets", "javascript").to_s) do
-      Subprocess.check_output(%W{yarn generate-graphql})
+      Subprocess.check_output(%w[yarn generate-graphql])
     end
   end
 

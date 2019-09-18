@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ENV["HONEYCOMB_DISABLE_AUTOCONFIGURE"] = "true"
 require "honeycomb-beeline"
 require "honeycomb/integrations/active_support"

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Identity::InviteUser
   def initialize(account, inviter)
     @account = account
@@ -23,7 +25,7 @@ class Identity::InviteUser
     if success
       return user, nil
     else
-      return nil, if user then user.errors else nil end
+      return nil, user ? user.errors : nil
     end
   end
 end

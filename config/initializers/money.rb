@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Money.locale_backend = :i18n
 
 MoneyRails.configure do |config|
@@ -49,7 +51,7 @@ MoneyRails.configure do |config|
   #   priority:            1,
   #   iso_code:            "EU4",
   #   name:                "Euro with subunit of 4 digits",
-  #   symbol:              "€",
+  #   symbol:              "EURO",  # should use symbol but rubocop doesnt like it commented
   #   symbol_first:        true,
   #   subunit:             "Subcent",
   #   subunit_to_unit:     10000,

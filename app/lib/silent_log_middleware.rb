@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 # Rack middleware to silence the logger for stuff we don't need.
 # Uses semantic_logger's Logger#silence to do stuff, so it's simple.
 # Based on https://github.com/stve/silencer
 class SilentLogMiddleware
-  METHODS = %i[options get head post put delete trace connect patch]
+  METHODS = %i[options get head post put delete trace connect patch].freeze
 
   def initialize(app, options = {})
     @app = app

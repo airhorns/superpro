@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Connections::ConnectionEnabler
   def initialize(account, user)
     @account = account

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Identity::CreateAccount
   def initialize(creator)
     @creator = creator

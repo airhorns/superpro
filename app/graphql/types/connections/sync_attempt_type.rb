@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Types::Connections::SyncAttemptType < Types::BaseObject
   field :id, GraphQL::Types::ID, null: false
   field :success, Boolean, null: true

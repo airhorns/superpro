@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Infrastructure::AttachmentContainerHelpers
   def attachment_container(container_class, _container_id)
     # scope = case

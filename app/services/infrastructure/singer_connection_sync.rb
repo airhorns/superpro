@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "securerandom"
 
 module Infrastructure
@@ -27,7 +29,7 @@ module Infrastructure
 
     def sync(connection)
       if !connection.strategy_singer?
-        raise RuntimeError.new("Trying to singer sync a connection that isn't using singer for sync. #{connection}")
+        raise "Trying to singer sync a connection that isn't using singer for sync. #{connection}"
       end
 
       attempt_record = @account.singer_sync_attempts.create!(connection: connection, started_at: Time.now.utc, last_progress_at: Time.now.utc)
@@ -48,7 +50,7 @@ module Infrastructure
             state: state,
             url_params: { import_id: attempt_record.id },
             transform: transform_for_connection(connection),
-            on_state_message: Proc.new do |new_state|
+            on_state_message: proc do |new_state|
               SingerSyncAttempt.transaction do
                 state_record.state = new_state
                 state_record.save!
@@ -79,7 +81,7 @@ module Infrastructure
       case connection.integration
       when ShopifyShop then "shopify"
       when GoogleAnalyticsCredential then "google-analytics"
-      else raise RuntimeError.new("Unknown connection integration class #{connection.integration.class} for connection #{connection.id}")
+      else raise "Unknown connection integration class #{connection.integration.class} for connection #{connection.id}"
       end
     end
 
@@ -105,7 +107,7 @@ module Infrastructure
           "start_date": start_date,
         }
       else
-        raise RuntimeError.new("Unknown connection integration class #{connection.integration.class} for connection #{connection.id}")
+        raise "Unknown connection integration class #{connection.integration.class} for connection #{connection.id}"
       end
     end
 
@@ -115,7 +117,7 @@ module Infrastructure
       case connection.integration
       when ShopifyShop then field_values[:shop_id] = connection.integration.shop_id
       when GoogleAnalyticsCredential then field_values[:view_id] = connection.integration.view_id
-      else raise RuntimeError.new("Unknown connection integration class #{connection.integration.class} for connection #{connection.id}")
+      else raise "Unknown connection integration class #{connection.integration.class} for connection #{connection.id}"
       end
 
       field_values

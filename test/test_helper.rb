@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ENV["RAILS_ENV"] ||= "test"
 require_relative "../config/environment"
 require "rails/test_help"
@@ -18,7 +20,7 @@ VCR.configure do |config|
   config.filter_sensitive_data("<GA_OAUTH_REFRESH_TOKEN>") { ENV["GA_OAUTH_REFRESH_TOKEN"] }
   config.filter_sensitive_data("<KAFKA_SASL_PLAIN_PASSWORD>") { ENV["KAFKA_SASL_PLAIN_PASSWORD"] }
   config.filter_sensitive_data("<AUTHORIZATION>") do |interaction|
-    interaction.request.headers.has_key?("Authorization") && interaction.request.headers["Authorization"].first
+    interaction.request.headers.key?("Authorization") && interaction.request.headers["Authorization"].first
   end
   config.filter_sensitive_data("<KUBE_CLUSTER_ADDRESS>") { "kubernetes.docker.internal:6443" }
 end
@@ -28,7 +30,7 @@ class ActiveSupport::TestCase
   include GraphQLTestHelper
 
   # Run tests in parallel with specified workers
-  if ENV["CI"] or ENV["PARALLEL"]
+  if ENV["CI"] || ENV["PARALLEL"]
     parallelize(workers: :number_of_processors)
   end
 

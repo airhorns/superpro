@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateGoogleAnalyticsCredentials < ActiveRecord::Migration[6.0]
   def change
     create_table :google_analytics_credentials do |t|

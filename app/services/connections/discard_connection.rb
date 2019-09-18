@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Connections::DiscardConnection
   def initialize(account, user)
     @account = account

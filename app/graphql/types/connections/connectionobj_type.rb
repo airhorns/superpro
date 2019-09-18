@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This class has a weird name because if it's named ConnectionType it collides with something inside GraphQL and throws super duper weird errors all over the place.
 class Types::Connections::ConnectionobjType < Types::BaseObject
   field :id, GraphQL::Types::ID, null: false
