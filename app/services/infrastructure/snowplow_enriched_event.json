@@ -1,5 +1,5 @@
 {
-  "description": "Schema for a Snowplow event which has been successfully enriched and landed in kafka",
+  "description": "Schema for an event which has been successfully enriched and stored in Elasticsearch",
   "self": {
     "vendor": "com.snowplow.superpro",
     "name": "snowplow_enriched_event",
@@ -15,21 +15,36 @@
       "type": ["string", "null"]
     },
     "etl_tstamp": {
-      "type": ["string", "null"],
-      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}\\.[0-9]{3}$"
+      "type": ["string", "null"]
     },
     "collector_tstamp": {
-      "type": ["string", "null"],
-      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}\\.[0-9]{3}$"
+      "type": ["string", "null"]
     },
-    "dvce_tstamp": {
-      "type": ["string", "null"],
-      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}\\.[0-9]{3}$"
+    "derived_tstamp": {
+      "type": ["string", "null"]
+    },
+    "true_tstamp": {
+      "type": ["string", "null"]
     },
     "event": {
       "type": ["string", "null"]
     },
     "event_id": {
+      "type": ["string"]
+    },
+    "event_vendor": {
+      "type": ["string", "null"]
+    },
+    "event_name": {
+      "type": ["string", "null"]
+    },
+    "event_format": {
+      "type": ["string", "null"]
+    },
+    "event_version": {
+      "type": ["string", "null"]
+    },
+    "event_fingerprint": {
       "type": ["string", "null"]
     },
     "txn_id": {
@@ -59,11 +74,11 @@
     "domain_userid": {
       "type": ["string", "null"]
     },
-    "domain_sessionid": {
-      "type": ["string", "null"]
-    },
     "domain_sessionidx": {
       "type": ["integer", "null"]
+    },
+    "domain_sessionid": {
+      "type": ["string", "null"]
     },
     "network_userid": {
       "type": ["string", "null"]
@@ -96,7 +111,7 @@
     "ip_isp": {
       "type": ["string", "null"]
     },
-    "ip_org": {
+    "ip_organization": {
       "type": ["string", "null"]
     },
     "ip_domain": {
@@ -327,6 +342,9 @@
     "dvce_screenheight": {
       "type": ["integer", "null"]
     },
+    "dvce_created_tstamp": {
+      "type": ["string", "null"]
+    },
     "doc_charset": {
       "type": ["string", "null"]
     },
@@ -392,12 +410,125 @@
         }
       }
     },
+    "contexts_com_superpro_shopify_page_meta_1": {
+      "type": ["array", "null"],
+      "items": {
+        "type": ["object", "null"],
+        "properties": {
+          "selectedVariantId": {
+            "type": ["string", "null"]
+          },
+          "currency": {
+            "type": ["string", "null"]
+          },
+          "product": {
+            "type": ["object", "null"],
+            "properties": {
+              "id": {
+                "type": ["number", "null"]
+              },
+              "type": {
+                "type": ["string", "null"]
+              },
+              "vendor": {
+                "type": ["string", "null"]
+              },
+              "variants": {
+                "type": ["array", "null"],
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": ["number", "null"]
+                    },
+                    "price": {
+                      "type": ["number", "null"]
+                    },
+                    "name": {
+                      "type": ["string", "null"]
+                    },
+                    "public_title": {
+                      "type": ["string", "null"]
+                    },
+                    "sku": {
+                      "type": ["string", "null"]
+                    }
+                  },
+                  "additionalProperties": true
+                }
+              }
+            },
+            "additionalProperties": true
+          },
+          "page": {
+            "type": ["object", "null"],
+            "properties": {
+              "pageType": {
+                "type": ["string", "null"]
+              },
+              "resourceId": {
+                "type": ["number", "null"]
+              },
+              "resourceType": {
+                "type": ["string", "null"]
+              }
+            },
+            "additionalProperties": true
+          }
+        },
+        "additionalProperties": true
+      }
+    },
     "contexts_com_snowplowanalytics_snowplow_web_page_1": {
       "type": ["array", "null"],
       "items": {
         "type": ["object", "null"],
         "properties": {
           "id": {
+            "type": ["string", "null"]
+          }
+        }
+      }
+    },
+    "contexts_com_snowplowanalytics_snowplow_ua_parser_context_1": {
+      "type": ["array", "null"],
+      "items": {
+        "type": ["object", "null"],
+        "properties": {
+          "useragentFamily": {
+            "type": ["string", "null"]
+          },
+          "useragentMajor": {
+            "type": ["string", "null"]
+          },
+          "useragentMinor": {
+            "type": ["string", "null"]
+          },
+          "useragentPatch": {
+            "type": ["string", "null"]
+          },
+          "useragentVersion": {
+            "type": ["string", "null"]
+          },
+          "osFamily": {
+            "type": ["string", "null"]
+          },
+          "osMajor": {
+            "type": ["string", "null"]
+          },
+          "osMinor": {
+            "type": ["string", "null"]
+          },
+          "osPatch": {
+            "type": ["string", "null"]
+          },
+          "osPatchMinor": {
+            "type": ["string", "null"]
+          },
+          "osVersion": {
+            "type": ["string", "null"]
+          },
+          "deviceFamily": {
             "type": ["string", "null"]
           }
         }
