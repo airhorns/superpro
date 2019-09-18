@@ -51,15 +51,15 @@ jobs:
 
   lint_ruby:
     docker:
-      - image: circleci/ruby:2.6.4-node
+      - image: circleci/ruby:2.6.2-node
     working_directory: ~/repo
     steps:
       - checkout
       - restore_cache: &ruby_dependencies_restore_cache
           keys:
-            - ruby-v2-dependencies-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
-            - ruby-v2-dependencies-{{ .Branch }}-
-            - ruby-v2-dependencies-
+            - ruby-v1-dependencies-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
+            - ruby-v1-dependencies-{{ .Branch }}-
+            - ruby-v1-dependencies-
       - run: &ruby_dependencies
           name: Install Ruby dependencies
           command: |
@@ -69,7 +69,7 @@ jobs:
       - save_cache:
           paths:
             - ~/repo/vendor/bundle
-          key: ruby-v2-dependencies-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
+          key: ruby-v1-dependencies-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
       - run:
           name: Run rufo linter
           command: bundle exec rufo --check app config lib test
@@ -79,7 +79,7 @@ jobs:
 
   test_ruby:
     docker: &backend_docker_setup
-      - image: circleci/ruby:2.6.4-node
+      - image: circleci/ruby:2.6.2-node
         environment:
           SECRET_KEY_BASE: value-needed-to-boot-app
           REDIS_URL: redis://localhost:6379/1
@@ -181,7 +181,7 @@ jobs:
 
   lint_kubernetes:
     docker:
-      - image: circleci/ruby:2.6.4
+      - image: circleci/ruby:2.6.2
     working_directory: ~/repo
     steps:
       - checkout

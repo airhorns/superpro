@@ -12,7 +12,7 @@ http_interactions:
       Accept:
       - application/json
       User-Agent:
-      - ShopifyAPI/8.0.0 ActiveResource/5.1.0 Ruby/2.6.4
+      - ShopifyAPI/8.0.0 ActiveResource/5.1.0 Ruby/2.6.2
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
   response:
@@ -103,7 +103,7 @@ http_interactions:
     body:
       encoding: ASCII-8BIT
       string: '{"script_tags":[{"id":62012260407,"src":"https:\/\/sp-assets.superpro.io\/shopify-script-tag.js","event":"onload","created_at":"2019-09-16T21:38:55-04:00","updated_at":"2019-09-16T21:38:55-04:00","display_scope":"all"}]}'
-    http_version:
+    http_version: 
   recorded_at: Tue, 17 Sep 2019 01:40:02 GMT
 - request:
     method: delete
@@ -117,7 +117,7 @@ http_interactions:
       Accept:
       - application/json
       User-Agent:
-      - ShopifyAPI/8.0.0 ActiveResource/5.1.0 Ruby/2.6.4
+      - ShopifyAPI/8.0.0 ActiveResource/5.1.0 Ruby/2.6.2
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
   response:
@@ -208,7 +208,7 @@ http_interactions:
     body:
       encoding: ASCII-8BIT
       string: "{}"
-    http_version:
+    http_version: 
   recorded_at: Tue, 17 Sep 2019 01:40:03 GMT
 - request:
     method: get
@@ -222,7 +222,7 @@ http_interactions:
       Accept:
       - application/json
       User-Agent:
-      - ShopifyAPI/8.0.0 ActiveResource/5.1.0 Ruby/2.6.4
+      - ShopifyAPI/8.0.0 ActiveResource/5.1.0 Ruby/2.6.2
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
   response:
@@ -313,7 +313,7 @@ http_interactions:
     body:
       encoding: ASCII-8BIT
       string: '{"script_tags":[]}'
-    http_version:
+    http_version: 
   recorded_at: Tue, 17 Sep 2019 01:40:04 GMT
 - request:
     method: get
@@ -327,7 +327,7 @@ http_interactions:
       Accept:
       - application/json
       User-Agent:
-      - ShopifyAPI/8.0.0 ActiveResource/5.1.0 Ruby/2.6.4
+      - ShopifyAPI/8.0.0 ActiveResource/5.1.0 Ruby/2.6.2
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
   response:
@@ -416,7 +416,7 @@ http_interactions:
     body:
       encoding: ASCII-8BIT
       string: '{"script_tags":[]}'
-    http_version:
+    http_version: 
   recorded_at: Tue, 17 Sep 2019 01:40:05 GMT
 - request:
     method: post
@@ -430,7 +430,7 @@ http_interactions:
       Content-Type:
       - application/json
       User-Agent:
-      - ShopifyAPI/8.0.0 ActiveResource/5.1.0 Ruby/2.6.4
+      - ShopifyAPI/8.0.0 ActiveResource/5.1.0 Ruby/2.6.2
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
       Accept:
@@ -521,7 +521,7 @@ http_interactions:
     body:
       encoding: UTF-8
       string: '{"script_tag":{"id":62012325943,"src":"https:\/\/sp-assets.superpro.io\/shopify-script-tag.js","event":"onload","created_at":"2019-09-16T21:40:05-04:00","updated_at":"2019-09-16T21:40:05-04:00","display_scope":"all"}}'
-    http_version:
+    http_version: 
   recorded_at: Tue, 17 Sep 2019 01:40:05 GMT
 - request:
     method: get
@@ -535,7 +535,7 @@ http_interactions:
       Accept:
       - application/json
       User-Agent:
-      - ShopifyAPI/8.0.0 ActiveResource/5.1.0 Ruby/2.6.4
+      - ShopifyAPI/8.0.0 ActiveResource/5.1.0 Ruby/2.6.2
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
   response:
@@ -624,6 +624,6 @@ http_interactions:
     body:
       encoding: ASCII-8BIT
       string: '{"script_tags":[{"id":62012325943,"src":"https:\/\/sp-assets.superpro.io\/shopify-script-tag.js","event":"onload","created_at":"2019-09-16T21:40:05-04:00","updated_at":"2019-09-16T21:40:05-04:00","display_scope":"all"}]}'
-    http_version:
+    http_version: 
   recorded_at: Tue, 17 Sep 2019 01:40:06 GMT
 recorded_with: VCR 5.0.0
