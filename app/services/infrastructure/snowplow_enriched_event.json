@@ -1,5 +1,5 @@
 {
-  "description": "Schema for an event which has been successfully enriched and stored in Elasticsearch",
+  "description": "Schema for a Snowplow event which has been successfully enriched and landed in kafka",
   "self": {
     "vendor": "com.snowplow.superpro",
     "name": "snowplow_enriched_event",
@@ -57,6 +57,9 @@
       "type": ["string", "null"]
     },
     "domain_userid": {
+      "type": ["string", "null"]
+    },
+    "domain_sessionid": {
       "type": ["string", "null"]
     },
     "domain_sessionidx": {
@@ -328,54 +331,6 @@
       "type": ["string", "null"]
     },
     "doc_width": {
-      "type": ["integer", "null"]
-    },
-    "doc_height": {
-      "type": ["integer", "null"]
-    },
-    "doc_height": {
-      "type": ["integer", "null"]
-    },
-    "doc_height": {
-      "type": ["integer", "null"]
-    },
-    "doc_height": {
-      "type": ["integer", "null"]
-    },
-    "doc_height": {
-      "type": ["integer", "null"]
-    },
-    "doc_height": {
-      "type": ["integer", "null"]
-    },
-    "doc_height": {
-      "type": ["integer", "null"]
-    },
-    "doc_height": {
-      "type": ["integer", "null"]
-    },
-    "doc_height": {
-      "type": ["integer", "null"]
-    },
-    "doc_height": {
-      "type": ["integer", "null"]
-    },
-    "doc_height": {
-      "type": ["integer", "null"]
-    },
-    "doc_height": {
-      "type": ["integer", "null"]
-    },
-    "doc_height": {
-      "type": ["integer", "null"]
-    },
-    "doc_height": {
-      "type": ["integer", "null"]
-    },
-    "doc_height": {
-      "type": ["integer", "null"]
-    },
-    "doc_height": {
       "type": ["integer", "null"]
     },
     "doc_height": {

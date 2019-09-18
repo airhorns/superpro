@@ -6,6 +6,14 @@ module Infrastructure
   class SingerGlobalSync
     include SemanticLogger::Loggable
 
+    KAFKA_CONSUMER_CONFIG = {
+      security_protocol: "SASL_SSL",
+      sasl_mechanism: "PLAIN",
+      sasl_plain_username: Rails.configuration.kafka[:sasl_plain_username],
+      sasl_plain_password: Rails.configuration.kafka[:sasl_plain_password],
+      api_version: "1.0.0",
+    }.freeze
+
     GLOBAL_SYNCS = {
       "snowplow_kafka" => {
         importer: "kafka",
@@ -13,14 +21,18 @@ module Infrastructure
           bootstrap_servers: Rails.configuration.kafka[:bootstrap_servers],
           topic: "snowplow-production-enriched",
           deserializer: "snowplow_analytics_sdk.event_transformer.transform",
-          consumer_config: {
-            security_protocol: "SASL_SSL",
-            sasl_mechanism: "PLAIN",
-            sasl_plain_username: Rails.configuration.kafka[:sasl_plain_username],
-            sasl_plain_password: Rails.configuration.kafka[:sasl_plain_password],
-            api_version: "1.0.0",
-          },
+          consumer_config: KAFKA_CONSUMER_CONFIG,
           schema: JSON.parse(File.read(Rails.root.join("app", "services", "infrastructure", "snowplow_enriched_event.json"))),
+        },
+        transform: {},
+      },
+      "snowplow_kafka_errors" => {
+        importer: "kafka",
+        config: {
+          bootstrap_servers: Rails.configuration.kafka[:bootstrap_servers],
+          topic: "snowplow-production-enriched-bad",
+          consumer_config: KAFKA_CONSUMER_CONFIG,
+          schema: JSON.parse(File.read(Rails.root.join("app", "services", "infrastructure", "snowplow_enriched_bad_event.json"))),
         },
         transform: {},
       },
