@@ -17,7 +17,7 @@ Trestle.resource(:singer_global_sync_attempts) do
     column :finished_at
     column :failure_reason
     column :links do |attempt|
-      link_to "Logs", SingerSyncAttemptsHelper.logs_url(attempt), target: "_blank", rel: "noopener"
+      link_to "Logs", SingerSyncAttemptsHelper.global_logs_url(attempt), target: "_blank", rel: "noopener"
     end
   end
 end

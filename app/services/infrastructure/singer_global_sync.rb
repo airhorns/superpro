@@ -53,7 +53,7 @@ module Infrastructure
 
       details = GLOBAL_SYNCS.fetch(@key)
 
-      logger.tagged global_sync_key: @key, import_id: attempt_record.id do
+      logger.tagged global_sync_key: @key, global_import_id: attempt_record.id do
         begin
           logger.info "Beginning Singer sync for global", importer: details.fetch(:importer)
 
@@ -61,7 +61,7 @@ module Infrastructure
             details.fetch(:importer),
             config: details.fetch(:config),
             state: state,
-            url_params: { import_id: attempt_record.id },
+            url_params: { global_import_id: attempt_record.id },
             transform: details.fetch(:transform),
             on_state_message: Proc.new do |new_state|
               SingerGlobalSyncAttempt.transaction do
