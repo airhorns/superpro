@@ -1,0 +1,33 @@
+{
+  "description": "Schema for a Snowplow event which failed to be enriched and then was landed in kafka",
+  "self": {
+    "vendor": "com.snowplow.superpro",
+    "name": "snowplow_enriched_event_bad",
+    "format": "jsonschema",
+    "version": "1-0-0"
+  },
+  "type": ["object", "null"],
+  "properties": {
+    "line": {
+      "type": ["string", "null"]
+    },
+    "failure_tstamp": {
+      "type": ["string", "null"]
+    },
+    "errors": {
+      "type": ["array", "null"],
+      "items": {
+        "type": ["object", "null"],
+        "properties": {
+          "level": {
+            "type": ["string", "null"]
+          },
+          "message": {
+            "type": ["string", "null"]
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": true
+}

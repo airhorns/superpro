@@ -1,0 +1,114 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://singer-importer-docker-compose.supo.dev:4002/import/kafka?global_import_id=1
+    body:
+      encoding: UTF-8
+      string: '{"singer_config":{"bootstrap_servers":"pkc-43n10.us-central1.gcp.confluent.cloud:9092","topic":"snowplow-production-enriched-bad","consumer_config":{"security_protocol":"SASL_SSL","sasl_mechanism":"PLAIN","sasl_plain_username":"TQAEH2LA3GBUO3HD","sasl_plain_password":"<KAFKA_SASL_PLAIN_PASSWORD>","api_version":"1.0.0"},"schema":{"description":"Schema
+        for a Snowplow event which failed to be enriched and then was landed in kafka","self":{"vendor":"com.snowplow.superpro","name":"snowplow_enriched_event_bad","format":"jsonschema","version":"1-0-0"},"type":["object","null"],"properties":{"line":{"type":["string","null"]},"failure_tstamp":{"type":["string","null"]},"errors":{"type":["array","null"],"items":{"type":["object","null"],"properties":{"level":{"type":["string","null"]},"message":{"type":["string","null"]}}}}},"additionalProperties":true}},"singer_state":{},"transform":{}}'
+    headers:
+      Accept:
+      - "*/*"
+      User-Agent:
+      - rest-client/2.1.0 (darwin18.2.0 x86_64) ruby/2.6.2p47
+      Authorization:
+      - "<AUTHORIZATION>"
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '926'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - text/singer-text; charset=utf-8
+      Connection:
+      - close
+      Server:
+      - Werkzeug/0.15.6 Python/3.7.4
+      Date:
+      - Wed, 18 Sep 2019 16:53:54 GMT
+    body:
+      encoding: UTF-8
+      string: |-
+        {"stream": "STDERR", "tag": "target", "message": "INFO PostgresTarget created with established connection: `host=postgres port=5432 dbname=superpro_development user=superpro`, PostgreSQL schema: `raw_tap_kafka`\n"}
+        {"stream": "STDERR", "tag": "target", "message": "INFO Sending version information to singer.io. To disable sending anonymous usage data, set the config parameter \"disable_collection\" to true\n"}
+        {"stream": "STDERR", "tag": "tap", "message": "WARNING use api_version=(1, 0, 0) [tuple] -- \"1.0.0\" as str is deprecated\n"}
+        {"stream": "STDERR", "tag": "tap", "message": "INFO Syncing stream:snowplow-production-enriched-bad\n"}
+        {"stream": "STDERR", "tag": "tap", "message": "INFO <BrokerConnection node_id=bootstrap-0 host=pkc-43n10.us-central1.gcp.confluent.cloud:9092 <connecting> [IPv4 ('34.68.241.146', 9092)]>: connecting to pkc-43n10.us-central1.gcp.confluent.cloud:9092 [('34.68.241.146', 9092) IPv4]\n"}
+        {"stream": "STDERR", "tag": "tap", "message": "INFO <BrokerConnection node_id=bootstrap-0 host=pkc-43n10.us-central1.gcp.confluent.cloud:9092 <authenticating> [IPv4 ('34.68.241.146', 9092)]>: Authenticated as TQAEH2LA3GBUO3HD via PLAIN\n"}
+        {"stream": "STDERR", "tag": "tap", "message": "INFO <BrokerConnection node_id=bootstrap-0 host=pkc-43n10.us-central1.gcp.confluent.cloud:9092 <authenticating> [IPv4 ('34.68.241.146', 9092)]>: Connection complete.\n"}
+        {"stream": "STDERR", "tag": "tap", "message": "INFO <BrokerConnection node_id=0 host=b0-pkc-43n10.us-central1.gcp.confluent.cloud:9092 <connecting> [IPv4 ('35.239.43.200', 9092)]>: connecting to b0-pkc-43n10.us-central1.gcp.confluent.cloud:9092 [('35.239.43.200', 9092) IPv4]\n"}
+        {"stream": "STDERR", "tag": "tap", "message": "INFO <BrokerConnection node_id=0 host=b0-pkc-43n10.us-central1.gcp.confluent.cloud:9092 <authenticating> [IPv4 ('35.239.43.200', 9092)]>: Authenticated as TQAEH2LA3GBUO3HD via PLAIN\n"}
+        {"stream": "STDERR", "tag": "tap", "message": "INFO <BrokerConnection node_id=0 host=b0-pkc-43n10.us-central1.gcp.confluent.cloud:9092 <authenticating> [IPv4 ('35.239.43.200', 9092)]>: Connection complete.\n"}
+        {"stream": "STDERR", "tag": "tap", "message": "INFO <BrokerConnection node_id=bootstrap-0 host=pkc-43n10.us-central1.gcp.confluent.cloud:9092 <connected> [IPv4 ('34.68.241.146', 9092)]>: Closing connection. \n"}
+        {"stream": "STDERR", "tag": "tap", "message": "INFO <BrokerConnection node_id=2 host=b2-pkc-43n10.us-central1.gcp.confluent.cloud:9092 <connecting> [IPv4 ('34.67.145.241', 9092)]>: connecting to b2-pkc-43n10.us-central1.gcp.confluent.cloud:9092 [('34.67.145.241', 9092) IPv4]\n"}
+        {"stream": "STDERR", "tag": "tap", "message": "INFO <BrokerConnection node_id=2 host=b2-pkc-43n10.us-central1.gcp.confluent.cloud:9092 <authenticating> [IPv4 ('34.67.145.241', 9092)]>: Authenticated as TQAEH2LA3GBUO3HD via PLAIN\n"}
+        {"stream": "STDERR", "tag": "tap", "message": "INFO <BrokerConnection node_id=2 host=b2-pkc-43n10.us-central1.gcp.confluent.cloud:9092 <authenticating> [IPv4 ('34.67.145.241', 9092)]>: Connection complete.\n"}
+        {"stream": "STDERR", "tag": "tap", "message": "INFO <BrokerConnection node_id=4 host=b4-pkc-43n10.us-central1.gcp.confluent.cloud:9092 <connecting> [IPv4 ('35.226.138.210', 9092)]>: connecting to b4-pkc-43n10.us-central1.gcp.confluent.cloud:9092 [('35.226.138.210', 9092) IPv4]\n"}
+        {"stream": "STDERR", "tag": "tap", "message": "INFO <BrokerConnection node_id=4 host=b4-pkc-43n10.us-central1.gcp.confluent.cloud:9092 <authenticating> [IPv4 ('35.226.138.210', 9092)]>: Authenticated as TQAEH2LA3GBUO3HD via PLAIN\n"}
+        {"stream": "STDERR", "tag": "tap", "message": "INFO <BrokerConnection node_id=4 host=b4-pkc-43n10.us-central1.gcp.confluent.cloud:9092 <authenticating> [IPv4 ('35.226.138.210', 9092)]>: Connection complete.\n"}
+        {"stream": "STDERR", "tag": "tap", "message": "INFO <BrokerConnection node_id=1 host=b1-pkc-43n10.us-central1.gcp.confluent.cloud:9092 <connecting> [IPv4 ('35.193.113.160', 9092)]>: connecting to b1-pkc-43n10.us-central1.gcp.confluent.cloud:9092 [('35.193.113.160', 9092) IPv4]\n"}
+        {"stream": "STDERR", "tag": "tap", "message": "INFO <BrokerConnection node_id=1 host=b1-pkc-43n10.us-central1.gcp.confluent.cloud:9092 <authenticating> [IPv4 ('35.193.113.160', 9092)]>: Authenticated as TQAEH2LA3GBUO3HD via PLAIN\n"}
+        {"stream": "STDERR", "tag": "tap", "message": "INFO <BrokerConnection node_id=1 host=b1-pkc-43n10.us-central1.gcp.confluent.cloud:9092 <authenticating> [IPv4 ('35.193.113.160', 9092)]>: Connection complete.\n"}
+        {"stream": "STDERR", "tag": "tap", "message": "INFO <BrokerConnection node_id=3 host=b3-pkc-43n10.us-central1.gcp.confluent.cloud:9092 <connecting> [IPv4 ('104.197.184.153', 9092)]>: connecting to b3-pkc-43n10.us-central1.gcp.confluent.cloud:9092 [('104.197.184.153', 9092) IPv4]\n"}
+        {"stream": "STDERR", "tag": "tap", "message": "INFO <BrokerConnection node_id=3 host=b3-pkc-43n10.us-central1.gcp.confluent.cloud:9092 <authenticating> [IPv4 ('104.197.184.153', 9092)]>: Authenticated as TQAEH2LA3GBUO3HD via PLAIN\n"}
+        {"stream": "STDERR", "tag": "tap", "message": "INFO <BrokerConnection node_id=3 host=b3-pkc-43n10.us-central1.gcp.confluent.cloud:9092 <authenticating> [IPv4 ('104.197.184.153', 9092)]>: Connection complete.\n"}
+        {"stream": "STDERR", "tag": "tap", "message": "INFO <BrokerConnection node_id=5 host=b5-pkc-43n10.us-central1.gcp.confluent.cloud:9092 <connecting> [IPv4 ('35.224.216.199', 9092)]>: connecting to b5-pkc-43n10.us-central1.gcp.confluent.cloud:9092 [('35.224.216.199', 9092) IPv4]\n"}
+        {"stream": "STDERR", "tag": "tap", "message": "INFO <BrokerConnection node_id=5 host=b5-pkc-43n10.us-central1.gcp.confluent.cloud:9092 <authenticating> [IPv4 ('35.224.216.199', 9092)]>: Authenticated as TQAEH2LA3GBUO3HD via PLAIN\n"}
+        {"stream": "STDOUT", "tag": "target", "message": "{\"bookmarks\": {\"snowplow-production-enriched-bad\": {\"version\": 1568825634533}}}\n"}
+        {"stream": "STDERR", "tag": "target", "message": "INFO Mapping: snowplow_production_enriched to ['snowplow-production-enriched']\n"}
+        {"stream": "STDERR", "tag": "target", "message": "INFO Mapping: snowplow_production_enriched__contexts_com_google_analytics_coo to ['snowplow-production-enriched', 'contexts_com_google_analytics_cookies_1']\n"}
+        {"stream": "STDERR", "tag": "target", "message": "INFO Mapping: tp_1b9996ac3d9bfa38a194b7f90058d6267acc74be to None\n"}
+        {"stream": "STDERR", "tag": "target", "message": "INFO Mapping: snowplow_production_enriched__contexts_com_snowplowanalytics_sn to ['snowplow-production-enriched', 'contexts_com_snowplowanalytics_snowplow_web_page_1']\n"}
+        {"stream": "STDERR", "tag": "target", "message": "INFO Mapping: tp_599bbd259081e52e887f982c90b4ff45f11cff32 to None\n"}
+        {"stream": "STDERR", "tag": "target", "message": "INFO Mapping: tp_7b5fa05192875198b44852b01f3b063feddbf07b to None\n"}
+        {"stream": "STDERR", "tag": "target", "message": "INFO Mapping: snowplow_production_enriched__contexts_org_w3_performance_timin to ['snowplow-production-enriched', 'contexts_org_w3_performance_timing_1']\n"}
+        {"stream": "STDERR", "tag": "target", "message": "INFO Mapping: tp_c5053d20eb12c8f09f21a55c8c980cb1f1befc98 to None\n"}
+        {"stream": "STDERR", "tag": "target", "message": "ERROR snowplow-production-enriched-bad - Table for stream does not exist\n"}
+        {"stream": "STDERR", "tag": "tap", "message": "INFO <BrokerConnection node_id=5 host=b5-pkc-43n10.us-central1.gcp.confluent.cloud:9092 <authenticating> [IPv4 ('35.224.216.199', 9092)]>: Connection complete.\n"}
+        {"stream": "STDERR", "tag": "target", "message": "INFO Mapping: snowplow_production_enriched to ['snowplow-production-enriched']\n"}
+        {"stream": "STDERR", "tag": "target", "message": "INFO Mapping: snowplow_production_enriched__contexts_com_google_analytics_coo to ['snowplow-production-enriched', 'contexts_com_google_analytics_cookies_1']\n"}
+        {"stream": "STDERR", "tag": "target", "message": "INFO Mapping: tp_1b9996ac3d9bfa38a194b7f90058d6267acc74be to None\n"}
+        {"stream": "STDERR", "tag": "target", "message": "INFO Mapping: snowplow_production_enriched__contexts_com_snowplowanalytics_sn to ['snowplow-production-enriched', 'contexts_com_snowplowanalytics_snowplow_web_page_1']\n"}
+        {"stream": "STDERR", "tag": "target", "message": "INFO Mapping: tp_599bbd259081e52e887f982c90b4ff45f11cff32 to None\n"}
+        {"stream": "STDERR", "tag": "target", "message": "INFO Mapping: tp_7b5fa05192875198b44852b01f3b063feddbf07b to None\n"}
+        {"stream": "STDERR", "tag": "target", "message": "INFO Mapping: snowplow_production_enriched__contexts_org_w3_performance_timin to ['snowplow-production-enriched', 'contexts_org_w3_performance_timing_1']\n"}
+        {"stream": "STDERR", "tag": "target", "message": "INFO Mapping: tp_c5053d20eb12c8f09f21a55c8c980cb1f1befc98 to None\n"}
+        {"stream": "STDERR", "tag": "target", "message": "INFO Stream snowplow-production-enriched-bad (snowplow_production_enriched_bad) with max_version None targetting None\n"}
+        {"stream": "STDERR", "tag": "target", "message": "INFO Root table name snowplow-production-enriched-bad\n"}
+        {"stream": "STDERR", "tag": "target", "message": "INFO Writing batch with 105 records for `snowplow-production-enriched-bad` with `key_properties`: `['_sdc_primary_key']`\n"}
+        {"stream": "STDERR", "tag": "target", "message": "INFO Writing table batch schema for `('snowplow-production-enriched-bad',)`...\n"}
+        {"stream": "STDERR", "tag": "target", "message": "INFO Table Schema Change [`snowplow_production_enriched_bad`.`('line',)`:`line`] New column (took 6 millis)\n"}
+        {"stream": "STDERR", "tag": "target", "message": "INFO Table Schema Change [`snowplow_production_enriched_bad`.`('failure_tstamp',)`:`failure_tstamp`] New column (took 2 millis)\n"}
+        {"stream": "STDERR", "tag": "target", "message": "INFO Table Schema Change [`snowplow_production_enriched_bad`.`('_sdc_received_at',)`:`_sdc_received_at`] New column (took 2 millis)\n"}
+        {"stream": "STDERR", "tag": "target", "message": "INFO Table Schema Change [`snowplow_production_enriched_bad`.`('_sdc_sequence',)`:`_sdc_sequence`] New column (took 2 millis)\n"}
+        {"stream": "STDERR", "tag": "target", "message": "INFO Table Schema Change [`snowplow_production_enriched_bad`.`('_sdc_table_version',)`:`_sdc_table_version`] New column (took 3 millis)\n"}
+        {"stream": "STDERR", "tag": "target", "message": "INFO Table Schema Change [`snowplow_production_enriched_bad`.`('_sdc_batched_at',)`:`_sdc_batched_at`] New column (took 3 millis)\n"}
+        {"stream": "STDERR", "tag": "target", "message": "INFO Table Schema Change [`snowplow_production_enriched_bad`.`('_sdc_primary_key',)`:`_sdc_primary_key`] New column (took 2 millis)\n"}
+        {"stream": "STDERR", "tag": "target", "message": "INFO METRIC: {\"type\": \"timer\", \"metric\": \"job_duration\", \"value\": 0.0499269962310791, \"tags\": {\"job_type\": \"upsert_table_schema\", \"path\": [\"snowplow-production-enriched-bad\"], \"database\": \"superpro_development\", \"schema\": \"raw_tap_kafka\", \"table\": \"snowplow_production_enriched_bad\", \"status\": \"succeeded\"}}\n"}
+        {"stream": "STDERR", "tag": "target", "message": "INFO Writing table batch with 105 rows for `('snowplow-production-enriched-bad',)`...\n"}
+        {"stream": "STDERR", "tag": "target", "message": "INFO METRIC: {\"type\": \"counter\", \"metric\": \"record_count\", \"value\": 105, \"tags\": {\"count_type\": \"table_rows_persisted\", \"path\": [\"snowplow-production-enriched-bad\"], \"database\": \"superpro_development\", \"schema\": \"raw_tap_kafka\", \"table\": \"snowplow_production_enriched_bad\"}}\n"}
+        {"stream": "STDERR", "tag": "target", "message": "INFO METRIC: {\"type\": \"timer\", \"metric\": \"job_duration\", \"value\": 0.1671152114868164, \"tags\": {\"job_type\": \"table\", \"path\": [\"snowplow-production-enriched-bad\"], \"database\": \"superpro_development\", \"schema\": \"raw_tap_kafka\", \"table\": \"snowplow_production_enriched_bad\", \"status\": \"succeeded\"}}\n"}
+        {"stream": "STDERR", "tag": "target", "message": "INFO Writing table batch schema for `('snowplow-production-enriched-bad', 'errors')`...\n"}
+        {"stream": "STDERR", "tag": "target", "message": "INFO Table Schema Change [`snowplow_production_enriched_bad__errors`.`('level',)`:`level`] New column (took 3 millis)\n"}
+        {"stream": "STDERR", "tag": "target", "message": "INFO Table Schema Change [`snowplow_production_enriched_bad__errors`.`('message',)`:`message`] New column (took 2 millis)\n"}
+        {"stream": "STDERR", "tag": "target", "message": "INFO Table Schema Change [`snowplow_production_enriched_bad__errors`.`('_sdc_source_key__sdc_primary_key',)`:`_sdc_source_key__sdc_primary_key`] New column (took 2 millis)\n"}
+        {"stream": "STDERR", "tag": "target", "message": "INFO Table Schema Change [`snowplow_production_enriched_bad__errors`.`('_sdc_sequence',)`:`_sdc_sequence`] New column (took 2 millis)\n"}
+        {"stream": "STDERR", "tag": "target", "message": "INFO Table Schema Change [`snowplow_production_enriched_bad__errors`.`('_sdc_level_0_id',)`:`_sdc_level_0_id`] New column (took 2 millis)\n"}
+        {"stream": "STDERR", "tag": "target", "message": "INFO METRIC: {\"type\": \"timer\", \"metric\": \"job_duration\", \"value\": 0.03458213806152344, \"tags\": {\"job_type\": \"upsert_table_schema\", \"path\": [\"snowplow-production-enriched-bad\", \"errors\"], \"database\": \"superpro_development\", \"schema\": \"raw_tap_kafka\", \"table\": \"snowplow_production_enriched_bad__errors\", \"status\": \"succeeded\"}}\n"}
+        {"stream": "STDERR", "tag": "target", "message": "INFO Writing table batch with 105 rows for `('snowplow-production-enriched-bad', 'errors')`...\n"}
+        {"stream": "STDERR", "tag": "target", "message": "INFO METRIC: {\"type\": \"counter\", \"metric\": \"record_count\", \"value\": 105, \"tags\": {\"count_type\": \"table_rows_persisted\", \"path\": [\"snowplow-production-enriched-bad\", \"errors\"], \"database\": \"superpro_development\", \"schema\": \"raw_tap_kafka\", \"table\": \"snowplow_production_enriched_bad__errors\"}}\n"}
+        {"stream": "STDOUT", "tag": "target", "message": "{\"bookmarks\": {\"snowplow-production-enriched-bad\": {\"version\": 1568825634533, \"offset\": {\"2\": 16, \"5\": 16, \"0\": 16, \"3\": 10, \"1\": 19, \"4\": 24}}}}\n"}
+        {"stream": "STDERR", "tag": "target", "message": "INFO METRIC: {\"type\": \"timer\", \"metric\": \"job_duration\", \"value\": 0.060347557067871094, \"tags\": {\"job_type\": \"table\", \"path\": [\"snowplow-production-enriched-bad\", \"errors\"], \"database\": \"superpro_development\", \"schema\": \"raw_tap_kafka\", \"table\": \"snowplow_production_enriched_bad__errors\", \"status\": \"succeeded\"}}\n"}
+        {"stream": "STDERR", "tag": "target", "message": "INFO METRIC: {\"type\": \"counter\", \"metric\": \"record_count\", \"value\": 210, \"tags\": {\"count_type\": \"batch_rows_persisted\", \"path\": [\"snowplow-production-enriched-bad\"], \"database\": \"superpro_development\", \"schema\": \"raw_tap_kafka\"}}\n"}
+        {"stream": "STDERR", "tag": "target", "message": "INFO METRIC: {\"type\": \"timer\", \"metric\": \"job_duration\", \"value\": 0.2387232780456543, \"tags\": {\"job_type\": \"batch\", \"path\": [\"snowplow-production-enriched-bad\"], \"database\": \"superpro_development\", \"schema\": \"raw_tap_kafka\", \"status\": \"succeeded\"}}\n"}
+        {"stream": "SYSTEM", "success": true}
+    http_version: 
+  recorded_at: Wed, 18 Sep 2019 16:54:10 GMT
+recorded_with: VCR 5.0.0

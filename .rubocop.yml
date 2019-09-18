@@ -103,3 +103,6 @@ Style/StringLiteralsInInterpolation:
 
 Style/TrailingCommaInArrayLiteral:
   Enabled: false
+
+Style/NumericPredicate:
+  Enabled: false

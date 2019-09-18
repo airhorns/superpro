@@ -24,4 +24,19 @@ class Infrastructure::SingerGlobalSyncTest < ActiveSupport::TestCase
     state = SingerGlobalSyncState.find_by(key: "snowplow_kafka")
     assert_not_nil state.state["bookmarks"]
   end
+
+  test "it can sync snowplow kafka for the bad events" do
+    @sync = Infrastructure::SingerGlobalSync.new("snowplow_kafka_errors")
+    assert_difference "SingerGlobalSyncAttempt.count", 1 do
+      @sync.sync
+    end
+    attempt = SingerGlobalSyncAttempt.order("id DESC").first
+    assert attempt.success
+    assert_not_nil attempt.started_at
+    assert_not_nil attempt.finished_at
+    assert attempt.finished_at >= attempt.started_at
+
+    state = SingerGlobalSyncState.find_by(key: "snowplow_kafka_errors")
+    assert_not_nil state.state["bookmarks"]
+  end
 end

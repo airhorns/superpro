@@ -1,5 +1,5 @@
 {
-  "description": "Schema for an event which has been successfully enriched and stored in Elasticsearch",
+  "description": "Schema for a Snowplow event which has been successfully enriched and landed in kafka",
   "self": {
     "vendor": "com.snowplow.superpro",
     "name": "snowplow_enriched_event",
@@ -58,6 +58,9 @@
     },
     "domain_userid": {
       "type": ["string", "null"]
+    },
+    "domain_sessionid": {
+      "type": ["integer", "null"]
     },
     "domain_sessionidx": {
       "type": ["integer", "null"]
