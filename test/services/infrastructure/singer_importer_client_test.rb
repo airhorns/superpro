@@ -37,4 +37,19 @@ class Infrastructure::SingerImporterClientTest < ActiveSupport::TestCase
       )
     end
   end
+
+  # This test uses a doctored cassette to emulate the backend process dying early
+  test "it raises when the response stream ends prematurely" do
+    assert_raises(Infrastructure::SingerImporterClient::UncleanExitException) do
+      @client.import(
+        "shopify",
+        config: {
+          "start_date": "2019-09-15",
+          "private_app_api_key": "f7cce5f3a9cba33093e5766d4fc0ee56",
+          "private_app_password": "c313f81fe851b89b369f797cf99e3476",
+          "shop": "hrsn.myshopify.com",
+        },
+      )
+    end
+  end
 end

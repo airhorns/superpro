@@ -11,6 +11,7 @@ class Infrastructure::SingerImporterClient
   end
 
   def import(importer, config:, state: {}, url_params: {}, transform: {}, on_state_message: nil)
+    got_success_message = false
     RestClient::Request.execute(
       method: :post,
       url: @base_url + "/import/#{importer}?#{url_params.to_query}",
@@ -31,10 +32,16 @@ class Infrastructure::SingerImporterClient
           if blob["stream"] == "SYSTEM"
             if !blob["success"].nil? && !blob["success"]
               raise UncleanExitException.new("Process #{blob["tag"]} exited with exit code #{blob["exit_code"]}")
+            else
+              got_success_message = true
             end
           end
         end
       },
     )
+
+    if !got_success_message
+      raise UncleanExitException.new("singer-importer response ended prematurely without signalling success")
+    end
   end
 end

@@ -1,0 +1,80 @@
+---
+http_interactions:
+  - request:
+      method: post
+      uri: http://singer-importer-docker-compose.supo.dev:4002/import/shopify
+      body:
+        encoding: UTF-8
+        string: '{"singer_config":{"start_date":"2019-09-15","private_app_api_key":"f7cce5f3a9cba33093e5766d4fc0ee56","private_app_password":"c313f81fe851b89b369f797cf99e3476","shop":"hrsn.myshopify.com"},"singer_state":{},"transform":{}}'
+      headers:
+        Accept:
+          - "*/*"
+        User-Agent:
+          - rest-client/2.1.0 (darwin18.6.0 x86_64) ruby/2.6.4p104
+        Authorization:
+          - "<AUTHORIZATION>"
+        Content-Type:
+          - application/json
+        Content-Length:
+          - "221"
+        Accept-Encoding:
+          - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+    response:
+      status:
+        code: 200
+        message: OK
+      headers:
+        Content-Type:
+          - text/singer-text; charset=utf-8
+        Connection:
+          - close
+        Server:
+          - Werkzeug/0.15.6 Python/3.7.4
+        Date:
+          - Wed, 18 Sep 2019 00:18:41 GMT
+      body:
+        encoding: UTF-8
+        string: |-
+          {"stream": "STDERR", "tag": "target", "message": "INFO PostgresTarget created with established connection: `host=postgres port=5432 dbname=superpro_development user=superpro`, PostgreSQL schema: `raw_tap_shopify`\n"}
+          {"stream": "STDERR", "tag": "target", "message": "INFO Sending version information to singer.io. To disable sending anonymous usage data, set the config parameter \"disable_collection\" to true\n"}
+          {"stream": "STDERR", "tag": "tap", "message": "INFO Using private app basic authentication from config[\"private_app_api_key\"] and config[\"private_app_password\"]\n"}
+          {"stream": "STDERR", "tag": "tap", "message": "INFO Syncing stream: orders\n"}
+          {"stream": "STDERR", "tag": "tap", "message": "INFO GET https://hrsn.myshopify.com/admin/orders.json?since_id=1&updated_at_min=2019-09-15+00%3A00%3A00%2B00%3A00&updated_at_max=2019-09-16+00%3A00%3A00%2B00%3A00&limit=250&status=any\n"}
+          {"stream": "STDERR", "tag": "tap", "message": "INFO --> 200 OK 13b\n"}
+          {"stream": "STDERR", "tag": "tap", "message": "INFO METRIC: {\"type\": \"timer\", \"metric\": \"http_request_duration\", \"value\": 0.9208986759185791, \"tags\": {\"endpoint\": \"orders\", \"status\": \"succeeded\"}}\n"}
+          {"stream": "STDOUT", "tag": "target", "message": "{\"bookmarks\": {\"currently_sync_stream\": \"orders\", \"orders\": {\"updated_at\": \"2019-09-16T00:00:00.000000Z\"}}}\n"}
+          {"stream": "STDERR", "tag": "tap", "message": "INFO GET https://hrsn.myshopify.com/admin/orders.json?since_id=1&updated_at_min=2019-09-16+00%3A00%3A00%2B00%3A00&updated_at_max=2019-09-17+00%3A00%3A00%2B00%3A00&limit=250&status=any\n"}
+          {"stream": "STDERR", "tag": "tap", "message": "INFO --> 200 OK 13b\n"}
+          {"stream": "STDERR", "tag": "tap", "message": "INFO METRIC: {\"type\": \"timer\", \"metric\": \"http_request_duration\", \"value\": 0.3038051128387451, \"tags\": {\"endpoint\": \"orders\", \"status\": \"succeeded\"}}\n"}
+          {"stream": "STDOUT", "tag": "target", "message": "{\"bookmarks\": {\"currently_sync_stream\": \"orders\", \"orders\": {\"updated_at\": \"2019-09-17T00:00:00.000000Z\"}}}\n"}
+          {"stream": "STDERR", "tag": "tap", "message": "INFO GET https://hrsn.myshopify.com/admin/orders.json?since_id=1&updated_at_min=2019-09-17+00%3A00%3A00%2B00%3A00&updated_at_max=2019-09-18+00%3A00%3A00%2B00%3A00&limit=250&status=any\n"}
+          {"stream": "STDERR", "tag": "tap", "message": "INFO --> 200 OK 13b\n"}
+          {"stream": "STDERR", "tag": "tap", "message": "INFO METRIC: {\"type\": \"timer\", \"metric\": \"http_request_duration\", \"value\": 0.4113149642944336, \"tags\": {\"endpoint\": \"orders\", \"status\": \"succeeded\"}}\n"}
+          {"stream": "STDOUT", "tag": "target", "message": "{\"bookmarks\": {\"currently_sync_stream\": \"orders\", \"orders\": {\"updated_at\": \"2019-09-18T00:00:00.000000Z\"}}}\n"}
+          {"stream": "STDERR", "tag": "tap", "message": "INFO GET https://hrsn.myshopify.com/admin/orders.json?since_id=1&updated_at_min=2019-09-18+00%3A00%3A00%2B00%3A00&updated_at_max=2019-09-18+00%3A18%3A41%2B00%3A00&limit=250&status=any\n"}
+          {"stream": "STDERR", "tag": "tap", "message": "INFO --> 200 OK 13b\n"}
+          {"stream": "STDERR", "tag": "tap", "message": "INFO METRIC: {\"type\": \"timer\", \"metric\": \"http_request_duration\", \"value\": 0.40318727493286133, \"tags\": {\"endpoint\": \"orders\", \"status\": \"succeeded\"}}\n"}
+          {"stream": "STDOUT", "tag": "target", "message": "{\"bookmarks\": {\"currently_sync_stream\": \"orders\", \"orders\": {\"updated_at\": \"2019-09-18T00:18:41.000000Z\"}}}\n"}
+          {"stream": "STDERR", "tag": "tap", "message": "INFO Syncing stream: metafields\n"}
+          {"stream": "STDERR", "tag": "tap", "message": "INFO GET https://hrsn.myshopify.com/admin/metafields.json?since_id=1&updated_at_min=2019-09-15+00%3A00%3A00%2B00%3A00&updated_at_max=2019-09-16+00%3A00%3A00%2B00%3A00&limit=250&status=any\n"}
+          {"stream": "STDERR", "tag": "tap", "message": "INFO --> 200 OK 17b\n"}
+          {"stream": "STDERR", "tag": "tap", "message": "INFO METRIC: {\"type\": \"timer\", \"metric\": \"http_request_duration\", \"value\": 0.28533172607421875, \"tags\": {\"endpoint\": \"metafields\", \"status\": \"succeeded\"}}\n"}
+          {"stream": "STDOUT", "tag": "target", "message": "{\"bookmarks\": {\"orders\": {\"updated_at\": \"2019-09-18T00:18:41.000000Z\"}}}\n"}
+          {"stream": "STDERR", "tag": "tap", "message": "INFO GET https://hrsn.myshopify.com/admin/metafields.json?since_id=1&updated_at_min=2019-09-16+00%3A00%3A00%2B00%3A00&updated_at_max=2019-09-17+00%3A00%3A00%2B00%3A00&limit=250&status=any\n"}
+          {"stream": "STDOUT", "tag": "target", "message": "{\"bookmarks\": {\"orders\": {\"updated_at\": \"2019-09-18T00:18:41.000000Z\"}, \"currently_sync_stream\": \"metafields\", \"metafields\": {\"updated_at\": \"2019-09-16T00:00:00.000000Z\"}}}\n"}
+          {"stream": "STDERR", "tag": "tap", "message": "INFO --> 200 OK 17b\n"}
+          {"stream": "STDERR", "tag": "tap", "message": "INFO METRIC: {\"type\": \"timer\", \"metric\": \"http_request_duration\", \"value\": 0.3231799602508545, \"tags\": {\"endpoint\": \"metafields\", \"status\": \"succeeded\"}}\n"}
+          {"stream": "STDOUT", "tag": "target", "message": "{\"bookmarks\": {\"orders\": {\"updated_at\": \"2019-09-18T00:18:41.000000Z\"}, \"currently_sync_stream\": \"metafields\", \"metafields\": {\"updated_at\": \"2019-09-17T00:00:00.000000Z\"}}}\n"}
+          {"stream": "STDERR", "tag": "tap", "message": "INFO GET https://hrsn.myshopify.com/admin/metafields.json?since_id=1&updated_at_min=2019-09-17+00%3A00%3A00%2B00%3A00&updated_at_max=2019-09-18+00%3A00%3A00%2B00%3A00&limit=250&status=any\n"}
+          {"stream": "STDERR", "tag": "tap", "message": "INFO --> 200 OK 17b\n"}
+          {"stream": "STDERR", "tag": "tap", "message": "INFO METRIC: {\"type\": \"timer\", \"metric\": \"http_request_duration\", \"value\": 0.2733325958251953, \"tags\": {\"endpoint\": \"metafields\", \"status\": \"succeeded\"}}\n"}
+          {"stream": "STDOUT", "tag": "target", "message": "{\"bookmarks\": {\"orders\": {\"updated_at\": \"2019-09-18T00:18:41.000000Z\"}, \"currently_sync_stream\": \"metafields\", \"metafields\": {\"updated_at\": \"2019-09-18T00:00:00.000000Z\"}}}\n"}
+          {"stream": "STDERR", "tag": "tap", "message": "INFO GET https://hrsn.myshopify.com/admin/metafields.json?since_id=1&updated_at_min=2019-09-18+00%3A00%3A00%2B00%3A00&updated_at_max=2019-09-18+00%3A18%3A43%2B00%3A00&limit=250&status=any\n"}
+          {"stream": "STDERR", "tag": "tap", "message": "INFO --> 200 OK 17b\n"}
+          {"stream": "STDERR", "tag": "tap", "message": "INFO METRIC: {\"type\": \"timer\", \"metric\": \"http_request_duration\", \"value\": 0.3842141628265381, \"tags\": {\"endpoint\": \"metafields\", \"status\": \"succeeded\"}}\n"}
+          {"stream": "STDOUT", "tag": "target", "message": "{\"bookmarks\": {\"orders\": {\"updated_at\": \"2019-09-18T00:18:41.000000Z\"}, \"currently_sync_stream\": \"metafields\", \"metafields\": {\"updated_at\": \"2019-09-18T00:18:43.000000Z\"}}}\n"}
+          {"stream": "STDERR", "tag": "tap", "message": "INFO GET https://hrsn.myshopify.com/admin/orders.json?since_id=1&updated_at_min=2019-09-15+00%3A00%3A00%2B00%3A00&updated_at_max=2019-09-16+00%3A00%3A00%2B00%3A00&limit=250&status=any\n"}
+          {"stream": "STDERR", "tag": "tap", "message": "INFO --> 200 OK 13b\n"}
+      http_version:
+    recorded_at: Wed, 18 Sep 2019 00:19:00 GMT
+recorded_with: VCR 5.0.0
