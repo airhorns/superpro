@@ -21,6 +21,7 @@ module Infrastructure
           bootstrap_servers: Rails.configuration.kafka[:bootstrap_servers],
           topic: "snowplow-production-enriched",
           deserializer: "snowplow_analytics_sdk.event_transformer.transform",
+          primary_keys: ["event_id"],
           consumer_config: KAFKA_CONSUMER_CONFIG,
           schema: JSON.parse(File.read(Rails.root.join("app", "services", "infrastructure", "snowplow_enriched_event.json"))),
         },
