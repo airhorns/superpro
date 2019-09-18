@@ -55,7 +55,7 @@ gem "que-locks", github: "superpro-inc/que-locks", ref: "f2b72a0a5cfd8ed553530d9
 gem 'que-web'
 gem 'rails-middleware-extensions'
 gem 'rails_semantic_logger'
-gem 'redis', '~> 4.0'
+gem 'redis', '~> 4.1'
 gem 'request_store'
 gem "safely"
 gem "scenic"
