@@ -366,7 +366,7 @@ GEM
     minitest (5.11.3)
     minitest-ci (3.4.0)
       minitest (>= 5.0.6)
-    minitest-snapshots (0.2.0)
+    minitest-snapshots (0.3.0)
     mocha (1.9.0)
       metaclass (~> 0.0.1)
     monetize (1.9.2)
@@ -666,7 +666,7 @@ DEPENDENCIES
   marginalia
   mini_magick
   minitest-ci
-  minitest-snapshots (~> 0.2.0)
+  minitest-snapshots (~> 0.3.0)
   mocha
   money-rails
   oj

@@ -100,7 +100,7 @@ end
 group :test do
   gem 'timecop'
   gem 'minitest-ci', require: !ENV['CI'].nil?
-  gem 'minitest-snapshots', '~> 0.2.0'
+  gem 'minitest-snapshots', '~> 0.3.0'
   gem 'mocha'
   gem 'webmock'
   gem 'vcr'
