@@ -64,6 +64,27 @@ const document: Document = {
           }
         ]
       }
+    },
+    {
+      type: "viz_block",
+      title: "Order Repurchase Intervals",
+      query: {
+        measures: [{ model: "Sales::RepurchaseIntervalFacts", field: "count", id: "count" }],
+        dimensions: [
+          { model: "Sales::RepurchaseIntervalFacts", field: "days_since_previous_order_bucket_label", id: "days_since_previous_order" }
+        ]
+      },
+      viz: {
+        type: "viz",
+        systems: [
+          {
+            type: "viz_system",
+            vizType: "bar",
+            xId: "days_since_previous_order",
+            yId: "count"
+          }
+        ]
+      }
     }
   ]
 };

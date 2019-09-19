@@ -16,7 +16,7 @@ export const TableBlockRenderer = (props: { doc: Document; block: TableBlock }) 
           sortKey: field.id
         }));
         return (
-          <Box>
+          <Box flex={{ grow: 1, shrink: 0 }}>
             {props.block.title && <Heading level="3">{props.block.title}</Heading>}
             <WaterTable columns={tableColumns} records={result.records} />
           </Box>

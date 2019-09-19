@@ -17,7 +17,7 @@ export const VizBlockRenderer = (props: { doc: Document; block: VizBlock }) => (
         }
 
         return (
-          <Box fill>
+          <Box flex={{ grow: 1, shrink: 0 }} style={{ minHeight: "400px" }}>
             {props.block.title && <Heading level="3">{props.block.title}</Heading>}
             {viz}
           </Box>
