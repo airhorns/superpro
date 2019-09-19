@@ -1,7 +1,8 @@
 import React from "react";
-import { range, groupBy, keyBy, round } from "lodash";
+import { range, groupBy, keyBy, round, isUndefined } from "lodash";
 import { Box } from "grommet";
 import { DateTime } from "luxon";
+import { scaleLinear } from "d3-scale";
 import { interpolateOranges } from "d3-scale-chromatic";
 import { WaterTable, WaterTableColumnSpec } from "superlib/WaterTable";
 import { SuccessfulWarehouseQueryResult } from "./GetWarehouseData";
@@ -14,6 +15,9 @@ interface CohortRecord {
 }
 
 const cohortRange = range(0, 12);
+const colorScale = scaleLinear()
+  .domain([0, 10])
+  .range([0, 0.8]);
 
 const cohortPivot = (result: SuccessfulWarehouseQueryResult, system: VizSystem) => {
   return Object.entries(groupBy(result.records, system.extra.cohortId)).map(([cohortId, recordGroup]) => {
@@ -24,12 +28,9 @@ const cohortPivot = (result: SuccessfulWarehouseQueryResult, system: VizSystem) 
     const recordsByMonth = keyBy(recordGroup, system.xId);
 
     cohortRange.forEach(month => {
-      let val = 0;
       if (recordsByMonth[month]) {
-        val = recordsByMonth[month][system.yId];
+        pivotedRecord[month] = recordsByMonth[month][system.yId];
       }
-
-      pivotedRecord[month] = val;
     });
 
     return pivotedRecord;
@@ -47,8 +48,20 @@ export const CohortTableRenderer = (props: { result: SuccessfulWarehouseQueryRes
     },
     ...cohortRange.map(month => ({
       key: String(month),
-      render: (record: CohortRecord) => round(record[month], 2) + "%",
-      cellStyle: (record: CohortRecord) => ({ backgroundColor: interpolateOranges((record[month] / 100) * 0.8) }),
+      render: (record: CohortRecord) => {
+        if (!isUndefined(record[month])) {
+          return round(record[month], 2) + "%";
+        } else {
+          return <></>;
+        }
+      },
+      cellStyle: (record: CohortRecord) => {
+        if (month != 0 && !isUndefined(record[month])) {
+          return { backgroundColor: interpolateOranges(colorScale(record[month])) };
+        } else {
+          return {};
+        }
+      },
       header: String(month),
       sortable: false
     }))

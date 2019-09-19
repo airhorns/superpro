@@ -15,7 +15,8 @@ const document: Document = {
           { model: "Sales::RepurchaseCohortFacts", field: "genesis_month", id: "genesis_month" },
           { model: "Sales::RepurchaseCohortFacts", field: "months_since_genesis", id: "months_since_genesis" }
         ],
-        dimensions: []
+        dimensions: [],
+        orderings: [{ id: "genesis_month", direction: "asc" }]
       },
       viz: {
         type: "viz",
