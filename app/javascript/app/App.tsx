@@ -19,6 +19,7 @@ const AccountSettingsPage = React.lazy(() => import("./components/identity/Accou
 const ConnectionsIndexPage = React.lazy(() => import("./components/identity/connections/ConnectionsIndexPage"));
 const ConnectionCompletionErrorPage = React.lazy(() => import("./components/identity/connections/ConnectionCompletionErrorPage"));
 const GoogleAnalyticsCompletePage = React.lazy(() => import("./components/identity/connections/GoogleAnalyticsCompletePage"));
+const SalesOverTimeReport = React.lazy(() => import("./components/reports/SalesOverTimeReport"));
 
 export const SuperproClient = getClient();
 
@@ -40,6 +41,7 @@ export const App = () => {
                           <Route path="/" exact component={HomePage} />
                           <Route path="/launchpad" exact component={Launchpad} />
                           <Route path="/invite" exact component={InviteUsersPage} />
+                          <Route path="/reports/sales_over_time" exact component={SalesOverTimeReport} />
                           <Route path="/settings" exact component={AccountSettingsPage} />
                           <Route path="/settings/account" exact component={AccountSettingsPage} />
                           <Route path="/settings/users" exact component={UsersSettingsPage} />

@@ -60,4 +60,8 @@ class ActiveSupport::TestCase
     Bullet.enable = old_enabled
     Bullet.raise = false
   end
+
+  def assert_string_like(expected, actual)
+    assert_equal expected.gsub(/\s+/, " ").strip, actual.gsub(/\s+/, " ").strip
+  end
 end

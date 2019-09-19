@@ -1,0 +1,92 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$id": "http://superpro.io/warehouse_query.schema.json",
+  "title": "WarehouseQuery",
+  "description": "A query submitted to the Superpro data server",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "measures": {
+      "description": "A list of measures to query",
+      "type": "array",
+      "items": { "$ref": "#/definitions/measure" },
+      "minItems": 0
+    },
+    "dimensions": {
+      "description": "A list of dimensions to segment the query by",
+      "type": "array",
+      "items": { "$ref": "#/definitions/dimension" },
+      "minItems": 0
+    },
+    "orderings": {
+      "description": "A list of model fields to order the query by",
+      "type": "array",
+      "items": { "$ref": "#/definitions/ordering" },
+      "minItems": 0
+    }
+  },
+  "required": ["measures", "dimensions"],
+  "definitions": {
+    "measure": {
+      "type": "object",
+      "required": ["model", "field", "id"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Opaque identifier for this dimension used in references elsewhere"
+        },
+        "model": {
+          "type": "string",
+          "description": "The name of the root data model this measure is coming from."
+        },
+        "field": {
+          "type": "string",
+          "description": "Which field of the data model this measure is."
+        },
+        "operator": {
+          "type": "string",
+          "description": "How to aggregate the underlying data"
+        }
+      }
+    },
+    "dimension": {
+      "type": "object",
+      "required": ["model", "field", "id"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Opaque identifier for this dimension used in references elsewhere"
+        },
+        "model": {
+          "type": "string",
+          "description": "The name of the root data model this dimension is coming from."
+        },
+        "field": {
+          "type": "string",
+          "description": "Which field of the data model this dimension is."
+        },
+        "operator": {
+          "type": "string",
+          "enum": ["date_trunc_day", "date_trunc_week", "date_trunc_month", "date_trunc_year"]
+        }
+      }
+    },
+    "ordering": {
+      "type": "object",
+      "required": ["id", "direction"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The id of the measure or dimension to order by"
+        },
+        "direction": {
+          "type": "string",
+          "enum": ["asc", "desc"]
+        }
+      }
+    }
+  }
+}
