@@ -120,7 +120,7 @@ export type FetchResultShape<Result extends FetchResult> = Result extends FetchR
 // TypeScript incantation to get back the data asserting that it is present for a given mutation, detecting transport
 // and validation errors at type check time
 export const mutationSuccess = <Result extends FetchResult<Shape>, Shape = FetchResultShape<Result>, Key extends keyof Shape = keyof Shape>(
-  result: Result | void,
+  result: Result | undefined | void,
   key: Key
 ): SuccessfulMutationResponse<Exclude<Shape[Key], null>> | undefined => {
   if (result && !result.errors && result.data && !(result.data[key] as any).errors) {

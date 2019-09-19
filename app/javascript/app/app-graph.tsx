@@ -26,6 +26,7 @@ export type Scalars = {
 export type Account = {
   __typename: "Account";
   appUrl: Scalars["String"];
+  businessEpoch: Scalars["ISO8601DateTime"];
   createdAt: Scalars["ISO8601DateTime"];
   creator: User;
   discarded: Scalars["Boolean"];
@@ -43,6 +44,8 @@ export type AccountAttributes = {
   mutationClientId?: Maybe<Scalars["MutationClientId"]>;
   /** Name to set on the account */
   name: Scalars["String"];
+  /** Date at which the business started doing business */
+  businessEpoch?: Maybe<Scalars["ISO8601DateTime"]>;
 };
 
 export type AppMutation = {
@@ -558,7 +561,9 @@ export type UserCardFragment = { __typename: "User" } & Pick<User, "id" | "email
 
 export type GetAccountForSettingsQueryVariables = {};
 
-export type GetAccountForSettingsQuery = { __typename: "AppQuery" } & { account: { __typename: "Account" } & Pick<Account, "id" | "name"> };
+export type GetAccountForSettingsQuery = { __typename: "AppQuery" } & {
+  account: { __typename: "Account" } & Pick<Account, "id" | "name" | "businessEpoch">;
+};
 
 export type UpdateAccountSettingsMutationVariables = {
   attributes: AccountAttributes;
@@ -567,7 +572,7 @@ export type UpdateAccountSettingsMutationVariables = {
 export type UpdateAccountSettingsMutation = { __typename: "AppMutation" } & {
   updateAccount: Maybe<
     { __typename: "UpdateAccountPayload" } & {
-      account: Maybe<{ __typename: "Account" } & Pick<Account, "id" | "name">>;
+      account: Maybe<{ __typename: "Account" } & Pick<Account, "id" | "name" | "businessEpoch">>;
       errors: Maybe<Array<{ __typename: "MutationError" } & Pick<MutationError, "fullMessage">>>;
     }
   >;
@@ -841,6 +846,7 @@ export const GetAccountForSettingsDocument = gql`
     account: currentAccount {
       id
       name
+      businessEpoch
     }
   }
 `;
@@ -865,6 +871,7 @@ export const UpdateAccountSettingsDocument = gql`
       account {
         id
         name
+        businessEpoch
       }
       errors {
         fullMessage

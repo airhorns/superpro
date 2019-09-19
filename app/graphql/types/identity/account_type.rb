@@ -6,6 +6,7 @@ class Types::Identity::AccountType < Types::BaseObject
   field :creator, Types::Identity::UserType, null: false
   field :created_at, GraphQL::Types::ISO8601DateTime, null: false
   field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
+  field :business_epoch, GraphQL::Types::ISO8601DateTime, null: false
   field :discarded_at, GraphQL::Types::ISO8601DateTime, null: true
   field :discarded, Boolean, null: false, method: :discarded?
 
