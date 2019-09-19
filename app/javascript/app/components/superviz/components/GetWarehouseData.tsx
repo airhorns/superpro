@@ -37,7 +37,7 @@ const hydrate = (records: any[], queryIntrospection: WarehouseQueryIntrospection
   return records.map(record => {
     for (const [id, datatype] of Object.entries(queryIntrospection.types)) {
       if (datatype == "date_time") {
-        record[id] = DateTime.fromISO(record[id]).toJSDate();
+        record[id] = DateTime.fromISO(record[id]);
       }
     }
 

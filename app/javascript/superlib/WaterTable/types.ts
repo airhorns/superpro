@@ -14,6 +14,7 @@ export interface WaterTableRecord {
 export interface WaterTableColumnSpec<Record extends WaterTableRecord> {
   key: string;
   render: (record: Record, index: number) => any;
+  cellStyle?: (record: Record, index: number) => React.CSSProperties;
   primary?: boolean;
   align?: "center" | "left" | "right";
   header?: React.ReactNode;

@@ -21,6 +21,7 @@ const ConnectionCompletionErrorPage = React.lazy(() => import("./components/iden
 const GoogleAnalyticsCompletePage = React.lazy(() => import("./components/identity/connections/GoogleAnalyticsCompletePage"));
 const SalesOverTimeReport = React.lazy(() => import("./components/reports/SalesOverTimeReport"));
 const OrdersReviewReport = React.lazy(() => import("./components/reports/OrdersReviewReport"));
+const RepurchaseCohortsReport = React.lazy(() => import("./components/reports/RepurchaseCohortsReport"));
 
 export const SuperproClient = getClient();
 
@@ -44,6 +45,7 @@ export const App = () => {
                           <Route path="/invite" exact component={InviteUsersPage} />
                           <Route path="/reports/sales_over_time" exact component={SalesOverTimeReport} />
                           <Route path="/reports/orders_review" exact component={OrdersReviewReport} />
+                          <Route path="/reports/repurchase_cohorts" exact component={RepurchaseCohortsReport} />
                           <Route path="/settings" exact component={AccountSettingsPage} />
                           <Route path="/settings/account" exact component={AccountSettingsPage} />
                           <Route path="/settings/users" exact component={UsersSettingsPage} />

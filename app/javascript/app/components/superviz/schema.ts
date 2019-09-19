@@ -41,6 +41,7 @@ export interface VizSystem {
   xId: string;
   yId: string;
   contextMarkdown?: string;
+  extra?: any;
 }
 
-export type VizType = "bar" | "line" | "scatter";
+export type VizType = "bar" | "line" | "scatter" | "cohorts";
