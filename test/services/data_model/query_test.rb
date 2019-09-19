@@ -26,6 +26,17 @@ class DataModel::QueryTest < ActiveSupport::TestCase
     assert_equal [], result
   end
 
+  test "it can execute a query that generates very long alias names" do
+    result = @query.run(
+      measures: [{ model: "Sales::RepurchaseIntervalFacts", field: "count", id: "count" }],
+      dimensions: [
+        { model: "Sales::RepurchaseIntervalFacts", field: "days_since_previous_order_bucket_label", id: "days_since_previous_order" },
+      ],
+    )
+
+    assert_equal [], result
+  end
+
   test "it can execute a query against only dimensions" do
     result = @query.run(
       measures: [],

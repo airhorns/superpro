@@ -10,6 +10,7 @@ module DataModel
 
       @aliases_by_id = {}
       @ids_by_alias = {}
+      @alias_replace_counter = 0
     end
 
     def sql
@@ -138,11 +139,23 @@ module DataModel
     end
 
     def alias_for(spec)
-      alias_name = [spec[:model], spec[:field], spec[:operator]].compact.map { |segment| segment.gsub(/[^A-Za-z]/, "_").downcase }.join("__")
-      @aliases_by_id[spec[:id]] ||= alias_name
-      @ids_by_alias[alias_name] ||= spec[:id]
+      @aliases_by_id[spec[:id]] ||= begin
+        segments = [spec[:model], spec[:field], spec[:operator]].compact.map { |segment| segment.gsub(/[^A-Za-z]/, "_").downcase }
+        alias_name = segments.join("__")
 
-      alias_name
+        # Postgres truncates the AS silently, so we have to give it something shorter than 64 chars long
+        if alias_name.size > 63
+          replace_counter = (@alias_replace_counter += 1)
+          prefix = "a_#{replace_counter}_"
+          alias_name = prefix + alias_name[(alias_name.size - (63 - prefix.size))..-1]
+        end
+
+        raise "Incompatible postgres alias name #{alias_name}" if alias_name.size > 63
+
+        @ids_by_alias[alias_name] ||= spec[:id]
+
+        alias_name
+      end
     end
   end
 end

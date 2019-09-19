@@ -1,6 +1,6 @@
 import React from "react";
 import { Page } from "../common";
-import { Compiler, Document } from "app/components/superviz";
+import { VizDocumentCompiler, Document } from "app/components/superviz";
 
 const document: Document = {
   type: "document",
@@ -37,7 +37,7 @@ const document: Document = {
   ]
 };
 
-const Component = new Compiler().compile(document);
+const Component = new VizDocumentCompiler().compile(document);
 
 export default class SalesOverTimeReport extends Page {
   render() {

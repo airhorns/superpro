@@ -5,7 +5,7 @@ import { Markdown } from "grommet";
 import { VizBlockRenderer } from "./components/VizBlockRenderer";
 import { TableBlockRenderer } from "./components/TableBlockRenderer";
 
-export class Compiler {
+export class VizDocumentCompiler {
   compile(doc: Document): React.ComponentType<{}> {
     const blocks = doc.blocks.map((block, index) => this.compileBlock(doc, block, index));
     return () => <VizDocumentContainer>{blocks}</VizDocumentContainer>;

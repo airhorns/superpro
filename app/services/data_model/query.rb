@@ -16,10 +16,8 @@ module DataModel
       introspection = QueryIntrospection.new(@account, @warehouse, query_specification)
       sql = compiler.sql
 
-      raw_results = logger.measure_debug "executing query", query: sql do
-        execute(sql)
-      end
-
+      logger.info "Executing DataModel query", query: sql
+      raw_results = execute(sql)
       process(raw_results, compiler, introspection)
     end
 
@@ -28,7 +26,7 @@ module DataModel
     def process(results, compiler, introspection)
       results.map do |result|
         result.each_with_object({}) do |(key, value), return_result|
-          id_key = compiler.ids_by_alias[key]
+          id_key = compiler.ids_by_alias.fetch(key)
           data_type = introspection.type_for_field_id(id_key)
           return_result[id_key] = data_type.process(value)
         end
