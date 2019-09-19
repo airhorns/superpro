@@ -61,6 +61,7 @@ module DataModel
       manager.order(*orders) if !orders.empty?
       manager.from(table)
       manager.where(table[:account_id].eq(@account.id))
+      manager.take(5000)
 
       manager
     end

@@ -1,1 +1,1 @@
-SELECT SUM("warehouse"."fct_shopify_orders"."total_price") AS sales__orderfacts__total_price__sum FROM "warehouse"."fct_shopify_orders" WHERE "warehouse"."fct_shopify_orders"."account_id" = 10 ORDER BY sales__orderfacts__total_price__sum DESC
+SELECT SUM("warehouse"."fct_shopify_orders"."total_price") AS sales__orderfacts__total_price__sum FROM "warehouse"."fct_shopify_orders" WHERE "warehouse"."fct_shopify_orders"."account_id" = 10 ORDER BY sales__orderfacts__total_price__sum DESC LIMIT 5000
