@@ -86,7 +86,6 @@ group :development, :test, :integration_test do
 end
 
 group :development do
-  gem 'ejson'
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'rubocop'
   gem 'rubocop-performance'
@@ -106,6 +105,7 @@ group :test do
   gem 'vcr'
 end
 
-group :deploy do
+group :development, :deploy do
   gem 'kubernetes-deploy'
+  gem 'ejson'
 end

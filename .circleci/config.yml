@@ -204,8 +204,12 @@ jobs:
     steps:
       - gcp-cli/initialize
       - checkout
-      - restore_cache: *ruby_dependencies_restore_cache
-      - run: *ruby_dependencies
+      - run:
+          name: Install Ruby deploy dependencies
+          command: |
+            bundle install --jobs=4 --retry=3 --without default development test production integration_test
+            mkdir ~/.kube
+            cp .circleci/kube-config ~/.kube/config
       - run:
           name: Configure gcloud k8s context
           command: gcloud container clusters get-credentials alpha
