@@ -1,10 +1,8 @@
 # frozen_string_literal: true
 
 class Auth::PasswordsController < Devise::PasswordsController
-  # GET /resource/password/new
-  # def new
-  #   super
-  # end
+  clear_respond_to
+  respond_to :json
 
   # POST /resource/password
   # def create

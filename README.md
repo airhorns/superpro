@@ -119,3 +119,21 @@ Superpro should be structured to be easy to contribute to! If there's something 
 - Setup scripts to provision a local devleopment environment or remote credentials or whatever
 - Shared remote credentials so that development "just works"
 - Abstractions in the code that make development faster or easier, like React components or mini Ruby gems.
+
+#### Running Integration Tests
+
+To run the integration tests locally, you need to reboot your development environment into the `integration_test` environment. This means setting the `RAILS_ENV` to `integration_test` for all the processes that need to be running for the tests to pass. So:
+
+Stop your development server, then start it again with:
+
+    RAILS_ENV=integration_test SECRET_KEY_BASE=foobarbaz bin/rails server
+
+Stop your webpack-dev-server and then start it again with:
+
+    env RAILS_ENV=integration_test bin/webpack-dev-server
+
+Once you have a running server in the integration test environment, you can run Cypress, the integration testing server.
+
+    yarn run open-cypress
+
+And test away!

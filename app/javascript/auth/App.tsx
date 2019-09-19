@@ -14,6 +14,8 @@ const HomePage = React.lazy(() => import("./components/HomePage"));
 const SignUpPage = React.lazy(() => import("./components/SignUpPage"));
 const AcceptInvitePage = React.lazy(() => import("./components/AcceptInvitePage"));
 const NewAccountPage = React.lazy(() => import("./components/NewAccountPage"));
+const ForgotPasswordPage = React.lazy(() => import("./components/ForgotPasswordPage"));
+const CompletePasswordResetPage = React.lazy(() => import("./components/CompletePasswordResetPage"));
 
 export class App extends React.Component {
   public render() {
@@ -30,6 +32,8 @@ export class App extends React.Component {
                       <Route path="/sign_up" exact component={SignUpPage} />
                       <Route path="/sign_in" exact component={LoginPage} />
                       <Route path="/accept_invite" exact component={AcceptInvitePage} />
+                      <Route path="/forgot_password" exact component={ForgotPasswordPage} />
+                      <Route path="/reset_password" exact component={CompletePasswordResetPage} />
                       <PrivateRoute path="/" exact component={HomePage} />
                       <PrivateRoute path="/new_account" exact component={NewAccountPage} />
                       <Route component={NotFoundPage} />

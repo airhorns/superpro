@@ -60,4 +60,12 @@ class User < ApplicationRecord
   has_many :permissioned_accounts, through: :account_user_permissions, source: :account
 
   validates :full_name, presence: true
+
+  def send_devise_notification(notification, *args)
+    if Rails.env.production?
+      devise_mailer.send(notification, self, *args).deliver_later
+    else
+      super
+    end
+  end
 end

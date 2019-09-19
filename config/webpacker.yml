@@ -59,7 +59,7 @@ development:
   check_yarn_integrity: true
 
   # Reference: https://webpack.js.org/configuration/dev-server/
-  dev_server:
+  dev_server: &dev_server
     https: false
     host: localhost
     port: 3035
@@ -88,8 +88,8 @@ integration_test:
   <<: *default
   compile: false
   public_output_path: packs-integration
-  extract_css: true
-  cache_manifest: true
+  dev_server:
+    <<: *dev_server
 
 production:
   <<: *default

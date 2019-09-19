@@ -4,6 +4,7 @@ import { Alert } from "../../superlib/Alert";
 import { Heading, Button, Box } from "grommet";
 import { PageBox } from "./PageBox";
 import { SuperForm, Input, FieldBox } from "superlib/superform";
+import { Link } from "superlib";
 
 interface LoginFormValues {
   email: string;
@@ -41,14 +42,7 @@ export class LoginPage extends React.Component<{}, LoginPageState> {
           <Heading>Login to Superpro</Heading>
         </Box>
         {this.state.message && <Alert type="error" message={this.state.message} />}
-        <SuperForm<LoginFormValues>
-          onSubmit={this.handleSubmit}
-          initialValues={{ email: "", password: "" }}
-          // validationSchema={Yup.object().shape({
-          //   email: Yup.string().required(),
-          //   password: Yup.string().required()
-          // })}
-        >
+        <SuperForm<LoginFormValues> onSubmit={this.handleSubmit} initialValues={{ email: "", password: "" }}>
           {() => (
             <>
               <FieldBox label="Email" path="email">
@@ -61,6 +55,9 @@ export class LoginPage extends React.Component<{}, LoginPageState> {
             </>
           )}
         </SuperForm>
+        <Box margin={{ top: "small" }}>
+          <Link to="/forgot_password">Forgot password?</Link>
+        </Box>
       </PageBox>
     );
   }

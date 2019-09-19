@@ -21,4 +21,8 @@ class TestSupportController < ActionController::Base
     account = FactoryBot.create :account, creator: user
     render json: account.to_json
   end
+
+  def last_delivered_email
+    render json: ActionMailer::Base.deliveries.last.as_json
+  end
 end

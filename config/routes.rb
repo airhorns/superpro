@@ -21,6 +21,7 @@ Rails.application.routes.draw do
       post "clean", to: "test_support#clean"
       post "force_login", to: "test_support#force_login"
       post "empty_account", to: "test_support#empty_account"
+      get "last_delivered_email", to: "test_support#last_delivered_email"
     end
   end
 
@@ -44,6 +45,7 @@ Rails.application.routes.draw do
       post "/graphql", to: "graphql#execute"
 
       get "/accept_invite", to: "client_side_app#index", as: :accept_invitation
+      get "/reset_password", to: "client_side_app#index", as: :reset_password
       get "*path", to: "client_side_app#index"
       root to: "client_side_app#index"
     end
