@@ -26,7 +26,7 @@ export class SuperFormController<T extends DocType> {
   }
 
   get doc(): T {
-    return this.backend.doc;
+    return this.backend.doc as T;
   }
 
   getValue(path: FieldPath) {

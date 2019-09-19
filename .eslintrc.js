@@ -32,7 +32,7 @@ module.exports = {
     "lodash/prefer-constant": "off",
     "lodash/prefer-get": "off",
     "lodash/prefer-set": "off",
-    "lodash/prefer-lodash-typecheck": "warn",
+    "lodash/prefer-lodash-typecheck": "off",
     "lodash/matches-prop-shorthand": "warn"
   },
   settings: {

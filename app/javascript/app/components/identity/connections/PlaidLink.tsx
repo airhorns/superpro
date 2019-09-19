@@ -137,7 +137,7 @@ export class PlaidLink extends React.Component<PlaidLinkProps, PlaidLinkState> {
     this.setState({ linkLoaded: true });
   };
 
-  handleOnClick = (event: any) => {
+  handleOnClick = (_event: any) => {
     const institution = this.props.institution || null;
     if (this.linkHandler) {
       this.linkHandler.open(institution);

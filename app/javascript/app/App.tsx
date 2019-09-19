@@ -3,7 +3,7 @@ import { ApolloProvider } from "react-apollo";
 import { ApolloProvider as ApolloHooksProvider } from "react-apollo-hooks";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { getClient } from "./lib/apollo";
-import { SuperproGrommetTheme, SentryErrorBoundary, SuperproGlobalStyle, SegmentIdentify, HotkeysContainer, FlagRoute } from "../superlib";
+import { SuperproGrommetTheme, SentryErrorBoundary, SuperproGlobalStyle, SegmentIdentify, HotkeysContainer } from "../superlib";
 import { Grommet, Box } from "grommet";
 import { Settings } from "./lib/settings";
 import { ToastContainer, FlagsProvider } from "../superlib";

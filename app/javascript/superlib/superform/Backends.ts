@@ -1,16 +1,16 @@
-import Automerge from "automerge/src/automerge";
+import Automerge, { Doc as AutomergeDoc, FreezeObject } from "automerge";
 import { DocType } from "./utils";
 
-export type OnChange<T extends DocType> = (newDoc: T, previousDoc: T) => void;
+export type OnChange<T extends DocType> = (newDoc: FreezeObject<T>, previousDoc: FreezeObject<T>) => void;
 export type Command<T extends DocType> = (doc: T) => void;
 
 export abstract class Backend<T extends DocType> {
   onChange: OnChange<T>;
-  doc: T;
+  doc: FreezeObject<T>;
 
   constructor(onChange: OnChange<T>) {
     this.onChange = onChange;
-    this.doc = {} as any;
+    this.doc = ({} as unknown) as FreezeObject<T>;
   }
 
   abstract resetDoc(doc: T): void;
@@ -23,6 +23,8 @@ export abstract class Backend<T extends DocType> {
 }
 
 export class AutomergeBackend<T extends DocType> extends Backend<T> {
+  doc: AutomergeDoc<T>;
+
   constructor(onChange: OnChange<T>) {
     super(onChange);
     this.doc = Automerge.init<T>();
@@ -56,7 +58,7 @@ export class AutomergeBackend<T extends DocType> extends Backend<T> {
     this.setDoc(Automerge.redo(this.doc));
   }
 
-  private setDoc(newDoc: T) {
+  private setDoc(newDoc: AutomergeDoc<T>) {
     const prevDoc = this.doc;
     this.doc = newDoc;
     this.onChange(this.doc, prevDoc);
@@ -65,12 +67,12 @@ export class AutomergeBackend<T extends DocType> extends Backend<T> {
 
 export class ObjectBackend<T extends DocType> extends Backend<T> {
   resetDoc(initialValues: T) {
-    this.doc = initialValues;
+    this.doc = initialValues as FreezeObject<T>;
   }
 
   change(command: Command<T>) {
     const prevDoc = this.doc;
-    command(this.doc);
+    command(this.doc as T);
     this.onChange(this.doc, prevDoc);
   }
 
