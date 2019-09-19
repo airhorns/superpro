@@ -21,13 +21,13 @@ const document: Document = {
         systems: [
           {
             type: "viz_system",
-            viz: "line",
+            vizType: "line",
             xId: "date",
             yId: "total_price"
           },
           {
             type: "viz_system",
-            viz: "line",
+            vizType: "line",
             xId: "date",
             yId: "total_weight"
           }

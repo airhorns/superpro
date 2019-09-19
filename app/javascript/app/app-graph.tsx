@@ -530,7 +530,16 @@ export type UserInviteAttributes = {
 
 export type WarehouseQueryIntrospection = {
   __typename: "WarehouseQueryIntrospection";
+  fields: Array<WarehouseQueryIntrospectionField>;
   types: Scalars["JSONScalar"];
+};
+
+export type WarehouseQueryIntrospectionField = {
+  __typename: "WarehouseQueryIntrospectionField";
+  id: Scalars["String"];
+  label: Scalars["String"];
+  sortable: Scalars["Boolean"];
+  type: Scalars["String"];
 };
 
 export type WarehouseQueryResult = {
@@ -716,7 +725,16 @@ export type WarehouseQueryQueryVariables = {
 
 export type WarehouseQueryQuery = { __typename: "AppQuery" } & {
   warehouseQuery: { __typename: "WarehouseQueryResult" } & Pick<WarehouseQueryResult, "records" | "errors"> & {
-      queryIntrospection: Maybe<{ __typename: "WarehouseQueryIntrospection" } & Pick<WarehouseQueryIntrospection, "types">>;
+      queryIntrospection: Maybe<
+        { __typename: "WarehouseQueryIntrospection" } & Pick<WarehouseQueryIntrospection, "types"> & {
+            fields: Array<
+              { __typename: "WarehouseQueryIntrospectionField" } & Pick<
+                WarehouseQueryIntrospectionField,
+                "id" | "type" | "label" | "sortable"
+              >
+            >;
+          }
+      >;
     };
 };
 
@@ -1192,6 +1210,12 @@ export const WarehouseQueryDocument = gql`
       records
       queryIntrospection {
         types
+        fields {
+          id
+          type
+          label
+          sortable
+        }
       }
       errors
     }

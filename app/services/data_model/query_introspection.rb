@@ -7,17 +7,26 @@ module DataModel
       @warehouse = warehouse
       @query_specification = query_specification
 
-      @fields_by_id = (@query_specification.fetch(:measures, []) + @query_specification.fetch(:dimensions, [])).index_by { |spec| spec[:id].to_s }
+      @specs_by_id = (@query_specification.fetch(:measures, []) + @query_specification.fetch(:dimensions, [])).index_by { |spec| spec[:id].to_s }
     end
 
     def as_json
       @as_json ||= {
-        types: @fields_by_id.transform_values { |spec| type_for_field_spec(spec).to_enum },
+        types: @specs_by_id.transform_values { |spec| type_for_field_spec(spec).to_enum },
+        fields: @specs_by_id.values.map do |spec|
+          field = model_field_for_field_spec(spec)
+          {
+            id: spec[:id],
+            type: field.data_type.to_enum,
+            label: (spec[:operator] || "").to_s + field.field_name.to_s,
+            sortable: false,
+          }
+        end,
       }
     end
 
     def type_for_field_id(id)
-      type_for_field_spec(@fields_by_id.fetch(id.to_s))
+      type_for_field_spec(@specs_by_id.fetch(id.to_s))
     end
 
     def type_for_field_spec(spec)

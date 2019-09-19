@@ -35,6 +35,15 @@ class DataModel::QueryCompilerTest < ActiveSupport::TestCase
     assert_matches_snapshot sql
   end
 
+  test "it can compile a query with sql measures against the orders fact table" do
+    sql = compile(
+      measures: [{ model: "Sales::OrderFacts", field: "order_count", id: "order_count" }],
+      dimensions: [{ model: "Sales::OrderFacts", field: "cancelled", id: "cancelled_status" }],
+    )
+
+    assert_matches_snapshot sql
+  end
+
   test "it can compile a time dimension query against the orders fact table" do
     sql = compile(
       measures: [{ model: "Sales::OrderFacts", field: "total_price", operator: "sum", id: "total_price" }],

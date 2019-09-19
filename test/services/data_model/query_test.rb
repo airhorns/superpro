@@ -17,6 +17,15 @@ class DataModel::QueryTest < ActiveSupport::TestCase
     assert_equal [], result
   end
 
+  test "it can execute a query with sql measures against the orders fact table" do
+    result = @query.run(
+      measures: [{ model: "Sales::OrderFacts", field: "order_count", id: "order_counts" }],
+      dimensions: [{ model: "Sales::OrderFacts", field: "cancelled", id: "cancelled" }],
+    )
+
+    assert_equal [], result
+  end
+
   test "it can execute a query against only dimensions" do
     result = @query.run(
       measures: [],

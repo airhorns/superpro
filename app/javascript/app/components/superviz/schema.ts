@@ -6,15 +6,22 @@ export interface Document {
   blocks: Block[];
 }
 
-export type Block = MarkdownBlock | VizBlock;
+export type Block = MarkdownBlock | TableBlock | VizBlock;
 
 export interface MarkdownBlock {
   type: "markdown_block";
   markdown: string;
 }
 
+export interface TableBlock {
+  type: "table_block";
+  query: WarehouseQuery;
+  title?: string;
+}
+
 export interface VizBlock {
   type: "viz_block";
+  title?: string;
   query: WarehouseQuery;
   viz: Viz;
 }
@@ -30,7 +37,7 @@ export interface Viz {
 
 export interface VizSystem {
   type: "viz_system";
-  viz: VizType;
+  vizType: VizType;
   xId: string;
   yId: string;
   contextMarkdown?: string;

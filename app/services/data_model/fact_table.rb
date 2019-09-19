@@ -7,6 +7,10 @@ class DataModel::FactTable
   class_attribute :all_fields, instance_predicate: false, instance_accessor: false, default: ActiveSupport::HashWithIndifferentAccess.new
 
   class << self
+    def table_node
+      @table_node ||= Arel::Table.new(self.table)
+    end
+
     def measure(name, type, **options)
       field = DataModel::MeasureField.new(name, type, **options)
       self.measure_fields[name] = field

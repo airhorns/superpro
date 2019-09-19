@@ -13,6 +13,12 @@ gql`
       records
       queryIntrospection {
         types
+        fields {
+          id
+          type
+          label
+          sortable
+        }
       }
       errors
     }
@@ -39,7 +45,7 @@ const hydrate = (records: any[], queryIntrospection: WarehouseQueryIntrospection
   });
 };
 
-export const VizQuery = (props: { query: WarehouseQuery; children: React.ReactNode }) => {
+export const GetWarehouseData = (props: { query: WarehouseQuery; children: React.ReactNode }) => {
   return (
     <SimpleQuery component={WarehouseQueryComponent} require={["warehouseQuery"]} variables={{ query: props.query }}>
       {data => {
