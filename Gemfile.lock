@@ -7,7 +7,7 @@ GIT
 
 GIT
   remote: https://github.com/hlascelles/que-scheduler.git
-  revision: da412060bf99555d02c97dd2b5ff05d1cabbf5cf
+  revision: 2bc8e3c977a3651564c3c42956eef83b554fa825
   branch: que-1.0-compatibility
   specs:
     que-scheduler (3.2.5)
