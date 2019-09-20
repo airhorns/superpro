@@ -12,7 +12,8 @@
       "type": ["string", "null"]
     },
     "failure_tstamp": {
-      "type": ["string", "null"]
+      "type": ["string", "null"],
+      "format": "date-time"
     },
     "errors": {
       "type": ["array", "null"],

@@ -15,16 +15,20 @@
       "type": ["string", "null"]
     },
     "etl_tstamp": {
-      "type": ["string", "null"]
+      "type": ["string", "null"],
+      "format": "date-time"
     },
     "collector_tstamp": {
-      "type": ["string", "null"]
+      "type": ["string", "null"],
+      "format": "date-time"
     },
     "derived_tstamp": {
-      "type": ["string", "null"]
+      "type": ["string", "null"],
+      "format": "date-time"
     },
     "true_tstamp": {
-      "type": ["string", "null"]
+      "type": ["string", "null"],
+      "format": "date-time"
     },
     "event": {
       "type": ["string", "null"]
@@ -73,9 +77,6 @@
     },
     "domain_userid": {
       "type": ["string", "null"]
-    },
-    "domain_sessionid": {
-      "type": ["integer", "null"]
     },
     "domain_sessionidx": {
       "type": ["integer", "null"]
@@ -346,7 +347,8 @@
       "type": ["integer", "null"]
     },
     "dvce_created_tstamp": {
-      "type": ["string", "null"]
+      "type": ["string", "null"],
+      "format": "date-time"
     },
     "doc_charset": {
       "type": ["string", "null"]
@@ -391,13 +393,15 @@
       "type": ["string", "null"]
     },
     "dvce_sent_tstamp": {
-      "type": ["string", "null"]
+      "type": ["string", "null"],
+      "format": "date-time"
     },
     "refr_domain_userid": {
       "type": ["string", "null"]
     },
     "refr_dvce_tstamp": {
-      "type": ["string", "null"]
+      "type": ["string", "null"],
+      "format": "date-time"
     },
     "session_id": {
       "type": ["string", "null"]
