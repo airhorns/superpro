@@ -44,7 +44,8 @@ const document: Document = {
           { model: "Sales::CustomerParetoFacts", field: "cumulative_percent_of_sales", id: "cumulative_percent_of_sales" },
           { model: "Sales::CustomerParetoFacts", field: "customer_rank", id: "customer_rank" }
         ],
-        dimensions: []
+        dimensions: [],
+        orderings: [{ id: "customer_rank", direction: "asc" }]
       },
       viz: {
         type: "viz",
