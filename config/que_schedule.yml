@@ -1,8 +1,8 @@
 "Infrastructure::PeriodicSyncAllConnectionsJob":
-  cron: "*/30 * * * *"
+  cron: "0 * * * *"
 
 "Infrastructure::PeriodicSyncAllGlobalConnectionsJob":
-  cron: "*/30 * * * *"
+  cron: "30 * * * *"
 
 "Infrastructure::PeriodicShopifyScriptTagSetupJob":
   cron: "@daily"
