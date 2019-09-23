@@ -26,50 +26,58 @@ module DataModel
       measure_specs = measures_by_model[model_name] || []
       dimension_specs = dimensions_by_model[model_name] || []
       ordering_specs = @query_specification.fetch(:orderings, [])
+      filter_specs = @query_specification.fetch(:filters, [])
 
-      query = select_for_model(model, measure_specs, dimension_specs, ordering_specs)
+      query = select_for_model(model, measure_specs, dimension_specs, ordering_specs, filter_specs)
       query.to_sql
     end
 
     private
 
-    def select_for_model(model, measure_specs, dimension_specs, ordering_specs)
+    def select_for_model(model, measure_specs, dimension_specs, ordering_specs, filter_specs)
       table = Arel::Table.new(model.table)
 
       projections = []
       groups = []
+      projections_by_id = {}
 
       measure_specs.each do |measure_spec|
         alias_name = alias_for(measure_spec)
-        projections << projection_node_for_measure_spec(table, model, measure_spec).as(alias_name)
+        node = projection_node_for_measure_spec(model, measure_spec)
+        projections << node.as(alias_name)
+        projections_by_id[measure_spec[:id]] = { node: node, spec: measure_spec, type: :measure, alias_name: alias_name }
       end
 
       dimension_specs.each do |dimension_spec|
         alias_name = alias_for(dimension_spec)
-        projections << projection_node_for_dimension_spec(table, model, dimension_spec).as(alias_name)
+        node = projection_node_for_dimension_spec(model, dimension_spec)
+        projections << node.as(alias_name)
         groups << Arel.sql(alias_name)
+        projections_by_id[dimension_spec[:id]] = { node: node, spec: dimension_spec, type: :dimension, alias_name: alias_name }
       end
 
       orders = ordering_specs.map { |ordering_spec| ordering_node_for_ordering_spec(ordering_spec) } || [default_ordering]
-
       if orders.empty?
         orders << default_ordering
       end
+
+      filters = filter_specs.map { |filter_spec| filter_node_for_filter_spec(model, projections_by_id, filter_spec) }
+      filters << table[:account_id].eq(@account.id)
 
       manager = Arel::SelectManager.new
       manager.project(*projections)
       manager.group(*groups) if !groups.empty?
       manager.order(*orders) if !orders.empty?
       manager.from(table)
-      manager.where(table[:account_id].eq(@account.id))
+      filters.each { |filter| manager.where(filter) }
       manager.take(5000)
 
       manager
     end
 
-    def projection_node_for_measure_spec(table, model, measure_spec)
+    def projection_node_for_measure_spec(model, measure_spec)
       field = model.measure_fields.fetch(measure_spec[:field].to_sym)
-      expression = field.custom_sql_node || table[field.field_name]
+      expression = field.custom_sql_node || model.table_node[field.field_name]
 
       if measure_spec[:operator]
         if !field.allows_operators?
@@ -90,9 +98,9 @@ module DataModel
       expression
     end
 
-    def projection_node_for_dimension_spec(table, model, dimension_spec)
+    def projection_node_for_dimension_spec(model, dimension_spec)
       field = model.dimension_fields.fetch(dimension_spec[:field].to_sym)
-      expression = field.custom_sql_node || table[field.field_name]
+      expression = field.custom_sql_node || model.table_node[field.field_name]
 
       if dimension_spec[:operator]
         expression = case dimension_spec[:operator].to_sym
@@ -133,6 +141,30 @@ module DataModel
       end
     end
 
+    def filter_node_for_filter_spec(model, projections_by_id, filter_spec)
+      node = if filter_spec.key?(:id)
+               projections_by_id.fetch(filter_spec[:id])[:node]
+             elsif filter_spec.key?(:field)
+               field = filter_spec[:field][:field].to_sym
+               if model.measure_fields.key?(field)
+                 projection_node_for_measure_spec(model, filter_spec[:field])
+               else
+                 projection_node_for_dimension_spec(model, filter_spec[:field])
+               end
+             end
+
+      values = filter_spec[:values]
+      case filter_spec[:operator].to_sym
+      when :equals then node.eq_any(values)
+      when :not_equals then node.not_eq_any(values)
+      when :greater_than then node.gt_all(values)
+      when :greater_than_or_equals then node.gteq_all(values)
+      when :less_than then node.lt_all(values)
+      when :less_than_or_equals then node.lteq_all(values)
+      else raise InvalidQueryError, "Unknown filter operator #{filter_spec[:operator]} for filter on id=#{filter_spec[:id]}"
+      end
+    end
+
     def model_field_for(spec)
       model = @warehouse.fact_tables.fetch(spec[:model])
       model.all_fields.fetch(spec[:field].to_sym)
@@ -143,7 +175,8 @@ module DataModel
         segments = [spec[:model], spec[:field], spec[:operator]].compact.map { |segment| segment.gsub(/[^A-Za-z]/, "_").downcase }
         alias_name = segments.join("__")
 
-        # Postgres truncates the AS silently, so we have to give it something shorter than 64 chars long
+        # Postgres truncates aliases names after the AS silently, so we have to give it something shorter than 64 chars long
+        # to be able to re-reference it later
         if alias_name.size > 63
           replace_counter = (@alias_replace_counter += 1)
           prefix = "a_#{replace_counter}_"

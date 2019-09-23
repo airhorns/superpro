@@ -21,6 +21,10 @@ export interface WarehouseQuery {
    * A list of model fields to order the query by
    */
   orderings?: Ordering[];
+  /**
+   * A list of model fields and values to filter the query by
+   */
+  filters?: Filter[];
 }
 export interface Measure {
   /**
@@ -61,4 +65,16 @@ export interface Ordering {
    */
   id: string;
   direction: "asc" | "desc";
+}
+export interface Filter {
+  /**
+   * The id of the measure or dimension to filter by. Mutually exclusive with the field properties.
+   */
+  id?: string;
+  /**
+   * A field to filter on that isn't included in the returned values. Structured as a nested measure or dimension
+   */
+  field?: Measure | Dimension;
+  operator: "equals" | "not_equals" | "greater_than" | "greater_than_or_equals" | "less_than" | "less_than_or_equals";
+  values: (string | number)[];
 }

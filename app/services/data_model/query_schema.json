@@ -23,6 +23,12 @@
       "type": "array",
       "items": { "$ref": "#/definitions/ordering" },
       "minItems": 0
+    },
+    "filters": {
+      "description": "A list of model fields and values to filter the query by",
+      "type": "array",
+      "items": { "$ref": "#/definitions/filter" },
+      "minItems": 0
     }
   },
   "required": ["measures", "dimensions"],
@@ -85,6 +91,31 @@
         "direction": {
           "type": "string",
           "enum": ["asc", "desc"]
+        }
+      }
+    },
+    "filter": {
+      "type": "object",
+      "required": ["operator", "values"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The id of the measure or dimension to filter by. Mutually exclusive with the field properties."
+        },
+        "field": {
+          "anyOf": [{ "$ref": "#/definitions/measure" }, { "$ref": "#/definitions/dimension" }],
+          "description": "A field to filter on that isn't included in the returned values. Structured as a nested measure or dimension"
+        },
+        "operator": {
+          "type": "string",
+          "enum": ["equals", "not_equals", "greater_than", "greater_than_or_equals", "less_than", "less_than_or_equals"]
+        },
+        "values": {
+          "type": ["array", "null"],
+          "items": {
+            "type": ["string", "number"]
+          }
         }
       }
     }

@@ -65,6 +65,26 @@ class DataModel::QueryTest < ActiveSupport::TestCase
     assert_equal [], result
   end
 
+  test "it can execute a query with a filter on an id field" do
+    result = @query.run(
+      measures: [{ model: "Sales::OrderFacts", field: "total_price", id: "total_price" }],
+      dimensions: [],
+      filters: [{ id: "total_price", operator: "greater_than", values: [100] }],
+    )
+
+    assert_equal [], result
+  end
+
+  test "it can execute a query with a filter on a not-selected field" do
+    result = @query.run(
+      measures: [{ model: "Sales::OrderFacts", field: "total_weight", id: "total_weight" }],
+      dimensions: [],
+      filters: [{ field: { model: "Sales::OrderFacts", field: "total_price", id: "total_price" }, operator: "greater_than", values: [100] }],
+    )
+
+    assert_equal [], result
+  end
+
   test "it doesnt allow queries on one account to find data from another" do
     other_account = create(:account)
     create(:shopify_shop, name: "Alpha", account: @account)

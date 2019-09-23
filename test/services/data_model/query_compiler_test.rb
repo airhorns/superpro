@@ -53,6 +53,16 @@ class DataModel::QueryCompilerTest < ActiveSupport::TestCase
     assert_matches_snapshot sql
   end
 
+  test "it can compile a query with a set of filters" do
+    sql = compile(
+      measures: [{ model: "Sales::OrderFacts", field: "total_price", operator: "sum", id: "total_price" }],
+      dimensions: [{ model: "Sales::OrderFacts", field: "created_at", operator: "date_trunc_year", id: "created_at_date" }],
+      filters: [{ id: "created_at_date", operator: "equals", values: ["2000"] }, { id: "total_price", operator: "greater_than", values: [100] }],
+    )
+
+    assert_matches_snapshot sql
+  end
+
   def compile(query_spec)
     assert DataModel::QueryValidator.validate!(query_spec)
     DataModel::QueryCompiler.new(@account, SuperproWarehouse, query_spec).sql
