@@ -88,12 +88,17 @@ module Infrastructure
     def config_for_connection(connection)
       case connection.integration
       when ShopifyShop
-        {
-          "private_app_api_key" => connection.integration.api_key,
-          "private_app_password" => connection.integration.password,
+        config = {
           "shop" => connection.integration.shopify_domain,
           "start_date" => start_date,
         }
+        if connection.integration.access_token
+          config["api_key"] = connection.integration.access_token
+        else
+          config["private_app_api_key"] = connection.integration.api_key
+          config["private_app_password"] = connection.integration.password
+        end
+        config
       when GoogleAnalyticsCredential
         {
           "oauth_credentials" => {

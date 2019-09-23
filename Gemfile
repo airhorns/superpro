@@ -26,6 +26,7 @@ gem 'rails-i18n'
 gem 'omniauth'
 gem 'plaid'
 gem 'shopify_api'
+gem 'omniauth-shopify-oauth2'
 gem 'rest-client'
 gem 'google-api-client'
 

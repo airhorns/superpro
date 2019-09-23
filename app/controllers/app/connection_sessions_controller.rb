@@ -10,6 +10,13 @@ class App::ConnectionSessionsController < AppAreaController
       else
         redirect_to "/settings/connections/google_analytics/#{ga_credential.id}/complete"
       end
+    when "shopify"
+      _shopify_shop, errors = Connections::ConnectShopify.new(current_account, current_user).connect_using_auth_hash(auth_hash)
+      if errors
+        redirect_to "/settings/connections/error", provider: "Shopify"
+      else
+        redirect_to "/settings/connections"
+      end
     else
       raise "Unknown connection session provider callback"
     end

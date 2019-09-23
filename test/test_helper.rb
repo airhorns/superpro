@@ -10,6 +10,7 @@ require "webmock/minitest"
 # the cassettes are safe to commit to Git.
 ENV["GA_OAUTH_ACCESS_TOKEN"] ||= "test_access_token"
 ENV["GA_OAUTH_REFRESH_TOKEN"] ||= "test_refresh_token"
+ENV["SHOPIFY_OAUTH_ACCESS_TOKEN"] ||= "test_access_token"
 ENV["KAFKA_SASL_PLAIN_PASSWORD"] ||= "test_kafka_password"
 
 VCR.configure do |config|
@@ -18,6 +19,7 @@ VCR.configure do |config|
   config.hook_into :webmock
   config.filter_sensitive_data("<GA_OAUTH_ACCESS_TOKEN>") { ENV["GA_OAUTH_ACCESS_TOKEN"] }
   config.filter_sensitive_data("<GA_OAUTH_REFRESH_TOKEN>") { ENV["GA_OAUTH_REFRESH_TOKEN"] }
+  config.filter_sensitive_data("<SHOPIFY_OAUTH_ACCESS_TOKEN>") { ENV["SHOPIFY_OAUTH_ACCESS_TOKEN"] }
   config.filter_sensitive_data("<KAFKA_SASL_PLAIN_PASSWORD>") { ENV["KAFKA_SASL_PLAIN_PASSWORD"] }
   config.filter_sensitive_data("<AUTHORIZATION>") do |interaction|
     interaction.request.headers.key?("Authorization") && interaction.request.headers["Authorization"].first

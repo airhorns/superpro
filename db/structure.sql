@@ -1039,15 +1039,16 @@ CREATE TABLE public.schema_migrations (
 CREATE TABLE public.shopify_shops (
     id bigint NOT NULL,
     shopify_domain character varying NOT NULL,
-    api_key character varying NOT NULL,
-    password character varying NOT NULL,
+    api_key character varying,
+    password character varying,
     name character varying NOT NULL,
     shop_id bigint NOT NULL,
     account_id bigint NOT NULL,
     creator_id bigint NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    script_tag_setup_at timestamp without time zone
+    script_tag_setup_at timestamp without time zone,
+    access_token character varying
 );
 
 
@@ -1528,11 +1529,17 @@ COMMENT ON TABLE raw_tap_google_analytics.weekly_active_users IS '{"path": ["wee
 CREATE TABLE raw_tap_kafka.snowplow_production_enriched (
     app_id text,
     platform text,
-    etl_tstamp text,
-    collector_tstamp text,
-    dvce_tstamp text,
+    etl_tstamp timestamp with time zone,
+    collector_tstamp timestamp with time zone,
+    derived_tstamp timestamp with time zone,
+    true_tstamp timestamp with time zone,
     event text,
     event_id text NOT NULL,
+    event_vendor text,
+    event_name text,
+    event_format text,
+    event_version text,
+    event_fingerprint text,
     txn_id bigint,
     name_tracker text,
     v_tracker text,
@@ -1554,7 +1561,7 @@ CREATE TABLE raw_tap_kafka.snowplow_production_enriched (
     geo_region_name text,
     geo_location text,
     ip_isp text,
-    ip_org text,
+    ip_organization text,
     ip_domain text,
     ip_netspeed text,
     page_url text,
@@ -1631,6 +1638,7 @@ CREATE TABLE raw_tap_kafka.snowplow_production_enriched (
     dvce_ismobile boolean,
     dvce_screenwidth bigint,
     dvce_screenheight bigint,
+    dvce_created_tstamp timestamp with time zone,
     doc_charset text,
     doc_width bigint,
     doc_height bigint,
@@ -1645,24 +1653,15 @@ CREATE TABLE raw_tap_kafka.snowplow_production_enriched (
     mkt_clickid text,
     mkt_network text,
     etl_tags text,
-    dvce_sent_tstamp text,
+    dvce_sent_tstamp timestamp with time zone,
     refr_domain_userid text,
-    refr_dvce_tstamp text,
+    refr_dvce_tstamp timestamp with time zone,
     session_id text,
     _sdc_received_at timestamp with time zone,
     _sdc_sequence bigint,
     _sdc_table_version bigint,
     _sdc_batched_at timestamp with time zone,
-    _sdc_primary_key text NOT NULL,
-    dvce_created_tstamp text,
-    derived_tstamp text,
-    true_tstamp text,
-    event_vendor text,
-    event_name text,
-    event_format text,
-    event_version text,
-    event_fingerprint text,
-    ip_organization text
+    _sdc_primary_key text NOT NULL
 );
 
 
@@ -1670,7 +1669,7 @@ CREATE TABLE raw_tap_kafka.snowplow_production_enriched (
 -- Name: TABLE snowplow_production_enriched; Type: COMMENT; Schema: raw_tap_kafka; Owner: -
 --
 
-COMMENT ON TABLE raw_tap_kafka.snowplow_production_enriched IS '{"path": ["snowplow-production-enriched"], "version": null, "schema_version": 2, "key_properties": ["_sdc_primary_key"], "mappings": {"app_id": {"type": ["string", "null"], "from": ["app_id"]}, "platform": {"type": ["string", "null"], "from": ["platform"]}, "etl_tstamp": {"type": ["string", "null"], "from": ["etl_tstamp"]}, "collector_tstamp": {"type": ["string", "null"], "from": ["collector_tstamp"]}, "dvce_tstamp": {"type": ["string", "null"], "from": ["dvce_tstamp"]}, "event": {"type": ["string", "null"], "from": ["event"]}, "event_id": {"type": ["string"], "from": ["event_id"]}, "txn_id": {"type": ["integer", "null"], "from": ["txn_id"]}, "name_tracker": {"type": ["string", "null"], "from": ["name_tracker"]}, "v_tracker": {"type": ["string", "null"], "from": ["v_tracker"]}, "v_collector": {"type": ["string", "null"], "from": ["v_collector"]}, "v_etl": {"type": ["string", "null"], "from": ["v_etl"]}, "user_id": {"type": ["string", "null"], "from": ["user_id"]}, "user_ipaddress": {"type": ["string", "null"], "from": ["user_ipaddress"]}, "user_fingerprint": {"type": ["string", "null"], "from": ["user_fingerprint"]}, "domain_userid": {"type": ["string", "null"], "from": ["domain_userid"]}, "domain_sessionidx": {"type": ["integer", "null"], "from": ["domain_sessionidx"]}, "domain_sessionid": {"type": ["string", "null"], "from": ["domain_sessionid"]}, "network_userid": {"type": ["string", "null"], "from": ["network_userid"]}, "geo_country": {"type": ["string", "null"], "from": ["geo_country"]}, "geo_region": {"type": ["string", "null"], "from": ["geo_region"]}, "geo_city": {"type": ["string", "null"], "from": ["geo_city"]}, "geo_zipcode": {"type": ["string", "null"], "from": ["geo_zipcode"]}, "geo_latitude": {"type": ["number", "null"], "from": ["geo_latitude"]}, "geo_longitude": {"type": ["number", "null"], "from": ["geo_longitude"]}, "geo_region_name": {"type": ["string", "null"], "from": ["geo_region_name"]}, "geo_location": {"type": ["string", "null"], "from": ["geo_location"]}, "ip_isp": {"type": ["string", "null"], "from": ["ip_isp"]}, "ip_org": {"type": ["string", "null"], "from": ["ip_org"]}, "ip_domain": {"type": ["string", "null"], "from": ["ip_domain"]}, "ip_netspeed": {"type": ["string", "null"], "from": ["ip_netspeed"]}, "page_url": {"type": ["string", "null"], "from": ["page_url"]}, "page_title": {"type": ["string", "null"], "from": ["page_title"]}, "page_referrer": {"type": ["string", "null"], "from": ["page_referrer"]}, "page_urlscheme": {"type": ["string", "null"], "from": ["page_urlscheme"]}, "page_urlhost": {"type": ["string", "null"], "from": ["page_urlhost"]}, "page_urlport": {"type": ["integer", "null"], "from": ["page_urlport"]}, "page_urlpath": {"type": ["string", "null"], "from": ["page_urlpath"]}, "page_urlquery": {"type": ["string", "null"], "from": ["page_urlquery"]}, "page_urlfragment": {"type": ["string", "null"], "from": ["page_urlfragment"]}, "refr_urlscheme": {"type": ["string", "null"], "from": ["refr_urlscheme"]}, "refr_urlhost": {"type": ["string", "null"], "from": ["refr_urlhost"]}, "refr_urlport": {"type": ["integer", "null"], "from": ["refr_urlport"]}, "refr_urlpath": {"type": ["string", "null"], "from": ["refr_urlpath"]}, "refr_urlquery": {"type": ["string", "null"], "from": ["refr_urlquery"]}, "refr_urlfragment": {"type": ["string", "null"], "from": ["refr_urlfragment"]}, "refr_medium": {"type": ["string", "null"], "from": ["refr_medium"]}, "refr_source": {"type": ["string", "null"], "from": ["refr_source"]}, "refr_term": {"type": ["string", "null"], "from": ["refr_term"]}, "mkt_medium": {"type": ["string", "null"], "from": ["mkt_medium"]}, "mkt_source": {"type": ["string", "null"], "from": ["mkt_source"]}, "mkt_term": {"type": ["string", "null"], "from": ["mkt_term"]}, "mkt_content": {"type": ["string", "null"], "from": ["mkt_content"]}, "mkt_campaign": {"type": ["string", "null"], "from": ["mkt_campaign"]}, "se_category": {"type": ["string", "null"], "from": ["se_category"]}, "se_action": {"type": ["string", "null"], "from": ["se_action"]}, "se_label": {"type": ["string", "null"], "from": ["se_label"]}, "se_property": {"type": ["string", "null"], "from": ["se_property"]}, "se_value": {"type": ["string", "null"], "from": ["se_value"]}, "tr_orderid": {"type": ["string", "null"], "from": ["tr_orderid"]}, "tr_affiliation": {"type": ["string", "null"], "from": ["tr_affiliation"]}, "tr_total": {"type": ["number", "null"], "from": ["tr_total"]}, "tr_tax": {"type": ["number", "null"], "from": ["tr_tax"]}, "tr_shipping": {"type": ["number", "null"], "from": ["tr_shipping"]}, "tr_city": {"type": ["string", "null"], "from": ["tr_city"]}, "tr_state": {"type": ["string", "null"], "from": ["tr_state"]}, "tr_country": {"type": ["string", "null"], "from": ["tr_country"]}, "ti_orderid": {"type": ["string", "null"], "from": ["ti_orderid"]}, "ti_sku": {"type": ["string", "null"], "from": ["ti_sku"]}, "ti_name": {"type": ["string", "null"], "from": ["ti_name"]}, "ti_category": {"type": ["string", "null"], "from": ["ti_category"]}, "ti_price": {"type": ["number", "null"], "from": ["ti_price"]}, "ti_quantity": {"type": ["integer", "null"], "from": ["ti_quantity"]}, "pp_xoffset_min": {"type": ["integer", "null"], "from": ["pp_xoffset_min"]}, "pp_xoffset_max": {"type": ["integer", "null"], "from": ["pp_xoffset_max"]}, "pp_yoffset_min": {"type": ["integer", "null"], "from": ["pp_yoffset_min"]}, "pp_yoffset_max": {"type": ["integer", "null"], "from": ["pp_yoffset_max"]}, "useragent": {"type": ["string", "null"], "from": ["useragent"]}, "br_name": {"type": ["string", "null"], "from": ["br_name"]}, "br_family": {"type": ["string", "null"], "from": ["br_family"]}, "br_version": {"type": ["string", "null"], "from": ["br_version"]}, "br_type": {"type": ["string", "null"], "from": ["br_type"]}, "br_renderengine": {"type": ["string", "null"], "from": ["br_renderengine"]}, "br_lang": {"type": ["string", "null"], "from": ["br_lang"]}, "br_features_pdf": {"type": ["boolean", "null"], "from": ["br_features_pdf"]}, "br_features_flash": {"type": ["boolean", "null"], "from": ["br_features_flash"]}, "br_features_java": {"type": ["boolean", "null"], "from": ["br_features_java"]}, "br_features_director": {"type": ["boolean", "null"], "from": ["br_features_director"]}, "br_features_quicktime": {"type": ["boolean", "null"], "from": ["br_features_quicktime"]}, "br_features_realplayer": {"type": ["boolean", "null"], "from": ["br_features_realplayer"]}, "br_features_windowsmedia": {"type": ["boolean", "null"], "from": ["br_features_windowsmedia"]}, "br_features_gears": {"type": ["boolean", "null"], "from": ["br_features_gears"]}, "br_features_silverlight": {"type": ["boolean", "null"], "from": ["br_features_silverlight"]}, "br_cookies": {"type": ["boolean", "null"], "from": ["br_cookies"]}, "br_colordepth": {"type": ["string", "null"], "from": ["br_colordepth"]}, "br_viewwidth": {"type": ["integer", "null"], "from": ["br_viewwidth"]}, "br_viewheight": {"type": ["integer", "null"], "from": ["br_viewheight"]}, "os_name": {"type": ["string", "null"], "from": ["os_name"]}, "os_family": {"type": ["string", "null"], "from": ["os_family"]}, "os_manufacturer": {"type": ["string", "null"], "from": ["os_manufacturer"]}, "os_timezone": {"type": ["string", "null"], "from": ["os_timezone"]}, "dvce_type": {"type": ["string", "null"], "from": ["dvce_type"]}, "dvce_ismobile": {"type": ["boolean", "null"], "from": ["dvce_ismobile"]}, "dvce_screenwidth": {"type": ["integer", "null"], "from": ["dvce_screenwidth"]}, "dvce_screenheight": {"type": ["integer", "null"], "from": ["dvce_screenheight"]}, "doc_charset": {"type": ["string", "null"], "from": ["doc_charset"]}, "doc_width": {"type": ["integer", "null"], "from": ["doc_width"]}, "doc_height": {"type": ["integer", "null"], "from": ["doc_height"]}, "tr_currency": {"type": ["string", "null"], "from": ["tr_currency"]}, "tr_total_base": {"type": ["number", "null"], "from": ["tr_total_base"]}, "tr_tax_base": {"type": ["number", "null"], "from": ["tr_tax_base"]}, "tr_shipping_base": {"type": ["number", "null"], "from": ["tr_shipping_base"]}, "ti_currency": {"type": ["string", "null"], "from": ["ti_currency"]}, "ti_price_base": {"type": ["number", "null"], "from": ["ti_price_base"]}, "base_currency": {"type": ["string", "null"], "from": ["base_currency"]}, "geo_timezone": {"type": ["string", "null"], "from": ["geo_timezone"]}, "mkt_clickid": {"type": ["string", "null"], "from": ["mkt_clickid"]}, "mkt_network": {"type": ["string", "null"], "from": ["mkt_network"]}, "etl_tags": {"type": ["string", "null"], "from": ["etl_tags"]}, "dvce_sent_tstamp": {"type": ["string", "null"], "from": ["dvce_sent_tstamp"]}, "refr_domain_userid": {"type": ["string", "null"], "from": ["refr_domain_userid"]}, "refr_dvce_tstamp": {"type": ["string", "null"], "from": ["refr_dvce_tstamp"]}, "session_id": {"type": ["string", "null"], "from": ["session_id"]}, "_sdc_received_at": {"type": ["string", "null"], "from": ["_sdc_received_at"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_table_version": {"type": ["integer", "null"], "from": ["_sdc_table_version"]}, "_sdc_batched_at": {"type": ["string", "null"], "from": ["_sdc_batched_at"], "format": "date-time"}, "_sdc_primary_key": {"type": ["string"], "from": ["_sdc_primary_key"]}, "dvce_created_tstamp": {"type": ["string", "null"], "from": ["dvce_created_tstamp"]}, "derived_tstamp": {"type": ["string", "null"], "from": ["derived_tstamp"]}, "true_tstamp": {"type": ["string", "null"], "from": ["true_tstamp"]}, "event_vendor": {"type": ["string", "null"], "from": ["event_vendor"]}, "event_name": {"type": ["string", "null"], "from": ["event_name"]}, "event_format": {"type": ["string", "null"], "from": ["event_format"]}, "event_version": {"type": ["string", "null"], "from": ["event_version"]}, "event_fingerprint": {"type": ["string", "null"], "from": ["event_fingerprint"]}, "ip_organization": {"type": ["string", "null"], "from": ["ip_organization"]}}}';
+COMMENT ON TABLE raw_tap_kafka.snowplow_production_enriched IS '{"path": ["snowplow-production-enriched"], "version": null, "schema_version": 2, "key_properties": ["_sdc_primary_key"], "mappings": {"app_id": {"type": ["string", "null"], "from": ["app_id"]}, "platform": {"type": ["string", "null"], "from": ["platform"]}, "etl_tstamp": {"type": ["string", "null"], "from": ["etl_tstamp"], "format": "date-time"}, "collector_tstamp": {"type": ["string", "null"], "from": ["collector_tstamp"], "format": "date-time"}, "derived_tstamp": {"type": ["string", "null"], "from": ["derived_tstamp"], "format": "date-time"}, "true_tstamp": {"type": ["string", "null"], "from": ["true_tstamp"], "format": "date-time"}, "event": {"type": ["string", "null"], "from": ["event"]}, "event_id": {"type": ["string"], "from": ["event_id"]}, "event_vendor": {"type": ["string", "null"], "from": ["event_vendor"]}, "event_name": {"type": ["string", "null"], "from": ["event_name"]}, "event_format": {"type": ["string", "null"], "from": ["event_format"]}, "event_version": {"type": ["string", "null"], "from": ["event_version"]}, "event_fingerprint": {"type": ["string", "null"], "from": ["event_fingerprint"]}, "txn_id": {"type": ["integer", "null"], "from": ["txn_id"]}, "name_tracker": {"type": ["string", "null"], "from": ["name_tracker"]}, "v_tracker": {"type": ["string", "null"], "from": ["v_tracker"]}, "v_collector": {"type": ["string", "null"], "from": ["v_collector"]}, "v_etl": {"type": ["string", "null"], "from": ["v_etl"]}, "user_id": {"type": ["string", "null"], "from": ["user_id"]}, "user_ipaddress": {"type": ["string", "null"], "from": ["user_ipaddress"]}, "user_fingerprint": {"type": ["string", "null"], "from": ["user_fingerprint"]}, "domain_userid": {"type": ["string", "null"], "from": ["domain_userid"]}, "domain_sessionidx": {"type": ["integer", "null"], "from": ["domain_sessionidx"]}, "domain_sessionid": {"type": ["string", "null"], "from": ["domain_sessionid"]}, "network_userid": {"type": ["string", "null"], "from": ["network_userid"]}, "geo_country": {"type": ["string", "null"], "from": ["geo_country"]}, "geo_region": {"type": ["string", "null"], "from": ["geo_region"]}, "geo_city": {"type": ["string", "null"], "from": ["geo_city"]}, "geo_zipcode": {"type": ["string", "null"], "from": ["geo_zipcode"]}, "geo_latitude": {"type": ["number", "null"], "from": ["geo_latitude"]}, "geo_longitude": {"type": ["number", "null"], "from": ["geo_longitude"]}, "geo_region_name": {"type": ["string", "null"], "from": ["geo_region_name"]}, "geo_location": {"type": ["string", "null"], "from": ["geo_location"]}, "ip_isp": {"type": ["string", "null"], "from": ["ip_isp"]}, "ip_organization": {"type": ["string", "null"], "from": ["ip_organization"]}, "ip_domain": {"type": ["string", "null"], "from": ["ip_domain"]}, "ip_netspeed": {"type": ["string", "null"], "from": ["ip_netspeed"]}, "page_url": {"type": ["string", "null"], "from": ["page_url"]}, "page_title": {"type": ["string", "null"], "from": ["page_title"]}, "page_referrer": {"type": ["string", "null"], "from": ["page_referrer"]}, "page_urlscheme": {"type": ["string", "null"], "from": ["page_urlscheme"]}, "page_urlhost": {"type": ["string", "null"], "from": ["page_urlhost"]}, "page_urlport": {"type": ["integer", "null"], "from": ["page_urlport"]}, "page_urlpath": {"type": ["string", "null"], "from": ["page_urlpath"]}, "page_urlquery": {"type": ["string", "null"], "from": ["page_urlquery"]}, "page_urlfragment": {"type": ["string", "null"], "from": ["page_urlfragment"]}, "refr_urlscheme": {"type": ["string", "null"], "from": ["refr_urlscheme"]}, "refr_urlhost": {"type": ["string", "null"], "from": ["refr_urlhost"]}, "refr_urlport": {"type": ["integer", "null"], "from": ["refr_urlport"]}, "refr_urlpath": {"type": ["string", "null"], "from": ["refr_urlpath"]}, "refr_urlquery": {"type": ["string", "null"], "from": ["refr_urlquery"]}, "refr_urlfragment": {"type": ["string", "null"], "from": ["refr_urlfragment"]}, "refr_medium": {"type": ["string", "null"], "from": ["refr_medium"]}, "refr_source": {"type": ["string", "null"], "from": ["refr_source"]}, "refr_term": {"type": ["string", "null"], "from": ["refr_term"]}, "mkt_medium": {"type": ["string", "null"], "from": ["mkt_medium"]}, "mkt_source": {"type": ["string", "null"], "from": ["mkt_source"]}, "mkt_term": {"type": ["string", "null"], "from": ["mkt_term"]}, "mkt_content": {"type": ["string", "null"], "from": ["mkt_content"]}, "mkt_campaign": {"type": ["string", "null"], "from": ["mkt_campaign"]}, "se_category": {"type": ["string", "null"], "from": ["se_category"]}, "se_action": {"type": ["string", "null"], "from": ["se_action"]}, "se_label": {"type": ["string", "null"], "from": ["se_label"]}, "se_property": {"type": ["string", "null"], "from": ["se_property"]}, "se_value": {"type": ["string", "null"], "from": ["se_value"]}, "tr_orderid": {"type": ["string", "null"], "from": ["tr_orderid"]}, "tr_affiliation": {"type": ["string", "null"], "from": ["tr_affiliation"]}, "tr_total": {"type": ["number", "null"], "from": ["tr_total"]}, "tr_tax": {"type": ["number", "null"], "from": ["tr_tax"]}, "tr_shipping": {"type": ["number", "null"], "from": ["tr_shipping"]}, "tr_city": {"type": ["string", "null"], "from": ["tr_city"]}, "tr_state": {"type": ["string", "null"], "from": ["tr_state"]}, "tr_country": {"type": ["string", "null"], "from": ["tr_country"]}, "ti_orderid": {"type": ["string", "null"], "from": ["ti_orderid"]}, "ti_sku": {"type": ["string", "null"], "from": ["ti_sku"]}, "ti_name": {"type": ["string", "null"], "from": ["ti_name"]}, "ti_category": {"type": ["string", "null"], "from": ["ti_category"]}, "ti_price": {"type": ["number", "null"], "from": ["ti_price"]}, "ti_quantity": {"type": ["integer", "null"], "from": ["ti_quantity"]}, "pp_xoffset_min": {"type": ["integer", "null"], "from": ["pp_xoffset_min"]}, "pp_xoffset_max": {"type": ["integer", "null"], "from": ["pp_xoffset_max"]}, "pp_yoffset_min": {"type": ["integer", "null"], "from": ["pp_yoffset_min"]}, "pp_yoffset_max": {"type": ["integer", "null"], "from": ["pp_yoffset_max"]}, "useragent": {"type": ["string", "null"], "from": ["useragent"]}, "br_name": {"type": ["string", "null"], "from": ["br_name"]}, "br_family": {"type": ["string", "null"], "from": ["br_family"]}, "br_version": {"type": ["string", "null"], "from": ["br_version"]}, "br_type": {"type": ["string", "null"], "from": ["br_type"]}, "br_renderengine": {"type": ["string", "null"], "from": ["br_renderengine"]}, "br_lang": {"type": ["string", "null"], "from": ["br_lang"]}, "br_features_pdf": {"type": ["boolean", "null"], "from": ["br_features_pdf"]}, "br_features_flash": {"type": ["boolean", "null"], "from": ["br_features_flash"]}, "br_features_java": {"type": ["boolean", "null"], "from": ["br_features_java"]}, "br_features_director": {"type": ["boolean", "null"], "from": ["br_features_director"]}, "br_features_quicktime": {"type": ["boolean", "null"], "from": ["br_features_quicktime"]}, "br_features_realplayer": {"type": ["boolean", "null"], "from": ["br_features_realplayer"]}, "br_features_windowsmedia": {"type": ["boolean", "null"], "from": ["br_features_windowsmedia"]}, "br_features_gears": {"type": ["boolean", "null"], "from": ["br_features_gears"]}, "br_features_silverlight": {"type": ["boolean", "null"], "from": ["br_features_silverlight"]}, "br_cookies": {"type": ["boolean", "null"], "from": ["br_cookies"]}, "br_colordepth": {"type": ["string", "null"], "from": ["br_colordepth"]}, "br_viewwidth": {"type": ["integer", "null"], "from": ["br_viewwidth"]}, "br_viewheight": {"type": ["integer", "null"], "from": ["br_viewheight"]}, "os_name": {"type": ["string", "null"], "from": ["os_name"]}, "os_family": {"type": ["string", "null"], "from": ["os_family"]}, "os_manufacturer": {"type": ["string", "null"], "from": ["os_manufacturer"]}, "os_timezone": {"type": ["string", "null"], "from": ["os_timezone"]}, "dvce_type": {"type": ["string", "null"], "from": ["dvce_type"]}, "dvce_ismobile": {"type": ["boolean", "null"], "from": ["dvce_ismobile"]}, "dvce_screenwidth": {"type": ["integer", "null"], "from": ["dvce_screenwidth"]}, "dvce_screenheight": {"type": ["integer", "null"], "from": ["dvce_screenheight"]}, "dvce_created_tstamp": {"type": ["string", "null"], "from": ["dvce_created_tstamp"], "format": "date-time"}, "doc_charset": {"type": ["string", "null"], "from": ["doc_charset"]}, "doc_width": {"type": ["integer", "null"], "from": ["doc_width"]}, "doc_height": {"type": ["integer", "null"], "from": ["doc_height"]}, "tr_currency": {"type": ["string", "null"], "from": ["tr_currency"]}, "tr_total_base": {"type": ["number", "null"], "from": ["tr_total_base"]}, "tr_tax_base": {"type": ["number", "null"], "from": ["tr_tax_base"]}, "tr_shipping_base": {"type": ["number", "null"], "from": ["tr_shipping_base"]}, "ti_currency": {"type": ["string", "null"], "from": ["ti_currency"]}, "ti_price_base": {"type": ["number", "null"], "from": ["ti_price_base"]}, "base_currency": {"type": ["string", "null"], "from": ["base_currency"]}, "geo_timezone": {"type": ["string", "null"], "from": ["geo_timezone"]}, "mkt_clickid": {"type": ["string", "null"], "from": ["mkt_clickid"]}, "mkt_network": {"type": ["string", "null"], "from": ["mkt_network"]}, "etl_tags": {"type": ["string", "null"], "from": ["etl_tags"]}, "dvce_sent_tstamp": {"type": ["string", "null"], "from": ["dvce_sent_tstamp"], "format": "date-time"}, "refr_domain_userid": {"type": ["string", "null"], "from": ["refr_domain_userid"]}, "refr_dvce_tstamp": {"type": ["string", "null"], "from": ["refr_dvce_tstamp"], "format": "date-time"}, "session_id": {"type": ["string", "null"], "from": ["session_id"]}, "_sdc_received_at": {"type": ["string", "null"], "from": ["_sdc_received_at"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_table_version": {"type": ["integer", "null"], "from": ["_sdc_table_version"]}, "_sdc_batched_at": {"type": ["string", "null"], "from": ["_sdc_batched_at"], "format": "date-time"}, "_sdc_primary_key": {"type": ["string"], "from": ["_sdc_primary_key"]}}}';
 
 
 --
@@ -1746,6 +1745,32 @@ COMMENT ON TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_snowpl
 --
 
 CREATE TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_superpro_shopify___1 (
+    selectedvariantid text,
+    currency text,
+    product__id double precision,
+    product__type text,
+    product__vendor text,
+    page__pagetype text,
+    page__resourceid double precision,
+    page__resourcetype text,
+    _sdc_source_key__sdc_primary_key text NOT NULL,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE snowplow_production_enriched__contexts_com_superpro_shopify___1; Type: COMMENT; Schema: raw_tap_kafka; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_superpro_shopify___1 IS '{"path": ["snowplow-production-enriched", "contexts_com_superpro_shopify_page_meta_1"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key__sdc_primary_key"], "mappings": {"selectedvariantid": {"type": ["string", "null"], "from": ["selectedVariantId"]}, "currency": {"type": ["string", "null"], "from": ["currency"]}, "product__id": {"type": ["number", "null"], "from": ["product", "id"]}, "product__type": {"type": ["string", "null"], "from": ["product", "type"]}, "product__vendor": {"type": ["string", "null"], "from": ["product", "vendor"]}, "page__pagetype": {"type": ["string", "null"], "from": ["page", "pageType"]}, "page__resourceid": {"type": ["number", "null"], "from": ["page", "resourceId"]}, "page__resourcetype": {"type": ["string", "null"], "from": ["page", "resourceType"]}, "_sdc_source_key__sdc_primary_key": {"type": ["string"], "from": ["_sdc_source_key__sdc_primary_key"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: snowplow_production_enriched__contexts_com_superpro_shopify_pag; Type: TABLE; Schema: raw_tap_kafka; Owner: -
+--
+
+CREATE TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_superpro_shopify_pag (
     id double precision,
     price double precision,
     name text,
@@ -1759,36 +1784,10 @@ CREATE TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_superpro_s
 
 
 --
--- Name: TABLE snowplow_production_enriched__contexts_com_superpro_shopify___1; Type: COMMENT; Schema: raw_tap_kafka; Owner: -
---
-
-COMMENT ON TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_superpro_shopify___1 IS '{"path": ["snowplow-production-enriched", "contexts_com_superpro_shopify_page_meta_1", "product", "variants"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key__sdc_primary_key"], "mappings": {"id": {"type": ["number", "null"], "from": ["id"]}, "price": {"type": ["number", "null"], "from": ["price"]}, "name": {"type": ["string", "null"], "from": ["name"]}, "public_title": {"type": ["string", "null"], "from": ["public_title"]}, "sku": {"type": ["string", "null"], "from": ["sku"]}, "_sdc_source_key__sdc_primary_key": {"type": ["string"], "from": ["_sdc_source_key__sdc_primary_key"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
-
-
---
--- Name: snowplow_production_enriched__contexts_com_superpro_shopify_pag; Type: TABLE; Schema: raw_tap_kafka; Owner: -
---
-
-CREATE TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_superpro_shopify_pag (
-    currency text,
-    page__pagetype text,
-    _sdc_source_key__sdc_primary_key text NOT NULL,
-    _sdc_sequence bigint,
-    _sdc_level_0_id bigint NOT NULL,
-    selectedvariantid text,
-    product__id double precision,
-    product__type text,
-    product__vendor text,
-    page__resourceid double precision,
-    page__resourcetype text
-);
-
-
---
 -- Name: TABLE snowplow_production_enriched__contexts_com_superpro_shopify_pag; Type: COMMENT; Schema: raw_tap_kafka; Owner: -
 --
 
-COMMENT ON TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_superpro_shopify_pag IS '{"path": ["snowplow-production-enriched", "contexts_com_superpro_shopify_page_meta_1"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key__sdc_primary_key"], "mappings": {"currency": {"type": ["string", "null"], "from": ["currency"]}, "page__pagetype": {"type": ["string", "null"], "from": ["page", "pageType"]}, "_sdc_source_key__sdc_primary_key": {"type": ["string"], "from": ["_sdc_source_key__sdc_primary_key"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "selectedvariantid": {"type": ["string", "null"], "from": ["selectedVariantId"]}, "product__id": {"type": ["number", "null"], "from": ["product", "id"]}, "product__type": {"type": ["string", "null"], "from": ["product", "type"]}, "product__vendor": {"type": ["string", "null"], "from": ["product", "vendor"]}, "page__resourceid": {"type": ["number", "null"], "from": ["page", "resourceId"]}, "page__resourcetype": {"type": ["string", "null"], "from": ["page", "resourceType"]}}}';
+COMMENT ON TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_superpro_shopify_pag IS '{"path": ["snowplow-production-enriched", "contexts_com_superpro_shopify_page_meta_1", "product", "variants"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key__sdc_primary_key"], "mappings": {"id": {"type": ["number", "null"], "from": ["id"]}, "price": {"type": ["number", "null"], "from": ["price"]}, "name": {"type": ["string", "null"], "from": ["name"]}, "public_title": {"type": ["string", "null"], "from": ["public_title"]}, "sku": {"type": ["string", "null"], "from": ["sku"]}, "_sdc_source_key__sdc_primary_key": {"type": ["string"], "from": ["_sdc_source_key__sdc_primary_key"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
 
 
 --
@@ -3964,9 +3963,15 @@ CREATE VIEW warehouse.base_snowplow_web_events AS
             snowplow_production_enriched.platform,
             snowplow_production_enriched.etl_tstamp,
             snowplow_production_enriched.collector_tstamp,
-            snowplow_production_enriched.dvce_tstamp,
+            snowplow_production_enriched.derived_tstamp,
+            snowplow_production_enriched.true_tstamp,
             snowplow_production_enriched.event,
             snowplow_production_enriched.event_id,
+            snowplow_production_enriched.event_vendor,
+            snowplow_production_enriched.event_name,
+            snowplow_production_enriched.event_format,
+            snowplow_production_enriched.event_version,
+            snowplow_production_enriched.event_fingerprint,
             snowplow_production_enriched.txn_id,
             snowplow_production_enriched.name_tracker,
             snowplow_production_enriched.v_tracker,
@@ -3988,7 +3993,7 @@ CREATE VIEW warehouse.base_snowplow_web_events AS
             snowplow_production_enriched.geo_region_name,
             snowplow_production_enriched.geo_location,
             snowplow_production_enriched.ip_isp,
-            snowplow_production_enriched.ip_org,
+            snowplow_production_enriched.ip_organization,
             snowplow_production_enriched.ip_domain,
             snowplow_production_enriched.ip_netspeed,
             snowplow_production_enriched.page_url,
@@ -4065,6 +4070,7 @@ CREATE VIEW warehouse.base_snowplow_web_events AS
             snowplow_production_enriched.dvce_ismobile,
             snowplow_production_enriched.dvce_screenwidth,
             snowplow_production_enriched.dvce_screenheight,
+            snowplow_production_enriched.dvce_created_tstamp,
             snowplow_production_enriched.doc_charset,
             snowplow_production_enriched.doc_width,
             snowplow_production_enriched.doc_height,
@@ -4087,25 +4093,22 @@ CREATE VIEW warehouse.base_snowplow_web_events AS
             snowplow_production_enriched._sdc_sequence,
             snowplow_production_enriched._sdc_table_version,
             snowplow_production_enriched._sdc_batched_at,
-            snowplow_production_enriched._sdc_primary_key,
-            snowplow_production_enriched.dvce_created_tstamp,
-            snowplow_production_enriched.derived_tstamp,
-            snowplow_production_enriched.true_tstamp,
-            snowplow_production_enriched.event_vendor,
-            snowplow_production_enriched.event_name,
-            snowplow_production_enriched.event_format,
-            snowplow_production_enriched.event_version,
-            snowplow_production_enriched.event_fingerprint,
-            snowplow_production_enriched.ip_organization
+            snowplow_production_enriched._sdc_primary_key
            FROM raw_tap_kafka.snowplow_production_enriched
         ), filtered AS (
          SELECT source.app_id,
             source.platform,
             source.etl_tstamp,
             source.collector_tstamp,
-            source.dvce_tstamp,
+            source.derived_tstamp,
+            source.true_tstamp,
             source.event,
             source.event_id,
+            source.event_vendor,
+            source.event_name,
+            source.event_format,
+            source.event_version,
+            source.event_fingerprint,
             source.txn_id,
             source.name_tracker,
             source.v_tracker,
@@ -4127,7 +4130,7 @@ CREATE VIEW warehouse.base_snowplow_web_events AS
             source.geo_region_name,
             source.geo_location,
             source.ip_isp,
-            source.ip_org,
+            source.ip_organization,
             source.ip_domain,
             source.ip_netspeed,
             source.page_url,
@@ -4204,6 +4207,7 @@ CREATE VIEW warehouse.base_snowplow_web_events AS
             source.dvce_ismobile,
             source.dvce_screenwidth,
             source.dvce_screenheight,
+            source.dvce_created_tstamp,
             source.doc_charset,
             source.doc_width,
             source.doc_height,
@@ -4226,16 +4230,7 @@ CREATE VIEW warehouse.base_snowplow_web_events AS
             source._sdc_sequence,
             source._sdc_table_version,
             source._sdc_batched_at,
-            source._sdc_primary_key,
-            source.dvce_created_tstamp,
-            source.derived_tstamp,
-            source.true_tstamp,
-            source.event_vendor,
-            source.event_name,
-            source.event_format,
-            source.event_version,
-            source.event_fingerprint,
-            source.ip_organization
+            source._sdc_primary_key
            FROM source
           WHERE (true AND (source.domain_sessionid IS NOT NULL) AND (source.domain_sessionidx IS NOT NULL) AND (source.domain_userid IS NOT NULL))
         )
@@ -4243,9 +4238,15 @@ CREATE VIEW warehouse.base_snowplow_web_events AS
     filtered.platform,
     filtered.etl_tstamp,
     filtered.collector_tstamp,
-    filtered.dvce_tstamp,
+    filtered.derived_tstamp,
+    filtered.true_tstamp,
     filtered.event,
     filtered.event_id,
+    filtered.event_vendor,
+    filtered.event_name,
+    filtered.event_format,
+    filtered.event_version,
+    filtered.event_fingerprint,
     filtered.txn_id,
     filtered.name_tracker,
     filtered.v_tracker,
@@ -4267,7 +4268,7 @@ CREATE VIEW warehouse.base_snowplow_web_events AS
     filtered.geo_region_name,
     filtered.geo_location,
     filtered.ip_isp,
-    filtered.ip_org,
+    filtered.ip_organization,
     filtered.ip_domain,
     filtered.ip_netspeed,
     filtered.page_url,
@@ -4344,6 +4345,7 @@ CREATE VIEW warehouse.base_snowplow_web_events AS
     filtered.dvce_ismobile,
     filtered.dvce_screenwidth,
     filtered.dvce_screenheight,
+    filtered.dvce_created_tstamp,
     filtered.doc_charset,
     filtered.doc_width,
     filtered.doc_height,
@@ -4366,16 +4368,7 @@ CREATE VIEW warehouse.base_snowplow_web_events AS
     filtered._sdc_sequence,
     filtered._sdc_table_version,
     filtered._sdc_batched_at,
-    filtered._sdc_primary_key,
-    filtered.dvce_created_tstamp,
-    filtered.derived_tstamp,
-    filtered.true_tstamp,
-    filtered.event_vendor,
-    filtered.event_name,
-    filtered.event_format,
-    filtered.event_version,
-    filtered.event_fingerprint,
-    filtered.ip_organization
+    filtered._sdc_primary_key
    FROM filtered;
 
 
@@ -4421,38 +4414,6 @@ CREATE VIEW warehouse.base_snowplow_web_performance_timing_context AS
     snowplow_production_enriched__contexts_org_w3_performance_timin.domcomplete AS dom_complete,
     snowplow_production_enriched__contexts_org_w3_performance_timin.loadeventstart AS load_event_start,
     snowplow_production_enriched__contexts_org_w3_performance_timin.loadeventend AS load_event_end
-   FROM raw_tap_kafka.snowplow_production_enriched__contexts_org_w3_performance_timin;
-
-
---
--- Name: base_snowplow_web_timing_context; Type: VIEW; Schema: warehouse; Owner: -
---
-
-CREATE VIEW warehouse.base_snowplow_web_timing_context AS
- SELECT snowplow_production_enriched__contexts_org_w3_performance_timin.navigationstart,
-    snowplow_production_enriched__contexts_org_w3_performance_timin.unloadeventstart,
-    snowplow_production_enriched__contexts_org_w3_performance_timin.unloadeventend,
-    snowplow_production_enriched__contexts_org_w3_performance_timin.redirectstart,
-    snowplow_production_enriched__contexts_org_w3_performance_timin.redirectend,
-    snowplow_production_enriched__contexts_org_w3_performance_timin.fetchstart,
-    snowplow_production_enriched__contexts_org_w3_performance_timin.domainlookupstart,
-    snowplow_production_enriched__contexts_org_w3_performance_timin.domainlookupend,
-    snowplow_production_enriched__contexts_org_w3_performance_timin.connectstart,
-    snowplow_production_enriched__contexts_org_w3_performance_timin.connectend,
-    snowplow_production_enriched__contexts_org_w3_performance_timin.secureconnectionstart,
-    snowplow_production_enriched__contexts_org_w3_performance_timin.requeststart,
-    snowplow_production_enriched__contexts_org_w3_performance_timin.responsestart,
-    snowplow_production_enriched__contexts_org_w3_performance_timin.responseend,
-    snowplow_production_enriched__contexts_org_w3_performance_timin.domloading,
-    snowplow_production_enriched__contexts_org_w3_performance_timin.dominteractive,
-    snowplow_production_enriched__contexts_org_w3_performance_timin.domcontentloadedeventstart,
-    snowplow_production_enriched__contexts_org_w3_performance_timin.domcontentloadedeventend,
-    snowplow_production_enriched__contexts_org_w3_performance_timin.domcomplete,
-    snowplow_production_enriched__contexts_org_w3_performance_timin.loadeventstart,
-    snowplow_production_enriched__contexts_org_w3_performance_timin.loadeventend,
-    snowplow_production_enriched__contexts_org_w3_performance_timin._sdc_source_key__sdc_primary_key,
-    snowplow_production_enriched__contexts_org_w3_performance_timin._sdc_sequence,
-    snowplow_production_enriched__contexts_org_w3_performance_timin._sdc_level_0_id
    FROM raw_tap_kafka.snowplow_production_enriched__contexts_org_w3_performance_timin;
 
 
@@ -4595,7 +4556,8 @@ CREATE TABLE warehouse.fct_shopify_customer_pareto (
     customer_id bigint,
     year double precision,
     sales double precision,
-    precent_of_sales double precision,
+    business_line text,
+    percent_of_sales double precision,
     cumulative_percent_of_sales double precision,
     customer_rank bigint
 );
@@ -4708,30 +4670,6 @@ CREATE TABLE warehouse.fct_shopify_orders (
     new_vs_repeat text,
     cancelled boolean
 );
-
-
---
--- Name: fct_shopify_repeat_purchase_intervals; Type: VIEW; Schema: warehouse; Owner: -
---
-
-CREATE VIEW warehouse.fct_shopify_repeat_purchase_intervals AS
- WITH orders AS (
-         SELECT fct_shopify_orders.customer_id,
-            fct_shopify_orders.account_id,
-            fct_shopify_orders.total_price,
-            fct_shopify_orders.created_at AS order_date,
-            lag(fct_shopify_orders.created_at) OVER (PARTITION BY fct_shopify_orders.customer_id ORDER BY fct_shopify_orders.created_at) AS previous_order_date
-           FROM warehouse.fct_shopify_orders
-          WHERE (fct_shopify_orders.cancelled_at IS NULL)
-        )
- SELECT orders.customer_id,
-    orders.account_id,
-    orders.order_date,
-    orders.previous_order_date,
-    date_part('day'::text, (orders.order_date - orders.previous_order_date)) AS days_between_orders,
-    orders.total_price AS repeat_purchase_total_price
-   FROM orders
-  WHERE (orders.previous_order_date IS NOT NULL);
 
 
 --
@@ -4917,6 +4855,191 @@ CREATE VIEW warehouse.fct_shopify_sales_daily_summary AS
     calculated.total_net_sales,
     calculated.total_sales
    FROM calculated;
+
+
+--
+-- Name: fct_snowplow_page_views; Type: TABLE; Schema: warehouse; Owner: -
+--
+
+CREATE TABLE warehouse.fct_snowplow_page_views (
+    user_custom_id text,
+    user_snowplow_domain_id text,
+    user_snowplow_crossdomain_id text,
+    min_tstamp timestamp with time zone,
+    max_tstamp timestamp with time zone,
+    session_id text,
+    session_index bigint,
+    page_view_id text,
+    page_view_index bigint,
+    page_view_in_session_index bigint,
+    max_session_page_view_index bigint,
+    page_view_start timestamp with time zone,
+    page_view_end timestamp with time zone,
+    page_view_start_local timestamp with time zone,
+    page_view_end_local timestamp with time zone,
+    time_engaged_in_s bigint,
+    time_engaged_in_s_tier text,
+    horizontal_pixels_scrolled bigint,
+    vertical_pixels_scrolled bigint,
+    horizontal_percentage_scrolled double precision,
+    vertical_percentage_scrolled double precision,
+    vertical_percentage_scrolled_tier text,
+    user_engaged boolean,
+    page_url text,
+    page_url_scheme text,
+    page_url_host text,
+    page_url_port bigint,
+    page_url_path text,
+    page_url_query text,
+    page_url_fragment text,
+    page_title text,
+    page_width bigint,
+    page_height bigint,
+    referer_url text,
+    referer_url_scheme text,
+    referer_url_host text,
+    referer_url_port bigint,
+    referer_url_path text,
+    referer_url_query text,
+    referer_url_fragment text,
+    referer_medium text,
+    referer_source text,
+    referer_term text,
+    marketing_medium text,
+    marketing_source text,
+    marketing_term text,
+    marketing_content text,
+    marketing_campaign text,
+    marketing_click_id text,
+    marketing_network text,
+    geo_country text,
+    geo_region text,
+    geo_region_name text,
+    geo_city text,
+    geo_zipcode text,
+    geo_latitude double precision,
+    geo_longitude double precision,
+    geo_timezone text,
+    ip_address text,
+    ip_isp text,
+    ip_organization text,
+    ip_domain text,
+    ip_net_speed text,
+    app_id text,
+    browser text,
+    browser_name text,
+    browser_major_version text,
+    browser_minor_version text,
+    browser_build_version text,
+    os text,
+    os_name text,
+    os_major_version text,
+    os_minor_version text,
+    os_build_version text,
+    device text,
+    browser_window_width bigint,
+    browser_window_height bigint,
+    browser_language text,
+    os_manufacturer text,
+    os_timezone text,
+    redirect_time_in_ms double precision,
+    unload_time_in_ms double precision,
+    app_cache_time_in_ms double precision,
+    dns_time_in_ms double precision,
+    tcp_time_in_ms double precision,
+    request_time_in_ms double precision,
+    response_time_in_ms double precision,
+    processing_time_in_ms double precision,
+    dom_loading_to_interactive_time_in_ms double precision,
+    dom_interactive_to_complete_time_in_ms double precision,
+    onload_time_in_ms double precision,
+    total_time_in_ms double precision,
+    browser_engine text,
+    device_type text,
+    device_is_mobile boolean,
+    is_internal boolean,
+    last_page_view_in_session integer
+);
+
+
+--
+-- Name: fct_snowplow_sessions; Type: TABLE; Schema: warehouse; Owner: -
+--
+
+CREATE TABLE warehouse.fct_snowplow_sessions (
+    user_custom_id text,
+    inferred_user_id text,
+    user_snowplow_domain_id text,
+    user_snowplow_crossdomain_id text,
+    app_id text,
+    browser text,
+    browser_build_version text,
+    browser_engine text,
+    browser_language text,
+    browser_major_version text,
+    browser_minor_version text,
+    browser_name text,
+    device text,
+    device_is_mobile boolean,
+    device_type text,
+    first_page_title text,
+    first_page_url text,
+    first_page_url_fragment text,
+    first_page_url_host text,
+    first_page_url_path text,
+    first_page_url_port bigint,
+    first_page_url_query text,
+    first_page_url_scheme text,
+    exit_page_url text,
+    geo_city text,
+    geo_country text,
+    geo_latitude double precision,
+    geo_longitude double precision,
+    geo_region text,
+    geo_region_name text,
+    geo_timezone text,
+    geo_zipcode text,
+    ip_address text,
+    ip_domain text,
+    ip_isp text,
+    ip_net_speed text,
+    ip_organization text,
+    marketing_campaign text,
+    marketing_click_id text,
+    marketing_content text,
+    marketing_medium text,
+    marketing_network text,
+    marketing_source text,
+    marketing_term text,
+    os text,
+    os_build_version text,
+    os_major_version text,
+    os_manufacturer text,
+    os_minor_version text,
+    os_name text,
+    os_timezone text,
+    page_views bigint,
+    referer_medium text,
+    referer_source text,
+    referer_term text,
+    referer_url text,
+    referer_url_fragment text,
+    referer_url_host text,
+    referer_url_path text,
+    referer_url_port bigint,
+    referer_url_query text,
+    referer_url_scheme text,
+    session_start timestamp with time zone,
+    session_start_local timestamp with time zone,
+    session_end timestamp with time zone,
+    session_end_local timestamp with time zone,
+    session_id text,
+    session_cookie_index bigint,
+    time_engaged_in_s numeric,
+    time_engaged_in_s_tier text,
+    user_bounced boolean,
+    session_index bigint
+);
 
 
 --
@@ -5270,6 +5393,18 @@ CREATE VIEW warehouse.stg_shopify_transactions AS
 
 
 --
+-- Name: stg_snowplow_id_map; Type: TABLE; Schema: warehouse; Owner: -
+--
+
+CREATE TABLE warehouse.stg_snowplow_id_map (
+    domain_userid text,
+    user_id text,
+    max_tstamp timestamp with time zone,
+    idx bigint
+);
+
+
+--
 -- Name: stg_snowplow_page_views; Type: TABLE; Schema: warehouse; Owner: -
 --
 
@@ -5375,6 +5510,86 @@ CREATE TABLE warehouse.stg_snowplow_page_views (
 
 
 --
+-- Name: stg_snowplow_sessions_tmp; Type: TABLE; Schema: warehouse; Owner: -
+--
+
+CREATE TABLE warehouse.stg_snowplow_sessions_tmp (
+    user_custom_id text,
+    user_snowplow_domain_id text,
+    user_snowplow_crossdomain_id text,
+    session_id text,
+    session_index bigint,
+    session_start timestamp with time zone,
+    session_end timestamp with time zone,
+    session_start_local timestamp with time zone,
+    session_end_local timestamp with time zone,
+    page_views bigint,
+    engaged_page_views bigint,
+    time_engaged_in_s numeric,
+    time_engaged_in_s_tier text,
+    user_bounced boolean,
+    user_engaged boolean,
+    first_page_url text,
+    first_page_url_scheme text,
+    first_page_url_host text,
+    first_page_url_port bigint,
+    first_page_url_path text,
+    first_page_url_query text,
+    first_page_url_fragment text,
+    first_page_title text,
+    exit_page_url text,
+    referer_url text,
+    referer_url_scheme text,
+    referer_url_host text,
+    referer_url_port bigint,
+    referer_url_path text,
+    referer_url_query text,
+    referer_url_fragment text,
+    referer_medium text,
+    referer_source text,
+    referer_term text,
+    marketing_medium text,
+    marketing_source text,
+    marketing_term text,
+    marketing_content text,
+    marketing_campaign text,
+    marketing_click_id text,
+    marketing_network text,
+    geo_country text,
+    geo_region text,
+    geo_region_name text,
+    geo_city text,
+    geo_zipcode text,
+    geo_latitude double precision,
+    geo_longitude double precision,
+    geo_timezone text,
+    ip_address text,
+    ip_isp text,
+    ip_organization text,
+    ip_domain text,
+    ip_net_speed text,
+    app_id text,
+    browser text,
+    browser_name text,
+    browser_major_version text,
+    browser_minor_version text,
+    browser_build_version text,
+    browser_engine text,
+    browser_language text,
+    os text,
+    os_name text,
+    os_major_version text,
+    os_minor_version text,
+    os_build_version text,
+    os_manufacturer text,
+    os_timezone text,
+    device text,
+    device_type text,
+    device_is_mobile boolean
+);
+
+
+--
 -- Name: stg_snowplow_web_events; Type: TABLE; Schema: warehouse; Owner: -
 --
 
@@ -5383,7 +5598,7 @@ CREATE TABLE warehouse.stg_snowplow_web_events (
     user_id text,
     domain_userid text,
     network_userid text,
-    collector_tstamp text,
+    collector_tstamp timestamp with time zone,
     domain_sessionid text,
     domain_sessionidx bigint,
     page_view_id text,
@@ -5438,7 +5653,7 @@ CREATE TABLE warehouse.stg_snowplow_web_events (
     os_manufacturer text,
     os_timezone text,
     name_tracker text,
-    dvce_created_tstamp text,
+    dvce_created_tstamp timestamp with time zone,
     _sdc_primary_key text,
     n bigint
 );
@@ -5450,7 +5665,7 @@ CREATE TABLE warehouse.stg_snowplow_web_events (
 
 CREATE TABLE warehouse.stg_snowplow_web_events_scroll_depth (
     page_view_id text,
-    max_tstamp text,
+    max_tstamp timestamp with time zone,
     doc_width bigint,
     doc_height bigint,
     br_viewwidth bigint,
@@ -6071,13 +6286,6 @@ CREATE INDEX tp_weekly_active_users_ga_date__sdc_sequence_idx ON raw_tap_google_
 
 
 --
--- Name: tp_1b7be15ab65e620370f78c3dd6772c5daa5e37bc; Type: INDEX; Schema: raw_tap_kafka; Owner: -
---
-
-CREATE INDEX tp_1b7be15ab65e620370f78c3dd6772c5daa5e37bc ON raw_tap_kafka.snowplow_production_enriched__contexts_com_superpro_shopify___1 USING btree (_sdc_source_key__sdc_primary_key, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
-
-
---
 -- Name: tp_1b9996ac3d9bfa38a194b7f90058d6267acc74be; Type: INDEX; Schema: raw_tap_kafka; Owner: -
 --
 
@@ -6092,10 +6300,24 @@ CREATE INDEX tp_599bbd259081e52e887f982c90b4ff45f11cff32 ON raw_tap_kafka.snowpl
 
 
 --
+-- Name: tp_6c96f3ad952ad90ff9006ba7f0f1c559875d3531; Type: INDEX; Schema: raw_tap_kafka; Owner: -
+--
+
+CREATE INDEX tp_6c96f3ad952ad90ff9006ba7f0f1c559875d3531 ON raw_tap_kafka.snowplow_production_enriched__contexts_com_superpro_shopify___1 USING btree (_sdc_source_key__sdc_primary_key, _sdc_sequence, _sdc_level_0_id);
+
+
+--
 -- Name: tp_7b5fa05192875198b44852b01f3b063feddbf07b; Type: INDEX; Schema: raw_tap_kafka; Owner: -
 --
 
 CREATE INDEX tp_7b5fa05192875198b44852b01f3b063feddbf07b ON raw_tap_kafka.snowplow_production_enriched__contexts_com_snowplowanalytics_sn USING btree (_sdc_source_key__sdc_primary_key, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_807c2623971cf20a17f2b19f6ca84346a4cc1730; Type: INDEX; Schema: raw_tap_kafka; Owner: -
+--
+
+CREATE INDEX tp_807c2623971cf20a17f2b19f6ca84346a4cc1730 ON raw_tap_kafka.snowplow_production_enriched__contexts_com_superpro_shopify_pag USING btree (_sdc_source_key__sdc_primary_key, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
 
 
 --
@@ -6110,13 +6332,6 @@ CREATE INDEX tp_94af6d94a5f7badcf685e70950c3fbc565914d17 ON raw_tap_kafka.snowpl
 --
 
 CREATE INDEX tp_c5053d20eb12c8f09f21a55c8c980cb1f1befc98 ON raw_tap_kafka.snowplow_production_enriched__contexts_org_w3_performance_timin USING btree (_sdc_source_key__sdc_primary_key, _sdc_sequence, _sdc_level_0_id);
-
-
---
--- Name: tp_f00ec8b75086d74b5e266a7738c2e7bd95bc0397; Type: INDEX; Schema: raw_tap_kafka; Owner: -
---
-
-CREATE INDEX tp_f00ec8b75086d74b5e266a7738c2e7bd95bc0397 ON raw_tap_kafka.snowplow_production_enriched__contexts_com_superpro_shopify_pag USING btree (_sdc_source_key__sdc_primary_key, _sdc_sequence, _sdc_level_0_id);
 
 
 --
@@ -6533,10 +6748,66 @@ CREATE INDEX tp_sales_order_id__sdc_sequence_idx ON tap_csv.sales USING btree (o
 
 
 --
+-- Name: dim_shopify_customers__index_on_customer_id; Type: INDEX; Schema: warehouse; Owner: -
+--
+
+CREATE INDEX dim_shopify_customers__index_on_customer_id ON warehouse.dim_shopify_customers USING btree (customer_id);
+
+
+--
 -- Name: fct_shopify_customer_pareto__index_on_account_id__year__custome; Type: INDEX; Schema: warehouse; Owner: -
 --
 
 CREATE INDEX fct_shopify_customer_pareto__index_on_account_id__year__custome ON warehouse.fct_shopify_customer_pareto USING btree (account_id, year, customer_rank);
+
+
+--
+-- Name: fct_shopify_orders__index_on_account_id__customer_id__created_a; Type: INDEX; Schema: warehouse; Owner: -
+--
+
+CREATE INDEX fct_shopify_orders__index_on_account_id__customer_id__created_a ON warehouse.fct_shopify_orders USING btree (account_id, customer_id, created_at);
+
+
+--
+-- Name: fct_shopify_orders__index_on_cancelled_at; Type: INDEX; Schema: warehouse; Owner: -
+--
+
+CREATE INDEX fct_shopify_orders__index_on_cancelled_at ON warehouse.fct_shopify_orders USING btree (cancelled_at);
+
+
+--
+-- Name: fct_shopify_orders__index_on_customer_id__created_at; Type: INDEX; Schema: warehouse; Owner: -
+--
+
+CREATE INDEX fct_shopify_orders__index_on_customer_id__created_at ON warehouse.fct_shopify_orders USING btree (customer_id, created_at);
+
+
+--
+-- Name: stg_shopify_customer_order_aggregates__index_on_account_id__cus; Type: INDEX; Schema: warehouse; Owner: -
+--
+
+CREATE INDEX stg_shopify_customer_order_aggregates__index_on_account_id__cus ON warehouse.stg_shopify_customer_order_aggregates USING btree (account_id, customer_id);
+
+
+--
+-- Name: stg_shopify_customer_order_aggregates__index_on_customer_id; Type: INDEX; Schema: warehouse; Owner: -
+--
+
+CREATE INDEX stg_shopify_customer_order_aggregates__index_on_customer_id ON warehouse.stg_shopify_customer_order_aggregates USING btree (customer_id);
+
+
+--
+-- Name: stg_shopify_customer_rfm__index_on_account_id__customer_id; Type: INDEX; Schema: warehouse; Owner: -
+--
+
+CREATE INDEX stg_shopify_customer_rfm__index_on_account_id__customer_id ON warehouse.stg_shopify_customer_rfm USING btree (account_id, customer_id);
+
+
+--
+-- Name: stg_shopify_customer_rolling_rfm__index_on_account_id__week__rf; Type: INDEX; Schema: warehouse; Owner: -
+--
+
+CREATE INDEX stg_shopify_customer_rolling_rfm__index_on_account_id__week__rf ON warehouse.stg_shopify_customer_rolling_rfm USING btree (account_id, week, rfm_label);
 
 
 --
@@ -6758,6 +7029,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190910185603'),
 ('20190916215131'),
 ('20190917231914'),
-('20190917231933');
+('20190917231933'),
+('20190925155649');
 
 

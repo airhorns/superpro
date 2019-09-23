@@ -405,6 +405,8 @@ GEM
     omniauth-oauth2 (1.6.0)
       oauth2 (~> 1.1)
       omniauth (~> 1.9)
+    omniauth-shopify-oauth2 (1.1.15)
+      omniauth-oauth2 (~> 1.2)
     orm_adapter (0.5.0)
     os (1.0.1)
     parallel (1.17.0)
@@ -672,6 +674,7 @@ DEPENDENCIES
   oj
   omniauth
   omniauth-google-oauth2
+  omniauth-shopify-oauth2
   pg (>= 0.18, < 2.0)
   plaid
   pry

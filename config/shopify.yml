@@ -1,0 +1,10 @@
+development: &development
+  api_key: ec73ddc52ad0abfeaa2d6cf74d542041
+  api_secret_key: 9e43d7c621f3dffa76931f63a6ca03e9
+test:
+  <<: *development
+integration_test:
+  <<: *development
+production:
+  api_key: 41555d96be3e44a0e9736104a7e0f6be
+  api_secret_key: <%= ENV['SHOPIFY_API_SECRET_KEY'] %>

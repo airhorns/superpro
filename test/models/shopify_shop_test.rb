@@ -5,9 +5,10 @@
 # Table name: shopify_shops
 #
 #  id                  :bigint(8)        not null, primary key
-#  api_key             :string           not null
+#  access_token        :string
+#  api_key             :string
 #  name                :string           not null
-#  password            :string           not null
+#  password            :string
 #  script_tag_setup_at :datetime
 #  shopify_domain      :string           not null
 #  created_at          :datetime         not null

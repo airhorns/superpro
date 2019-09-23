@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import { ConnectionCard } from "./ConnectionCard";
 import { useConnectShopifyMutation, GetConnectionsIndexPageDocument } from "app/app-graph";
 import { mutationSuccess, toast, SimpleModal } from "superlib";
-import { Box, Heading, Button } from "grommet";
+import { Box, Heading, Button, Anchor, Tabs, Tab } from "grommet";
 import { Add } from "app/components/common/SuperproIcons";
 import { Input, FieldBox, SuperForm } from "superlib/superform";
 
@@ -64,19 +64,38 @@ const NewShopifyConnectionForm = () => {
     <SimpleModal triggerLabel="Connect Shopify" triggerIcon={<Add />}>
       {setShow => (
         <SuperForm<NewShopFormValues> onSubmit={doc => onSubmit(doc, setShow)} initialValues={{ apiKey: "", password: "", domain: "" }}>
-          {() => (
-            <Box gap="small">
+          {form => (
+            <Box height="medium" width="medium">
               <Heading level="3">Connect New Shopify Shop</Heading>
-              <FieldBox path="domain" label="Shopify Shop domain">
-                <Input path="domain" />
-              </FieldBox>
-              <FieldBox path="apiKey" label="API Key">
-                <Input path="apiKey" />
-              </FieldBox>
-              <FieldBox path="password" label="API Password">
-                <Input path="password" />
-              </FieldBox>
-              <Button type="submit" label="Connect" />
+              <Tabs>
+                <Tab title="Standard App">
+                  <Box align="center">
+                    <p>Visit Shopify to give Superpro permission to access your store.</p>
+                    <FieldBox path="domain" label="Shopify Shop domain">
+                      <Input path="domain" />
+                    </FieldBox>
+                    <Button
+                      icon={<Add />}
+                      label="Connect Shopify"
+                      href={`/connection_auth/shopify?shop=${encodeURIComponent(form.doc.domain)}`}
+                    />
+                  </Box>
+                </Tab>
+                <Tab title="Private App">
+                  <Box gap="small">
+                    <FieldBox path="domain" label="Shopify Shop domain">
+                      <Input path="domain" />
+                    </FieldBox>
+                    <FieldBox path="apiKey" label="API Key">
+                      <Input path="apiKey" />
+                    </FieldBox>
+                    <FieldBox path="password" label="API Password">
+                      <Input path="password" />
+                    </FieldBox>
+                    <Button type="submit" label="Connect" />
+                  </Box>
+                </Tab>
+              </Tabs>
             </Box>
           )}
         </SuperForm>

@@ -53,6 +53,7 @@ module Superpro
 
     config.admin = config_for(:admin)
     config.plaid = config_for(:plaid)
+    config.shopify = config_for(:shopify)
     config.singer_importer = config_for(:singer_importer)
     config.google = config_for(:google)
     config.kubernetes = config_for(:kubernetes)

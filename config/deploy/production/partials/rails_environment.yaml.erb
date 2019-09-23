@@ -61,6 +61,11 @@
     secretKeyRef:
       name: application-secrets
       key: KAFKA_SASL_PLAIN_PASSWORD
+- name: SHOPIFY_API_SECRET_KEY
+  valueFrom:
+    secretKeyRef:
+      name: application-secrets
+      key: SHOPIFY_API_SECRET_KEY
 <% # This is some messed up shit that allows the rails application to create pods of itself. Because we use kubernetes-deploy to render out all these nice partials, the Rails app needs to be able to do the same, so we pass in the same data rendered out here as an environment variable that can then be decoded and reused in Rails. Sketchy. %>
 <% if locals[:expose_contents_as_variable] %>
 - name: RAILS_POD_TEMPLATE_YAML
