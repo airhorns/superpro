@@ -46,7 +46,14 @@ const document: Document = {
         ],
         dimensions: [],
         orderings: [{ id: "customer_rank", direction: "asc" }],
-        filters: [{ field: { model: "Sales::CustomerParetoFacts", field: "year", id: "year" }, operator: "equals", values: [2019] }]
+        filters: [
+          { field: { model: "Sales::CustomerParetoFacts", field: "year", id: "year" }, operator: "equals", values: [2019] },
+          {
+            field: { model: "Sales::CustomerParetoFacts", field: "business_line", id: "business_line" },
+            operator: "equals",
+            values: ["Direct to Consumer"]
+          }
+        ]
       },
       viz: {
         type: "viz",
