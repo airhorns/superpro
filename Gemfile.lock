@@ -423,7 +423,7 @@ GEM
       byebug (~> 11.0)
       pry (~> 0.10)
     public_suffix (4.0.1)
-    puma (4.1.1)
+    puma (4.2.0)
       nio4r (~> 2.0)
     que-web (0.8.0)
       erubis
@@ -676,7 +676,7 @@ DEPENDENCIES
   plaid
   pry
   pry-byebug
-  puma (~> 4.1)
+  puma (~> 4.2)
   que!
   que-locks!
   que-scheduler!
