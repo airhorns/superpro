@@ -31,11 +31,6 @@
       key: BACKEND_SENTRY_DSN
 - name: FRONTEND_SENTRY_DSN
   value: "https://d4676dd73d8243d88d527f4cf82746e4@sentry.io/1499721"
-- name: CUBEJS_API_SECRET
-  valueFrom:
-    secretKeyRef:
-      name: application-secrets
-      key: CUBEJS_API_SECRET
 - name: ADMIN_GOOGLE_OAUTH_CLIENT_SECRET
   valueFrom:
     secretKeyRef:

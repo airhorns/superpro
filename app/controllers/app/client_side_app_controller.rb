@@ -11,10 +11,6 @@ class App::ClientSideAppController < AppAreaController
     @settings = base_settings.merge(
       accountId: current_account.id,
       baseUrl: app_root_path(current_account),
-      cubeJs: {
-        apiUrl: Rails.configuration.cubejs.api_url,
-        token: CubeJSAuth.token_for_user(current_user, current_account),
-      },
       plaid: {
         publicKey: Rails.configuration.plaid.public_key,
         env: Rails.configuration.plaid.env,

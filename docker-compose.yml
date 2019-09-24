@@ -41,20 +41,6 @@ services:
     restart: on-failure
     command: redis-server --appendonly yes
 
-  cubeserver:
-    image: gcr.io/superpro-production/cubeserver:3a4f84f309478c609f1ad7a8c2979eb5d77aae3b
-    ports:
-      - 4001:4000
-    restart: on-failure
-    environment:
-      NODE_ENV: development
-      CUBEJS_DB_HOST: postgres
-      CUBEJS_DB_TYPE: postgres
-      CUBEJS_DB_NAME: superpro_development
-      CUBEJS_DB_USER: superpro
-      CUBEJS_API_SECRET: testdevelopmentapisecret
-      REDIS_URL: redis://redis:6379/2
-
   singer-importer:
     image: gcr.io/superpro-production/singer-importer:b15a4b2eee88a0beff1cf447161ef5692fdd53ba
     ports:

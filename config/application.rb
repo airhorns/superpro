@@ -52,7 +52,6 @@ module Superpro
     config.x.domains.admin = "should be set in the environments"
 
     config.admin = config_for(:admin)
-    config.cubejs = config_for(:cubejs)
     config.plaid = config_for(:plaid)
     config.singer_importer = config_for(:singer_importer)
     config.google = config_for(:google)

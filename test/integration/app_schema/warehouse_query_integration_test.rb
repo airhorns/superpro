@@ -7,7 +7,10 @@ WAREHOUSE_QUERY_QUERY = <<~QUERY
     warehouseQuery(query: $query) {
       records
       queryIntrospection {
-        types
+        fields {
+          id
+          label
+        }
       }
       errors
     }

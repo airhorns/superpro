@@ -15,8 +15,6 @@
   "dependencies": {
     "@babel/core": "^7.5.0",
     "@babel/preset-react": "^7.0.0",
-    "@cubejs-client/core": "^0.10.0",
-    "@cubejs-client/react": "^0.10.0",
     "@graphql-codegen/add": "^1.0.0",
     "@graphql-codegen/cli": "^1.0.0",
     "@graphql-codegen/fragment-matcher": "^1.0.0",

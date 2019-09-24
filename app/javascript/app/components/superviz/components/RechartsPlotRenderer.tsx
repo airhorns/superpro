@@ -106,11 +106,11 @@ export const RechartsPlotRenderer = (props: { result: SuccessfulWarehouseQueryRe
         left: 30
       }}
     >
+      {defaultTo(props.block.viz.showLegend, true) && <Legend />}
       <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
       {renderXAxis(props.result, props.block)}
       {flatMap(props.block.viz.systems, (system, index) => renderSystem(props.result, system, index))}
       {defaultTo(props.block.viz.showTooltip, true) && <Tooltip />}
-      {defaultTo(props.block.viz.showLegend, true) && <Legend />}
     </ComposedChart>
   </ResponsiveContainer>
 );
