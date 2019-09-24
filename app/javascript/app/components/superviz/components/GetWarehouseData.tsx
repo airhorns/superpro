@@ -1,18 +1,23 @@
 import React from "react";
 import gql from "graphql-tag";
 import { SimpleQuery } from "superlib/SimpleQuery";
-import { WarehouseQueryComponent, WarehouseQueryResult, WarehouseQueryIntrospection } from "app/app-graph";
+import {
+  WarehouseQueryComponent,
+  WarehouseQueryResult,
+  WarehouseQueryIntrospection,
+  WarehouseQueryIntrospectionField
+} from "app/app-graph";
 import { Alert } from "superlib/Alert";
 import { WarehouseQuery } from "../WarehouseQuery";
 import { assert } from "superlib";
 import { DateTime } from "luxon";
+import { keyBy } from "lodash";
 
 gql`
   query WarehouseQuery($query: JSONScalar!) {
     warehouseQuery(query: $query) {
       records
       queryIntrospection {
-        types
         fields {
           id
           type
@@ -26,7 +31,9 @@ gql`
 `;
 
 export interface SuccessfulWarehouseQueryResult {
-  queryIntrospection: Exclude<WarehouseQueryResult["queryIntrospection"], null | undefined>;
+  queryIntrospection: Exclude<WarehouseQueryResult["queryIntrospection"], null | undefined> & {
+    fieldsById: { [id: string]: WarehouseQueryIntrospectionField };
+  };
   records: Exclude<WarehouseQueryResult["records"], null | undefined>;
 }
 
@@ -35,9 +42,9 @@ export const VizQueryContext = React.createContext<SuccessfulWarehouseQueryResul
 // Parse any incoming rich datatypes into a rich object for downstream consumption
 const hydrate = (records: any[], queryIntrospection: WarehouseQueryIntrospection) => {
   return records.map(record => {
-    for (const [id, datatype] of Object.entries(queryIntrospection.types)) {
-      if (datatype == "date_time") {
-        record[id] = DateTime.fromISO(record[id]);
+    for (const field of queryIntrospection.fields) {
+      if (field.type == "date_time") {
+        record[field.id] = DateTime.fromISO(record[field.id]);
       }
     }
 
@@ -53,7 +60,12 @@ export const GetWarehouseData = (props: { query: WarehouseQuery; children: React
           return <Alert type="error" message="There was an error loading this data. Please try again." />;
         }
 
-        const queryIntrospection = assert(data.warehouseQuery.queryIntrospection);
+        const returnedIntrospection = assert(data.warehouseQuery.queryIntrospection);
+
+        const queryIntrospection: SuccessfulWarehouseQueryResult["queryIntrospection"] = Object.assign({}, returnedIntrospection, {
+          fieldsById: keyBy(returnedIntrospection.fields, "id")
+        });
+
         const result: SuccessfulWarehouseQueryResult = {
           queryIntrospection,
           records: hydrate(data.warehouseQuery.records, queryIntrospection)

@@ -18,7 +18,7 @@ module DataModel
           {
             id: spec[:id],
             type: field.data_type.to_enum,
-            label: (spec[:operator] || "").to_s + field.field_name.to_s,
+            label: human_label(spec, field),
             sortable: false,
           }
         end,
@@ -40,6 +40,17 @@ module DataModel
       end
 
       model.all_fields.fetch(spec[:field].to_sym)
+    end
+
+    def human_label(spec, field)
+      title = field.field_label
+      case spec[:operator]
+      when "date_trunc_year" then "Year of #{title}"
+      when "date_trunc_month" then "Month of #{title}"
+      when "date_trunc_week" then "Week of #{title}"
+      when "date_trunc_day" then "Day of #{title}"
+      else title
+      end
     end
   end
 end

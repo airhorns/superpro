@@ -25,17 +25,24 @@ const dataDomain = (result: SuccessfulWarehouseQueryResult, id: string): DomainT
 };
 
 const renderSystem = (result: SuccessfulWarehouseQueryResult, system: VizSystem, index: number) => {
-  const dependentVariableType = result.queryIntrospection.types[system.yId];
+  const dependentVariableField = assert(result.queryIntrospection.fieldsById[system.yId]);
   const dependentVariableDomain: DomainTuple = dataDomain(result, system.yId);
 
   let marks: React.ReactNode;
+  const commonProps = {
+    key: `system-${system.xId}-${system.yId}`,
+    yAxisId: index,
+    dataKey: system.yId,
+    name: dependentVariableField.label
+  };
+
   switch (system.vizType) {
     case "line": {
-      marks = <Line key={`line-${system.xId}-${system.yId}`} yAxisId={index} dataKey={system.yId} stroke={palette[index]} />;
+      marks = <Line {...commonProps} stroke={palette[index]} />;
       break;
     }
     case "bar": {
-      marks = <Bar key={`line-${system.xId}-${system.yId}`} yAxisId={index} dataKey={system.yId} fill={palette[index]} />;
+      marks = <Bar {...commonProps} fill={palette[index]} />;
       break;
     }
     default: {
@@ -49,7 +56,7 @@ const renderSystem = (result: SuccessfulWarehouseQueryResult, system: VizSystem,
       yAxisId={index}
       orientation={index == 0 ? "left" : "right"}
       domain={dependentVariableDomain}
-      tickFormatter={tickFormatter(dependentVariableType, dependentVariableDomain)}
+      tickFormatter={tickFormatter(dependentVariableField.type, dependentVariableDomain)}
       padding={{ top: 20, bottom: 20 }}
       label={{
         value: assert(find(result.queryIntrospection.fields, { id: system.yId })).label,
@@ -64,7 +71,7 @@ const renderSystem = (result: SuccessfulWarehouseQueryResult, system: VizSystem,
 const renderXAxis = (result: SuccessfulWarehouseQueryResult, block: VizBlock) => {
   const globalXId = block.viz.globalXId || block.viz.systems[0].xId;
   const domain = dataDomain(result, globalXId);
-  const dataType = result.queryIntrospection.types[globalXId];
+  const dataType = assert(result.queryIntrospection.fieldsById[globalXId]).type;
 
   const props: XAxisProps = {
     dataKey: globalXId,

@@ -10,7 +10,7 @@ class Sales::OrderFacts < DataModel::FactTable
   measure :order_count, DataModel::Types::Number, sql: table_node[:order_id].count(true), allow_operators: false
   measure :orders_per_customer, DataModel::Types::Number, sql: (table_node[:order_id].count(true) / table_node[:customer_id].count(true)), allow_operators: false
 
-  dimension :created_at, DataModel::Types::DateTime
+  dimension :created_at, DataModel::Types::DateTime, label: "Order Date"
   dimension :processed_at, DataModel::Types::DateTime
   dimension :closed_at, DataModel::Types::DateTime
   dimension :cancelled_at, DataModel::Types::DateTime
