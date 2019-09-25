@@ -1830,6 +1830,48 @@ COMMENT ON TABLE raw_tap_kafka.snowplow_production_enriched__contexts_org_w3_per
 
 
 --
+-- Name: snowplow_production_enriched_bad; Type: TABLE; Schema: raw_tap_kafka; Owner: -
+--
+
+CREATE TABLE raw_tap_kafka.snowplow_production_enriched_bad (
+    line text,
+    failure_tstamp timestamp with time zone,
+    _sdc_received_at timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_table_version bigint,
+    _sdc_batched_at timestamp with time zone,
+    _sdc_primary_key text NOT NULL
+);
+
+
+--
+-- Name: TABLE snowplow_production_enriched_bad; Type: COMMENT; Schema: raw_tap_kafka; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_kafka.snowplow_production_enriched_bad IS '{"path": ["snowplow-production-enriched-bad"], "version": null, "schema_version": 2, "key_properties": ["_sdc_primary_key"], "mappings": {"line": {"type": ["string", "null"], "from": ["line"]}, "failure_tstamp": {"type": ["string", "null"], "from": ["failure_tstamp"], "format": "date-time"}, "_sdc_received_at": {"type": ["string", "null"], "from": ["_sdc_received_at"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_table_version": {"type": ["integer", "null"], "from": ["_sdc_table_version"]}, "_sdc_batched_at": {"type": ["string", "null"], "from": ["_sdc_batched_at"], "format": "date-time"}, "_sdc_primary_key": {"type": ["string"], "from": ["_sdc_primary_key"]}}}';
+
+
+--
+-- Name: snowplow_production_enriched_bad__errors; Type: TABLE; Schema: raw_tap_kafka; Owner: -
+--
+
+CREATE TABLE raw_tap_kafka.snowplow_production_enriched_bad__errors (
+    level text,
+    message text,
+    _sdc_source_key__sdc_primary_key text NOT NULL,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE snowplow_production_enriched_bad__errors; Type: COMMENT; Schema: raw_tap_kafka; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_kafka.snowplow_production_enriched_bad__errors IS '{"path": ["snowplow-production-enriched-bad", "errors"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key__sdc_primary_key"], "mappings": {"level": {"type": ["string", "null"], "from": ["level"]}, "message": {"type": ["string", "null"], "from": ["message"]}, "_sdc_source_key__sdc_primary_key": {"type": ["string"], "from": ["_sdc_source_key__sdc_primary_key"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
 -- Name: abandoned_checkouts; Type: TABLE; Schema: raw_tap_shopify; Owner: -
 --
 
@@ -4454,6 +4496,20 @@ CREATE VIEW warehouse.base_superpro_accounts AS
 
 
 --
+-- Name: base_superpro_shopify_shops; Type: VIEW; Schema: warehouse; Owner: -
+--
+
+CREATE VIEW warehouse.base_superpro_shopify_shops AS
+ SELECT shopify_shops.id,
+    shopify_shops.account_id,
+    shopify_shops.shop_id,
+    shopify_shops.shopify_domain,
+    shopify_shops.created_at,
+    shopify_shops.updated_at
+   FROM public.shopify_shops;
+
+
+--
 -- Name: dim_date; Type: VIEW; Schema: warehouse; Owner: -
 --
 
@@ -4862,6 +4918,7 @@ CREATE VIEW warehouse.fct_shopify_sales_daily_summary AS
 --
 
 CREATE TABLE warehouse.fct_snowplow_page_views (
+    account_id bigint,
     user_custom_id text,
     user_snowplow_domain_id text,
     user_snowplow_crossdomain_id text,
@@ -4967,6 +5024,7 @@ CREATE TABLE warehouse.fct_snowplow_page_views (
 --
 
 CREATE TABLE warehouse.fct_snowplow_sessions (
+    account_id bigint,
     user_custom_id text,
     inferred_user_id text,
     user_snowplow_domain_id text,
@@ -5393,6 +5451,64 @@ CREATE VIEW warehouse.stg_shopify_transactions AS
 
 
 --
+-- Name: stg_snowplow_enrichment_errors; Type: VIEW; Schema: warehouse; Owner: -
+--
+
+CREATE VIEW warehouse.stg_snowplow_enrichment_errors AS
+ WITH __dbt__cte__base_snowplow_enrichment_errors AS (
+         SELECT snowplow_production_enriched_bad.line,
+            snowplow_production_enriched_bad.failure_tstamp,
+            snowplow_production_enriched_bad._sdc_received_at,
+            snowplow_production_enriched_bad._sdc_sequence,
+            snowplow_production_enriched_bad._sdc_table_version,
+            snowplow_production_enriched_bad._sdc_batched_at,
+            snowplow_production_enriched_bad._sdc_primary_key
+           FROM raw_tap_kafka.snowplow_production_enriched_bad
+        ), __dbt__cte__base_snowplow_enrichment_error_messages AS (
+         SELECT snowplow_production_enriched_bad__errors.level,
+            snowplow_production_enriched_bad__errors.message,
+            snowplow_production_enriched_bad__errors._sdc_source_key__sdc_primary_key,
+            snowplow_production_enriched_bad__errors._sdc_sequence,
+            snowplow_production_enriched_bad__errors._sdc_level_0_id
+           FROM raw_tap_kafka.snowplow_production_enriched_bad__errors
+        ), errors AS (
+         SELECT __dbt__cte__base_snowplow_enrichment_errors.line,
+            __dbt__cte__base_snowplow_enrichment_errors.failure_tstamp,
+            __dbt__cte__base_snowplow_enrichment_errors._sdc_received_at,
+            __dbt__cte__base_snowplow_enrichment_errors._sdc_sequence,
+            __dbt__cte__base_snowplow_enrichment_errors._sdc_table_version,
+            __dbt__cte__base_snowplow_enrichment_errors._sdc_batched_at,
+            __dbt__cte__base_snowplow_enrichment_errors._sdc_primary_key
+           FROM __dbt__cte__base_snowplow_enrichment_errors
+        ), error_messages AS (
+         SELECT __dbt__cte__base_snowplow_enrichment_error_messages._sdc_source_key__sdc_primary_key,
+            array_agg(__dbt__cte__base_snowplow_enrichment_error_messages.message) AS messages
+           FROM __dbt__cte__base_snowplow_enrichment_error_messages
+          GROUP BY __dbt__cte__base_snowplow_enrichment_error_messages._sdc_source_key__sdc_primary_key
+        ), joined AS (
+         SELECT errors.line,
+            errors.failure_tstamp,
+            errors._sdc_received_at,
+            errors._sdc_sequence,
+            errors._sdc_table_version,
+            errors._sdc_batched_at,
+            errors._sdc_primary_key,
+            error_messages.messages
+           FROM (errors
+             LEFT JOIN error_messages ON ((error_messages._sdc_source_key__sdc_primary_key = errors._sdc_primary_key)))
+        )
+ SELECT joined.line,
+    joined.failure_tstamp,
+    joined._sdc_received_at,
+    joined._sdc_sequence,
+    joined._sdc_table_version,
+    joined._sdc_batched_at,
+    joined._sdc_primary_key,
+    joined.messages
+   FROM joined;
+
+
+--
 -- Name: stg_snowplow_id_map; Type: TABLE; Schema: warehouse; Owner: -
 --
 
@@ -5514,6 +5630,7 @@ CREATE TABLE warehouse.stg_snowplow_page_views (
 --
 
 CREATE TABLE warehouse.stg_snowplow_sessions_tmp (
+    account_id bigint,
     user_custom_id text,
     user_snowplow_domain_id text,
     user_snowplow_crossdomain_id text,
@@ -5594,6 +5711,7 @@ CREATE TABLE warehouse.stg_snowplow_sessions_tmp (
 --
 
 CREATE TABLE warehouse.stg_snowplow_web_events (
+    account_id bigint,
     event_id text,
     user_id text,
     domain_userid text,
@@ -6293,6 +6411,13 @@ CREATE INDEX tp_1b9996ac3d9bfa38a194b7f90058d6267acc74be ON raw_tap_kafka.snowpl
 
 
 --
+-- Name: tp_3d8ca016746ce7e1275030b1d188eb7e6d800968; Type: INDEX; Schema: raw_tap_kafka; Owner: -
+--
+
+CREATE INDEX tp_3d8ca016746ce7e1275030b1d188eb7e6d800968 ON raw_tap_kafka.snowplow_production_enriched_bad__errors USING btree (_sdc_source_key__sdc_primary_key, _sdc_sequence, _sdc_level_0_id);
+
+
+--
 -- Name: tp_599bbd259081e52e887f982c90b4ff45f11cff32; Type: INDEX; Schema: raw_tap_kafka; Owner: -
 --
 
@@ -6318,6 +6443,13 @@ CREATE INDEX tp_7b5fa05192875198b44852b01f3b063feddbf07b ON raw_tap_kafka.snowpl
 --
 
 CREATE INDEX tp_807c2623971cf20a17f2b19f6ca84346a4cc1730 ON raw_tap_kafka.snowplow_production_enriched__contexts_com_superpro_shopify_pag USING btree (_sdc_source_key__sdc_primary_key, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_8706dd1d3912158bd94702756eadcdc8bc8a2857; Type: INDEX; Schema: raw_tap_kafka; Owner: -
+--
+
+CREATE INDEX tp_8706dd1d3912158bd94702756eadcdc8bc8a2857 ON raw_tap_kafka.snowplow_production_enriched_bad USING btree (_sdc_primary_key, _sdc_sequence);
 
 
 --

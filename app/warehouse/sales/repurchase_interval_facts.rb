@@ -3,7 +3,7 @@
 class Sales::RepurchaseIntervalFacts < DataModel::FactTable
   self.table = "warehouse.fct_shopify_repurchase_intervals"
 
-  measure :repeat_purcase_total_price, DataModel::Types::Currency
+  measure :repeat_purchase_total_price, DataModel::Types::Currency
   measure :days_since_previous_order, DataModel::Types::Number
 
   dimension :order_date, DataModel::Types::DateTime

@@ -8,5 +8,8 @@ class SuperproWarehouse < DataModel::Warehouse
   register_fact_table Sales::RepurchaseCohortFacts
   register_fact_table Sales::RepurchaseIntervalFacts
 
+  register_fact_table Traffic::SessionFacts
+  register_fact_table Traffic::PageViewFacts
+
   register_fact_table Meta::ShopifyShopFacts
 end
