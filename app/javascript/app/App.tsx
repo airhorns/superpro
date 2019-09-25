@@ -19,9 +19,11 @@ const AccountSettingsPage = React.lazy(() => import("./components/identity/Accou
 const ConnectionsIndexPage = React.lazy(() => import("./components/identity/connections/ConnectionsIndexPage"));
 const ConnectionCompletionErrorPage = React.lazy(() => import("./components/identity/connections/ConnectionCompletionErrorPage"));
 const GoogleAnalyticsCompletePage = React.lazy(() => import("./components/identity/connections/GoogleAnalyticsCompletePage"));
-const MicroOrderTimingReport = React.lazy(() => import("./components/reports/MicroOrderTimingReport"));
-const OrdersReviewReport = React.lazy(() => import("./components/reports/OrdersReviewReport"));
-const RepurchaseCohortsReport = React.lazy(() => import("./components/reports/RepurchaseCohortsReport"));
+const MicroOrderTimingReport = React.lazy(() => import("./components/sales/MicroOrderTimingReport"));
+const SalesOverviewReport = React.lazy(() => import("./components/sales/SalesOverviewReport"));
+const YearlyOrdersReviewReport = React.lazy(() => import("./components/sales/YearlyOrdersReviewReport"));
+const RepurchaseCohortsReport = React.lazy(() => import("./components/sales/RepurchaseCohortsReport"));
+const TrafficOverviewReport = React.lazy(() => import("./components/traffic/TrafficOverviewReport"));
 
 export const SuperproClient = getClient();
 
@@ -43,9 +45,13 @@ export const App = () => {
                           <Route path="/" exact component={HomePage} />
                           <Route path="/launchpad" exact component={Launchpad} />
                           <Route path="/invite" exact component={InviteUsersPage} />
-                          <Route path="/reports/orders_review" exact component={OrdersReviewReport} />
-                          <Route path="/reports/repurchase_cohorts" exact component={RepurchaseCohortsReport} />
-                          <Route path="/reports/micro_order_timing" exact component={MicroOrderTimingReport} />
+                          <Route path="/sales" exact component={SalesOverviewReport} />
+                          <Route path="/sales/overview" exact component={SalesOverviewReport} />
+                          <Route path="/sales/yearly_review" exact component={YearlyOrdersReviewReport} />
+                          <Route path="/sales/repurchase_cohorts" exact component={RepurchaseCohortsReport} />
+                          <Route path="/sales/micro_order_timing" exact component={MicroOrderTimingReport} />
+                          <Route path="/traffic" exact component={TrafficOverviewReport} />
+                          <Route path="/traffic/overview" exact component={TrafficOverviewReport} />
                           <Route path="/settings" exact component={AccountSettingsPage} />
                           <Route path="/settings/account" exact component={AccountSettingsPage} />
                           <Route path="/settings/users" exact component={UsersSettingsPage} />

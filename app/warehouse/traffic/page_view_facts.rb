@@ -29,6 +29,9 @@ class Traffic::PageViewFacts < DataModel::FactTable
   dimension :page_view_in_session_index, DataModel::Types::Number
   dimension :max_session_page_view_index, DataModel::Types::Number
 
+  dimension :min_tstamp, DataModel::Types::DateTime
+  dimension :max_tstamp, DataModel::Types::DateTime
+
   dimension :session_id, DataModel::Types::String
   dimension :session_index, DataModel::Types::Number
 
@@ -57,4 +60,8 @@ class Traffic::PageViewFacts < DataModel::FactTable
   dimension :browser_window_height, DataModel::Types::Number
 
   dimension :last_page_view_in_session, DataModel::Types::Number
+
+  dimension :referrer_medium, DataModel::Types::String
+  dimension :referrer_source, DataModel::Types::String
+  dimension :referrer_term, DataModel::Types::String
 end

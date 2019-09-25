@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Traffic::Common
   extend ActiveSupport::Concern
   included do
@@ -7,7 +9,6 @@ module Traffic::Common
     dimension :crossdomain_user_id, DataModel::Types::String, sql: table_node[:user_snowplow_crossdomain_id]
 
     dimension :device, DataModel::Types::String
-    dimension :device_engine, DataModel::Types::String
     dimension :device_is_mobile, DataModel::Types::Boolean
 
     dimension :browser, DataModel::Types::String

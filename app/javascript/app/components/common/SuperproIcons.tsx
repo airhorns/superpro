@@ -35,13 +35,16 @@ import {
   Cycle,
   CirclePlay,
   Pause as GrommetPause,
-  CloudDownload
+  CloudDownload,
+  Directions
 } from "grommet-icons";
 
 // Navigation & Root level ideas
 export const SuperproLogo = Launch;
 export const Home = GrommetHome;
 export const Reports = Analytics;
+export const Sales = Currency;
+export const Traffic = Directions;
 export const Invite = UserAdd;
 export const Settings = Configure;
 
@@ -62,7 +65,6 @@ export const OrderedList = GrommetOrderedList;
 export const Image = GrommetImage;
 export const CheckList = Task;
 export const Link = GrommetLink;
-export const Expense = Currency;
 export const Deadline = Alarm;
 export const Share = GrommetShare;
 

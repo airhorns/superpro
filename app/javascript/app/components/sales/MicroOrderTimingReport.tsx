@@ -1,5 +1,5 @@
-import { FullReportPage } from "./FullReportPage";
 import { Document } from "app/components/superviz";
+import { FullReportPage } from "../common/FullReportPage";
 
 const doc: Document = {
   type: "document",

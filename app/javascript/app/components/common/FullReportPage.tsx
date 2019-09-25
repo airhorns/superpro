@@ -1,5 +1,5 @@
 import React from "react";
-import { Page } from "../common";
+import { Page } from ".";
 import { VizDocumentCompiler, Document } from "app/components/superviz";
 
 export const FullReportPage = (title: string, document: Document) => {

@@ -85,6 +85,16 @@ class DataModel::QueryTest < ActiveSupport::TestCase
     assert_equal [], result
   end
 
+  test "it can execute a query with a filter on a datetime" do
+    result = @query.run(
+      measures: [{ model: "Sales::OrderFacts", field: "total_price", id: "total_price", operator: "sum" }],
+      dimensions: [{ model: "Sales::OrderFacts", field: "created_at", operator: "date_trunc_day", id: "date" }],
+      filters: [{ id: "date", operator: "greater_than", values: ["2019-08-26T16:48:51.491-04:00"] }],
+    )
+
+    assert_equal [], result
+  end
+
   test "it doesnt allow queries on one account to find data from another" do
     other_account = create(:account)
     create(:shopify_shop, name: "Alpha", account: @account)

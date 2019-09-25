@@ -1,8 +1,6 @@
-import React from "react";
-import { Page } from "../common";
-import { VizDocumentCompiler, Document } from "app/components/superviz";
+import { FullReportPage } from "../common/FullReportPage";
 
-const document: Document = {
+export default FullReportPage("Repurchase Cohort Analysis", {
   type: "document",
   id: "orders_review",
   blocks: [
@@ -35,16 +33,4 @@ const document: Document = {
       }
     }
   ]
-};
-
-const Component = new VizDocumentCompiler().compile(document);
-
-export default class RepurchaseCohortsReport extends Page {
-  render() {
-    return (
-      <Page.Layout title="Repurchase Cohort Analysis">
-        <Component />
-      </Page.Layout>
-    );
-  }
-}
+});

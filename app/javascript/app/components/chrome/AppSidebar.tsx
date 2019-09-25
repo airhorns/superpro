@@ -8,7 +8,7 @@ import { UserAvatar } from "../common/UserAvatar";
 import { signOut } from "../../lib/auth";
 import { Settings } from "../../lib/settings";
 // import { Flag } from "../../../superlib";
-import { Invite, Settings as SettingsIcon, Reports } from "../common/SuperproIcons";
+import { Invite, Settings as SettingsIcon, Reports, Sales, Traffic } from "../common/SuperproIcons";
 import { NavigationSectionButton, NavigationSubItemButton } from "./Navigation";
 
 gql`
@@ -67,10 +67,14 @@ export const AppSidebar = withRouter(
                 )}
                 <Box flex="grow" overflow={{ vertical: "auto" }}>
                   <NavigationSectionButton path="/launchpad" text="Launchpad" icon={<Launch />} onClick={this.close} />
-                  <NavigationSectionButton path="/reports" text="Reports" icon={<Reports />} onClick={this.close}>
-                    <NavigationSubItemButton path="/reports/orders_review" exact text="Orders Review" onClick={this.close} />
-                    <NavigationSubItemButton path="/reports/repurchase_cohorts" exact text="Repurchase Cohorts" onClick={this.close} />
-                    <NavigationSubItemButton path="/reports/micro_order_timing" exact text="Order Timing" onClick={this.close} />
+                  <NavigationSectionButton path="/sales" text="Sales" icon={<Sales />} onClick={this.close}>
+                    <NavigationSubItemButton path="/sales/overview" exact text="Overview" onClick={this.close} />
+                    <NavigationSubItemButton path="/sales/repurchase_cohorts" exact text="Repurchase Cohorts" onClick={this.close} />
+                    <NavigationSubItemButton path="/sales/micro_order_timing" exact text="Order Timing" onClick={this.close} />
+                    <NavigationSubItemButton path="/sales/yearly_review" exact text="Yearly Review" onClick={this.close} />
+                  </NavigationSectionButton>
+                  <NavigationSectionButton path="/traffic" text="Traffic" icon={<Traffic />} onClick={this.close}>
+                    <NavigationSubItemButton path="/traffic/overview" exact text="Overview" onClick={this.close} />
                   </NavigationSectionButton>
                   <Box flex />
                   <NavigationSectionButton path="/invite" text="Invite Users" icon={<Invite />} onClick={this.close} />

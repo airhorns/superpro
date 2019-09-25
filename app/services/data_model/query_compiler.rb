@@ -44,14 +44,14 @@ module DataModel
       measure_specs.each do |measure_spec|
         alias_name = alias_for(measure_spec)
         node = projection_node_for_measure_spec(model, measure_spec)
-        projections << node.as(alias_name)
+        projections << safe_alias_node(node, alias_name)
         projections_by_id[measure_spec[:id]] = { node: node, spec: measure_spec, type: :measure, alias_name: alias_name }
       end
 
       dimension_specs.each do |dimension_spec|
         alias_name = alias_for(dimension_spec)
         node = projection_node_for_dimension_spec(model, dimension_spec)
-        projections << node.as(alias_name)
+        projections << safe_alias_node(node, alias_name)
         groups << Arel.sql(alias_name)
         projections_by_id[dimension_spec[:id]] = { node: node, spec: dimension_spec, type: :dimension, alias_name: alias_name }
       end
@@ -124,6 +124,7 @@ module DataModel
     end
 
     def filter_node_for_filter_spec(model, projections_by_id, filter_spec)
+      values = filter_spec[:values]
       node = if filter_spec.key?(:id)
                projections_by_id.fetch(filter_spec[:id])[:node]
              elsif filter_spec.key?(:field)
@@ -135,7 +136,6 @@ module DataModel
                end
              end
 
-      values = filter_spec[:values]
       case filter_spec[:operator].to_sym
       when :equals then node.eq_any(values)
       when :not_equals then node.not_eq_any(values)
@@ -189,6 +189,11 @@ module DataModel
 
         alias_name
       end
+    end
+
+    # it'd be great to just call Node.as when we needed to alias stuff, but that does one thing for basic nodes that isn't an internal mutation, but a different thing on ExpressionNodes, which is. That makes it unsafe to alias stuff and then leave the nodes around for other bits of code to use, so we use this helper that doesn't mutate any of the nodes instead.
+    def safe_alias_node(node, name)
+      Arel::Nodes::As.new node, Arel::Nodes::SqlLiteral.new(name)
     end
   end
 end

@@ -16,7 +16,6 @@ module DataModel
       introspection = QueryIntrospection.new(@account, @warehouse, query_specification)
       sql = compiler.sql
 
-      logger.info "Executing DataModel query", query: sql
       raw_results = execute(sql)
       process(raw_results, compiler, introspection)
     end

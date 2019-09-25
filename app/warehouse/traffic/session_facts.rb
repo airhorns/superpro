@@ -7,9 +7,6 @@ class Traffic::SessionFacts < DataModel::FactTable
   measure :page_views, DataModel::Types::Number
   measure :time_engaged_in_s, DataModel::Types::Number
 
-  dimension :min_tstamp, DataModel::Types::DateTime
-  dimension :max_tstamp, DataModel::Types::DateTime
-
   dimension :device, DataModel::Types::String
   dimension :device_is_mobile, DataModel::Types::Boolean
 
