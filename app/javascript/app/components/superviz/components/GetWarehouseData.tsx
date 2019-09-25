@@ -54,7 +54,19 @@ const hydrate = (records: any[], queryIntrospection: WarehouseQueryIntrospection
 
 export const GetWarehouseData = (props: { query: WarehouseQuery; children: React.ReactNode }) => {
   return (
-    <SimpleQuery component={WarehouseQueryComponent} require={["warehouseQuery"]} variables={{ query: props.query }}>
+    <SimpleQuery
+      component={WarehouseQueryComponent}
+      require={["warehouseQuery"]}
+      variables={{ query: props.query }}
+      context={{
+        queryParams: {
+          warehouseFields: props.query.measures
+            .map(measure => measure.id)
+            .concat(props.query.dimensions.map(measure => measure.id))
+            .join("/")
+        }
+      }}
+    >
       {data => {
         if (!data.warehouseQuery.records) {
           return <Alert type="error" message="There was an error loading this data. Please try again." />;

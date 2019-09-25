@@ -80,19 +80,7 @@ module DataModel
       expression = field.custom_sql_node || model.table_node[field.field_name]
 
       if measure_spec[:operator]
-        if !field.allows_operators?
-          raise InvalidQueryError, "Field #{field.field_name} doesn't allow operators and was given #{measure_spec[:operator]} for measure id=#{measure_spec[:id]}"
-        end
-
-        expression = case measure_spec[:operator].to_sym
-                     when :sum then expression.sum
-                     when :count then expression.count
-                     when :count_distinct then expression.count(true)
-                     when :max then expression.maximum
-                     when :min then expression.minimum
-                     when :average then expression.average
-                     else raise InvalidQueryError, "Unknown measure operator #{measure_spec[:operator]} for measure #{measure_spec[:model]}.#{measure_spec[:field]}"
-                     end
+        expression = apply_operator(expression, field, measure_spec[:operator].to_sym)
       end
 
       expression
@@ -103,13 +91,7 @@ module DataModel
       expression = field.custom_sql_node || model.table_node[field.field_name]
 
       if dimension_spec[:operator]
-        expression = case dimension_spec[:operator].to_sym
-                     when :date_trunc_day then Arel::Nodes::NamedFunction.new("date_trunc", [Arel.sql("'day'"), expression])
-                     when :date_trunc_week then Arel::Nodes::NamedFunction.new("date_trunc", [Arel.sql("'week'"), expression])
-                     when :date_trunc_month then Arel::Nodes::NamedFunction.new("date_trunc", [Arel.sql("'month'"), expression])
-                     when :date_trunc_year then Arel::Nodes::NamedFunction.new("date_trunc", [Arel.sql("'year'"), expression])
-                     else raise InvalidQueryError, "Unknown dimension operator #{dimension_spec[:operator]} for measure #{dimension_spec[:model]}.#{dimension_spec[:field]}"
-                     end
+        expression = apply_operator(expression, field, dimension_spec[:operator].to_sym)
       end
 
       expression
@@ -163,6 +145,24 @@ module DataModel
       when :less_than_or_equals then node.lteq_all(values)
       else raise InvalidQueryError, "Unknown filter operator #{filter_spec[:operator]} for filter on id=#{filter_spec[:id]}"
       end
+    end
+
+    def apply_operator(expression, field, operator)
+      if !field.allows_operators?
+        raise InvalidQueryError, "Field #{field.field_name} doesn't allow operators and was given #{operator}"
+      end
+
+      operator = self.warehouse.operators[operator]
+
+      if !operator
+        raise InvalidQueryError, "Unknown operator #{operator}"
+      end
+
+      if !operator.valid_on_type?(field.data_type)
+        raise InvalidQueryError, "Operator #{operator} is invalid on this field's type which is #{field.data_type}"
+      end
+
+      operator.apply(expression)
     end
 
     def model_field_for(spec)

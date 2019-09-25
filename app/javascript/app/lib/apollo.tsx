@@ -3,6 +3,7 @@ import { InMemoryCache, IntrospectionFragmentMatcher } from "apollo-cache-inmemo
 import { HttpLink } from "apollo-link-http";
 import { onError } from "apollo-link-error";
 import { ApolloLink } from "apollo-link";
+import { stringify } from "query-string";
 import { Settings } from "./settings";
 import introspectionResult from "../app-graph-introspection";
 import { csrfToken } from "../../superlib";
@@ -11,8 +12,16 @@ export const getClient = () =>
   new ApolloClient({
     link: ApolloLink.from([
       new ApolloLink((operation, forward) => {
+        const queryParams = Object.assign(
+          {
+            operation: operation.operationName,
+            accountId: Settings.accountId
+          },
+          operation.getContext().queryParams || {}
+        );
+
         operation.setContext({
-          uri: `/graphql?operation=${operation.operationName}&app_id=${Settings.accountId}`
+          uri: `/graphql?${stringify(queryParams)}`
         });
 
         return (forward as any)(operation);

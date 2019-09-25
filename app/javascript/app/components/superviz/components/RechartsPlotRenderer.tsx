@@ -21,7 +21,7 @@ const tickFormatter = (datatype: string, _domain: DomainTuple) => {
 
 const dataDomain = (result: SuccessfulWarehouseQueryResult, id: string): DomainTuple => {
   const data = result.records.map(record => record[id]);
-  return [Math.min(...data), Math.max(...data)];
+  return [Math.min(0, ...data), Math.max(...data)];
 };
 
 const renderSystem = (result: SuccessfulWarehouseQueryResult, system: VizSystem, index: number) => {

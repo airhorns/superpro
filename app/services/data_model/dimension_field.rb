@@ -9,4 +9,8 @@ class DataModel::DimensionField
     @data_type = data_type
     @custom_sql_node = sql
   end
+
+  def allows_operators?
+    true
+  end
 end

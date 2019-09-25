@@ -12,12 +12,12 @@ module DataModel
 
     def as_json
       @as_json ||= {
-        types: @specs_by_id.transform_values { |spec| type_for_field_spec(spec).to_enum },
         fields: @specs_by_id.values.map do |spec|
           field = model_field_for_field_spec(spec)
+          operator = operator_for_field_spec(spec)
           {
             id: spec[:id],
-            type: field.data_type.to_enum,
+            type: operator.present? ? operator.output_type(field) : field.data_type.to_enum,
             label: human_label(spec, field),
             sortable: false,
           }
@@ -40,6 +40,11 @@ module DataModel
       end
 
       model.all_fields.fetch(spec[:field].to_sym)
+    end
+
+    def operator_for_field_spec(spec)
+      return nil if spec[:operator].nil?
+      @warehouse.operators.fetch(spec[:operator].to_sym)
     end
 
     def human_label(spec, field)

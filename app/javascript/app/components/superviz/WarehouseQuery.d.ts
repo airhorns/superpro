@@ -57,7 +57,17 @@ export interface Dimension {
    * Which field of the data model this dimension is.
    */
   field: string;
-  operator?: "date_trunc_day" | "date_trunc_week" | "date_trunc_month" | "date_trunc_year";
+  operator?:
+    | "date_trunc_day"
+    | "date_trunc_week"
+    | "date_trunc_month"
+    | "date_trunc_year"
+    | "date_part_hour"
+    | "date_part_day_of_month"
+    | "date_part_day_of_week"
+    | "date_part_week"
+    | "date_part_month"
+    | "date_part_year";
 }
 export interface Ordering {
   /**

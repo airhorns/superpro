@@ -1,0 +1,22 @@
+{
+  "fields": [
+    {
+      "id": "total_price",
+      "type": "DataModel::Types::Currency",
+      "label": "Total Price",
+      "sortable": false
+    },
+    {
+      "id": "total_weight",
+      "type": "DataModel::Types::Weight",
+      "label": "Total Weight",
+      "sortable": false
+    },
+    {
+      "id": "cancelled_status",
+      "type": "boolean",
+      "label": "Cancelled",
+      "sortable": false
+    }
+  ]
+}

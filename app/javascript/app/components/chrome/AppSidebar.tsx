@@ -68,9 +68,9 @@ export const AppSidebar = withRouter(
                 <Box flex="grow" overflow={{ vertical: "auto" }}>
                   <NavigationSectionButton path="/launchpad" text="Launchpad" icon={<Launch />} onClick={this.close} />
                   <NavigationSectionButton path="/reports" text="Reports" icon={<Reports />} onClick={this.close}>
-                    <NavigationSubItemButton path="/reports/sales_over_time" exact text="Sales" onClick={this.close} />
                     <NavigationSubItemButton path="/reports/orders_review" exact text="Orders Review" onClick={this.close} />
                     <NavigationSubItemButton path="/reports/repurchase_cohorts" exact text="Repurchase Cohorts" onClick={this.close} />
+                    <NavigationSubItemButton path="/reports/micro_order_timing" exact text="Order Timing" onClick={this.close} />
                   </NavigationSectionButton>
                   <Box flex />
                   <NavigationSectionButton path="/invite" text="Invite Users" icon={<Invite />} onClick={this.close} />
