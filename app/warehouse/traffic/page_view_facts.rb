@@ -64,4 +64,8 @@ class Traffic::PageViewFacts < DataModel::FactTable
   dimension :referrer_medium, DataModel::Types::String
   dimension :referrer_source, DataModel::Types::String
   dimension :referrer_term, DataModel::Types::String
+
+  dimension :ecommerce_function, DataModel::Types::String
+  dimension :is_shopify, DataModel::Types::Boolean
+  dimension :shopify_area, DataModel::Types::String
 end

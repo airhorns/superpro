@@ -55,6 +55,15 @@ class DataModel::QueryTest < ActiveSupport::TestCase
     assert_equal [], result
   end
 
+  test "it can execute a query with percentile operators" do
+    result = @query.run(
+      measures: [{ model: "Sales::OrderFacts", field: "total_price", operator: "p90", id: "total_price" }],
+      dimensions: [{ model: "Sales::OrderFacts", field: "created_at", operator: "date_trunc_day", id: "date" }],
+    )
+
+    assert_equal [], result
+  end
+
   test "it can execute a query with an ordering" do
     result = @query.run(
       measures: [{ model: "Sales::OrderFacts", field: "total_price", id: "total_price" }],
@@ -90,6 +99,16 @@ class DataModel::QueryTest < ActiveSupport::TestCase
       measures: [{ model: "Sales::OrderFacts", field: "total_price", id: "total_price", operator: "sum" }],
       dimensions: [{ model: "Sales::OrderFacts", field: "created_at", operator: "date_trunc_day", id: "date" }],
       filters: [{ id: "date", operator: "greater_than", values: ["2019-08-26T16:48:51.491-04:00"] }],
+    )
+
+    assert_equal [], result
+  end
+
+  test "it can execute a query with a filter on nulls" do
+    result = @query.run(
+      measures: [{ model: "Sales::OrderFacts", field: "total_price", id: "total_price", operator: "sum" }],
+      dimensions: [{ model: "Sales::OrderFacts", field: "created_at", operator: "date_trunc_day", id: "date" }],
+      filters: [{ id: "date", operator: "is_not_null" }],
     )
 
     assert_equal [], result

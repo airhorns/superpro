@@ -143,6 +143,8 @@ module DataModel
       when :greater_than_or_equals then node.gteq_all(values)
       when :less_than then node.lt_all(values)
       when :less_than_or_equals then node.lteq_all(values)
+      when :is_null then node.eq(nil)
+      when :is_not_null then node.not_eq(nil)
       else raise InvalidQueryError, "Unknown filter operator #{filter_spec[:operator]} for filter on id=#{filter_spec[:id]}"
       end
     end
@@ -172,7 +174,7 @@ module DataModel
 
     def alias_for(spec)
       @aliases_by_id[spec[:id]] ||= begin
-        segments = [spec[:model], spec[:field], spec[:operator]].compact.map { |segment| segment.gsub(/[^A-Za-z]/, "_").downcase }
+        segments = [spec[:model], spec[:field], spec[:operator]].compact.map { |segment| segment.gsub(/^[^A-Za-z]/, "_").gsub(/[^A-Za-z0-9]/, "_").downcase }
         alias_name = segments.join("__")
 
         # Postgres truncates aliases names after the AS silently, so we have to give it something shorter than 64 chars long

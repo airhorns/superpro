@@ -65,6 +65,18 @@ bundle exec que -q default -q mailers
 
 to execute Que, our jobs system.
 
+### Customer Data Warehouse
+
+Changes to the structure of the actual data that Superpro serves are made in the `customer-warehouse` repository, which contains all our data models and the infrastructure to keep them up to date. This Rails app is coupled to those models and depends on them existing in order to work. The structure of the warehouse is dumped using Rails' support for SQL schema on disk, which is good, so a normal `bin/rails db:prepare` sets up the tables from the warehouse.
+
+#### Running tests during development
+
+If changes are made to the structure of the development database outside of Rails' migrations (which is the case for `customer-warehouse` side changes), Rails doesn't know that things have changed. This means the test database will fall out of sync with the development database. To recreate the test database with the most up to date version of the development database's structure, run:
+
+```
+bin/rails db:structure:dump dbt:test:prepare
+```
+
 ### Structure
 
 Superpro is a Rails app with a React frontend that communicates over GraphQL.

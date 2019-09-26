@@ -75,6 +75,7 @@ export const AppSidebar = withRouter(
                   </NavigationSectionButton>
                   <NavigationSectionButton path="/traffic" text="Traffic" icon={<Traffic />} onClick={this.close}>
                     <NavigationSubItemButton path="/traffic/overview" exact text="Overview" onClick={this.close} />
+                    <NavigationSubItemButton path="/traffic/slow_landing_pages" exact text="Slow Landing Pages" onClick={this.close} />
                   </NavigationSectionButton>
                   <Box flex />
                   <NavigationSectionButton path="/invite" text="Invite Users" icon={<Invite />} onClick={this.close} />

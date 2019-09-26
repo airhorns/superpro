@@ -5015,6 +5015,9 @@ CREATE TABLE warehouse.fct_snowplow_page_views (
     device_type text,
     device_is_mobile boolean,
     is_internal boolean,
+    is_shopify boolean,
+    shopify_area text,
+    ecommerce_function text,
     last_page_view_in_session integer
 );
 
@@ -6912,6 +6915,13 @@ CREATE INDEX fct_shopify_orders__index_on_cancelled_at ON warehouse.fct_shopify_
 --
 
 CREATE INDEX fct_shopify_orders__index_on_customer_id__created_at ON warehouse.fct_shopify_orders USING btree (customer_id, created_at);
+
+
+--
+-- Name: fct_snowplow_page_views__index_on_account_id__max_tstamp; Type: INDEX; Schema: warehouse; Owner: -
+--
+
+CREATE INDEX fct_snowplow_page_views__index_on_account_id__max_tstamp ON warehouse.fct_snowplow_page_views USING btree (account_id, max_tstamp);
 
 
 --

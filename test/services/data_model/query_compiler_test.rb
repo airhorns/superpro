@@ -63,6 +63,13 @@ class DataModel::QueryCompilerTest < ActiveSupport::TestCase
     assert_matches_snapshot sql
   end
 
+  test "it can execute a query with percentile operators" do
+    assert_matches_snapshot compile(
+      measures: [{ model: "Sales::OrderFacts", field: "total_price", operator: "p90", id: "total_price" }],
+      dimensions: [{ model: "Sales::OrderFacts", field: "created_at", operator: "date_trunc_day", id: "date" }],
+    )
+  end
+
   def compile(query_spec)
     assert DataModel::QueryValidator.validate!(query_spec)
     DataModel::QueryCompiler.new(@account, SuperproWarehouse, query_spec).sql

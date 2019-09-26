@@ -107,7 +107,7 @@
     },
     "filter": {
       "type": "object",
-      "required": ["operator", "values"],
+      "required": ["operator"],
       "additionalProperties": false,
       "properties": {
         "id": {
@@ -120,7 +120,16 @@
         },
         "operator": {
           "type": "string",
-          "enum": ["equals", "not_equals", "greater_than", "greater_than_or_equals", "less_than", "less_than_or_equals"]
+          "enum": [
+            "equals",
+            "not_equals",
+            "greater_than",
+            "greater_than_or_equals",
+            "less_than",
+            "less_than_or_equals",
+            "is_null",
+            "is_not_null"
+          ]
         },
         "values": {
           "type": ["array", "null"],

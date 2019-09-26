@@ -24,6 +24,7 @@ const SalesOverviewReport = React.lazy(() => import("./components/sales/SalesOve
 const YearlyOrdersReviewReport = React.lazy(() => import("./components/sales/YearlyOrdersReviewReport"));
 const RepurchaseCohortsReport = React.lazy(() => import("./components/sales/RepurchaseCohortsReport"));
 const TrafficOverviewReport = React.lazy(() => import("./components/traffic/TrafficOverviewReport"));
+const SlowLandingPagesReport = React.lazy(() => import("./components/traffic/SlowLandingPagesReport"));
 
 export const SuperproClient = getClient();
 
@@ -52,6 +53,7 @@ export const App = () => {
                           <Route path="/sales/micro_order_timing" exact component={MicroOrderTimingReport} />
                           <Route path="/traffic" exact component={TrafficOverviewReport} />
                           <Route path="/traffic/overview" exact component={TrafficOverviewReport} />
+                          <Route path="/traffic/slow_landing_pages" exact component={SlowLandingPagesReport} />
                           <Route path="/settings" exact component={AccountSettingsPage} />
                           <Route path="/settings/account" exact component={AccountSettingsPage} />
                           <Route path="/settings/users" exact component={UsersSettingsPage} />

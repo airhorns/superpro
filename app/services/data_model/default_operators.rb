@@ -13,6 +13,16 @@ module DataModel
       operator :min, valid_on: :numberlike?, &:minimum
       operator :average, valid_on: :numberlike?, &:average
 
+      operator :p80, valid_on: :numberlike? do |node|
+        Arel.sql("percentile_cont(0.8) within group ( order by #{DataModel.sql_string(node)})")
+      end
+      operator :p90, valid_on: :numberlike? do |node|
+        Arel.sql("percentile_cont(0.9) within group ( order by #{DataModel.sql_string(node)})")
+      end
+      operator :p95, valid_on: :numberlike? do |node|
+        Arel.sql("percentile_cont(0.95) within group ( order by #{DataModel.sql_string(node)})")
+      end
+
       operator :date_trunc_day, valid_on: :datelike? do |node|
         Arel::Nodes::NamedFunction.new("date_trunc", [Arel.sql("'day'"), node])
       end
