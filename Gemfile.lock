@@ -535,7 +535,7 @@ GEM
       railties (>= 4.0.0)
     semantic_logger (4.5.0)
       concurrent-ruby (~> 1.0)
-    sentry-raven (2.11.2)
+    sentry-raven (2.11.3)
       faraday (>= 0.7.6, < 1.0)
     shopify_api (8.0.0)
       activeresource (>= 4.1.0, < 6.0.0)
