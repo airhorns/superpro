@@ -11,14 +11,14 @@ class DataModel::FactTable
       @table_node ||= Arel::Table.new(self.table)
     end
 
-    def measure(name, type, **options)
-      field = DataModel::MeasureField.new(name, type, **options)
+    def measure(name, type, **options, &block)
+      field = DataModel::MeasureField.new(name, type, **options, &block)
       self.measure_fields[name] = field
       self.all_fields[name] = field
     end
 
-    def dimension(name, type, **options)
-      field = DataModel::DimensionField.new(name, type, **options)
+    def dimension(name, type, **options, &block)
+      field = DataModel::DimensionField.new(name, type, **options, &block)
       self.dimension_fields[name] = field
       self.all_fields[name] = field
     end

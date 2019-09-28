@@ -11,18 +11,22 @@ class Traffic::PageViewFacts < DataModel::FactTable
   measure :vertical_percentage_scrolled, DataModel::Types::Number
   measure :horizontal_percentage_scrolled, DataModel::Types::Number
 
-  measure :redirect_time_in_ms, DataModel::Types::Number
-  measure :unload_time_in_ms, DataModel::Types::Number
-  measure :app_cache_time_in_ms, DataModel::Types::Number
-  measure :dns_time_in_ms, DataModel::Types::Number
-  measure :tcp_time_in_ms, DataModel::Types::Number
-  measure :request_time_in_ms, DataModel::Types::Number
-  measure :response_time_in_ms, DataModel::Types::Number
-  measure :processing_time_in_ms, DataModel::Types::Number
-  measure :dom_loading_to_interactive_time_in_ms, DataModel::Types::Number
-  measure :dom_interactive_to_complete_time_in_ms, DataModel::Types::Number
-  measure :onload_time_in_ms, DataModel::Types::Number
-  measure :total_time_in_ms, DataModel::Types::Number
+  measure :redirect_time_in_ms, DataModel::Types::Duration
+  measure :unload_time_in_ms, DataModel::Types::Duration
+  measure :app_cache_time_in_ms, DataModel::Types::Duration
+  measure :dns_time_in_ms, DataModel::Types::Duration
+  measure :tcp_time_in_ms, DataModel::Types::Duration
+  measure :request_time_in_ms, DataModel::Types::Duration
+  measure :response_time_in_ms, DataModel::Types::Duration
+  measure :processing_time_in_ms, DataModel::Types::Duration
+  measure :dom_loading_to_interactive_time_in_ms, DataModel::Types::Duration
+  measure :dom_interactive_to_complete_time_in_ms, DataModel::Types::Duration
+  measure :onload_time_in_ms, DataModel::Types::Duration
+  measure :total_time_in_ms, DataModel::Types::Duration
+
+  measure :bounce_pct, DataModel::Types::Percentage do
+    table_node[:is_bounce].count / table_node[:session_id].count(true)
+  end
 
   dimension :page_view_id, DataModel::Types::String
   dimension :page_view_index, DataModel::Types::Number
@@ -68,4 +72,6 @@ class Traffic::PageViewFacts < DataModel::FactTable
   dimension :ecommerce_function, DataModel::Types::String
   dimension :is_shopify, DataModel::Types::Boolean
   dimension :shopify_area, DataModel::Types::String
+
+  dimension :is_bounce, DataModel::Types::Boolean
 end

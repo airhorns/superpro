@@ -13,7 +13,7 @@ class DataModel::MeasureField
     @default_operator = default_operator || :sum
     @valid_operators = MEASURE_OPERATORS - Set.new(except_operators || [])
     @allow_operators = allow_operators
-    @custom_sql_node = sql
+    @custom_sql_node = sql || block_given? && yield
   end
 
   def allows_operators?

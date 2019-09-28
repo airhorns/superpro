@@ -50,10 +50,25 @@ module DataModel
     def human_label(spec, field)
       title = field.field_label
       case spec[:operator]
-      when "date_trunc_year" then "Year of #{title}"
-      when "date_trunc_month" then "Month of #{title}"
-      when "date_trunc_week" then "Week of #{title}"
-      when "date_trunc_day" then "Day of #{title}"
+      when "date_trunc_year" then "#{title} Year"
+      when "date_trunc_month" then "#{title} Month"
+      when "date_trunc_week" then "#{title} Week"
+      when "date_trunc_day" then "#{title} Date"
+      when "date_part_hour" then "Hour of #{title}"
+      when "date_part_day_of_month" then "Day of Month of #{title}"
+      when "date_part_day_of_week" then "Day of Week of #{title}"
+      when "date_part_week" then "Week of #{title}"
+      when "date_part_month" then "Month of #{title}"
+      when "date_part_year" then "Year of #{title}"
+      when "average" then "Average #{title}"
+      when "sum" then "Sum of #{title}"
+      when "max" then "Maximum #{title}"
+      when "min" then "Minimum #{title}"
+      when "count" then "Count of #{title}"
+      when "count_distinct" then "Count of Unique #{title}"
+      when "p80" then "80th Percentile #{title}"
+      when "p90" then "90th Percentile #{title}"
+      when "p95" then "95th Percentile #{title}"
       else title
       end
     end
