@@ -71,7 +71,7 @@ class DataModel::QueryCompilerTest < ActiveSupport::TestCase
   end
 
   def compile(query_spec)
-    assert DataModel::QueryValidator.validate!(query_spec)
+    assert DataModel::Query.new(@account, SuperproWarehouse, query_spec).validate!
     DataModel::QueryCompiler.new(@account, SuperproWarehouse, query_spec).sql
   end
 end

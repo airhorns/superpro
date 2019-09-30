@@ -17,7 +17,7 @@ module DataModel
           operator = operator_for_field_spec(spec)
           {
             id: spec[:id],
-            type: operator.present? ? operator.output_type(field) : field.data_type.to_enum,
+            data_type: operator.present? ? operator.output_type(field) : field.data_type,
             label: human_label(spec, field),
             sortable: false,
           }

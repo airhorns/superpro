@@ -1,7 +1,7 @@
 import { FullReportPage } from "../common/FullReportPage";
-import { Document } from "../superviz";
+import { ReportDocument } from "../superviz";
 
-const document: Document = {
+const document: ReportDocument = {
   type: "document",
   id: "slow_landing_pages",
   blocks: [

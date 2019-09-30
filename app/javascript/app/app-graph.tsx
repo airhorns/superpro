@@ -133,6 +133,8 @@ export type AppQuery = {
   shopifyShops: ShopifyShopConnection;
   /** Get all the active users in the current account */
   users: UserConnection;
+  /** Get a datastructure describing all the available models and fields available in the Superpro data model */
+  warehouseIntrospection: WarehouseIntrospection;
   /** Execute a query against the Superpro data model */
   warehouseQuery: WarehouseQueryResult;
 };
@@ -531,6 +533,53 @@ export type UserInviteAttributes = {
   email: Scalars["String"];
 };
 
+export const enum WarehouseDataTypeEnum {
+  Boolean = "Boolean",
+  Currency = "Currency",
+  DateTime = "DateTime",
+  Duration = "Duration",
+  Number = "Number",
+  Percentage = "Percentage",
+  String = "String",
+  Weight = "Weight"
+}
+
+export type WarehouseIntrospection = {
+  __typename: "WarehouseIntrospection";
+  factTables: Array<WarehouseIntrospectionFactTable>;
+  operators: Array<WarehouseIntrospectionOperator>;
+};
+
+export type WarehouseIntrospectionDimensionField = {
+  __typename: "WarehouseIntrospectionDimensionField";
+  allowsOperators: Scalars["Boolean"];
+  dataType: WarehouseDataTypeEnum;
+  fieldLabel: Scalars["String"];
+  fieldName: Scalars["String"];
+};
+
+export type WarehouseIntrospectionFactTable = {
+  __typename: "WarehouseIntrospectionFactTable";
+  dimensionFields: Array<WarehouseIntrospectionDimensionField>;
+  measureFields: Array<WarehouseIntrospectionMeasureField>;
+  name: Scalars["String"];
+};
+
+export type WarehouseIntrospectionMeasureField = {
+  __typename: "WarehouseIntrospectionMeasureField";
+  allowsOperators: Scalars["Boolean"];
+  dataType: WarehouseDataTypeEnum;
+  defaultOperator: Scalars["String"];
+  fieldLabel: Scalars["String"];
+  fieldName: Scalars["String"];
+  requiresOperators: Scalars["Boolean"];
+};
+
+export type WarehouseIntrospectionOperator = {
+  __typename: "WarehouseIntrospectionOperator";
+  key: Scalars["String"];
+};
+
 export type WarehouseQueryIntrospection = {
   __typename: "WarehouseQueryIntrospection";
   fields: Array<WarehouseQueryIntrospectionField>;
@@ -538,10 +587,10 @@ export type WarehouseQueryIntrospection = {
 
 export type WarehouseQueryIntrospectionField = {
   __typename: "WarehouseQueryIntrospectionField";
+  dataType: WarehouseDataTypeEnum;
   id: Scalars["String"];
   label: Scalars["String"];
   sortable: Scalars["Boolean"];
-  type: Scalars["String"];
 };
 
 export type WarehouseQueryResult = {
@@ -723,6 +772,10 @@ export type GetUsersForSettingsQuery = { __typename: "AppQuery" } & {
   };
 };
 
+export type ReportBuilderPageQueryVariables = {};
+
+export type ReportBuilderPageQuery = { __typename: "AppQuery" } & WarehouseIntrospectionFragment;
+
 export type WarehouseQueryQueryVariables = {
   query: Scalars["JSONScalar"];
 };
@@ -734,12 +787,34 @@ export type WarehouseQueryQuery = { __typename: "AppQuery" } & {
           fields: Array<
             { __typename: "WarehouseQueryIntrospectionField" } & Pick<
               WarehouseQueryIntrospectionField,
-              "id" | "type" | "label" | "sortable"
+              "id" | "dataType" | "label" | "sortable"
             >
           >;
         }
       >;
     };
+};
+
+export type WarehouseIntrospectionFragment = { __typename: "AppQuery" } & {
+  warehouseIntrospection: { __typename: "WarehouseIntrospection" } & {
+    factTables: Array<
+      { __typename: "WarehouseIntrospectionFactTable" } & Pick<WarehouseIntrospectionFactTable, "name"> & {
+          measureFields: Array<
+            { __typename: "WarehouseIntrospectionMeasureField" } & Pick<
+              WarehouseIntrospectionMeasureField,
+              "fieldName" | "fieldLabel" | "dataType" | "allowsOperators" | "requiresOperators" | "defaultOperator"
+            >
+          >;
+          dimensionFields: Array<
+            { __typename: "WarehouseIntrospectionDimensionField" } & Pick<
+              WarehouseIntrospectionDimensionField,
+              "fieldName" | "fieldLabel" | "dataType" | "allowsOperators"
+            >
+          >;
+        }
+    >;
+    operators: Array<{ __typename: "WarehouseIntrospectionOperator" } & Pick<WarehouseIntrospectionOperator, "key">>;
+  };
 };
 
 export type AttachUploadToContainerMutationVariables = {
@@ -817,6 +892,32 @@ export const PlaidConnectionCardContentFragmentDoc = gql`
       id
       name
       type
+    }
+  }
+`;
+export const WarehouseIntrospectionFragmentDoc = gql`
+  fragment WarehouseIntrospection on AppQuery {
+    warehouseIntrospection {
+      factTables {
+        name
+        measureFields {
+          fieldName
+          fieldLabel
+          dataType
+          allowsOperators
+          requiresOperators
+          defaultOperator
+        }
+        dimensionFields {
+          fieldName
+          fieldLabel
+          dataType
+          allowsOperators
+        }
+      }
+      operators {
+        key
+      }
     }
   }
 `;
@@ -1210,6 +1311,24 @@ export const GetUsersForSettingsComponent = (props: GetUsersForSettingsComponent
 export function useGetUsersForSettingsQuery(baseOptions?: ReactApolloHooks.QueryHookOptions<GetUsersForSettingsQueryVariables>) {
   return ReactApolloHooks.useQuery<GetUsersForSettingsQuery, GetUsersForSettingsQueryVariables>(GetUsersForSettingsDocument, baseOptions);
 }
+export const ReportBuilderPageDocument = gql`
+  query ReportBuilderPage {
+    ...WarehouseIntrospection
+  }
+  ${WarehouseIntrospectionFragmentDoc}
+`;
+export type ReportBuilderPageComponentProps = Omit<
+  ReactApollo.QueryProps<ReportBuilderPageQuery, ReportBuilderPageQueryVariables>,
+  "query"
+>;
+
+export const ReportBuilderPageComponent = (props: ReportBuilderPageComponentProps) => (
+  <ReactApollo.Query<ReportBuilderPageQuery, ReportBuilderPageQueryVariables> query={ReportBuilderPageDocument} {...props} />
+);
+
+export function useReportBuilderPageQuery(baseOptions?: ReactApolloHooks.QueryHookOptions<ReportBuilderPageQueryVariables>) {
+  return ReactApolloHooks.useQuery<ReportBuilderPageQuery, ReportBuilderPageQueryVariables>(ReportBuilderPageDocument, baseOptions);
+}
 export const WarehouseQueryDocument = gql`
   query WarehouseQuery($query: JSONScalar!) {
     warehouseQuery(query: $query) {
@@ -1217,7 +1336,7 @@ export const WarehouseQueryDocument = gql`
       queryIntrospection {
         fields {
           id
-          type
+          dataType
           label
           sortable
         }

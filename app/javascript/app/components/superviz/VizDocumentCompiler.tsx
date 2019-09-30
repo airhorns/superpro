@@ -1,17 +1,17 @@
 import React from "react";
-import { Document, Block } from "./schema";
-import { VizDocumentContainer } from "./components/VizDocumentContainer";
+import { ReportDocument, Block } from "./schema";
+import { VizDocumentContainer } from "./components/render/VizDocumentContainer";
 import { Markdown } from "grommet";
-import { VizBlockRenderer } from "./components/VizBlockRenderer";
-import { TableBlockRenderer } from "./components/TableBlockRenderer";
+import { VizBlockRenderer } from "./components/render/VizBlockRenderer";
+import { TableBlockRenderer } from "./components/render/TableBlockRenderer";
 
 export class VizDocumentCompiler {
-  compile(doc: Document): React.ComponentType<{}> {
+  compile(doc: ReportDocument): React.ComponentType<{}> {
     const blocks = doc.blocks.map((block, index) => this.compileBlock(doc, block, index));
     return () => <VizDocumentContainer>{blocks}</VizDocumentContainer>;
   }
 
-  private compileBlock = (doc: Document, block: Block, index: number) => {
+  private compileBlock = (doc: ReportDocument, block: Block, index: number) => {
     if (block.type == "markdown_block") {
       return <Markdown key={index}>{block.markdown}</Markdown>;
     } else if (block.type == "viz_block") {

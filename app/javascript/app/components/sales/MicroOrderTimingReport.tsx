@@ -1,7 +1,7 @@
-import { Document } from "app/components/superviz";
+import { ReportDocument } from "app/components/superviz";
 import { FullReportPage } from "../common/FullReportPage";
 
-const doc: Document = {
+const doc: ReportDocument = {
   type: "document",
   id: "micro_order_timing",
   blocks: [

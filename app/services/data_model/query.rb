@@ -1,28 +1,56 @@
 # frozen_string_literal: true
 
+require "json-schema"
+
 module DataModel
   class Query
     include SemanticLogger::Loggable
 
-    attr_reader :account, :warehouse
+    SCHEMA_PATH = Rails.root.join("app", "services", "data_model", "query_schema.json").to_s
 
-    def initialize(account, warehouse)
-      @account = account
-      @warehouse = warehouse
+    def self.query_schema
+      # Hot reload the schema file in development
+      if Rails.env.development?
+        File.read(SCHEMA_PATH)
+      else
+        @schema ||= File.read(SCHEMA_PATH)
+      end
     end
 
-    def run(query_specification)
-      compiler = QueryCompiler.new(@account, @warehouse, query_specification)
-      introspection = QueryIntrospection.new(@account, @warehouse, query_specification)
-      sql = compiler.sql
+    attr_reader :account, :warehouse, :specification
 
-      raw_results = execute(sql)
-      process(raw_results, compiler, introspection)
+    def initialize(account, warehouse, specification)
+      @account = account
+      @warehouse = warehouse
+      @specification = specification
+    end
+
+    def validate!
+      JSON::Validator.validate!(self.class.query_schema, @specification)
+      if @specification[:measures].empty? && @specification[:dimensions].empty?
+        raise "Nothing to query given"
+      end
+
+      @specification[:measures].each do |measure|
+      end
+      true
+    end
+
+    def introspection
+      @introspection ||= DataModel::QueryIntrospection.new(@account, @warehouse, @specification)
+    end
+
+    def run
+      compiler = QueryCompiler.new(@account, @warehouse, @specification)
+      raw_results = execute(compiler.sql)
+      process(raw_results, compiler)
     end
 
     private
 
-    def process(results, compiler, introspection)
+    def process(results, compiler)
+      introspection = self.introspection
+
       results.map do |result|
         result.each_with_object({}) do |(key, value), return_result|
           id_key = compiler.ids_by_alias.fetch(key)

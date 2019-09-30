@@ -5,8 +5,8 @@ import { DateTime } from "luxon";
 import { scaleLinear } from "d3-scale";
 import { interpolateOranges } from "d3-scale-chromatic";
 import { WaterTable, WaterTableColumnSpec } from "superlib/WaterTable";
-import { SuccessfulWarehouseQueryResult } from "./GetWarehouseData";
-import { Document, VizBlock, VizSystem } from "../schema";
+import { SuccessfulWarehouseQueryResult } from "../GetWarehouseData";
+import { ReportDocument, VizBlock, VizSystem } from "../../schema";
 import { assert } from "superlib";
 
 interface CohortRecord {
@@ -37,7 +37,7 @@ const cohortPivot = (result: SuccessfulWarehouseQueryResult, system: VizSystem) 
   });
 };
 
-export const CohortTableRenderer = (props: { result: SuccessfulWarehouseQueryResult; doc: Document; block: VizBlock }) => {
+export const CohortTableRenderer = (props: { result: SuccessfulWarehouseQueryResult; doc: ReportDocument; block: VizBlock }) => {
   const system = assert(props.block.viz.systems[0]);
   const columns: WaterTableColumnSpec<CohortRecord>[] = [
     {

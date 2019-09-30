@@ -2,7 +2,7 @@
 
 require "test_helper"
 
-class DataModel::QueryValidatorTest < ActiveSupport::TestCase
+class DataModel::QueryValidationTest < ActiveSupport::TestCase
   test "it raises validation errors if there's an invalid query passed" do
     assert_raises do
       validate(
@@ -26,6 +26,6 @@ class DataModel::QueryValidatorTest < ActiveSupport::TestCase
   end
 
   def validate(spec)
-    DataModel::QueryValidator.validate!(spec)
+    DataModel::Query.new(stub(id: 10), SuperproDataWarehouse, spec).validate!
   end
 end

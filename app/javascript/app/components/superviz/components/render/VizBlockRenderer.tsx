@@ -1,11 +1,11 @@
 import React from "react";
-import { VizBlock, Document } from "../schema";
-import { GetWarehouseData, VizQueryContext } from "./GetWarehouseData";
+import { VizBlock, ReportDocument } from "../../schema";
+import { GetWarehouseData, VizQueryContext } from "../GetWarehouseData";
 import { RechartsPlotRenderer } from "./RechartsPlotRenderer";
 import { CohortTableRenderer } from "./CohortTableRenderer";
 import { Box, Heading } from "grommet";
 
-export const VizBlockRenderer = (props: { doc: Document; block: VizBlock }) => (
+export const VizBlockRenderer = (props: { doc: ReportDocument; block: VizBlock }) => (
   <GetWarehouseData query={props.block.query}>
     <VizQueryContext.Consumer>
       {result => {

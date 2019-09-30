@@ -1,10 +1,10 @@
 import React from "react";
-import { Document, TableBlock } from "../schema";
-import { GetWarehouseData, VizQueryContext } from "./GetWarehouseData";
+import { ReportDocument, TableBlock } from "../../schema";
+import { GetWarehouseData, VizQueryContext } from "../GetWarehouseData";
 import { WaterTable } from "superlib/WaterTable";
 import { Box, Heading } from "grommet";
 
-export const TableBlockRenderer = (props: { doc: Document; block: TableBlock }) => (
+export const TableBlockRenderer = (props: { doc: ReportDocument; block: TableBlock }) => (
   <GetWarehouseData query={props.block.query}>
     <VizQueryContext.Consumer>
       {result => {

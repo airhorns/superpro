@@ -10,6 +10,7 @@ WAREHOUSE_QUERY_QUERY = <<~QUERY
         fields {
           id
           label
+          dataType
         }
       }
       errors

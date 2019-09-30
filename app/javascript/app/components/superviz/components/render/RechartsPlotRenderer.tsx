@@ -1,8 +1,8 @@
 import React from "react";
 import { ResponsiveContainer, ComposedChart, XAxis, YAxis, Line, CartesianGrid, Tooltip, Legend, Bar, XAxisProps } from "recharts";
 import { scaleTime } from "d3-scale";
-import { VizBlock, VizSystem, Document } from "../schema";
-import { SuccessfulWarehouseQueryResult } from "./GetWarehouseData";
+import { VizBlock, VizSystem, ReportDocument } from "../../schema";
+import { SuccessfulWarehouseQueryResult } from "../GetWarehouseData";
 import { flatMap, defaultTo, find } from "lodash";
 import { DateTime } from "luxon";
 import { assert } from "superlib";
@@ -56,7 +56,7 @@ const renderSystem = (result: SuccessfulWarehouseQueryResult, system: VizSystem,
       yAxisId={index}
       orientation={index == 0 ? "left" : "right"}
       domain={dependentVariableDomain}
-      tickFormatter={tickFormatter(dependentVariableField.type, dependentVariableDomain)}
+      tickFormatter={tickFormatter(dependentVariableField.dataType, dependentVariableDomain)}
       padding={{ top: 20, bottom: 20 }}
       label={{
         value: assert(find(result.queryIntrospection.fields, { id: system.yId })).label,
@@ -70,31 +70,39 @@ const renderSystem = (result: SuccessfulWarehouseQueryResult, system: VizSystem,
 
 const renderXAxis = (result: SuccessfulWarehouseQueryResult, block: VizBlock) => {
   const globalXId = block.viz.globalXId || block.viz.systems[0].xId;
-  const domain = dataDomain(result, globalXId);
-  const dataType = assert(result.queryIntrospection.fieldsById[globalXId]).type;
 
   const props: XAxisProps = {
-    dataKey: globalXId,
-    tickFormatter: tickFormatter(dataType, domain),
-    label: {
-      value: assert(find(result.queryIntrospection.fields, { id: globalXId })).label,
-      position: "insideBottomRight"
-    }
+    dataKey: globalXId
   };
 
-  if (dataType == "date_time") {
-    const scale = scaleTime().domain(domain);
-    props.domain = domain;
-    props.scale = scale;
-    props.ticks = scale.ticks(5);
-    props.padding = { left: 30, right: 30 };
-    props.type = "number";
+  if (globalXId) {
+    const domain = dataDomain(result, globalXId);
+    const dataType = assert(result.queryIntrospection.fieldsById[globalXId]).dataType;
+    props.tickFormatter = tickFormatter(dataType, domain);
+    props.label = {
+      value: assert(find(result.queryIntrospection.fields, { id: globalXId })).label,
+      position: "bottom"
+    };
+
+    if (dataType == "DateTime") {
+      const scale = scaleTime().domain(domain);
+      props.domain = domain;
+      props.scale = scale;
+      props.ticks = scale.ticks(5);
+      props.padding = { left: 30, right: 30 };
+      props.type = "number";
+    }
+  } else {
+    props.label = {
+      value: "value",
+      position: "bottom"
+    };
   }
 
   return <XAxis {...props} />;
 };
 
-export const RechartsPlotRenderer = (props: { result: SuccessfulWarehouseQueryResult; doc: Document; block: VizBlock }) => (
+export const RechartsPlotRenderer = (props: { result: SuccessfulWarehouseQueryResult; doc: ReportDocument; block: VizBlock }) => (
   <ResponsiveContainer>
     <ComposedChart
       data={props.result.records}

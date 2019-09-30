@@ -8,15 +8,25 @@ module Types::Warehouse::WarehouseQueries
       description "Execute a query against the Superpro data model"
       argument :query, Types::JSONScalar, required: true
     end
+
+    field :warehouse_introspection, Types::Warehouse::WarehouseIntrospectionType, null: false do
+      description "Get a datastructure describing all the available models and fields available in the Superpro data model"
+    end
   end
 
   def warehouse_query(query:)
     query_specification = query.permit!.to_h
-    DataModel::QueryValidator.validate!(query_specification)
+    query = DataModel::Query.new(context[:current_account], SuperproWarehouse, query_specification)
+    query.validate!
+
     {
-      records: DataModel::Query.new(context[:current_account], SuperproWarehouse).run(query_specification),
-      query_introspection: DataModel::QueryIntrospection.new(context[:current_account], SuperproWarehouse, query_specification).as_json,
+      records: query.run,
+      query_introspection: query.introspection.as_json,
       errors: nil,
     }
+  end
+
+  def warehouse_introspection
+    DataModel::WarehouseIntrospection.new(context[:current_account], SuperproWarehouse).as_json
   end
 end

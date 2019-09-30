@@ -20,7 +20,7 @@ gql`
       queryIntrospection {
         fields {
           id
-          type
+          dataType
           label
           sortable
         }
@@ -43,7 +43,7 @@ export const VizQueryContext = React.createContext<SuccessfulWarehouseQueryResul
 const hydrate = (records: any[], queryIntrospection: WarehouseQueryIntrospection) => {
   return records.map(record => {
     for (const field of queryIntrospection.fields) {
-      if (field.type == "date_time") {
+      if (field.dataType == "DateTime") {
         record[field.id] = DateTime.fromISO(record[field.id]);
       }
     }

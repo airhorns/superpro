@@ -9,10 +9,6 @@ class DataModel::Types::Base
     false
   end
 
-  def self.to_enum
-    name.underscore.split("/").last
-  end
-
   def self.process(value)
     value
   end

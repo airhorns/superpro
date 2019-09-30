@@ -1,8 +1,8 @@
 import React from "react";
 import { Page } from ".";
-import { VizDocumentCompiler, Document } from "app/components/superviz";
+import { VizDocumentCompiler, ReportDocument } from "app/components/superviz";
 
-export const FullReportPage = (title: string, document: Document) => {
+export const FullReportPage = (title: string, document: ReportDocument) => {
   const Component = new VizDocumentCompiler().compile(document);
 
   return class FullReportPage extends Page {

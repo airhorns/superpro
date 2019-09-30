@@ -5018,7 +5018,8 @@ CREATE TABLE warehouse.fct_snowplow_page_views (
     is_shopify boolean,
     shopify_area text,
     ecommerce_function text,
-    last_page_view_in_session integer
+    last_page_view_in_session boolean,
+    is_bounce boolean
 );
 
 
