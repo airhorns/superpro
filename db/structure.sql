@@ -23,6 +23,13 @@ CREATE SCHEMA raw_tap_csv;
 
 
 --
+-- Name: raw_tap_facebook; Type: SCHEMA; Schema: -; Owner: -
+--
+
+CREATE SCHEMA raw_tap_facebook;
+
+
+--
 -- Name: raw_tap_google_analytics; Type: SCHEMA; Schema: -; Owner: -
 --
 
@@ -723,6 +730,45 @@ ALTER SEQUENCE public.connections_id_seq OWNED BY public.connections.id;
 
 
 --
+-- Name: facebook_ad_accounts; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.facebook_ad_accounts (
+    id bigint NOT NULL,
+    account_id bigint NOT NULL,
+    creator_id bigint NOT NULL,
+    configured boolean DEFAULT false NOT NULL,
+    access_token character varying NOT NULL,
+    expires_at timestamp without time zone,
+    grantor_id character varying NOT NULL,
+    grantor_name character varying NOT NULL,
+    fb_account_id character varying,
+    fb_account_name character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: facebook_ad_accounts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.facebook_ad_accounts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: facebook_ad_accounts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.facebook_ad_accounts_id_seq OWNED BY public.facebook_ad_accounts.id;
+
+
+--
 -- Name: flipper_features; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1263,6 +1309,9745 @@ CREATE SEQUENCE public.users_id_seq
 --
 
 ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
+
+
+--
+-- Name: adcreative; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative (
+    body text,
+    object_story_id text,
+    image_url text,
+    id text,
+    account_id text,
+    actor_id text,
+    applink_treatment text,
+    call_to_action_type text,
+    effective_instagram_story_id text,
+    effective_object_story_id text,
+    title text,
+    name text,
+    instagram_actor_id text,
+    instagram_permalink_url text,
+    instagram_story_id text,
+    link_og_id text,
+    object_id text,
+    object_story_spec__page_id text,
+    object_story_spec__instagram_actor_id text,
+    object_story_spec__link_data__additional_image_index bigint,
+    object_story_spec__link_data__attachment_style text,
+    object_story_spec__link_data__branded_content_sponsor_page_id text,
+    object_story_spec__link_data__branded_content_sponsor_relations text,
+    object_story_spec__link_data__call_to_action__value__app_destin text,
+    object_story_spec__link_data__call_to_action__value__app_link text,
+    object_story_spec__link_data__call_to_action__value__applicatio text,
+    object_story_spec__link_data__call_to_action__value__event_id text,
+    object_story_spec__link_data__call_to_action__value__lead_gen_f text,
+    object_story_spec__link_data__call_to_action__value__link text,
+    object_story_spec__link_data__call_to_action__value__link_capti text,
+    object_story_spec__link_data__call_to_action__value__link_forma text,
+    object_story_spec__link_data__call_to_action__value__page text,
+    object_story_spec__link_data__call_to_action__value__product_li text,
+    object_story_spec__link_data__call_to_action__type text,
+    object_story_spec__link_data__caption text,
+    object_story_spec__link_data__multi_share_optimized boolean,
+    object_story_spec__link_data__link text,
+    object_story_spec__link_data__description text,
+    object_story_spec__link_data__event_id text,
+    object_story_spec__link_data__force_single_link boolean,
+    object_story_spec__link_data__multi_share_end_card boolean,
+    object_story_spec__link_data__message text,
+    object_story_spec__link_data__image_hash text,
+    object_story_spec__link_data__picture text,
+    object_story_spec__link_data__name text,
+    object_story_spec__link_data__offer_id text,
+    object_story_spec__link_data__page_welcome_message text,
+    object_story_spec__link_data__show_multiple_images boolean,
+    object_story_spec__photo_data__branded_content_sponsor_page_id text,
+    object_story_spec__photo_data__branded_content_sponsor_relation text,
+    object_story_spec__photo_data__caption text,
+    object_story_spec__photo_data__image_hash text,
+    object_story_spec__photo_data__page_welcome_message text,
+    object_story_spec__photo_data__url text,
+    object_story_spec__template_data__additional_image_index bigint,
+    object_story_spec__template_data__attachment_style text,
+    object_story_spec__template_data__branded_content_sponsor_page_ text,
+    object_story_spec__template_data__branded_content_sponsor_relat text,
+    object_story_spec__template_data__call_to_action__value__app_de text,
+    object_story_spec__template_data__call_to_action__value__app_li text,
+    object_story_spec__template_data__call_to_action__value__applic text,
+    object_story_spec__template_data__call_to_action__value__event_ text,
+    object_story_spec__template_data__call_to_action__value__lead_g text,
+    object_story_spec__template_data__call_to_action__value__link text,
+    object_story_spec__template_data__call_to_action__value__link_c text,
+    object_story_spec__template_data__call_to_action__value__link_f text,
+    object_story_spec__template_data__call_to_action__value__page text,
+    object_story_spec__template_data__call_to_action__value__produc text,
+    object_story_spec__template_data__call_to_action__type text,
+    object_story_spec__template_data__caption text,
+    object_story_spec__template_data__multi_share_optimized boolean,
+    object_story_spec__template_data__link text,
+    object_story_spec__template_data__description text,
+    object_story_spec__template_data__event_id text,
+    object_story_spec__template_data__force_single_link boolean,
+    object_story_spec__template_data__multi_share_end_card boolean,
+    object_story_spec__template_data__message text,
+    object_story_spec__template_data__image_hash text,
+    object_story_spec__template_data__picture text,
+    object_story_spec__template_data__name text,
+    object_story_spec__template_data__offer_id text,
+    object_story_spec__template_data__page_welcome_message text,
+    object_story_spec__template_data__show_multiple_images boolean,
+    object_story_spec__text_data__message text,
+    object_story_spec__video_data__additional_image_index bigint,
+    object_story_spec__video_data__branded_content_sponsor_page_id text,
+    object_story_spec__video_data__branded_content_sponsor_relation text,
+    object_story_spec__video_data__call_to_action__value__app_desti text,
+    object_story_spec__video_data__call_to_action__value__app_link text,
+    object_story_spec__video_data__call_to_action__value__applicati text,
+    object_story_spec__video_data__call_to_action__value__event_id text,
+    object_story_spec__video_data__call_to_action__value__lead_gen_ text,
+    object_story_spec__video_data__call_to_action__value__link text,
+    object_story_spec__video_data__call_to_action__value__link_capt text,
+    object_story_spec__video_data__call_to_action__value__link_form text,
+    object_story_spec__video_data__call_to_action__value__page text,
+    object_story_spec__video_data__call_to_action__value__product_l text,
+    object_story_spec__video_data__call_to_action__type text,
+    object_story_spec__video_data__image_hash text,
+    object_story_spec__video_data__image_url text,
+    object_story_spec__video_data__link_description text,
+    object_story_spec__video_data__message text,
+    object_story_spec__video_data__offer_id text,
+    object_story_spec__video_data__page_welcome_message text,
+    object_story_spec__video_data__targeting__age_max bigint,
+    object_story_spec__video_data__targeting__age_min bigint,
+    object_story_spec__video_data__targeting__targeting_optimizatio text,
+    object_story_spec__video_data__targeting__app_install_state text,
+    object_story_spec__video_data__title text,
+    object_story_spec__video_data__video_id text,
+    object_type text,
+    object_url text,
+    product_set_id text,
+    status text,
+    template_url text,
+    template_url_spec__android__app_name text,
+    template_url_spec__android__package text,
+    template_url_spec__android__url text,
+    template_url_spec__config__app_id text,
+    template_url_spec__ios__app_name text,
+    template_url_spec__ios__app_store_id text,
+    template_url_spec__ios__url text,
+    template_url_spec__ipad__app_name text,
+    template_url_spec__ipad__app_store_id text,
+    template_url_spec__ipad__url text,
+    template_url_spec__iphone__app_name text,
+    template_url_spec__iphone__app_store_id text,
+    template_url_spec__iphone__url text,
+    template_url_spec__web__should_fallback text,
+    template_url_spec__web__url text,
+    template_url_spec__windows_phone__app_id text,
+    template_url_spec__windows_phone__app_name text,
+    template_url_spec__windows_phone__url text,
+    thumbnail_url text,
+    image_hash text,
+    url_tags text,
+    video_id text,
+    link_url text,
+    _sdc_received_at timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_table_version bigint,
+    _sdc_batched_at timestamp with time zone
+);
+
+
+--
+-- Name: TABLE adcreative; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative IS '{"path": ["adcreative"], "version": null, "schema_version": 2, "key_properties": ["id"], "mappings": {"body": {"type": ["string", "null"], "from": ["body"]}, "object_story_id": {"type": ["string", "null"], "from": ["object_story_id"]}, "image_url": {"type": ["string", "null"], "from": ["image_url"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "account_id": {"type": ["string", "null"], "from": ["account_id"]}, "actor_id": {"type": ["string", "null"], "from": ["actor_id"]}, "applink_treatment": {"type": ["string", "null"], "from": ["applink_treatment"]}, "call_to_action_type": {"type": ["string", "null"], "from": ["call_to_action_type"]}, "effective_instagram_story_id": {"type": ["string", "null"], "from": ["effective_instagram_story_id"]}, "effective_object_story_id": {"type": ["string", "null"], "from": ["effective_object_story_id"]}, "title": {"type": ["string", "null"], "from": ["title"]}, "name": {"type": ["string", "null"], "from": ["name"]}, "instagram_actor_id": {"type": ["string", "null"], "from": ["instagram_actor_id"]}, "instagram_permalink_url": {"type": ["string", "null"], "from": ["instagram_permalink_url"]}, "instagram_story_id": {"type": ["string", "null"], "from": ["instagram_story_id"]}, "link_og_id": {"type": ["string", "null"], "from": ["link_og_id"]}, "object_id": {"type": ["string", "null"], "from": ["object_id"]}, "object_story_spec__page_id": {"type": ["string", "null"], "from": ["object_story_spec", "page_id"]}, "object_story_spec__instagram_actor_id": {"type": ["string", "null"], "from": ["object_story_spec", "instagram_actor_id"]}, "object_story_spec__link_data__additional_image_index": {"type": ["integer", "null"], "from": ["object_story_spec", "link_data", "additional_image_index"]}, "object_story_spec__link_data__attachment_style": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "attachment_style"]}, "object_story_spec__link_data__branded_content_sponsor_page_id": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "branded_content_sponsor_page_id"]}, "object_story_spec__link_data__branded_content_sponsor_relations": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "branded_content_sponsor_relationship"]}, "object_story_spec__link_data__call_to_action__value__app_destin": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "call_to_action", "value", "app_destination"]}, "object_story_spec__link_data__call_to_action__value__app_link": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "call_to_action", "value", "app_link"]}, "object_story_spec__link_data__call_to_action__value__applicatio": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "call_to_action", "value", "application"]}, "object_story_spec__link_data__call_to_action__value__event_id": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "call_to_action", "value", "event_id"]}, "object_story_spec__link_data__call_to_action__value__lead_gen_f": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "call_to_action", "value", "lead_gen_form_id"]}, "object_story_spec__link_data__call_to_action__value__link": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "call_to_action", "value", "link"]}, "object_story_spec__link_data__call_to_action__value__link_capti": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "call_to_action", "value", "link_caption"]}, "object_story_spec__link_data__call_to_action__value__link_forma": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "call_to_action", "value", "link_format"]}, "object_story_spec__link_data__call_to_action__value__page": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "call_to_action", "value", "page"]}, "object_story_spec__link_data__call_to_action__value__product_li": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "call_to_action", "value", "product_link"]}, "object_story_spec__link_data__call_to_action__type": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "call_to_action", "type"]}, "object_story_spec__link_data__caption": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "caption"]}, "object_story_spec__link_data__multi_share_optimized": {"type": ["boolean", "null"], "from": ["object_story_spec", "link_data", "multi_share_optimized"]}, "object_story_spec__link_data__link": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "link"]}, "object_story_spec__link_data__description": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "description"]}, "object_story_spec__link_data__event_id": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "event_id"]}, "object_story_spec__link_data__force_single_link": {"type": ["boolean", "null"], "from": ["object_story_spec", "link_data", "force_single_link"]}, "object_story_spec__link_data__multi_share_end_card": {"type": ["boolean", "null"], "from": ["object_story_spec", "link_data", "multi_share_end_card"]}, "object_story_spec__link_data__message": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "message"]}, "object_story_spec__link_data__image_hash": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "image_hash"]}, "object_story_spec__link_data__picture": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "picture"]}, "object_story_spec__link_data__name": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "name"]}, "object_story_spec__link_data__offer_id": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "offer_id"]}, "object_story_spec__link_data__page_welcome_message": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "page_welcome_message"]}, "object_story_spec__link_data__show_multiple_images": {"type": ["boolean", "null"], "from": ["object_story_spec", "link_data", "show_multiple_images"]}, "object_story_spec__photo_data__branded_content_sponsor_page_id": {"type": ["string", "null"], "from": ["object_story_spec", "photo_data", "branded_content_sponsor_page_id"]}, "object_story_spec__photo_data__branded_content_sponsor_relation": {"type": ["string", "null"], "from": ["object_story_spec", "photo_data", "branded_content_sponsor_relationship"]}, "object_story_spec__photo_data__caption": {"type": ["string", "null"], "from": ["object_story_spec", "photo_data", "caption"]}, "object_story_spec__photo_data__image_hash": {"type": ["string", "null"], "from": ["object_story_spec", "photo_data", "image_hash"]}, "object_story_spec__photo_data__page_welcome_message": {"type": ["string", "null"], "from": ["object_story_spec", "photo_data", "page_welcome_message"]}, "object_story_spec__photo_data__url": {"type": ["string", "null"], "from": ["object_story_spec", "photo_data", "url"]}, "object_story_spec__template_data__additional_image_index": {"type": ["integer", "null"], "from": ["object_story_spec", "template_data", "additional_image_index"]}, "object_story_spec__template_data__attachment_style": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "attachment_style"]}, "object_story_spec__template_data__branded_content_sponsor_page_": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "branded_content_sponsor_page_id"]}, "object_story_spec__template_data__branded_content_sponsor_relat": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "branded_content_sponsor_relationship"]}, "object_story_spec__template_data__call_to_action__value__app_de": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "call_to_action", "value", "app_destination"]}, "object_story_spec__template_data__call_to_action__value__app_li": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "call_to_action", "value", "app_link"]}, "object_story_spec__template_data__call_to_action__value__applic": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "call_to_action", "value", "application"]}, "object_story_spec__template_data__call_to_action__value__event_": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "call_to_action", "value", "event_id"]}, "object_story_spec__template_data__call_to_action__value__lead_g": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "call_to_action", "value", "lead_gen_form_id"]}, "object_story_spec__template_data__call_to_action__value__link": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "call_to_action", "value", "link"]}, "object_story_spec__template_data__call_to_action__value__link_c": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "call_to_action", "value", "link_caption"]}, "object_story_spec__template_data__call_to_action__value__link_f": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "call_to_action", "value", "link_format"]}, "object_story_spec__template_data__call_to_action__value__page": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "call_to_action", "value", "page"]}, "object_story_spec__template_data__call_to_action__value__produc": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "call_to_action", "value", "product_link"]}, "object_story_spec__template_data__call_to_action__type": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "call_to_action", "type"]}, "object_story_spec__template_data__caption": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "caption"]}, "object_story_spec__template_data__multi_share_optimized": {"type": ["boolean", "null"], "from": ["object_story_spec", "template_data", "multi_share_optimized"]}, "object_story_spec__template_data__link": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "link"]}, "object_story_spec__template_data__description": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "description"]}, "object_story_spec__template_data__event_id": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "event_id"]}, "object_story_spec__template_data__force_single_link": {"type": ["boolean", "null"], "from": ["object_story_spec", "template_data", "force_single_link"]}, "object_story_spec__template_data__multi_share_end_card": {"type": ["boolean", "null"], "from": ["object_story_spec", "template_data", "multi_share_end_card"]}, "object_story_spec__template_data__message": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "message"]}, "object_story_spec__template_data__image_hash": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "image_hash"]}, "object_story_spec__template_data__picture": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "picture"]}, "object_story_spec__template_data__name": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "name"]}, "object_story_spec__template_data__offer_id": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "offer_id"]}, "object_story_spec__template_data__page_welcome_message": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "page_welcome_message"]}, "object_story_spec__template_data__show_multiple_images": {"type": ["boolean", "null"], "from": ["object_story_spec", "template_data", "show_multiple_images"]}, "object_story_spec__text_data__message": {"type": ["string", "null"], "from": ["object_story_spec", "text_data", "message"]}, "object_story_spec__video_data__additional_image_index": {"type": ["integer", "null"], "from": ["object_story_spec", "video_data", "additional_image_index"]}, "object_story_spec__video_data__branded_content_sponsor_page_id": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "branded_content_sponsor_page_id"]}, "object_story_spec__video_data__branded_content_sponsor_relation": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "branded_content_sponsor_relationship"]}, "object_story_spec__video_data__call_to_action__value__app_desti": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "call_to_action", "value", "app_destination"]}, "object_story_spec__video_data__call_to_action__value__app_link": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "call_to_action", "value", "app_link"]}, "object_story_spec__video_data__call_to_action__value__applicati": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "call_to_action", "value", "application"]}, "object_story_spec__video_data__call_to_action__value__event_id": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "call_to_action", "value", "event_id"]}, "object_story_spec__video_data__call_to_action__value__lead_gen_": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "call_to_action", "value", "lead_gen_form_id"]}, "object_story_spec__video_data__call_to_action__value__link": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "call_to_action", "value", "link"]}, "object_story_spec__video_data__call_to_action__value__link_capt": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "call_to_action", "value", "link_caption"]}, "object_story_spec__video_data__call_to_action__value__link_form": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "call_to_action", "value", "link_format"]}, "object_story_spec__video_data__call_to_action__value__page": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "call_to_action", "value", "page"]}, "object_story_spec__video_data__call_to_action__value__product_l": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "call_to_action", "value", "product_link"]}, "object_story_spec__video_data__call_to_action__type": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "call_to_action", "type"]}, "object_story_spec__video_data__image_hash": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "image_hash"]}, "object_story_spec__video_data__image_url": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "image_url"]}, "object_story_spec__video_data__link_description": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "link_description"]}, "object_story_spec__video_data__message": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "message"]}, "object_story_spec__video_data__offer_id": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "offer_id"]}, "object_story_spec__video_data__page_welcome_message": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "page_welcome_message"]}, "object_story_spec__video_data__targeting__age_max": {"type": ["integer", "null"], "from": ["object_story_spec", "video_data", "targeting", "age_max"]}, "object_story_spec__video_data__targeting__age_min": {"type": ["integer", "null"], "from": ["object_story_spec", "video_data", "targeting", "age_min"]}, "object_story_spec__video_data__targeting__targeting_optimizatio": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "targeting", "targeting_optimization"]}, "object_story_spec__video_data__targeting__app_install_state": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "targeting", "app_install_state"]}, "object_story_spec__video_data__title": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "title"]}, "object_story_spec__video_data__video_id": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "video_id"]}, "object_type": {"type": ["string", "null"], "from": ["object_type"]}, "object_url": {"type": ["string", "null"], "from": ["object_url"]}, "product_set_id": {"type": ["string", "null"], "from": ["product_set_id"]}, "status": {"type": ["string", "null"], "from": ["status"]}, "template_url": {"type": ["string", "null"], "from": ["template_url"]}, "template_url_spec__android__app_name": {"type": ["string", "null"], "from": ["template_url_spec", "android", "app_name"]}, "template_url_spec__android__package": {"type": ["string", "null"], "from": ["template_url_spec", "android", "package"]}, "template_url_spec__android__url": {"type": ["string", "null"], "from": ["template_url_spec", "android", "url"]}, "template_url_spec__config__app_id": {"type": ["string", "null"], "from": ["template_url_spec", "config", "app_id"]}, "template_url_spec__ios__app_name": {"type": ["string", "null"], "from": ["template_url_spec", "ios", "app_name"]}, "template_url_spec__ios__app_store_id": {"type": ["string", "null"], "from": ["template_url_spec", "ios", "app_store_id"]}, "template_url_spec__ios__url": {"type": ["string", "null"], "from": ["template_url_spec", "ios", "url"]}, "template_url_spec__ipad__app_name": {"type": ["string", "null"], "from": ["template_url_spec", "ipad", "app_name"]}, "template_url_spec__ipad__app_store_id": {"type": ["string", "null"], "from": ["template_url_spec", "ipad", "app_store_id"]}, "template_url_spec__ipad__url": {"type": ["string", "null"], "from": ["template_url_spec", "ipad", "url"]}, "template_url_spec__iphone__app_name": {"type": ["string", "null"], "from": ["template_url_spec", "iphone", "app_name"]}, "template_url_spec__iphone__app_store_id": {"type": ["string", "null"], "from": ["template_url_spec", "iphone", "app_store_id"]}, "template_url_spec__iphone__url": {"type": ["string", "null"], "from": ["template_url_spec", "iphone", "url"]}, "template_url_spec__web__should_fallback": {"type": ["string", "null"], "from": ["template_url_spec", "web", "should_fallback"]}, "template_url_spec__web__url": {"type": ["string", "null"], "from": ["template_url_spec", "web", "url"]}, "template_url_spec__windows_phone__app_id": {"type": ["string", "null"], "from": ["template_url_spec", "windows_phone", "app_id"]}, "template_url_spec__windows_phone__app_name": {"type": ["string", "null"], "from": ["template_url_spec", "windows_phone", "app_name"]}, "template_url_spec__windows_phone__url": {"type": ["string", "null"], "from": ["template_url_spec", "windows_phone", "url"]}, "thumbnail_url": {"type": ["string", "null"], "from": ["thumbnail_url"]}, "image_hash": {"type": ["string", "null"], "from": ["image_hash"]}, "url_tags": {"type": ["string", "null"], "from": ["url_tags"]}, "video_id": {"type": ["string", "null"], "from": ["video_id"]}, "link_url": {"type": ["string", "null"], "from": ["link_url"]}, "_sdc_received_at": {"type": ["string", "null"], "from": ["_sdc_received_at"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_table_version": {"type": ["integer", "null"], "from": ["_sdc_table_version"]}, "_sdc_batched_at": {"type": ["string", "null"], "from": ["_sdc_batched_at"], "format": "date-time"}}}';
+
+
+--
+-- Name: adcreative__adlabels; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__adlabels (
+    id text NOT NULL,
+    created_time timestamp with time zone NOT NULL,
+    name text NOT NULL,
+    updated_time timestamp with time zone NOT NULL,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__adlabels; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__adlabels IS '{"path": ["adcreative", "adlabels"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"id": {"type": ["string"], "from": ["id"]}, "created_time": {"type": ["string"], "from": ["created_time"], "format": "date-time"}, "name": {"type": ["string"], "from": ["name"]}, "updated_time": {"type": ["string"], "from": ["updated_time"], "format": "date-time"}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__image_crops__100x100; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__image_crops__100x100 (
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__image_crops__100x100; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__image_crops__100x100 IS '{"path": ["adcreative", "image_crops", "100x100"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__image_crops__100x100___sdc_value; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__image_crops__100x100___sdc_value (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__image_crops__100x100___sdc_value; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__image_crops__100x100___sdc_value IS '{"path": ["adcreative", "image_crops", "100x100", "_sdc_value"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__image_crops__100x72; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__image_crops__100x72 (
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__image_crops__100x72; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__image_crops__100x72 IS '{"path": ["adcreative", "image_crops", "100x72"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__image_crops__100x72___sdc_value; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__image_crops__100x72___sdc_value (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__image_crops__100x72___sdc_value; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__image_crops__100x72___sdc_value IS '{"path": ["adcreative", "image_crops", "100x72", "_sdc_value"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__image_crops__191x100; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__image_crops__191x100 (
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__image_crops__191x100; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__image_crops__191x100 IS '{"path": ["adcreative", "image_crops", "191x100"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__image_crops__191x100___sdc_value; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__image_crops__191x100___sdc_value (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__image_crops__191x100___sdc_value; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__image_crops__191x100___sdc_value IS '{"path": ["adcreative", "image_crops", "191x100", "_sdc_value"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__image_crops__400x150; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__image_crops__400x150 (
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__image_crops__400x150; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__image_crops__400x150 IS '{"path": ["adcreative", "image_crops", "400x150"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__image_crops__400x150___sdc_value; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__image_crops__400x150___sdc_value (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__image_crops__400x150___sdc_value; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__image_crops__400x150___sdc_value IS '{"path": ["adcreative", "image_crops", "400x150", "_sdc_value"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__image_crops__400x500; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__image_crops__400x500 (
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__image_crops__400x500; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__image_crops__400x500 IS '{"path": ["adcreative", "image_crops", "400x500"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__image_crops__400x500___sdc_value; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__image_crops__400x500___sdc_value (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__image_crops__400x500___sdc_value; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__image_crops__400x500___sdc_value IS '{"path": ["adcreative", "image_crops", "400x500", "_sdc_value"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__image_crops__600x360; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__image_crops__600x360 (
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__image_crops__600x360; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__image_crops__600x360 IS '{"path": ["adcreative", "image_crops", "600x360"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__image_crops__600x360___sdc_value; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__image_crops__600x360___sdc_value (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__image_crops__600x360___sdc_value; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__image_crops__600x360___sdc_value IS '{"path": ["adcreative", "image_crops", "600x360", "_sdc_value"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__image_crops__90x160; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__image_crops__90x160 (
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__image_crops__90x160; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__image_crops__90x160 IS '{"path": ["adcreative", "image_crops", "90x160"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__image_crops__90x160___sdc_value; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__image_crops__90x160___sdc_value (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__image_crops__90x160___sdc_value; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__image_crops__90x160___sdc_value IS '{"path": ["adcreative", "image_crops", "90x160", "_sdc_value"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__link_data__app_link_spec__androi; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__app_link_spec__androi (
+    app_name text NOT NULL,
+    class text NOT NULL,
+    package text NOT NULL,
+    url text NOT NULL,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__link_data__app_link_spec__androi; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__app_link_spec__androi IS '{"path": ["adcreative", "object_story_spec", "link_data", "app_link_spec", "android"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"app_name": {"type": ["string"], "from": ["app_name"]}, "class": {"type": ["string"], "from": ["class"]}, "package": {"type": ["string"], "from": ["package"]}, "url": {"type": ["string"], "from": ["url"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__link_data__app_link_spec__ios; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__app_link_spec__ios (
+    app_name text NOT NULL,
+    app_store_id text NOT NULL,
+    url text NOT NULL,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__link_data__app_link_spec__ios; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__app_link_spec__ios IS '{"path": ["adcreative", "object_story_spec", "link_data", "app_link_spec", "ios"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"app_name": {"type": ["string"], "from": ["app_name"]}, "app_store_id": {"type": ["string"], "from": ["app_store_id"]}, "url": {"type": ["string"], "from": ["url"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__link_data__app_link_spec__ipad; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__app_link_spec__ipad (
+    app_name text NOT NULL,
+    app_store_id text NOT NULL,
+    url text NOT NULL,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__link_data__app_link_spec__ipad; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__app_link_spec__ipad IS '{"path": ["adcreative", "object_story_spec", "link_data", "app_link_spec", "ipad"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"app_name": {"type": ["string"], "from": ["app_name"]}, "app_store_id": {"type": ["string"], "from": ["app_store_id"]}, "url": {"type": ["string"], "from": ["url"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__link_data__app_link_spec__iphone; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__app_link_spec__iphone (
+    app_name text NOT NULL,
+    app_store_id text NOT NULL,
+    url text NOT NULL,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__link_data__app_link_spec__iphone; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__app_link_spec__iphone IS '{"path": ["adcreative", "object_story_spec", "link_data", "app_link_spec", "iphone"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"app_name": {"type": ["string"], "from": ["app_name"]}, "app_store_id": {"type": ["string"], "from": ["app_store_id"]}, "url": {"type": ["string"], "from": ["url"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__link_data__child_attachments; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__child_attachments (
+    image_hash text,
+    link text,
+    call_to_action__value__app_destination text,
+    call_to_action__value__app_link text,
+    call_to_action__value__application text,
+    call_to_action__value__event_id text,
+    call_to_action__value__lead_gen_form_id text,
+    call_to_action__value__link text,
+    call_to_action__value__link_caption text,
+    call_to_action__value__link_format text,
+    call_to_action__value__page text,
+    call_to_action__value__product_link text,
+    call_to_action__type text,
+    caption text,
+    picture text,
+    description text,
+    name text,
+    static_card boolean,
+    video_id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__link_data__child_attachments; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__child_attachments IS '{"path": ["adcreative", "object_story_spec", "link_data", "child_attachments"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"image_hash": {"type": ["string", "null"], "from": ["image_hash"]}, "link": {"type": ["string", "null"], "from": ["link"]}, "call_to_action__value__app_destination": {"type": ["string", "null"], "from": ["call_to_action", "value", "app_destination"]}, "call_to_action__value__app_link": {"type": ["string", "null"], "from": ["call_to_action", "value", "app_link"]}, "call_to_action__value__application": {"type": ["string", "null"], "from": ["call_to_action", "value", "application"]}, "call_to_action__value__event_id": {"type": ["string", "null"], "from": ["call_to_action", "value", "event_id"]}, "call_to_action__value__lead_gen_form_id": {"type": ["string", "null"], "from": ["call_to_action", "value", "lead_gen_form_id"]}, "call_to_action__value__link": {"type": ["string", "null"], "from": ["call_to_action", "value", "link"]}, "call_to_action__value__link_caption": {"type": ["string", "null"], "from": ["call_to_action", "value", "link_caption"]}, "call_to_action__value__link_format": {"type": ["string", "null"], "from": ["call_to_action", "value", "link_format"]}, "call_to_action__value__page": {"type": ["string", "null"], "from": ["call_to_action", "value", "page"]}, "call_to_action__value__product_link": {"type": ["string", "null"], "from": ["call_to_action", "value", "product_link"]}, "call_to_action__type": {"type": ["string", "null"], "from": ["call_to_action", "type"]}, "caption": {"type": ["string", "null"], "from": ["caption"]}, "picture": {"type": ["string", "null"], "from": ["picture"]}, "description": {"type": ["string", "null"], "from": ["description"]}, "name": {"type": ["string", "null"], "from": ["name"]}, "static_card": {"type": ["boolean", "null"], "from": ["static_card"]}, "video_id": {"type": ["string", "null"], "from": ["video_id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__link_data__child_attachments__10; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__child_attachments__10 (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL,
+    _sdc_level_2_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__link_data__child_attachments__10; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__child_attachments__10 IS '{"path": ["adcreative", "object_story_spec", "link_data", "child_attachments", "image_crops", "600x360", "_sdc_value"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}, "_sdc_level_2_id": {"type": ["integer"], "from": ["_sdc_level_2_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__link_data__child_attachments__11; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__child_attachments__11 (
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__link_data__child_attachments__11; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__child_attachments__11 IS '{"path": ["adcreative", "object_story_spec", "link_data", "child_attachments", "image_crops", "600x360"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__link_data__child_attachments__12; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__child_attachments__12 (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL,
+    _sdc_level_2_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__link_data__child_attachments__12; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__child_attachments__12 IS '{"path": ["adcreative", "object_story_spec", "link_data", "child_attachments", "image_crops", "90x160", "_sdc_value"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}, "_sdc_level_2_id": {"type": ["integer"], "from": ["_sdc_level_2_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__link_data__child_attachments__13; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__child_attachments__13 (
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__link_data__child_attachments__13; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__child_attachments__13 IS '{"path": ["adcreative", "object_story_spec", "link_data", "child_attachments", "image_crops", "90x160"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__link_data__child_attachments___1; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__child_attachments___1 (
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__link_data__child_attachments___1; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__child_attachments___1 IS '{"path": ["adcreative", "object_story_spec", "link_data", "child_attachments", "image_crops", "100x100"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__link_data__child_attachments___2; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__child_attachments___2 (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL,
+    _sdc_level_2_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__link_data__child_attachments___2; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__child_attachments___2 IS '{"path": ["adcreative", "object_story_spec", "link_data", "child_attachments", "image_crops", "100x72", "_sdc_value"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}, "_sdc_level_2_id": {"type": ["integer"], "from": ["_sdc_level_2_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__link_data__child_attachments___3; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__child_attachments___3 (
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__link_data__child_attachments___3; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__child_attachments___3 IS '{"path": ["adcreative", "object_story_spec", "link_data", "child_attachments", "image_crops", "100x72"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__link_data__child_attachments___4; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__child_attachments___4 (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL,
+    _sdc_level_2_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__link_data__child_attachments___4; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__child_attachments___4 IS '{"path": ["adcreative", "object_story_spec", "link_data", "child_attachments", "image_crops", "191x100", "_sdc_value"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}, "_sdc_level_2_id": {"type": ["integer"], "from": ["_sdc_level_2_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__link_data__child_attachments___5; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__child_attachments___5 (
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__link_data__child_attachments___5; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__child_attachments___5 IS '{"path": ["adcreative", "object_story_spec", "link_data", "child_attachments", "image_crops", "191x100"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__link_data__child_attachments___6; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__child_attachments___6 (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL,
+    _sdc_level_2_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__link_data__child_attachments___6; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__child_attachments___6 IS '{"path": ["adcreative", "object_story_spec", "link_data", "child_attachments", "image_crops", "400x150", "_sdc_value"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}, "_sdc_level_2_id": {"type": ["integer"], "from": ["_sdc_level_2_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__link_data__child_attachments___7; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__child_attachments___7 (
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__link_data__child_attachments___7; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__child_attachments___7 IS '{"path": ["adcreative", "object_story_spec", "link_data", "child_attachments", "image_crops", "400x150"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__link_data__child_attachments___8; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__child_attachments___8 (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL,
+    _sdc_level_2_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__link_data__child_attachments___8; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__child_attachments___8 IS '{"path": ["adcreative", "object_story_spec", "link_data", "child_attachments", "image_crops", "400x500", "_sdc_value"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}, "_sdc_level_2_id": {"type": ["integer"], "from": ["_sdc_level_2_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__link_data__child_attachments___9; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__child_attachments___9 (
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__link_data__child_attachments___9; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__child_attachments___9 IS '{"path": ["adcreative", "object_story_spec", "link_data", "child_attachments", "image_crops", "400x500"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__link_data__child_attachments__im; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__child_attachments__im (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL,
+    _sdc_level_2_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__link_data__child_attachments__im; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__child_attachments__im IS '{"path": ["adcreative", "object_story_spec", "link_data", "child_attachments", "image_crops", "100x100", "_sdc_value"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}, "_sdc_level_2_id": {"type": ["integer"], "from": ["_sdc_level_2_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__link_data__image_crops__100x100; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__image_crops__100x100 (
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__link_data__image_crops__100x100; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__image_crops__100x100 IS '{"path": ["adcreative", "object_story_spec", "link_data", "image_crops", "100x100"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__link_data__image_crops__100x100_; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__image_crops__100x100_ (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__link_data__image_crops__100x100_; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__image_crops__100x100_ IS '{"path": ["adcreative", "object_story_spec", "link_data", "image_crops", "100x100", "_sdc_value"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__link_data__image_crops__100x72; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__image_crops__100x72 (
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__link_data__image_crops__100x72; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__image_crops__100x72 IS '{"path": ["adcreative", "object_story_spec", "link_data", "image_crops", "100x72"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__link_data__image_crops__100x72__; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__image_crops__100x72__ (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__link_data__image_crops__100x72__; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__image_crops__100x72__ IS '{"path": ["adcreative", "object_story_spec", "link_data", "image_crops", "100x72", "_sdc_value"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__link_data__image_crops__191x100; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__image_crops__191x100 (
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__link_data__image_crops__191x100; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__image_crops__191x100 IS '{"path": ["adcreative", "object_story_spec", "link_data", "image_crops", "191x100"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__link_data__image_crops__191x100_; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__image_crops__191x100_ (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__link_data__image_crops__191x100_; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__image_crops__191x100_ IS '{"path": ["adcreative", "object_story_spec", "link_data", "image_crops", "191x100", "_sdc_value"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__link_data__image_crops__400x150; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__image_crops__400x150 (
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__link_data__image_crops__400x150; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__image_crops__400x150 IS '{"path": ["adcreative", "object_story_spec", "link_data", "image_crops", "400x150"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__link_data__image_crops__400x150_; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__image_crops__400x150_ (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__link_data__image_crops__400x150_; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__image_crops__400x150_ IS '{"path": ["adcreative", "object_story_spec", "link_data", "image_crops", "400x150", "_sdc_value"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__link_data__image_crops__400x500; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__image_crops__400x500 (
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__link_data__image_crops__400x500; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__image_crops__400x500 IS '{"path": ["adcreative", "object_story_spec", "link_data", "image_crops", "400x500"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__link_data__image_crops__400x500_; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__image_crops__400x500_ (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__link_data__image_crops__400x500_; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__image_crops__400x500_ IS '{"path": ["adcreative", "object_story_spec", "link_data", "image_crops", "400x500", "_sdc_value"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__link_data__image_crops__600x360; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__image_crops__600x360 (
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__link_data__image_crops__600x360; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__image_crops__600x360 IS '{"path": ["adcreative", "object_story_spec", "link_data", "image_crops", "600x360"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__link_data__image_crops__600x360_; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__image_crops__600x360_ (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__link_data__image_crops__600x360_; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__image_crops__600x360_ IS '{"path": ["adcreative", "object_story_spec", "link_data", "image_crops", "600x360", "_sdc_value"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__link_data__image_crops__90x160; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__image_crops__90x160 (
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__link_data__image_crops__90x160; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__image_crops__90x160 IS '{"path": ["adcreative", "object_story_spec", "link_data", "image_crops", "90x160"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__link_data__image_crops__90x160__; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__image_crops__90x160__ (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__link_data__image_crops__90x160__; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__image_crops__90x160__ IS '{"path": ["adcreative", "object_story_spec", "link_data", "image_crops", "90x160", "_sdc_value"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__link_data__retailer_item_ids; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__retailer_item_ids (
+    _sdc_value text NOT NULL,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__link_data__retailer_item_ids; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__link_data__retailer_item_ids IS '{"path": ["adcreative", "object_story_spec", "link_data", "retailer_item_ids"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["string"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__template_data__app_link_spec___1; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__app_link_spec___1 (
+    app_name text NOT NULL,
+    app_store_id text NOT NULL,
+    url text NOT NULL,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__template_data__app_link_spec___1; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__app_link_spec___1 IS '{"path": ["adcreative", "object_story_spec", "template_data", "app_link_spec", "iphone"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"app_name": {"type": ["string"], "from": ["app_name"]}, "app_store_id": {"type": ["string"], "from": ["app_store_id"]}, "url": {"type": ["string"], "from": ["url"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__template_data__app_link_spec__an; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__app_link_spec__an (
+    app_name text NOT NULL,
+    class text NOT NULL,
+    package text NOT NULL,
+    url text NOT NULL,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__template_data__app_link_spec__an; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__app_link_spec__an IS '{"path": ["adcreative", "object_story_spec", "template_data", "app_link_spec", "android"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"app_name": {"type": ["string"], "from": ["app_name"]}, "class": {"type": ["string"], "from": ["class"]}, "package": {"type": ["string"], "from": ["package"]}, "url": {"type": ["string"], "from": ["url"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__template_data__app_link_spec__io; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__app_link_spec__io (
+    app_name text NOT NULL,
+    app_store_id text NOT NULL,
+    url text NOT NULL,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__template_data__app_link_spec__io; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__app_link_spec__io IS '{"path": ["adcreative", "object_story_spec", "template_data", "app_link_spec", "ios"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"app_name": {"type": ["string"], "from": ["app_name"]}, "app_store_id": {"type": ["string"], "from": ["app_store_id"]}, "url": {"type": ["string"], "from": ["url"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__template_data__app_link_spec__ip; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__app_link_spec__ip (
+    app_name text NOT NULL,
+    app_store_id text NOT NULL,
+    url text NOT NULL,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__template_data__app_link_spec__ip; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__app_link_spec__ip IS '{"path": ["adcreative", "object_story_spec", "template_data", "app_link_spec", "ipad"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"app_name": {"type": ["string"], "from": ["app_name"]}, "app_store_id": {"type": ["string"], "from": ["app_store_id"]}, "url": {"type": ["string"], "from": ["url"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__template_data__child_attachm__10; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__child_attachm__10 (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL,
+    _sdc_level_2_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__template_data__child_attachm__10; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__child_attachm__10 IS '{"path": ["adcreative", "object_story_spec", "template_data", "child_attachments", "image_crops", "600x360", "_sdc_value"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}, "_sdc_level_2_id": {"type": ["integer"], "from": ["_sdc_level_2_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__template_data__child_attachm__11; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__child_attachm__11 (
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__template_data__child_attachm__11; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__child_attachm__11 IS '{"path": ["adcreative", "object_story_spec", "template_data", "child_attachments", "image_crops", "600x360"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__template_data__child_attachm__12; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__child_attachm__12 (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL,
+    _sdc_level_2_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__template_data__child_attachm__12; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__child_attachm__12 IS '{"path": ["adcreative", "object_story_spec", "template_data", "child_attachments", "image_crops", "90x160", "_sdc_value"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}, "_sdc_level_2_id": {"type": ["integer"], "from": ["_sdc_level_2_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__template_data__child_attachm__13; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__child_attachm__13 (
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__template_data__child_attachm__13; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__child_attachm__13 IS '{"path": ["adcreative", "object_story_spec", "template_data", "child_attachments", "image_crops", "90x160"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__template_data__child_attachm__14; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__child_attachm__14 (
+    image_hash text,
+    link text,
+    call_to_action__value__app_destination text,
+    call_to_action__value__app_link text,
+    call_to_action__value__application text,
+    call_to_action__value__event_id text,
+    call_to_action__value__lead_gen_form_id text,
+    call_to_action__value__link text,
+    call_to_action__value__link_caption text,
+    call_to_action__value__link_format text,
+    call_to_action__value__page text,
+    call_to_action__value__product_link text,
+    call_to_action__type text,
+    caption text,
+    picture text,
+    description text,
+    name text,
+    static_card boolean,
+    video_id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__template_data__child_attachm__14; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__child_attachm__14 IS '{"path": ["adcreative", "object_story_spec", "template_data", "child_attachments"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"image_hash": {"type": ["string", "null"], "from": ["image_hash"]}, "link": {"type": ["string", "null"], "from": ["link"]}, "call_to_action__value__app_destination": {"type": ["string", "null"], "from": ["call_to_action", "value", "app_destination"]}, "call_to_action__value__app_link": {"type": ["string", "null"], "from": ["call_to_action", "value", "app_link"]}, "call_to_action__value__application": {"type": ["string", "null"], "from": ["call_to_action", "value", "application"]}, "call_to_action__value__event_id": {"type": ["string", "null"], "from": ["call_to_action", "value", "event_id"]}, "call_to_action__value__lead_gen_form_id": {"type": ["string", "null"], "from": ["call_to_action", "value", "lead_gen_form_id"]}, "call_to_action__value__link": {"type": ["string", "null"], "from": ["call_to_action", "value", "link"]}, "call_to_action__value__link_caption": {"type": ["string", "null"], "from": ["call_to_action", "value", "link_caption"]}, "call_to_action__value__link_format": {"type": ["string", "null"], "from": ["call_to_action", "value", "link_format"]}, "call_to_action__value__page": {"type": ["string", "null"], "from": ["call_to_action", "value", "page"]}, "call_to_action__value__product_link": {"type": ["string", "null"], "from": ["call_to_action", "value", "product_link"]}, "call_to_action__type": {"type": ["string", "null"], "from": ["call_to_action", "type"]}, "caption": {"type": ["string", "null"], "from": ["caption"]}, "picture": {"type": ["string", "null"], "from": ["picture"]}, "description": {"type": ["string", "null"], "from": ["description"]}, "name": {"type": ["string", "null"], "from": ["name"]}, "static_card": {"type": ["boolean", "null"], "from": ["static_card"]}, "video_id": {"type": ["string", "null"], "from": ["video_id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__template_data__child_attachme__1; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__child_attachme__1 (
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__template_data__child_attachme__1; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__child_attachme__1 IS '{"path": ["adcreative", "object_story_spec", "template_data", "child_attachments", "image_crops", "100x100"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__template_data__child_attachme__2; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__child_attachme__2 (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL,
+    _sdc_level_2_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__template_data__child_attachme__2; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__child_attachme__2 IS '{"path": ["adcreative", "object_story_spec", "template_data", "child_attachments", "image_crops", "100x72", "_sdc_value"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}, "_sdc_level_2_id": {"type": ["integer"], "from": ["_sdc_level_2_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__template_data__child_attachme__3; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__child_attachme__3 (
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__template_data__child_attachme__3; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__child_attachme__3 IS '{"path": ["adcreative", "object_story_spec", "template_data", "child_attachments", "image_crops", "100x72"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__template_data__child_attachme__4; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__child_attachme__4 (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL,
+    _sdc_level_2_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__template_data__child_attachme__4; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__child_attachme__4 IS '{"path": ["adcreative", "object_story_spec", "template_data", "child_attachments", "image_crops", "191x100", "_sdc_value"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}, "_sdc_level_2_id": {"type": ["integer"], "from": ["_sdc_level_2_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__template_data__child_attachme__5; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__child_attachme__5 (
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__template_data__child_attachme__5; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__child_attachme__5 IS '{"path": ["adcreative", "object_story_spec", "template_data", "child_attachments", "image_crops", "191x100"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__template_data__child_attachme__6; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__child_attachme__6 (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL,
+    _sdc_level_2_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__template_data__child_attachme__6; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__child_attachme__6 IS '{"path": ["adcreative", "object_story_spec", "template_data", "child_attachments", "image_crops", "400x150", "_sdc_value"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}, "_sdc_level_2_id": {"type": ["integer"], "from": ["_sdc_level_2_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__template_data__child_attachme__7; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__child_attachme__7 (
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__template_data__child_attachme__7; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__child_attachme__7 IS '{"path": ["adcreative", "object_story_spec", "template_data", "child_attachments", "image_crops", "400x150"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__template_data__child_attachme__8; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__child_attachme__8 (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL,
+    _sdc_level_2_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__template_data__child_attachme__8; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__child_attachme__8 IS '{"path": ["adcreative", "object_story_spec", "template_data", "child_attachments", "image_crops", "400x500", "_sdc_value"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}, "_sdc_level_2_id": {"type": ["integer"], "from": ["_sdc_level_2_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__template_data__child_attachme__9; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__child_attachme__9 (
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__template_data__child_attachme__9; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__child_attachme__9 IS '{"path": ["adcreative", "object_story_spec", "template_data", "child_attachments", "image_crops", "400x500"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__template_data__child_attachments; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__child_attachments (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL,
+    _sdc_level_2_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__template_data__child_attachments; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__child_attachments IS '{"path": ["adcreative", "object_story_spec", "template_data", "child_attachments", "image_crops", "100x100", "_sdc_value"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}, "_sdc_level_2_id": {"type": ["integer"], "from": ["_sdc_level_2_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__template_data__image_crops__100x; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__image_crops__100x (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__template_data__image_crops__100x; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__image_crops__100x IS '{"path": ["adcreative", "object_story_spec", "template_data", "image_crops", "100x100", "_sdc_value"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__template_data__image_crops__191x; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__image_crops__191x (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__template_data__image_crops__191x; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__image_crops__191x IS '{"path": ["adcreative", "object_story_spec", "template_data", "image_crops", "191x100", "_sdc_value"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__template_data__image_crops__1__1; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__image_crops__1__1 (
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__template_data__image_crops__1__1; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__image_crops__1__1 IS '{"path": ["adcreative", "object_story_spec", "template_data", "image_crops", "100x100"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__template_data__image_crops__1__2; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__image_crops__1__2 (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__template_data__image_crops__1__2; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__image_crops__1__2 IS '{"path": ["adcreative", "object_story_spec", "template_data", "image_crops", "100x72", "_sdc_value"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__template_data__image_crops__1__3; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__image_crops__1__3 (
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__template_data__image_crops__1__3; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__image_crops__1__3 IS '{"path": ["adcreative", "object_story_spec", "template_data", "image_crops", "100x72"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__template_data__image_crops__1__4; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__image_crops__1__4 (
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__template_data__image_crops__1__4; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__image_crops__1__4 IS '{"path": ["adcreative", "object_story_spec", "template_data", "image_crops", "191x100"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__template_data__image_crops__400x; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__image_crops__400x (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__template_data__image_crops__400x; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__image_crops__400x IS '{"path": ["adcreative", "object_story_spec", "template_data", "image_crops", "400x150", "_sdc_value"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__template_data__image_crops__4__1; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__image_crops__4__1 (
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__template_data__image_crops__4__1; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__image_crops__4__1 IS '{"path": ["adcreative", "object_story_spec", "template_data", "image_crops", "400x150"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__template_data__image_crops__4__2; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__image_crops__4__2 (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__template_data__image_crops__4__2; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__image_crops__4__2 IS '{"path": ["adcreative", "object_story_spec", "template_data", "image_crops", "400x500", "_sdc_value"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__template_data__image_crops__4__3; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__image_crops__4__3 (
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__template_data__image_crops__4__3; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__image_crops__4__3 IS '{"path": ["adcreative", "object_story_spec", "template_data", "image_crops", "400x500"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__template_data__image_crops__600x; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__image_crops__600x (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__template_data__image_crops__600x; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__image_crops__600x IS '{"path": ["adcreative", "object_story_spec", "template_data", "image_crops", "600x360", "_sdc_value"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__template_data__image_crops__6__1; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__image_crops__6__1 (
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__template_data__image_crops__6__1; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__image_crops__6__1 IS '{"path": ["adcreative", "object_story_spec", "template_data", "image_crops", "600x360"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__template_data__image_crops__90x1; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__image_crops__90x1 (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__template_data__image_crops__90x1; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__image_crops__90x1 IS '{"path": ["adcreative", "object_story_spec", "template_data", "image_crops", "90x160", "_sdc_value"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__template_data__image_crops__9__1; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__image_crops__9__1 (
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__template_data__image_crops__9__1; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__image_crops__9__1 IS '{"path": ["adcreative", "object_story_spec", "template_data", "image_crops", "90x160"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__template_data__retailer_item_ids; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__retailer_item_ids (
+    _sdc_value text NOT NULL,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__template_data__retailer_item_ids; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__template_data__retailer_item_ids IS '{"path": ["adcreative", "object_story_spec", "template_data", "retailer_item_ids"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["string"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__retailer_item_ids; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__retailer_item_ids (
+    _sdc_value text NOT NULL,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__retailer_item_ids; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__retailer_item_ids IS '{"path": ["adcreative", "object_story_spec", "video_data", "retailer_item_ids"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["string"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__audience_; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__audience_ (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__audience_; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__audience_ IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "audience_network_positions"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__behaviors; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__behaviors (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__behaviors; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__behaviors IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "behaviors"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__connectio; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__connectio (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__connectio; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__connectio IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "connections"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__custom_au; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__custom_au (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__custom_au; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__custom_au IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "custom_audiences"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__device_pl; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__device_pl (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__device_pl; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__device_pl IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "device_platforms"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__education; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__education (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__education; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__education IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "education_statuses"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__exclu__10; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclu__10 (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__exclu__10; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclu__10 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "exclusions", "behaviors"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__exclu__11; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclu__11 (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__exclu__11; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclu__11 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "exclusions", "connections"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__exclu__12; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclu__12 (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__exclu__12; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclu__12 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "exclusions", "excluded_connections"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__exclu__13; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclu__13 (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__exclu__13; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclu__13 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "exclusions", "user_adclusters"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__exclu__14; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclu__14 (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__exclu__14; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclu__14 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "exclusions", "income"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__exclu__15; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclu__15 (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__exclu__15; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclu__15 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "exclusions", "excluded_custom_audiences"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__exclu__16; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclu__16 (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__exclu__16; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclu__16 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "exclusions", "work_employers"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__exclu__17; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclu__17 (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__exclu__17; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclu__17 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "exclusions", "industries"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__exclu__18; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclu__18 (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__exclu__18; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclu__18 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "exclusions", "net_worth"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__exclu__19; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclu__19 (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__exclu__19; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclu__19 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "exclusions", "relationship_statuses"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__exclu__20; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclu__20 (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__exclu__20; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclu__20 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "exclusions", "generation"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__exclu__21; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclu__21 (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__exclu__21; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclu__21 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "exclusions", "home_ownership"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__exclu__22; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclu__22 (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__exclu__22; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclu__22 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "exclusions", "politics"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__exclu__23; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclu__23 (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__exclu__23; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclu__23 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "excluded_publisher_categories"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__exclu__24; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclu__24 (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__exclu__24; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclu__24 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "excluded_user_device"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__exclud__1; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclud__1 (
+    name text,
+    country text,
+    key text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__exclud__1; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclud__1 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "excluded_geo_locations", "regions"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "country": {"type": ["string", "null"], "from": ["country"]}, "key": {"type": ["string", "null"], "from": ["key"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__exclud__2; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclud__2 (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__exclud__2; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclud__2 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "excluded_geo_locations", "countries"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__exclud__3; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclud__3 (
+    key text,
+    distance_unit text,
+    region text,
+    name text,
+    country text,
+    region_id text,
+    radius bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__exclud__3; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclud__3 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "excluded_geo_locations", "cities"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"key": {"type": ["string", "null"], "from": ["key"]}, "distance_unit": {"type": ["string", "null"], "from": ["distance_unit"]}, "region": {"type": ["string", "null"], "from": ["region"]}, "name": {"type": ["string", "null"], "from": ["name"]}, "country": {"type": ["string", "null"], "from": ["country"]}, "region_id": {"type": ["string", "null"], "from": ["region_id"]}, "radius": {"type": ["integer", "null"], "from": ["radius"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__exclud__4; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclud__4 (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__exclud__4; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclud__4 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "excluded_geo_locations", "location_types"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__exclud__5; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclud__5 (
+    country text,
+    key text,
+    name text,
+    primary_city_id bigint,
+    region_id bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__exclud__5; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclud__5 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "excluded_geo_locations", "zips"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"country": {"type": ["string", "null"], "from": ["country"]}, "key": {"type": ["string", "null"], "from": ["key"]}, "name": {"type": ["string", "null"], "from": ["name"]}, "primary_city_id": {"type": ["integer", "null"], "from": ["primary_city_id"]}, "region_id": {"type": ["integer", "null"], "from": ["region_id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__exclud__6; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclud__6 (
+    address_string text,
+    country text,
+    distance_unit text,
+    latitude double precision,
+    longitude double precision,
+    name text,
+    primary_city_id bigint,
+    radius bigint,
+    region_id bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__exclud__6; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclud__6 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "excluded_geo_locations", "custom_locations"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"address_string": {"type": ["string", "null"], "from": ["address_string"]}, "country": {"type": ["string", "null"], "from": ["country"]}, "distance_unit": {"type": ["string", "null"], "from": ["distance_unit"]}, "latitude": {"type": ["number", "null"], "from": ["latitude"]}, "longitude": {"type": ["number", "null"], "from": ["longitude"]}, "name": {"type": ["string", "null"], "from": ["name"]}, "primary_city_id": {"type": ["integer", "null"], "from": ["primary_city_id"]}, "radius": {"type": ["integer", "null"], "from": ["radius"]}, "region_id": {"type": ["integer", "null"], "from": ["region_id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__exclud__7; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclud__7 (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__exclud__7; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclud__7 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "excluded_geo_locations", "country_groups"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__exclud__8; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclud__8 (
+    key text,
+    name text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__exclud__8; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclud__8 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "excluded_geo_locations", "geo-markets"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"key": {"type": ["string", "null"], "from": ["key"]}, "name": {"type": ["string", "null"], "from": ["name"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__exclud__9; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclud__9 (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__exclud__9; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclud__9 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "excluded_connections"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__excluded_; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__excluded_ (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__excluded_; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__excluded_ IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "excluded_custom_audiences"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__exclus__1; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclus__1 (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__exclus__1; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclus__1 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "exclusions", "home_type"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__exclus__2; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclus__2 (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__exclus__2; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclus__2 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "exclusions", "friends_of_connections"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__exclus__3; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclus__3 (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__exclus__3; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclus__3 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "exclusions", "family_statuses"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__exclus__4; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclus__4 (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__exclus__4; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclus__4 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "exclusions", "work_positions"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__exclus__5; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclus__5 (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__exclus__5; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclus__5 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "exclusions", "education_majors"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__exclus__6; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclus__6 (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__exclus__6; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclus__6 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "exclusions", "life_events"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__exclus__7; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclus__7 (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__exclus__7; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclus__7 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "exclusions", "moms"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__exclus__8; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclus__8 (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__exclus__8; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclus__8 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "exclusions", "custom_audiences"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__exclus__9; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclus__9 (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__exclus__9; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclus__9 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "exclusions", "interests"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__exclusion; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclusion (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__exclusion; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclusion IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "exclusions", "household_composition"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__facebook_; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__facebook_ (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__facebook_; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__facebook_ IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "facebook_positions"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__family_st; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__family_st (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__family_st; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__family_st IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "family_statuses"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__flexi__10; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexi__10 (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__flexi__10; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexi__10 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "flexible_spec", "behaviors"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__flexi__11; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexi__11 (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__flexi__11; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexi__11 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "flexible_spec", "connections"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__flexi__12; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexi__12 (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__flexi__12; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexi__12 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "flexible_spec", "excluded_connections"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__flexi__13; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexi__13 (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__flexi__13; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexi__13 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "flexible_spec", "user_adclusters"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__flexi__14; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexi__14 (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__flexi__14; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexi__14 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "flexible_spec", "income"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__flexi__15; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexi__15 (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__flexi__15; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexi__15 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "flexible_spec", "excluded_custom_audiences"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__flexi__16; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexi__16 (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__flexi__16; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexi__16 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "flexible_spec", "work_employers"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__flexi__17; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexi__17 (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__flexi__17; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexi__17 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "flexible_spec", "industries"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__flexi__18; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexi__18 (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__flexi__18; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexi__18 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "flexible_spec", "net_worth"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__flexi__19; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexi__19 (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__flexi__19; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexi__19 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "flexible_spec", "relationship_statuses"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__flexi__20; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexi__20 (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__flexi__20; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexi__20 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "flexible_spec", "generation"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__flexi__21; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexi__21 (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__flexi__21; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexi__21 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "flexible_spec", "home_ownership"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__flexi__22; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexi__22 (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__flexi__22; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexi__22 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "flexible_spec", "politics"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__flexi__23; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexi__23 (
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__flexi__23; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexi__23 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "flexible_spec"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__flexib__1; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexib__1 (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__flexib__1; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexib__1 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "flexible_spec", "home_type"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__flexib__2; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexib__2 (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__flexib__2; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexib__2 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "flexible_spec", "friends_of_connections"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__flexib__3; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexib__3 (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__flexib__3; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexib__3 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "flexible_spec", "family_statuses"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__flexib__4; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexib__4 (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__flexib__4; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexib__4 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "flexible_spec", "work_positions"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__flexib__5; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexib__5 (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__flexib__5; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexib__5 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "flexible_spec", "education_majors"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__flexib__6; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexib__6 (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__flexib__6; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexib__6 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "flexible_spec", "life_events"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__flexib__7; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexib__7 (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__flexib__7; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexib__7 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "flexible_spec", "moms"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__flexib__8; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexib__8 (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__flexib__8; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexib__8 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "flexible_spec", "custom_audiences"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__flexib__9; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexib__9 (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__flexib__9; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexib__9 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "flexible_spec", "interests"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__flexible_; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexible_ (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__flexible_; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexible_ IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "flexible_spec", "household_composition"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__friends_o; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__friends_o (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__friends_o; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__friends_o IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "friends_of_connections"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__genders; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__genders (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__genders; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__genders IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "genders"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__generatio; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__generatio (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__generatio; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__generatio IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "generation"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__geo_lo__1; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__geo_lo__1 (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__geo_lo__1; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__geo_lo__1 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "geo_locations", "countries"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__geo_lo__2; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__geo_lo__2 (
+    key text,
+    distance_unit text,
+    region text,
+    name text,
+    country text,
+    region_id text,
+    radius bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__geo_lo__2; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__geo_lo__2 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "geo_locations", "cities"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"key": {"type": ["string", "null"], "from": ["key"]}, "distance_unit": {"type": ["string", "null"], "from": ["distance_unit"]}, "region": {"type": ["string", "null"], "from": ["region"]}, "name": {"type": ["string", "null"], "from": ["name"]}, "country": {"type": ["string", "null"], "from": ["country"]}, "region_id": {"type": ["string", "null"], "from": ["region_id"]}, "radius": {"type": ["integer", "null"], "from": ["radius"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__geo_lo__3; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__geo_lo__3 (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__geo_lo__3; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__geo_lo__3 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "geo_locations", "location_types"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__geo_lo__4; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__geo_lo__4 (
+    country text,
+    key text,
+    name text,
+    primary_city_id bigint,
+    region_id bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__geo_lo__4; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__geo_lo__4 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "geo_locations", "zips"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"country": {"type": ["string", "null"], "from": ["country"]}, "key": {"type": ["string", "null"], "from": ["key"]}, "name": {"type": ["string", "null"], "from": ["name"]}, "primary_city_id": {"type": ["integer", "null"], "from": ["primary_city_id"]}, "region_id": {"type": ["integer", "null"], "from": ["region_id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__geo_lo__5; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__geo_lo__5 (
+    address_string text,
+    country text,
+    distance_unit text,
+    latitude double precision,
+    longitude double precision,
+    name text,
+    primary_city_id bigint,
+    radius bigint,
+    region_id bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__geo_lo__5; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__geo_lo__5 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "geo_locations", "custom_locations"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"address_string": {"type": ["string", "null"], "from": ["address_string"]}, "country": {"type": ["string", "null"], "from": ["country"]}, "distance_unit": {"type": ["string", "null"], "from": ["distance_unit"]}, "latitude": {"type": ["number", "null"], "from": ["latitude"]}, "longitude": {"type": ["number", "null"], "from": ["longitude"]}, "name": {"type": ["string", "null"], "from": ["name"]}, "primary_city_id": {"type": ["integer", "null"], "from": ["primary_city_id"]}, "radius": {"type": ["integer", "null"], "from": ["radius"]}, "region_id": {"type": ["integer", "null"], "from": ["region_id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__geo_lo__6; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__geo_lo__6 (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__geo_lo__6; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__geo_lo__6 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "geo_locations", "country_groups"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__geo_lo__7; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__geo_lo__7 (
+    key text,
+    name text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__geo_lo__7; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__geo_lo__7 IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "geo_locations", "geo-markets"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"key": {"type": ["string", "null"], "from": ["key"]}, "name": {"type": ["string", "null"], "from": ["name"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__geo_locat; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__geo_locat (
+    name text,
+    country text,
+    key text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__geo_locat; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__geo_locat IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "geo_locations", "regions"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "country": {"type": ["string", "null"], "from": ["country"]}, "key": {"type": ["string", "null"], "from": ["key"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__home_owne; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__home_owne (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__home_owne; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__home_owne IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "home_ownership"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__home_type; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__home_type (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__home_type; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__home_type IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "home_type"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__income; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__income (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__income; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__income IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "income"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__industrie; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__industrie (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__industrie; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__industrie IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "industries"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__instagram; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__instagram (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__instagram; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__instagram IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "instagram_positions"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__intereste; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__intereste (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__intereste; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__intereste IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "interested_in"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__interests; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__interests (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__interests; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__interests IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "interests"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__locales; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__locales (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__locales; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__locales IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "locales"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__messenger; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__messenger (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__messenger; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__messenger IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "messenger_positions"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__moms; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__moms (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__moms; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__moms IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "moms"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__net_worth; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__net_worth (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__net_worth; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__net_worth IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "net_worth"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__office_ty; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__office_ty (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__office_ty; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__office_ty IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "office_type"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__politics; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__politics (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__politics; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__politics IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "politics"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__publisher; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__publisher (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__publisher; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__publisher IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "publisher_platforms"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__relations; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__relations (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__relations; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__relations IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "relationship_statuses"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__user_adcl; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__user_adcl (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__user_adcl; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__user_adcl IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "user_adclusters"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__user_devi; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__user_devi (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__user_devi; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__user_devi IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "user_device"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__user_os; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__user_os (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__user_os; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__user_os IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "user_os"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adcreative__object_story_spec__video_data__targeting__work_posi; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__work_posi (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adcreative__object_story_spec__video_data__targeting__work_posi; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__work_posi IS '{"path": ["adcreative", "object_story_spec", "video_data", "targeting", "work_positions"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads (
+    bid_type text,
+    account_id text,
+    campaign_id text,
+    adset_id text,
+    bid_amount bigint,
+    bid_info__clicks bigint,
+    bid_info__actions bigint,
+    bid_info__reach bigint,
+    bid_info__impressions bigint,
+    bid_info__social bigint,
+    status text,
+    creative__creative_id text,
+    creative__id text,
+    id text,
+    updated_time timestamp with time zone,
+    created_time timestamp with time zone,
+    name text,
+    targeting__age_max bigint,
+    targeting__age_min bigint,
+    targeting__targeting_optimization text,
+    targeting__app_install_state text,
+    effective_status text,
+    last_updated_by_app_id text,
+    source_ad_id text,
+    _sdc_received_at timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_table_version bigint,
+    _sdc_batched_at timestamp with time zone
+);
+
+
+--
+-- Name: TABLE ads; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads IS '{"path": ["ads"], "version": null, "schema_version": 2, "key_properties": ["id", "updated_time"], "mappings": {"bid_type": {"type": ["string", "null"], "from": ["bid_type"]}, "account_id": {"type": ["string", "null"], "from": ["account_id"]}, "campaign_id": {"type": ["string", "null"], "from": ["campaign_id"]}, "adset_id": {"type": ["string", "null"], "from": ["adset_id"]}, "bid_amount": {"type": ["integer", "null"], "from": ["bid_amount"]}, "bid_info__clicks": {"type": ["integer", "null"], "from": ["bid_info", "CLICKS"]}, "bid_info__actions": {"type": ["integer", "null"], "from": ["bid_info", "ACTIONS"]}, "bid_info__reach": {"type": ["integer", "null"], "from": ["bid_info", "REACH"]}, "bid_info__impressions": {"type": ["integer", "null"], "from": ["bid_info", "IMPRESSIONS"]}, "bid_info__social": {"type": ["integer", "null"], "from": ["bid_info", "SOCIAL"]}, "status": {"type": ["string", "null"], "from": ["status"]}, "creative__creative_id": {"type": ["string", "null"], "from": ["creative", "creative_id"]}, "creative__id": {"type": ["string", "null"], "from": ["creative", "id"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "updated_time": {"type": ["string", "null"], "from": ["updated_time"], "format": "date-time"}, "created_time": {"type": ["string", "null"], "from": ["created_time"], "format": "date-time"}, "name": {"type": ["string", "null"], "from": ["name"]}, "targeting__age_max": {"type": ["integer", "null"], "from": ["targeting", "age_max"]}, "targeting__age_min": {"type": ["integer", "null"], "from": ["targeting", "age_min"]}, "targeting__targeting_optimization": {"type": ["string", "null"], "from": ["targeting", "targeting_optimization"]}, "targeting__app_install_state": {"type": ["string", "null"], "from": ["targeting", "app_install_state"]}, "effective_status": {"type": ["string", "null"], "from": ["effective_status"]}, "last_updated_by_app_id": {"type": ["string", "null"], "from": ["last_updated_by_app_id"]}, "source_ad_id": {"type": ["string", "null"], "from": ["source_ad_id"]}, "_sdc_received_at": {"type": ["string", "null"], "from": ["_sdc_received_at"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_table_version": {"type": ["integer", "null"], "from": ["_sdc_table_version"]}, "_sdc_batched_at": {"type": ["string", "null"], "from": ["_sdc_batched_at"], "format": "date-time"}}}';
+
+
+--
+-- Name: ads__adlabels; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__adlabels (
+    id text NOT NULL,
+    created_time timestamp with time zone NOT NULL,
+    name text NOT NULL,
+    updated_time timestamp with time zone NOT NULL,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__adlabels; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__adlabels IS '{"path": ["ads", "adlabels"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"id": {"type": ["string"], "from": ["id"]}, "created_time": {"type": ["string"], "from": ["created_time"], "format": "date-time"}, "name": {"type": ["string"], "from": ["name"]}, "updated_time": {"type": ["string"], "from": ["updated_time"], "format": "date-time"}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__conversion_specs; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__conversion_specs (
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__conversion_specs; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__conversion_specs IS '{"path": ["ads", "conversion_specs"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__conversion_specs__action_type; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__conversion_specs__action_type (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__conversion_specs__action_type; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__conversion_specs__action_type IS '{"path": ["ads", "conversion_specs", "action.type"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__conversion_specs__application; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__conversion_specs__application (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__conversion_specs__application; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__conversion_specs__application IS '{"path": ["ads", "conversion_specs", "application"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__conversion_specs__conversion_id; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__conversion_specs__conversion_id (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__conversion_specs__conversion_id; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__conversion_specs__conversion_id IS '{"path": ["ads", "conversion_specs", "conversion_id"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__conversion_specs__creative; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__conversion_specs__creative (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__conversion_specs__creative; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__conversion_specs__creative IS '{"path": ["ads", "conversion_specs", "creative"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__conversion_specs__dataset; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__conversion_specs__dataset (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__conversion_specs__dataset; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__conversion_specs__dataset IS '{"path": ["ads", "conversion_specs", "dataset"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__conversion_specs__event; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__conversion_specs__event (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__conversion_specs__event; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__conversion_specs__event IS '{"path": ["ads", "conversion_specs", "event"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__conversion_specs__event_creator; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__conversion_specs__event_creator (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__conversion_specs__event_creator; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__conversion_specs__event_creator IS '{"path": ["ads", "conversion_specs", "event.creator"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__conversion_specs__event_type; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__conversion_specs__event_type (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__conversion_specs__event_type; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__conversion_specs__event_type IS '{"path": ["ads", "conversion_specs", "event_type"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__conversion_specs__fb_pixel; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__conversion_specs__fb_pixel (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__conversion_specs__fb_pixel; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__conversion_specs__fb_pixel IS '{"path": ["ads", "conversion_specs", "fb_pixel"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__conversion_specs__fb_pixel_event; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__conversion_specs__fb_pixel_event (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__conversion_specs__fb_pixel_event; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__conversion_specs__fb_pixel_event IS '{"path": ["ads", "conversion_specs", "fb_pixel_event"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__conversion_specs__leadgen; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__conversion_specs__leadgen (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__conversion_specs__leadgen; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__conversion_specs__leadgen IS '{"path": ["ads", "conversion_specs", "leadgen"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__conversion_specs__object; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__conversion_specs__object (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__conversion_specs__object; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__conversion_specs__object IS '{"path": ["ads", "conversion_specs", "object"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__conversion_specs__object_domain; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__conversion_specs__object_domain (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__conversion_specs__object_domain; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__conversion_specs__object_domain IS '{"path": ["ads", "conversion_specs", "object.domain"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__conversion_specs__offer; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__conversion_specs__offer (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__conversion_specs__offer; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__conversion_specs__offer IS '{"path": ["ads", "conversion_specs", "offer"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__conversion_specs__offer_creator; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__conversion_specs__offer_creator (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__conversion_specs__offer_creator; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__conversion_specs__offer_creator IS '{"path": ["ads", "conversion_specs", "offer.creator"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__conversion_specs__offsite_pixel; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__conversion_specs__offsite_pixel (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__conversion_specs__offsite_pixel; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__conversion_specs__offsite_pixel IS '{"path": ["ads", "conversion_specs", "offsite_pixel"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__conversion_specs__page; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__conversion_specs__page (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__conversion_specs__page; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__conversion_specs__page IS '{"path": ["ads", "conversion_specs", "page"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__conversion_specs__page_parent; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__conversion_specs__page_parent (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__conversion_specs__page_parent; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__conversion_specs__page_parent IS '{"path": ["ads", "conversion_specs", "page.parent"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__conversion_specs__post; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__conversion_specs__post (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__conversion_specs__post; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__conversion_specs__post IS '{"path": ["ads", "conversion_specs", "post"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__conversion_specs__post_object; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__conversion_specs__post_object (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__conversion_specs__post_object; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__conversion_specs__post_object IS '{"path": ["ads", "conversion_specs", "post.object"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__conversion_specs__post_object_wall; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__conversion_specs__post_object_wall (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__conversion_specs__post_object_wall; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__conversion_specs__post_object_wall IS '{"path": ["ads", "conversion_specs", "post.object.wall"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__conversion_specs__post_wall; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__conversion_specs__post_wall (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__conversion_specs__post_wall; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__conversion_specs__post_wall IS '{"path": ["ads", "conversion_specs", "post.wall"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__conversion_specs__question; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__conversion_specs__question (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__conversion_specs__question; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__conversion_specs__question IS '{"path": ["ads", "conversion_specs", "question"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__conversion_specs__question_creator; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__conversion_specs__question_creator (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__conversion_specs__question_creator; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__conversion_specs__question_creator IS '{"path": ["ads", "conversion_specs", "question.creator"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__conversion_specs__response; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__conversion_specs__response (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__conversion_specs__response; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__conversion_specs__response IS '{"path": ["ads", "conversion_specs", "response"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__conversion_specs__subtype; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__conversion_specs__subtype (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__conversion_specs__subtype; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__conversion_specs__subtype IS '{"path": ["ads", "conversion_specs", "subtype"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__recommendations; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__recommendations (
+    blame_field text,
+    code bigint NOT NULL,
+    confidence text NOT NULL,
+    importance text NOT NULL,
+    message text NOT NULL,
+    title text NOT NULL,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__recommendations; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__recommendations IS '{"path": ["ads", "recommendations"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"blame_field": {"type": ["string", "null"], "from": ["blame_field"]}, "code": {"type": ["integer"], "from": ["code"]}, "confidence": {"type": ["string"], "from": ["confidence"]}, "importance": {"type": ["string"], "from": ["importance"]}, "message": {"type": ["string"], "from": ["message"]}, "title": {"type": ["string"], "from": ["title"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__audience_network_positions; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__audience_network_positions (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__audience_network_positions; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__audience_network_positions IS '{"path": ["ads", "targeting", "audience_network_positions"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__behaviors; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__behaviors (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__behaviors; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__behaviors IS '{"path": ["ads", "targeting", "behaviors"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__connections; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__connections (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__connections; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__connections IS '{"path": ["ads", "targeting", "connections"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__custom_audiences; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__custom_audiences (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__custom_audiences; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__custom_audiences IS '{"path": ["ads", "targeting", "custom_audiences"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__device_platforms; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__device_platforms (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__device_platforms; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__device_platforms IS '{"path": ["ads", "targeting", "device_platforms"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__education_statuses; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__education_statuses (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__education_statuses; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__education_statuses IS '{"path": ["ads", "targeting", "education_statuses"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__excluded_connections; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__excluded_connections (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__excluded_connections; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__excluded_connections IS '{"path": ["ads", "targeting", "excluded_connections"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__excluded_custom_audiences; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__excluded_custom_audiences (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__excluded_custom_audiences; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__excluded_custom_audiences IS '{"path": ["ads", "targeting", "excluded_custom_audiences"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__excluded_geo_locations__cities; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__excluded_geo_locations__cities (
+    key text,
+    distance_unit text,
+    region text,
+    name text,
+    country text,
+    region_id text,
+    radius bigint,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__excluded_geo_locations__cities; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__excluded_geo_locations__cities IS '{"path": ["ads", "targeting", "excluded_geo_locations", "cities"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"key": {"type": ["string", "null"], "from": ["key"]}, "distance_unit": {"type": ["string", "null"], "from": ["distance_unit"]}, "region": {"type": ["string", "null"], "from": ["region"]}, "name": {"type": ["string", "null"], "from": ["name"]}, "country": {"type": ["string", "null"], "from": ["country"]}, "region_id": {"type": ["string", "null"], "from": ["region_id"]}, "radius": {"type": ["integer", "null"], "from": ["radius"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__excluded_geo_locations__countries; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__excluded_geo_locations__countries (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__excluded_geo_locations__countries; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__excluded_geo_locations__countries IS '{"path": ["ads", "targeting", "excluded_geo_locations", "countries"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__excluded_geo_locations__country_groups; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__excluded_geo_locations__country_groups (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__excluded_geo_locations__country_groups; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__excluded_geo_locations__country_groups IS '{"path": ["ads", "targeting", "excluded_geo_locations", "country_groups"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__excluded_geo_locations__custom_locations; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__excluded_geo_locations__custom_locations (
+    address_string text,
+    country text,
+    distance_unit text,
+    latitude double precision,
+    longitude double precision,
+    name text,
+    primary_city_id bigint,
+    radius bigint,
+    region_id bigint,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__excluded_geo_locations__custom_locations; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__excluded_geo_locations__custom_locations IS '{"path": ["ads", "targeting", "excluded_geo_locations", "custom_locations"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"address_string": {"type": ["string", "null"], "from": ["address_string"]}, "country": {"type": ["string", "null"], "from": ["country"]}, "distance_unit": {"type": ["string", "null"], "from": ["distance_unit"]}, "latitude": {"type": ["number", "null"], "from": ["latitude"]}, "longitude": {"type": ["number", "null"], "from": ["longitude"]}, "name": {"type": ["string", "null"], "from": ["name"]}, "primary_city_id": {"type": ["integer", "null"], "from": ["primary_city_id"]}, "radius": {"type": ["integer", "null"], "from": ["radius"]}, "region_id": {"type": ["integer", "null"], "from": ["region_id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__excluded_geo_locations__geo_markets; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__excluded_geo_locations__geo_markets (
+    key text,
+    name text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__excluded_geo_locations__geo_markets; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__excluded_geo_locations__geo_markets IS '{"path": ["ads", "targeting", "excluded_geo_locations", "geo-markets"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"key": {"type": ["string", "null"], "from": ["key"]}, "name": {"type": ["string", "null"], "from": ["name"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__excluded_geo_locations__location_types; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__excluded_geo_locations__location_types (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__excluded_geo_locations__location_types; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__excluded_geo_locations__location_types IS '{"path": ["ads", "targeting", "excluded_geo_locations", "location_types"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__excluded_geo_locations__regions; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__excluded_geo_locations__regions (
+    name text,
+    country text,
+    key text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__excluded_geo_locations__regions; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__excluded_geo_locations__regions IS '{"path": ["ads", "targeting", "excluded_geo_locations", "regions"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "country": {"type": ["string", "null"], "from": ["country"]}, "key": {"type": ["string", "null"], "from": ["key"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__excluded_geo_locations__zips; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__excluded_geo_locations__zips (
+    country text,
+    key text,
+    name text,
+    primary_city_id bigint,
+    region_id bigint,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__excluded_geo_locations__zips; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__excluded_geo_locations__zips IS '{"path": ["ads", "targeting", "excluded_geo_locations", "zips"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"country": {"type": ["string", "null"], "from": ["country"]}, "key": {"type": ["string", "null"], "from": ["key"]}, "name": {"type": ["string", "null"], "from": ["name"]}, "primary_city_id": {"type": ["integer", "null"], "from": ["primary_city_id"]}, "region_id": {"type": ["integer", "null"], "from": ["region_id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__excluded_publisher_categories; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__excluded_publisher_categories (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__excluded_publisher_categories; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__excluded_publisher_categories IS '{"path": ["ads", "targeting", "excluded_publisher_categories"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__excluded_user_device; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__excluded_user_device (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__excluded_user_device; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__excluded_user_device IS '{"path": ["ads", "targeting", "excluded_user_device"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__exclusions__behaviors; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__exclusions__behaviors (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__exclusions__behaviors; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__exclusions__behaviors IS '{"path": ["ads", "targeting", "exclusions", "behaviors"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__exclusions__connections; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__exclusions__connections (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__exclusions__connections; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__exclusions__connections IS '{"path": ["ads", "targeting", "exclusions", "connections"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__exclusions__custom_audiences; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__exclusions__custom_audiences (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__exclusions__custom_audiences; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__exclusions__custom_audiences IS '{"path": ["ads", "targeting", "exclusions", "custom_audiences"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__exclusions__education_majors; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__exclusions__education_majors (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__exclusions__education_majors; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__exclusions__education_majors IS '{"path": ["ads", "targeting", "exclusions", "education_majors"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__exclusions__excluded_connections; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__exclusions__excluded_connections (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__exclusions__excluded_connections; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__exclusions__excluded_connections IS '{"path": ["ads", "targeting", "exclusions", "excluded_connections"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__exclusions__excluded_custom_audiences; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__exclusions__excluded_custom_audiences (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__exclusions__excluded_custom_audiences; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__exclusions__excluded_custom_audiences IS '{"path": ["ads", "targeting", "exclusions", "excluded_custom_audiences"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__exclusions__family_statuses; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__exclusions__family_statuses (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__exclusions__family_statuses; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__exclusions__family_statuses IS '{"path": ["ads", "targeting", "exclusions", "family_statuses"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__exclusions__friends_of_connections; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__exclusions__friends_of_connections (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__exclusions__friends_of_connections; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__exclusions__friends_of_connections IS '{"path": ["ads", "targeting", "exclusions", "friends_of_connections"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__exclusions__generation; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__exclusions__generation (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__exclusions__generation; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__exclusions__generation IS '{"path": ["ads", "targeting", "exclusions", "generation"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__exclusions__home_ownership; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__exclusions__home_ownership (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__exclusions__home_ownership; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__exclusions__home_ownership IS '{"path": ["ads", "targeting", "exclusions", "home_ownership"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__exclusions__home_type; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__exclusions__home_type (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__exclusions__home_type; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__exclusions__home_type IS '{"path": ["ads", "targeting", "exclusions", "home_type"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__exclusions__household_composition; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__exclusions__household_composition (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__exclusions__household_composition; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__exclusions__household_composition IS '{"path": ["ads", "targeting", "exclusions", "household_composition"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__exclusions__income; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__exclusions__income (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__exclusions__income; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__exclusions__income IS '{"path": ["ads", "targeting", "exclusions", "income"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__exclusions__industries; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__exclusions__industries (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__exclusions__industries; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__exclusions__industries IS '{"path": ["ads", "targeting", "exclusions", "industries"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__exclusions__interests; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__exclusions__interests (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__exclusions__interests; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__exclusions__interests IS '{"path": ["ads", "targeting", "exclusions", "interests"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__exclusions__life_events; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__exclusions__life_events (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__exclusions__life_events; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__exclusions__life_events IS '{"path": ["ads", "targeting", "exclusions", "life_events"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__exclusions__moms; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__exclusions__moms (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__exclusions__moms; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__exclusions__moms IS '{"path": ["ads", "targeting", "exclusions", "moms"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__exclusions__net_worth; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__exclusions__net_worth (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__exclusions__net_worth; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__exclusions__net_worth IS '{"path": ["ads", "targeting", "exclusions", "net_worth"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__exclusions__politics; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__exclusions__politics (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__exclusions__politics; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__exclusions__politics IS '{"path": ["ads", "targeting", "exclusions", "politics"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__exclusions__relationship_statuses; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__exclusions__relationship_statuses (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__exclusions__relationship_statuses; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__exclusions__relationship_statuses IS '{"path": ["ads", "targeting", "exclusions", "relationship_statuses"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__exclusions__user_adclusters; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__exclusions__user_adclusters (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__exclusions__user_adclusters; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__exclusions__user_adclusters IS '{"path": ["ads", "targeting", "exclusions", "user_adclusters"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__exclusions__work_employers; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__exclusions__work_employers (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__exclusions__work_employers; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__exclusions__work_employers IS '{"path": ["ads", "targeting", "exclusions", "work_employers"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__exclusions__work_positions; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__exclusions__work_positions (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__exclusions__work_positions; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__exclusions__work_positions IS '{"path": ["ads", "targeting", "exclusions", "work_positions"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__facebook_positions; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__facebook_positions (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__facebook_positions; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__facebook_positions IS '{"path": ["ads", "targeting", "facebook_positions"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__family_statuses; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__family_statuses (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__family_statuses; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__family_statuses IS '{"path": ["ads", "targeting", "family_statuses"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__flexible_spec; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__flexible_spec (
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__flexible_spec; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__flexible_spec IS '{"path": ["ads", "targeting", "flexible_spec"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__flexible_spec__behaviors; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__flexible_spec__behaviors (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__flexible_spec__behaviors; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__flexible_spec__behaviors IS '{"path": ["ads", "targeting", "flexible_spec", "behaviors"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__targeting__flexible_spec__connections; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__flexible_spec__connections (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__flexible_spec__connections; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__flexible_spec__connections IS '{"path": ["ads", "targeting", "flexible_spec", "connections"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__targeting__flexible_spec__custom_audiences; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__flexible_spec__custom_audiences (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__flexible_spec__custom_audiences; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__flexible_spec__custom_audiences IS '{"path": ["ads", "targeting", "flexible_spec", "custom_audiences"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__targeting__flexible_spec__education_majors; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__flexible_spec__education_majors (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__flexible_spec__education_majors; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__flexible_spec__education_majors IS '{"path": ["ads", "targeting", "flexible_spec", "education_majors"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__targeting__flexible_spec__excluded_connections; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__flexible_spec__excluded_connections (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__flexible_spec__excluded_connections; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__flexible_spec__excluded_connections IS '{"path": ["ads", "targeting", "flexible_spec", "excluded_connections"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__targeting__flexible_spec__excluded_custom_audiences; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__flexible_spec__excluded_custom_audiences (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__flexible_spec__excluded_custom_audiences; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__flexible_spec__excluded_custom_audiences IS '{"path": ["ads", "targeting", "flexible_spec", "excluded_custom_audiences"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__targeting__flexible_spec__family_statuses; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__flexible_spec__family_statuses (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__flexible_spec__family_statuses; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__flexible_spec__family_statuses IS '{"path": ["ads", "targeting", "flexible_spec", "family_statuses"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__targeting__flexible_spec__friends_of_connections; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__flexible_spec__friends_of_connections (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__flexible_spec__friends_of_connections; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__flexible_spec__friends_of_connections IS '{"path": ["ads", "targeting", "flexible_spec", "friends_of_connections"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__targeting__flexible_spec__generation; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__flexible_spec__generation (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__flexible_spec__generation; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__flexible_spec__generation IS '{"path": ["ads", "targeting", "flexible_spec", "generation"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__targeting__flexible_spec__home_ownership; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__flexible_spec__home_ownership (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__flexible_spec__home_ownership; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__flexible_spec__home_ownership IS '{"path": ["ads", "targeting", "flexible_spec", "home_ownership"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__targeting__flexible_spec__home_type; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__flexible_spec__home_type (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__flexible_spec__home_type; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__flexible_spec__home_type IS '{"path": ["ads", "targeting", "flexible_spec", "home_type"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__targeting__flexible_spec__household_composition; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__flexible_spec__household_composition (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__flexible_spec__household_composition; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__flexible_spec__household_composition IS '{"path": ["ads", "targeting", "flexible_spec", "household_composition"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__targeting__flexible_spec__income; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__flexible_spec__income (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__flexible_spec__income; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__flexible_spec__income IS '{"path": ["ads", "targeting", "flexible_spec", "income"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__targeting__flexible_spec__industries; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__flexible_spec__industries (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__flexible_spec__industries; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__flexible_spec__industries IS '{"path": ["ads", "targeting", "flexible_spec", "industries"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__targeting__flexible_spec__interests; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__flexible_spec__interests (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__flexible_spec__interests; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__flexible_spec__interests IS '{"path": ["ads", "targeting", "flexible_spec", "interests"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__targeting__flexible_spec__life_events; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__flexible_spec__life_events (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__flexible_spec__life_events; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__flexible_spec__life_events IS '{"path": ["ads", "targeting", "flexible_spec", "life_events"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__targeting__flexible_spec__moms; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__flexible_spec__moms (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__flexible_spec__moms; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__flexible_spec__moms IS '{"path": ["ads", "targeting", "flexible_spec", "moms"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__targeting__flexible_spec__net_worth; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__flexible_spec__net_worth (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__flexible_spec__net_worth; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__flexible_spec__net_worth IS '{"path": ["ads", "targeting", "flexible_spec", "net_worth"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__targeting__flexible_spec__politics; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__flexible_spec__politics (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__flexible_spec__politics; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__flexible_spec__politics IS '{"path": ["ads", "targeting", "flexible_spec", "politics"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__targeting__flexible_spec__relationship_statuses; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__flexible_spec__relationship_statuses (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__flexible_spec__relationship_statuses; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__flexible_spec__relationship_statuses IS '{"path": ["ads", "targeting", "flexible_spec", "relationship_statuses"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__targeting__flexible_spec__user_adclusters; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__flexible_spec__user_adclusters (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__flexible_spec__user_adclusters; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__flexible_spec__user_adclusters IS '{"path": ["ads", "targeting", "flexible_spec", "user_adclusters"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__targeting__flexible_spec__work_employers; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__flexible_spec__work_employers (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__flexible_spec__work_employers; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__flexible_spec__work_employers IS '{"path": ["ads", "targeting", "flexible_spec", "work_employers"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__targeting__flexible_spec__work_positions; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__flexible_spec__work_positions (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__flexible_spec__work_positions; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__flexible_spec__work_positions IS '{"path": ["ads", "targeting", "flexible_spec", "work_positions"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__targeting__friends_of_connections; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__friends_of_connections (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__friends_of_connections; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__friends_of_connections IS '{"path": ["ads", "targeting", "friends_of_connections"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__genders; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__genders (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__genders; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__genders IS '{"path": ["ads", "targeting", "genders"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__generation; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__generation (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__generation; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__generation IS '{"path": ["ads", "targeting", "generation"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__geo_locations__cities; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__geo_locations__cities (
+    key text,
+    distance_unit text,
+    region text,
+    name text,
+    country text,
+    region_id text,
+    radius bigint,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__geo_locations__cities; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__geo_locations__cities IS '{"path": ["ads", "targeting", "geo_locations", "cities"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"key": {"type": ["string", "null"], "from": ["key"]}, "distance_unit": {"type": ["string", "null"], "from": ["distance_unit"]}, "region": {"type": ["string", "null"], "from": ["region"]}, "name": {"type": ["string", "null"], "from": ["name"]}, "country": {"type": ["string", "null"], "from": ["country"]}, "region_id": {"type": ["string", "null"], "from": ["region_id"]}, "radius": {"type": ["integer", "null"], "from": ["radius"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__geo_locations__countries; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__geo_locations__countries (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__geo_locations__countries; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__geo_locations__countries IS '{"path": ["ads", "targeting", "geo_locations", "countries"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__geo_locations__country_groups; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__geo_locations__country_groups (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__geo_locations__country_groups; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__geo_locations__country_groups IS '{"path": ["ads", "targeting", "geo_locations", "country_groups"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__geo_locations__custom_locations; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__geo_locations__custom_locations (
+    address_string text,
+    country text,
+    distance_unit text,
+    latitude double precision,
+    longitude double precision,
+    name text,
+    primary_city_id bigint,
+    radius bigint,
+    region_id bigint,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__geo_locations__custom_locations; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__geo_locations__custom_locations IS '{"path": ["ads", "targeting", "geo_locations", "custom_locations"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"address_string": {"type": ["string", "null"], "from": ["address_string"]}, "country": {"type": ["string", "null"], "from": ["country"]}, "distance_unit": {"type": ["string", "null"], "from": ["distance_unit"]}, "latitude": {"type": ["number", "null"], "from": ["latitude"]}, "longitude": {"type": ["number", "null"], "from": ["longitude"]}, "name": {"type": ["string", "null"], "from": ["name"]}, "primary_city_id": {"type": ["integer", "null"], "from": ["primary_city_id"]}, "radius": {"type": ["integer", "null"], "from": ["radius"]}, "region_id": {"type": ["integer", "null"], "from": ["region_id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__geo_locations__geo_markets; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__geo_locations__geo_markets (
+    key text,
+    name text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__geo_locations__geo_markets; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__geo_locations__geo_markets IS '{"path": ["ads", "targeting", "geo_locations", "geo-markets"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"key": {"type": ["string", "null"], "from": ["key"]}, "name": {"type": ["string", "null"], "from": ["name"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__geo_locations__location_types; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__geo_locations__location_types (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__geo_locations__location_types; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__geo_locations__location_types IS '{"path": ["ads", "targeting", "geo_locations", "location_types"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__geo_locations__regions; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__geo_locations__regions (
+    name text,
+    country text,
+    key text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__geo_locations__regions; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__geo_locations__regions IS '{"path": ["ads", "targeting", "geo_locations", "regions"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "country": {"type": ["string", "null"], "from": ["country"]}, "key": {"type": ["string", "null"], "from": ["key"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__geo_locations__zips; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__geo_locations__zips (
+    country text,
+    key text,
+    name text,
+    primary_city_id bigint,
+    region_id bigint,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__geo_locations__zips; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__geo_locations__zips IS '{"path": ["ads", "targeting", "geo_locations", "zips"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"country": {"type": ["string", "null"], "from": ["country"]}, "key": {"type": ["string", "null"], "from": ["key"]}, "name": {"type": ["string", "null"], "from": ["name"]}, "primary_city_id": {"type": ["integer", "null"], "from": ["primary_city_id"]}, "region_id": {"type": ["integer", "null"], "from": ["region_id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__home_ownership; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__home_ownership (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__home_ownership; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__home_ownership IS '{"path": ["ads", "targeting", "home_ownership"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__home_type; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__home_type (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__home_type; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__home_type IS '{"path": ["ads", "targeting", "home_type"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__income; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__income (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__income; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__income IS '{"path": ["ads", "targeting", "income"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__industries; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__industries (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__industries; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__industries IS '{"path": ["ads", "targeting", "industries"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__instagram_positions; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__instagram_positions (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__instagram_positions; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__instagram_positions IS '{"path": ["ads", "targeting", "instagram_positions"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__interested_in; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__interested_in (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__interested_in; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__interested_in IS '{"path": ["ads", "targeting", "interested_in"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__interests; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__interests (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__interests; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__interests IS '{"path": ["ads", "targeting", "interests"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__locales; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__locales (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__locales; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__locales IS '{"path": ["ads", "targeting", "locales"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__messenger_positions; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__messenger_positions (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__messenger_positions; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__messenger_positions IS '{"path": ["ads", "targeting", "messenger_positions"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__moms; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__moms (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__moms; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__moms IS '{"path": ["ads", "targeting", "moms"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__net_worth; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__net_worth (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__net_worth; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__net_worth IS '{"path": ["ads", "targeting", "net_worth"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__office_type; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__office_type (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__office_type; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__office_type IS '{"path": ["ads", "targeting", "office_type"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__politics; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__politics (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__politics; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__politics IS '{"path": ["ads", "targeting", "politics"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__publisher_platforms; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__publisher_platforms (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__publisher_platforms; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__publisher_platforms IS '{"path": ["ads", "targeting", "publisher_platforms"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__relationship_statuses; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__relationship_statuses (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__relationship_statuses; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__relationship_statuses IS '{"path": ["ads", "targeting", "relationship_statuses"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__user_adclusters; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__user_adclusters (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__user_adclusters; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__user_adclusters IS '{"path": ["ads", "targeting", "user_adclusters"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__user_device; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__user_device (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__user_device; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__user_device IS '{"path": ["ads", "targeting", "user_device"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__user_os; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__user_os (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__user_os; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__user_os IS '{"path": ["ads", "targeting", "user_os"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__targeting__work_positions; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__targeting__work_positions (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__targeting__work_positions; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__targeting__work_positions IS '{"path": ["ads", "targeting", "work_positions"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__tracking_specs; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__tracking_specs (
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__tracking_specs; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__tracking_specs IS '{"path": ["ads", "tracking_specs"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads__tracking_specs__action_type; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__tracking_specs__action_type (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__tracking_specs__action_type; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__tracking_specs__action_type IS '{"path": ["ads", "tracking_specs", "action.type"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__tracking_specs__application; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__tracking_specs__application (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__tracking_specs__application; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__tracking_specs__application IS '{"path": ["ads", "tracking_specs", "application"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__tracking_specs__conversion_id; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__tracking_specs__conversion_id (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__tracking_specs__conversion_id; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__tracking_specs__conversion_id IS '{"path": ["ads", "tracking_specs", "conversion_id"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__tracking_specs__creative; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__tracking_specs__creative (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__tracking_specs__creative; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__tracking_specs__creative IS '{"path": ["ads", "tracking_specs", "creative"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__tracking_specs__dataset; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__tracking_specs__dataset (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__tracking_specs__dataset; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__tracking_specs__dataset IS '{"path": ["ads", "tracking_specs", "dataset"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__tracking_specs__event; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__tracking_specs__event (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__tracking_specs__event; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__tracking_specs__event IS '{"path": ["ads", "tracking_specs", "event"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__tracking_specs__event_creator; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__tracking_specs__event_creator (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__tracking_specs__event_creator; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__tracking_specs__event_creator IS '{"path": ["ads", "tracking_specs", "event.creator"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__tracking_specs__event_type; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__tracking_specs__event_type (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__tracking_specs__event_type; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__tracking_specs__event_type IS '{"path": ["ads", "tracking_specs", "event_type"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__tracking_specs__fb_pixel; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__tracking_specs__fb_pixel (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__tracking_specs__fb_pixel; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__tracking_specs__fb_pixel IS '{"path": ["ads", "tracking_specs", "fb_pixel"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__tracking_specs__fb_pixel_event; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__tracking_specs__fb_pixel_event (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__tracking_specs__fb_pixel_event; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__tracking_specs__fb_pixel_event IS '{"path": ["ads", "tracking_specs", "fb_pixel_event"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__tracking_specs__leadgen; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__tracking_specs__leadgen (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__tracking_specs__leadgen; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__tracking_specs__leadgen IS '{"path": ["ads", "tracking_specs", "leadgen"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__tracking_specs__object; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__tracking_specs__object (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__tracking_specs__object; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__tracking_specs__object IS '{"path": ["ads", "tracking_specs", "object"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__tracking_specs__object_domain; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__tracking_specs__object_domain (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__tracking_specs__object_domain; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__tracking_specs__object_domain IS '{"path": ["ads", "tracking_specs", "object.domain"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__tracking_specs__offer; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__tracking_specs__offer (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__tracking_specs__offer; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__tracking_specs__offer IS '{"path": ["ads", "tracking_specs", "offer"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__tracking_specs__offer_creator; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__tracking_specs__offer_creator (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__tracking_specs__offer_creator; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__tracking_specs__offer_creator IS '{"path": ["ads", "tracking_specs", "offer.creator"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__tracking_specs__offsite_pixel; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__tracking_specs__offsite_pixel (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__tracking_specs__offsite_pixel; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__tracking_specs__offsite_pixel IS '{"path": ["ads", "tracking_specs", "offsite_pixel"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__tracking_specs__page; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__tracking_specs__page (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__tracking_specs__page; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__tracking_specs__page IS '{"path": ["ads", "tracking_specs", "page"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__tracking_specs__page_parent; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__tracking_specs__page_parent (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__tracking_specs__page_parent; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__tracking_specs__page_parent IS '{"path": ["ads", "tracking_specs", "page.parent"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__tracking_specs__post; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__tracking_specs__post (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__tracking_specs__post; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__tracking_specs__post IS '{"path": ["ads", "tracking_specs", "post"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__tracking_specs__post_object; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__tracking_specs__post_object (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__tracking_specs__post_object; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__tracking_specs__post_object IS '{"path": ["ads", "tracking_specs", "post.object"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__tracking_specs__post_object_wall; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__tracking_specs__post_object_wall (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__tracking_specs__post_object_wall; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__tracking_specs__post_object_wall IS '{"path": ["ads", "tracking_specs", "post.object.wall"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__tracking_specs__post_wall; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__tracking_specs__post_wall (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__tracking_specs__post_wall; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__tracking_specs__post_wall IS '{"path": ["ads", "tracking_specs", "post.wall"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__tracking_specs__question; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__tracking_specs__question (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__tracking_specs__question; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__tracking_specs__question IS '{"path": ["ads", "tracking_specs", "question"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__tracking_specs__question_creator; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__tracking_specs__question_creator (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__tracking_specs__question_creator; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__tracking_specs__question_creator IS '{"path": ["ads", "tracking_specs", "question.creator"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__tracking_specs__response; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__tracking_specs__response (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__tracking_specs__response; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__tracking_specs__response IS '{"path": ["ads", "tracking_specs", "response"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads__tracking_specs__subtype; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads__tracking_specs__subtype (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads__tracking_specs__subtype; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads__tracking_specs__subtype IS '{"path": ["ads", "tracking_specs", "subtype"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: ads_insights; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads_insights (
+    clicks bigint,
+    date_stop timestamp with time zone,
+    ad_id text,
+    unique_inline_link_click_ctr double precision,
+    adset_id text,
+    frequency double precision,
+    account_name text,
+    canvas_avg_view_time double precision,
+    unique_inline_link_clicks bigint,
+    inline_post_engagement bigint,
+    relevance_score__score double precision,
+    relevance_score__status text,
+    campaign_name text,
+    inline_link_clicks bigint,
+    campaign_id text,
+    cpc double precision,
+    ad_name text,
+    cost_per_unique_inline_link_click double precision,
+    cpm double precision,
+    cost_per_inline_post_engagement double precision,
+    inline_link_click_ctr double precision,
+    cpp double precision,
+    unique_link_clicks_ctr double precision,
+    spend double precision,
+    cost_per_unique_click double precision,
+    adset_name text,
+    unique_clicks bigint,
+    social_spend double precision,
+    reach bigint,
+    canvas_avg_view_percent double precision,
+    account_id text,
+    date_start timestamp with time zone,
+    objective text,
+    impressions bigint,
+    unique_ctr double precision,
+    cost_per_inline_link_click double precision,
+    ctr double precision,
+    _sdc_received_at timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_table_version bigint,
+    _sdc_batched_at timestamp with time zone
+);
+
+
+--
+-- Name: TABLE ads_insights; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads_insights IS '{"path": ["ads_insights"], "version": null, "schema_version": 2, "key_properties": ["campaign_id", "adset_id", "ad_id", "date_start"], "mappings": {"clicks": {"type": ["integer", "null"], "from": ["clicks"]}, "date_stop": {"type": ["string", "null"], "from": ["date_stop"], "format": "date-time"}, "ad_id": {"type": ["string", "null"], "from": ["ad_id"]}, "unique_inline_link_click_ctr": {"type": ["number", "null"], "from": ["unique_inline_link_click_ctr"]}, "adset_id": {"type": ["string", "null"], "from": ["adset_id"]}, "frequency": {"type": ["number", "null"], "from": ["frequency"]}, "account_name": {"type": ["string", "null"], "from": ["account_name"]}, "canvas_avg_view_time": {"type": ["number", "null"], "from": ["canvas_avg_view_time"]}, "unique_inline_link_clicks": {"type": ["integer", "null"], "from": ["unique_inline_link_clicks"]}, "inline_post_engagement": {"type": ["integer", "null"], "from": ["inline_post_engagement"]}, "relevance_score__score": {"type": ["number", "null"], "from": ["relevance_score", "score"]}, "relevance_score__status": {"type": ["string", "null"], "from": ["relevance_score", "status"]}, "campaign_name": {"type": ["string", "null"], "from": ["campaign_name"]}, "inline_link_clicks": {"type": ["integer", "null"], "from": ["inline_link_clicks"]}, "campaign_id": {"type": ["string", "null"], "from": ["campaign_id"]}, "cpc": {"type": ["number", "null"], "from": ["cpc"]}, "ad_name": {"type": ["string", "null"], "from": ["ad_name"]}, "cost_per_unique_inline_link_click": {"type": ["number", "null"], "from": ["cost_per_unique_inline_link_click"]}, "cpm": {"type": ["number", "null"], "from": ["cpm"]}, "cost_per_inline_post_engagement": {"type": ["number", "null"], "from": ["cost_per_inline_post_engagement"]}, "inline_link_click_ctr": {"type": ["number", "null"], "from": ["inline_link_click_ctr"]}, "cpp": {"type": ["number", "null"], "from": ["cpp"]}, "unique_link_clicks_ctr": {"type": ["number", "null"], "from": ["unique_link_clicks_ctr"]}, "spend": {"type": ["number", "null"], "from": ["spend"]}, "cost_per_unique_click": {"type": ["number", "null"], "from": ["cost_per_unique_click"]}, "adset_name": {"type": ["string", "null"], "from": ["adset_name"]}, "unique_clicks": {"type": ["integer", "null"], "from": ["unique_clicks"]}, "social_spend": {"type": ["number", "null"], "from": ["social_spend"]}, "reach": {"type": ["integer", "null"], "from": ["reach"]}, "canvas_avg_view_percent": {"type": ["number", "null"], "from": ["canvas_avg_view_percent"]}, "account_id": {"type": ["string", "null"], "from": ["account_id"]}, "date_start": {"type": ["string", "null"], "from": ["date_start"], "format": "date-time"}, "objective": {"type": ["string", "null"], "from": ["objective"]}, "impressions": {"type": ["integer", "null"], "from": ["impressions"]}, "unique_ctr": {"type": ["number", "null"], "from": ["unique_ctr"]}, "cost_per_inline_link_click": {"type": ["number", "null"], "from": ["cost_per_inline_link_click"]}, "ctr": {"type": ["number", "null"], "from": ["ctr"]}, "_sdc_received_at": {"type": ["string", "null"], "from": ["_sdc_received_at"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_table_version": {"type": ["integer", "null"], "from": ["_sdc_table_version"]}, "_sdc_batched_at": {"type": ["string", "null"], "from": ["_sdc_batched_at"], "format": "date-time"}}}';
+
+
+--
+-- Name: ads_insights__action_values; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads_insights__action_values (
+    "1d_click" double precision,
+    "7d_click" double precision,
+    "28d_click" double precision,
+    "1d_view" double precision,
+    "7d_view" double precision,
+    "28d_view" double precision,
+    action_destination text,
+    action_target_id text,
+    action_type text,
+    value double precision,
+    _sdc_source_key_campaign_id text,
+    _sdc_source_key_adset_id text,
+    _sdc_source_key_ad_id text,
+    _sdc_source_key_date_start timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads_insights__action_values; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads_insights__action_values IS '{"path": ["ads_insights", "action_values"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_campaign_id", "_sdc_source_key_adset_id", "_sdc_source_key_ad_id", "_sdc_source_key_date_start"], "mappings": {"1d_click": {"type": ["number", "null"], "from": ["1d_click"]}, "7d_click": {"type": ["number", "null"], "from": ["7d_click"]}, "28d_click": {"type": ["number", "null"], "from": ["28d_click"]}, "1d_view": {"type": ["number", "null"], "from": ["1d_view"]}, "7d_view": {"type": ["number", "null"], "from": ["7d_view"]}, "28d_view": {"type": ["number", "null"], "from": ["28d_view"]}, "action_destination": {"type": ["string", "null"], "from": ["action_destination"]}, "action_target_id": {"type": ["string", "null"], "from": ["action_target_id"]}, "action_type": {"type": ["string", "null"], "from": ["action_type"]}, "value": {"type": ["number", "null"], "from": ["value"]}, "_sdc_source_key_campaign_id": {"type": ["string", "null"], "from": ["_sdc_source_key_campaign_id"]}, "_sdc_source_key_adset_id": {"type": ["string", "null"], "from": ["_sdc_source_key_adset_id"]}, "_sdc_source_key_ad_id": {"type": ["string", "null"], "from": ["_sdc_source_key_ad_id"]}, "_sdc_source_key_date_start": {"type": ["string", "null"], "from": ["_sdc_source_key_date_start"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads_insights__actions; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads_insights__actions (
+    "1d_click" double precision,
+    "7d_click" double precision,
+    "28d_click" double precision,
+    "1d_view" double precision,
+    "7d_view" double precision,
+    "28d_view" double precision,
+    action_destination text,
+    action_target_id text,
+    action_type text,
+    value double precision,
+    _sdc_source_key_campaign_id text,
+    _sdc_source_key_adset_id text,
+    _sdc_source_key_ad_id text,
+    _sdc_source_key_date_start timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads_insights__actions; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads_insights__actions IS '{"path": ["ads_insights", "actions"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_campaign_id", "_sdc_source_key_adset_id", "_sdc_source_key_ad_id", "_sdc_source_key_date_start"], "mappings": {"1d_click": {"type": ["number", "null"], "from": ["1d_click"]}, "7d_click": {"type": ["number", "null"], "from": ["7d_click"]}, "28d_click": {"type": ["number", "null"], "from": ["28d_click"]}, "1d_view": {"type": ["number", "null"], "from": ["1d_view"]}, "7d_view": {"type": ["number", "null"], "from": ["7d_view"]}, "28d_view": {"type": ["number", "null"], "from": ["28d_view"]}, "action_destination": {"type": ["string", "null"], "from": ["action_destination"]}, "action_target_id": {"type": ["string", "null"], "from": ["action_target_id"]}, "action_type": {"type": ["string", "null"], "from": ["action_type"]}, "value": {"type": ["number", "null"], "from": ["value"]}, "_sdc_source_key_campaign_id": {"type": ["string", "null"], "from": ["_sdc_source_key_campaign_id"]}, "_sdc_source_key_adset_id": {"type": ["string", "null"], "from": ["_sdc_source_key_adset_id"]}, "_sdc_source_key_ad_id": {"type": ["string", "null"], "from": ["_sdc_source_key_ad_id"]}, "_sdc_source_key_date_start": {"type": ["string", "null"], "from": ["_sdc_source_key_date_start"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads_insights__cost_per_action_type; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads_insights__cost_per_action_type (
+    value text,
+    action_type text,
+    _sdc_source_key_campaign_id text,
+    _sdc_source_key_adset_id text,
+    _sdc_source_key_ad_id text,
+    _sdc_source_key_date_start timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads_insights__cost_per_action_type; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads_insights__cost_per_action_type IS '{"path": ["ads_insights", "cost_per_action_type"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_campaign_id", "_sdc_source_key_adset_id", "_sdc_source_key_ad_id", "_sdc_source_key_date_start"], "mappings": {"value": {"type": ["string", "null"], "from": ["value"]}, "action_type": {"type": ["string", "null"], "from": ["action_type"]}, "_sdc_source_key_campaign_id": {"type": ["string", "null"], "from": ["_sdc_source_key_campaign_id"]}, "_sdc_source_key_adset_id": {"type": ["string", "null"], "from": ["_sdc_source_key_adset_id"]}, "_sdc_source_key_ad_id": {"type": ["string", "null"], "from": ["_sdc_source_key_ad_id"]}, "_sdc_source_key_date_start": {"type": ["string", "null"], "from": ["_sdc_source_key_date_start"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads_insights__cost_per_unique_action_type; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads_insights__cost_per_unique_action_type (
+    value text,
+    action_type text,
+    _sdc_source_key_campaign_id text,
+    _sdc_source_key_adset_id text,
+    _sdc_source_key_ad_id text,
+    _sdc_source_key_date_start timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads_insights__cost_per_unique_action_type; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads_insights__cost_per_unique_action_type IS '{"path": ["ads_insights", "cost_per_unique_action_type"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_campaign_id", "_sdc_source_key_adset_id", "_sdc_source_key_ad_id", "_sdc_source_key_date_start"], "mappings": {"value": {"type": ["string", "null"], "from": ["value"]}, "action_type": {"type": ["string", "null"], "from": ["action_type"]}, "_sdc_source_key_campaign_id": {"type": ["string", "null"], "from": ["_sdc_source_key_campaign_id"]}, "_sdc_source_key_adset_id": {"type": ["string", "null"], "from": ["_sdc_source_key_adset_id"]}, "_sdc_source_key_ad_id": {"type": ["string", "null"], "from": ["_sdc_source_key_ad_id"]}, "_sdc_source_key_date_start": {"type": ["string", "null"], "from": ["_sdc_source_key_date_start"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads_insights__outbound_clicks; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads_insights__outbound_clicks (
+    "1d_click" double precision,
+    "7d_click" double precision,
+    "28d_click" double precision,
+    "1d_view" double precision,
+    "7d_view" double precision,
+    "28d_view" double precision,
+    action_destination text,
+    action_target_id text,
+    action_type text,
+    value double precision,
+    _sdc_source_key_campaign_id text,
+    _sdc_source_key_adset_id text,
+    _sdc_source_key_ad_id text,
+    _sdc_source_key_date_start timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads_insights__outbound_clicks; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads_insights__outbound_clicks IS '{"path": ["ads_insights", "outbound_clicks"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_campaign_id", "_sdc_source_key_adset_id", "_sdc_source_key_ad_id", "_sdc_source_key_date_start"], "mappings": {"1d_click": {"type": ["number", "null"], "from": ["1d_click"]}, "7d_click": {"type": ["number", "null"], "from": ["7d_click"]}, "28d_click": {"type": ["number", "null"], "from": ["28d_click"]}, "1d_view": {"type": ["number", "null"], "from": ["1d_view"]}, "7d_view": {"type": ["number", "null"], "from": ["7d_view"]}, "28d_view": {"type": ["number", "null"], "from": ["28d_view"]}, "action_destination": {"type": ["string", "null"], "from": ["action_destination"]}, "action_target_id": {"type": ["string", "null"], "from": ["action_target_id"]}, "action_type": {"type": ["string", "null"], "from": ["action_type"]}, "value": {"type": ["number", "null"], "from": ["value"]}, "_sdc_source_key_campaign_id": {"type": ["string", "null"], "from": ["_sdc_source_key_campaign_id"]}, "_sdc_source_key_adset_id": {"type": ["string", "null"], "from": ["_sdc_source_key_adset_id"]}, "_sdc_source_key_ad_id": {"type": ["string", "null"], "from": ["_sdc_source_key_ad_id"]}, "_sdc_source_key_date_start": {"type": ["string", "null"], "from": ["_sdc_source_key_date_start"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads_insights__unique_actions; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads_insights__unique_actions (
+    "1d_click" double precision,
+    "7d_click" double precision,
+    "28d_click" double precision,
+    "1d_view" double precision,
+    "7d_view" double precision,
+    "28d_view" double precision,
+    action_destination text,
+    action_target_id text,
+    action_type text,
+    value double precision,
+    _sdc_source_key_campaign_id text,
+    _sdc_source_key_adset_id text,
+    _sdc_source_key_ad_id text,
+    _sdc_source_key_date_start timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads_insights__unique_actions; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads_insights__unique_actions IS '{"path": ["ads_insights", "unique_actions"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_campaign_id", "_sdc_source_key_adset_id", "_sdc_source_key_ad_id", "_sdc_source_key_date_start"], "mappings": {"1d_click": {"type": ["number", "null"], "from": ["1d_click"]}, "7d_click": {"type": ["number", "null"], "from": ["7d_click"]}, "28d_click": {"type": ["number", "null"], "from": ["28d_click"]}, "1d_view": {"type": ["number", "null"], "from": ["1d_view"]}, "7d_view": {"type": ["number", "null"], "from": ["7d_view"]}, "28d_view": {"type": ["number", "null"], "from": ["28d_view"]}, "action_destination": {"type": ["string", "null"], "from": ["action_destination"]}, "action_target_id": {"type": ["string", "null"], "from": ["action_target_id"]}, "action_type": {"type": ["string", "null"], "from": ["action_type"]}, "value": {"type": ["number", "null"], "from": ["value"]}, "_sdc_source_key_campaign_id": {"type": ["string", "null"], "from": ["_sdc_source_key_campaign_id"]}, "_sdc_source_key_adset_id": {"type": ["string", "null"], "from": ["_sdc_source_key_adset_id"]}, "_sdc_source_key_ad_id": {"type": ["string", "null"], "from": ["_sdc_source_key_ad_id"]}, "_sdc_source_key_date_start": {"type": ["string", "null"], "from": ["_sdc_source_key_date_start"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads_insights__video_10_sec_watched_actions; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads_insights__video_10_sec_watched_actions (
+    "1d_click" double precision,
+    "7d_click" double precision,
+    "28d_click" double precision,
+    "1d_view" double precision,
+    "7d_view" double precision,
+    "28d_view" double precision,
+    action_destination text,
+    action_target_id text,
+    action_type text,
+    value double precision,
+    _sdc_source_key_campaign_id text,
+    _sdc_source_key_adset_id text,
+    _sdc_source_key_ad_id text,
+    _sdc_source_key_date_start timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads_insights__video_10_sec_watched_actions; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads_insights__video_10_sec_watched_actions IS '{"path": ["ads_insights", "video_10_sec_watched_actions"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_campaign_id", "_sdc_source_key_adset_id", "_sdc_source_key_ad_id", "_sdc_source_key_date_start"], "mappings": {"1d_click": {"type": ["number", "null"], "from": ["1d_click"]}, "7d_click": {"type": ["number", "null"], "from": ["7d_click"]}, "28d_click": {"type": ["number", "null"], "from": ["28d_click"]}, "1d_view": {"type": ["number", "null"], "from": ["1d_view"]}, "7d_view": {"type": ["number", "null"], "from": ["7d_view"]}, "28d_view": {"type": ["number", "null"], "from": ["28d_view"]}, "action_destination": {"type": ["string", "null"], "from": ["action_destination"]}, "action_target_id": {"type": ["string", "null"], "from": ["action_target_id"]}, "action_type": {"type": ["string", "null"], "from": ["action_type"]}, "value": {"type": ["number", "null"], "from": ["value"]}, "_sdc_source_key_campaign_id": {"type": ["string", "null"], "from": ["_sdc_source_key_campaign_id"]}, "_sdc_source_key_adset_id": {"type": ["string", "null"], "from": ["_sdc_source_key_adset_id"]}, "_sdc_source_key_ad_id": {"type": ["string", "null"], "from": ["_sdc_source_key_ad_id"]}, "_sdc_source_key_date_start": {"type": ["string", "null"], "from": ["_sdc_source_key_date_start"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads_insights__video_30_sec_watched_actions; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads_insights__video_30_sec_watched_actions (
+    "1d_click" double precision,
+    "7d_click" double precision,
+    "28d_click" double precision,
+    "1d_view" double precision,
+    "7d_view" double precision,
+    "28d_view" double precision,
+    action_destination text,
+    action_target_id text,
+    action_type text,
+    value double precision,
+    _sdc_source_key_campaign_id text,
+    _sdc_source_key_adset_id text,
+    _sdc_source_key_ad_id text,
+    _sdc_source_key_date_start timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads_insights__video_30_sec_watched_actions; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads_insights__video_30_sec_watched_actions IS '{"path": ["ads_insights", "video_30_sec_watched_actions"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_campaign_id", "_sdc_source_key_adset_id", "_sdc_source_key_ad_id", "_sdc_source_key_date_start"], "mappings": {"1d_click": {"type": ["number", "null"], "from": ["1d_click"]}, "7d_click": {"type": ["number", "null"], "from": ["7d_click"]}, "28d_click": {"type": ["number", "null"], "from": ["28d_click"]}, "1d_view": {"type": ["number", "null"], "from": ["1d_view"]}, "7d_view": {"type": ["number", "null"], "from": ["7d_view"]}, "28d_view": {"type": ["number", "null"], "from": ["28d_view"]}, "action_destination": {"type": ["string", "null"], "from": ["action_destination"]}, "action_target_id": {"type": ["string", "null"], "from": ["action_target_id"]}, "action_type": {"type": ["string", "null"], "from": ["action_type"]}, "value": {"type": ["number", "null"], "from": ["value"]}, "_sdc_source_key_campaign_id": {"type": ["string", "null"], "from": ["_sdc_source_key_campaign_id"]}, "_sdc_source_key_adset_id": {"type": ["string", "null"], "from": ["_sdc_source_key_adset_id"]}, "_sdc_source_key_ad_id": {"type": ["string", "null"], "from": ["_sdc_source_key_ad_id"]}, "_sdc_source_key_date_start": {"type": ["string", "null"], "from": ["_sdc_source_key_date_start"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads_insights__video_p100_watched_actions; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads_insights__video_p100_watched_actions (
+    "1d_click" double precision,
+    "7d_click" double precision,
+    "28d_click" double precision,
+    "1d_view" double precision,
+    "7d_view" double precision,
+    "28d_view" double precision,
+    action_destination text,
+    action_target_id text,
+    action_type text,
+    value double precision,
+    _sdc_source_key_campaign_id text,
+    _sdc_source_key_adset_id text,
+    _sdc_source_key_ad_id text,
+    _sdc_source_key_date_start timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads_insights__video_p100_watched_actions; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads_insights__video_p100_watched_actions IS '{"path": ["ads_insights", "video_p100_watched_actions"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_campaign_id", "_sdc_source_key_adset_id", "_sdc_source_key_ad_id", "_sdc_source_key_date_start"], "mappings": {"1d_click": {"type": ["number", "null"], "from": ["1d_click"]}, "7d_click": {"type": ["number", "null"], "from": ["7d_click"]}, "28d_click": {"type": ["number", "null"], "from": ["28d_click"]}, "1d_view": {"type": ["number", "null"], "from": ["1d_view"]}, "7d_view": {"type": ["number", "null"], "from": ["7d_view"]}, "28d_view": {"type": ["number", "null"], "from": ["28d_view"]}, "action_destination": {"type": ["string", "null"], "from": ["action_destination"]}, "action_target_id": {"type": ["string", "null"], "from": ["action_target_id"]}, "action_type": {"type": ["string", "null"], "from": ["action_type"]}, "value": {"type": ["number", "null"], "from": ["value"]}, "_sdc_source_key_campaign_id": {"type": ["string", "null"], "from": ["_sdc_source_key_campaign_id"]}, "_sdc_source_key_adset_id": {"type": ["string", "null"], "from": ["_sdc_source_key_adset_id"]}, "_sdc_source_key_ad_id": {"type": ["string", "null"], "from": ["_sdc_source_key_ad_id"]}, "_sdc_source_key_date_start": {"type": ["string", "null"], "from": ["_sdc_source_key_date_start"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads_insights__video_p25_watched_actions; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads_insights__video_p25_watched_actions (
+    "1d_click" double precision,
+    "7d_click" double precision,
+    "28d_click" double precision,
+    "1d_view" double precision,
+    "7d_view" double precision,
+    "28d_view" double precision,
+    action_destination text,
+    action_target_id text,
+    action_type text,
+    value double precision,
+    _sdc_source_key_campaign_id text,
+    _sdc_source_key_adset_id text,
+    _sdc_source_key_ad_id text,
+    _sdc_source_key_date_start timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads_insights__video_p25_watched_actions; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads_insights__video_p25_watched_actions IS '{"path": ["ads_insights", "video_p25_watched_actions"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_campaign_id", "_sdc_source_key_adset_id", "_sdc_source_key_ad_id", "_sdc_source_key_date_start"], "mappings": {"1d_click": {"type": ["number", "null"], "from": ["1d_click"]}, "7d_click": {"type": ["number", "null"], "from": ["7d_click"]}, "28d_click": {"type": ["number", "null"], "from": ["28d_click"]}, "1d_view": {"type": ["number", "null"], "from": ["1d_view"]}, "7d_view": {"type": ["number", "null"], "from": ["7d_view"]}, "28d_view": {"type": ["number", "null"], "from": ["28d_view"]}, "action_destination": {"type": ["string", "null"], "from": ["action_destination"]}, "action_target_id": {"type": ["string", "null"], "from": ["action_target_id"]}, "action_type": {"type": ["string", "null"], "from": ["action_type"]}, "value": {"type": ["number", "null"], "from": ["value"]}, "_sdc_source_key_campaign_id": {"type": ["string", "null"], "from": ["_sdc_source_key_campaign_id"]}, "_sdc_source_key_adset_id": {"type": ["string", "null"], "from": ["_sdc_source_key_adset_id"]}, "_sdc_source_key_ad_id": {"type": ["string", "null"], "from": ["_sdc_source_key_ad_id"]}, "_sdc_source_key_date_start": {"type": ["string", "null"], "from": ["_sdc_source_key_date_start"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads_insights__video_p50_watched_actions; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads_insights__video_p50_watched_actions (
+    "1d_click" double precision,
+    "7d_click" double precision,
+    "28d_click" double precision,
+    "1d_view" double precision,
+    "7d_view" double precision,
+    "28d_view" double precision,
+    action_destination text,
+    action_target_id text,
+    action_type text,
+    value double precision,
+    _sdc_source_key_campaign_id text,
+    _sdc_source_key_adset_id text,
+    _sdc_source_key_ad_id text,
+    _sdc_source_key_date_start timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads_insights__video_p50_watched_actions; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads_insights__video_p50_watched_actions IS '{"path": ["ads_insights", "video_p50_watched_actions"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_campaign_id", "_sdc_source_key_adset_id", "_sdc_source_key_ad_id", "_sdc_source_key_date_start"], "mappings": {"1d_click": {"type": ["number", "null"], "from": ["1d_click"]}, "7d_click": {"type": ["number", "null"], "from": ["7d_click"]}, "28d_click": {"type": ["number", "null"], "from": ["28d_click"]}, "1d_view": {"type": ["number", "null"], "from": ["1d_view"]}, "7d_view": {"type": ["number", "null"], "from": ["7d_view"]}, "28d_view": {"type": ["number", "null"], "from": ["28d_view"]}, "action_destination": {"type": ["string", "null"], "from": ["action_destination"]}, "action_target_id": {"type": ["string", "null"], "from": ["action_target_id"]}, "action_type": {"type": ["string", "null"], "from": ["action_type"]}, "value": {"type": ["number", "null"], "from": ["value"]}, "_sdc_source_key_campaign_id": {"type": ["string", "null"], "from": ["_sdc_source_key_campaign_id"]}, "_sdc_source_key_adset_id": {"type": ["string", "null"], "from": ["_sdc_source_key_adset_id"]}, "_sdc_source_key_ad_id": {"type": ["string", "null"], "from": ["_sdc_source_key_ad_id"]}, "_sdc_source_key_date_start": {"type": ["string", "null"], "from": ["_sdc_source_key_date_start"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads_insights__video_p75_watched_actions; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads_insights__video_p75_watched_actions (
+    "1d_click" double precision,
+    "7d_click" double precision,
+    "28d_click" double precision,
+    "1d_view" double precision,
+    "7d_view" double precision,
+    "28d_view" double precision,
+    action_destination text,
+    action_target_id text,
+    action_type text,
+    value double precision,
+    _sdc_source_key_campaign_id text,
+    _sdc_source_key_adset_id text,
+    _sdc_source_key_ad_id text,
+    _sdc_source_key_date_start timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads_insights__video_p75_watched_actions; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads_insights__video_p75_watched_actions IS '{"path": ["ads_insights", "video_p75_watched_actions"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_campaign_id", "_sdc_source_key_adset_id", "_sdc_source_key_ad_id", "_sdc_source_key_date_start"], "mappings": {"1d_click": {"type": ["number", "null"], "from": ["1d_click"]}, "7d_click": {"type": ["number", "null"], "from": ["7d_click"]}, "28d_click": {"type": ["number", "null"], "from": ["28d_click"]}, "1d_view": {"type": ["number", "null"], "from": ["1d_view"]}, "7d_view": {"type": ["number", "null"], "from": ["7d_view"]}, "28d_view": {"type": ["number", "null"], "from": ["28d_view"]}, "action_destination": {"type": ["string", "null"], "from": ["action_destination"]}, "action_target_id": {"type": ["string", "null"], "from": ["action_target_id"]}, "action_type": {"type": ["string", "null"], "from": ["action_type"]}, "value": {"type": ["number", "null"], "from": ["value"]}, "_sdc_source_key_campaign_id": {"type": ["string", "null"], "from": ["_sdc_source_key_campaign_id"]}, "_sdc_source_key_adset_id": {"type": ["string", "null"], "from": ["_sdc_source_key_adset_id"]}, "_sdc_source_key_ad_id": {"type": ["string", "null"], "from": ["_sdc_source_key_ad_id"]}, "_sdc_source_key_date_start": {"type": ["string", "null"], "from": ["_sdc_source_key_date_start"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: ads_insights__website_ctr; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.ads_insights__website_ctr (
+    value double precision,
+    action_destination text,
+    action_target_id text,
+    action_type text,
+    _sdc_source_key_campaign_id text,
+    _sdc_source_key_adset_id text,
+    _sdc_source_key_ad_id text,
+    _sdc_source_key_date_start timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE ads_insights__website_ctr; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.ads_insights__website_ctr IS '{"path": ["ads_insights", "website_ctr"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_campaign_id", "_sdc_source_key_adset_id", "_sdc_source_key_ad_id", "_sdc_source_key_date_start"], "mappings": {"value": {"type": ["number", "null"], "from": ["value"]}, "action_destination": {"type": ["string", "null"], "from": ["action_destination"]}, "action_target_id": {"type": ["string", "null"], "from": ["action_target_id"]}, "action_type": {"type": ["string", "null"], "from": ["action_type"]}, "_sdc_source_key_campaign_id": {"type": ["string", "null"], "from": ["_sdc_source_key_campaign_id"]}, "_sdc_source_key_adset_id": {"type": ["string", "null"], "from": ["_sdc_source_key_adset_id"]}, "_sdc_source_key_ad_id": {"type": ["string", "null"], "from": ["_sdc_source_key_ad_id"]}, "_sdc_source_key_date_start": {"type": ["string", "null"], "from": ["_sdc_source_key_date_start"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets (
+    name text,
+    end_time timestamp with time zone,
+    promoted_object__custom_event_type text,
+    promoted_object__pixel_id text,
+    promoted_object__pixel_rule text,
+    promoted_object__page_id text,
+    promoted_object__object_store_url text,
+    promoted_object__application_id text,
+    promoted_object__product_set_id text,
+    promoted_object__offer_id text,
+    id text,
+    account_id text,
+    updated_time timestamp with time zone,
+    daily_budget double precision,
+    budget_remaining double precision,
+    effective_status text,
+    campaign_id text,
+    created_time timestamp with time zone,
+    start_time timestamp with time zone,
+    lifetime_budget double precision,
+    targeting__age_max bigint,
+    targeting__age_min bigint,
+    targeting__targeting_optimization text,
+    targeting__app_install_state text,
+    bid_info__clicks bigint,
+    bid_info__actions bigint,
+    bid_info__impressions bigint,
+    bid_info__reach bigint,
+    _sdc_received_at timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_table_version bigint,
+    _sdc_batched_at timestamp with time zone
+);
+
+
+--
+-- Name: TABLE adsets; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets IS '{"path": ["adsets"], "version": null, "schema_version": 2, "key_properties": ["id", "updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "end_time": {"type": ["string", "null"], "from": ["end_time"], "format": "date-time"}, "promoted_object__custom_event_type": {"type": ["string", "null"], "from": ["promoted_object", "custom_event_type"]}, "promoted_object__pixel_id": {"type": ["string", "null"], "from": ["promoted_object", "pixel_id"]}, "promoted_object__pixel_rule": {"type": ["string", "null"], "from": ["promoted_object", "pixel_rule"]}, "promoted_object__page_id": {"type": ["string", "null"], "from": ["promoted_object", "page_id"]}, "promoted_object__object_store_url": {"type": ["string", "null"], "from": ["promoted_object", "object_store_url"]}, "promoted_object__application_id": {"type": ["string", "null"], "from": ["promoted_object", "application_id"]}, "promoted_object__product_set_id": {"type": ["string", "null"], "from": ["promoted_object", "product_set_id"]}, "promoted_object__offer_id": {"type": ["string", "null"], "from": ["promoted_object", "offer_id"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "account_id": {"type": ["string", "null"], "from": ["account_id"]}, "updated_time": {"type": ["string", "null"], "from": ["updated_time"], "format": "date-time"}, "daily_budget": {"type": ["number", "null"], "from": ["daily_budget"]}, "budget_remaining": {"type": ["number", "null"], "from": ["budget_remaining"]}, "effective_status": {"type": ["string", "null"], "from": ["effective_status"]}, "campaign_id": {"type": ["string", "null"], "from": ["campaign_id"]}, "created_time": {"type": ["string", "null"], "from": ["created_time"], "format": "date-time"}, "start_time": {"type": ["string", "null"], "from": ["start_time"], "format": "date-time"}, "lifetime_budget": {"type": ["number", "null"], "from": ["lifetime_budget"]}, "targeting__age_max": {"type": ["integer", "null"], "from": ["targeting", "age_max"]}, "targeting__age_min": {"type": ["integer", "null"], "from": ["targeting", "age_min"]}, "targeting__targeting_optimization": {"type": ["string", "null"], "from": ["targeting", "targeting_optimization"]}, "targeting__app_install_state": {"type": ["string", "null"], "from": ["targeting", "app_install_state"]}, "bid_info__clicks": {"type": ["integer", "null"], "from": ["bid_info", "CLICKS"]}, "bid_info__actions": {"type": ["integer", "null"], "from": ["bid_info", "ACTIONS"]}, "bid_info__impressions": {"type": ["integer", "null"], "from": ["bid_info", "IMPRESSIONS"]}, "bid_info__reach": {"type": ["integer", "null"], "from": ["bid_info", "REACH"]}, "_sdc_received_at": {"type": ["string", "null"], "from": ["_sdc_received_at"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_table_version": {"type": ["integer", "null"], "from": ["_sdc_table_version"]}, "_sdc_batched_at": {"type": ["string", "null"], "from": ["_sdc_batched_at"], "format": "date-time"}}}';
+
+
+--
+-- Name: adsets__adlabels; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__adlabels (
+    id text NOT NULL,
+    name text NOT NULL,
+    created_time timestamp with time zone NOT NULL,
+    updated_time timestamp with time zone NOT NULL,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__adlabels; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__adlabels IS '{"path": ["adsets", "adlabels"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"id": {"type": ["string"], "from": ["id"]}, "name": {"type": ["string"], "from": ["name"]}, "created_time": {"type": ["string"], "from": ["created_time"], "format": "date-time"}, "updated_time": {"type": ["string"], "from": ["updated_time"], "format": "date-time"}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__audience_network_positions; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__audience_network_positions (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__audience_network_positions; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__audience_network_positions IS '{"path": ["adsets", "targeting", "audience_network_positions"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__behaviors; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__behaviors (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__behaviors; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__behaviors IS '{"path": ["adsets", "targeting", "behaviors"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__connections; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__connections (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__connections; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__connections IS '{"path": ["adsets", "targeting", "connections"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__custom_audiences; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__custom_audiences (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__custom_audiences; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__custom_audiences IS '{"path": ["adsets", "targeting", "custom_audiences"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__device_platforms; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__device_platforms (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__device_platforms; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__device_platforms IS '{"path": ["adsets", "targeting", "device_platforms"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__education_statuses; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__education_statuses (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__education_statuses; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__education_statuses IS '{"path": ["adsets", "targeting", "education_statuses"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__excluded_connections; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__excluded_connections (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__excluded_connections; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__excluded_connections IS '{"path": ["adsets", "targeting", "excluded_connections"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__excluded_custom_audiences; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__excluded_custom_audiences (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__excluded_custom_audiences; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__excluded_custom_audiences IS '{"path": ["adsets", "targeting", "excluded_custom_audiences"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__excluded_geo_locations__cities; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__excluded_geo_locations__cities (
+    key text,
+    distance_unit text,
+    region text,
+    name text,
+    country text,
+    region_id text,
+    radius bigint,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__excluded_geo_locations__cities; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__excluded_geo_locations__cities IS '{"path": ["adsets", "targeting", "excluded_geo_locations", "cities"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"key": {"type": ["string", "null"], "from": ["key"]}, "distance_unit": {"type": ["string", "null"], "from": ["distance_unit"]}, "region": {"type": ["string", "null"], "from": ["region"]}, "name": {"type": ["string", "null"], "from": ["name"]}, "country": {"type": ["string", "null"], "from": ["country"]}, "region_id": {"type": ["string", "null"], "from": ["region_id"]}, "radius": {"type": ["integer", "null"], "from": ["radius"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__excluded_geo_locations__countries; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__excluded_geo_locations__countries (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__excluded_geo_locations__countries; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__excluded_geo_locations__countries IS '{"path": ["adsets", "targeting", "excluded_geo_locations", "countries"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__excluded_geo_locations__country_groups; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__excluded_geo_locations__country_groups (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__excluded_geo_locations__country_groups; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__excluded_geo_locations__country_groups IS '{"path": ["adsets", "targeting", "excluded_geo_locations", "country_groups"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__excluded_geo_locations__custom_locations; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__excluded_geo_locations__custom_locations (
+    address_string text,
+    country text,
+    distance_unit text,
+    latitude double precision,
+    longitude double precision,
+    name text,
+    primary_city_id bigint,
+    radius bigint,
+    region_id bigint,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__excluded_geo_locations__custom_locations; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__excluded_geo_locations__custom_locations IS '{"path": ["adsets", "targeting", "excluded_geo_locations", "custom_locations"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"address_string": {"type": ["string", "null"], "from": ["address_string"]}, "country": {"type": ["string", "null"], "from": ["country"]}, "distance_unit": {"type": ["string", "null"], "from": ["distance_unit"]}, "latitude": {"type": ["number", "null"], "from": ["latitude"]}, "longitude": {"type": ["number", "null"], "from": ["longitude"]}, "name": {"type": ["string", "null"], "from": ["name"]}, "primary_city_id": {"type": ["integer", "null"], "from": ["primary_city_id"]}, "radius": {"type": ["integer", "null"], "from": ["radius"]}, "region_id": {"type": ["integer", "null"], "from": ["region_id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__excluded_geo_locations__geo_markets; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__excluded_geo_locations__geo_markets (
+    key text,
+    name text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__excluded_geo_locations__geo_markets; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__excluded_geo_locations__geo_markets IS '{"path": ["adsets", "targeting", "excluded_geo_locations", "geo-markets"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"key": {"type": ["string", "null"], "from": ["key"]}, "name": {"type": ["string", "null"], "from": ["name"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__excluded_geo_locations__location_types; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__excluded_geo_locations__location_types (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__excluded_geo_locations__location_types; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__excluded_geo_locations__location_types IS '{"path": ["adsets", "targeting", "excluded_geo_locations", "location_types"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__excluded_geo_locations__regions; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__excluded_geo_locations__regions (
+    name text,
+    country text,
+    key text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__excluded_geo_locations__regions; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__excluded_geo_locations__regions IS '{"path": ["adsets", "targeting", "excluded_geo_locations", "regions"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "country": {"type": ["string", "null"], "from": ["country"]}, "key": {"type": ["string", "null"], "from": ["key"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__excluded_geo_locations__zips; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__excluded_geo_locations__zips (
+    country text,
+    key text,
+    name text,
+    primary_city_id bigint,
+    region_id bigint,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__excluded_geo_locations__zips; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__excluded_geo_locations__zips IS '{"path": ["adsets", "targeting", "excluded_geo_locations", "zips"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"country": {"type": ["string", "null"], "from": ["country"]}, "key": {"type": ["string", "null"], "from": ["key"]}, "name": {"type": ["string", "null"], "from": ["name"]}, "primary_city_id": {"type": ["integer", "null"], "from": ["primary_city_id"]}, "region_id": {"type": ["integer", "null"], "from": ["region_id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__excluded_publisher_categories; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__excluded_publisher_categories (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__excluded_publisher_categories; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__excluded_publisher_categories IS '{"path": ["adsets", "targeting", "excluded_publisher_categories"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__excluded_user_device; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__excluded_user_device (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__excluded_user_device; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__excluded_user_device IS '{"path": ["adsets", "targeting", "excluded_user_device"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__exclusions__behaviors; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__exclusions__behaviors (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__exclusions__behaviors; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__exclusions__behaviors IS '{"path": ["adsets", "targeting", "exclusions", "behaviors"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__exclusions__connections; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__exclusions__connections (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__exclusions__connections; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__exclusions__connections IS '{"path": ["adsets", "targeting", "exclusions", "connections"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__exclusions__custom_audiences; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__exclusions__custom_audiences (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__exclusions__custom_audiences; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__exclusions__custom_audiences IS '{"path": ["adsets", "targeting", "exclusions", "custom_audiences"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__exclusions__education_majors; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__exclusions__education_majors (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__exclusions__education_majors; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__exclusions__education_majors IS '{"path": ["adsets", "targeting", "exclusions", "education_majors"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__exclusions__excluded_connections; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__exclusions__excluded_connections (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__exclusions__excluded_connections; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__exclusions__excluded_connections IS '{"path": ["adsets", "targeting", "exclusions", "excluded_connections"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__exclusions__excluded_custom_audiences; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__exclusions__excluded_custom_audiences (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__exclusions__excluded_custom_audiences; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__exclusions__excluded_custom_audiences IS '{"path": ["adsets", "targeting", "exclusions", "excluded_custom_audiences"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__exclusions__family_statuses; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__exclusions__family_statuses (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__exclusions__family_statuses; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__exclusions__family_statuses IS '{"path": ["adsets", "targeting", "exclusions", "family_statuses"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__exclusions__friends_of_connections; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__exclusions__friends_of_connections (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__exclusions__friends_of_connections; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__exclusions__friends_of_connections IS '{"path": ["adsets", "targeting", "exclusions", "friends_of_connections"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__exclusions__generation; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__exclusions__generation (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__exclusions__generation; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__exclusions__generation IS '{"path": ["adsets", "targeting", "exclusions", "generation"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__exclusions__home_ownership; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__exclusions__home_ownership (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__exclusions__home_ownership; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__exclusions__home_ownership IS '{"path": ["adsets", "targeting", "exclusions", "home_ownership"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__exclusions__home_type; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__exclusions__home_type (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__exclusions__home_type; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__exclusions__home_type IS '{"path": ["adsets", "targeting", "exclusions", "home_type"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__exclusions__household_composition; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__exclusions__household_composition (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__exclusions__household_composition; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__exclusions__household_composition IS '{"path": ["adsets", "targeting", "exclusions", "household_composition"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__exclusions__income; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__exclusions__income (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__exclusions__income; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__exclusions__income IS '{"path": ["adsets", "targeting", "exclusions", "income"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__exclusions__industries; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__exclusions__industries (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__exclusions__industries; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__exclusions__industries IS '{"path": ["adsets", "targeting", "exclusions", "industries"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__exclusions__interests; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__exclusions__interests (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__exclusions__interests; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__exclusions__interests IS '{"path": ["adsets", "targeting", "exclusions", "interests"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__exclusions__life_events; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__exclusions__life_events (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__exclusions__life_events; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__exclusions__life_events IS '{"path": ["adsets", "targeting", "exclusions", "life_events"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__exclusions__moms; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__exclusions__moms (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__exclusions__moms; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__exclusions__moms IS '{"path": ["adsets", "targeting", "exclusions", "moms"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__exclusions__net_worth; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__exclusions__net_worth (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__exclusions__net_worth; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__exclusions__net_worth IS '{"path": ["adsets", "targeting", "exclusions", "net_worth"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__exclusions__politics; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__exclusions__politics (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__exclusions__politics; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__exclusions__politics IS '{"path": ["adsets", "targeting", "exclusions", "politics"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__exclusions__relationship_statuses; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__exclusions__relationship_statuses (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__exclusions__relationship_statuses; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__exclusions__relationship_statuses IS '{"path": ["adsets", "targeting", "exclusions", "relationship_statuses"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__exclusions__user_adclusters; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__exclusions__user_adclusters (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__exclusions__user_adclusters; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__exclusions__user_adclusters IS '{"path": ["adsets", "targeting", "exclusions", "user_adclusters"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__exclusions__work_employers; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__exclusions__work_employers (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__exclusions__work_employers; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__exclusions__work_employers IS '{"path": ["adsets", "targeting", "exclusions", "work_employers"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__exclusions__work_positions; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__exclusions__work_positions (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__exclusions__work_positions; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__exclusions__work_positions IS '{"path": ["adsets", "targeting", "exclusions", "work_positions"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__facebook_positions; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__facebook_positions (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__facebook_positions; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__facebook_positions IS '{"path": ["adsets", "targeting", "facebook_positions"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__family_statuses; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__family_statuses (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__family_statuses; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__family_statuses IS '{"path": ["adsets", "targeting", "family_statuses"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__flexible_spec; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__flexible_spec (
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__flexible_spec; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__flexible_spec IS '{"path": ["adsets", "targeting", "flexible_spec"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__flexible_spec__behaviors; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__flexible_spec__behaviors (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__flexible_spec__behaviors; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__flexible_spec__behaviors IS '{"path": ["adsets", "targeting", "flexible_spec", "behaviors"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__flexible_spec__connections; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__flexible_spec__connections (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__flexible_spec__connections; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__flexible_spec__connections IS '{"path": ["adsets", "targeting", "flexible_spec", "connections"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__flexible_spec__custom_audiences; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__flexible_spec__custom_audiences (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__flexible_spec__custom_audiences; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__flexible_spec__custom_audiences IS '{"path": ["adsets", "targeting", "flexible_spec", "custom_audiences"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__flexible_spec__education_majors; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__flexible_spec__education_majors (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__flexible_spec__education_majors; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__flexible_spec__education_majors IS '{"path": ["adsets", "targeting", "flexible_spec", "education_majors"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__flexible_spec__excluded_connections; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__flexible_spec__excluded_connections (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__flexible_spec__excluded_connections; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__flexible_spec__excluded_connections IS '{"path": ["adsets", "targeting", "flexible_spec", "excluded_connections"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__flexible_spec__excluded_custom_audiences; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__flexible_spec__excluded_custom_audiences (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__flexible_spec__excluded_custom_audiences; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__flexible_spec__excluded_custom_audiences IS '{"path": ["adsets", "targeting", "flexible_spec", "excluded_custom_audiences"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__flexible_spec__family_statuses; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__flexible_spec__family_statuses (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__flexible_spec__family_statuses; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__flexible_spec__family_statuses IS '{"path": ["adsets", "targeting", "flexible_spec", "family_statuses"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__flexible_spec__friends_of_connections; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__flexible_spec__friends_of_connections (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__flexible_spec__friends_of_connections; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__flexible_spec__friends_of_connections IS '{"path": ["adsets", "targeting", "flexible_spec", "friends_of_connections"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__flexible_spec__generation; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__flexible_spec__generation (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__flexible_spec__generation; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__flexible_spec__generation IS '{"path": ["adsets", "targeting", "flexible_spec", "generation"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__flexible_spec__home_ownership; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__flexible_spec__home_ownership (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__flexible_spec__home_ownership; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__flexible_spec__home_ownership IS '{"path": ["adsets", "targeting", "flexible_spec", "home_ownership"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__flexible_spec__home_type; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__flexible_spec__home_type (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__flexible_spec__home_type; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__flexible_spec__home_type IS '{"path": ["adsets", "targeting", "flexible_spec", "home_type"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__flexible_spec__household_composition; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__flexible_spec__household_composition (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__flexible_spec__household_composition; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__flexible_spec__household_composition IS '{"path": ["adsets", "targeting", "flexible_spec", "household_composition"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__flexible_spec__income; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__flexible_spec__income (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__flexible_spec__income; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__flexible_spec__income IS '{"path": ["adsets", "targeting", "flexible_spec", "income"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__flexible_spec__industries; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__flexible_spec__industries (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__flexible_spec__industries; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__flexible_spec__industries IS '{"path": ["adsets", "targeting", "flexible_spec", "industries"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__flexible_spec__interests; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__flexible_spec__interests (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__flexible_spec__interests; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__flexible_spec__interests IS '{"path": ["adsets", "targeting", "flexible_spec", "interests"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__flexible_spec__life_events; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__flexible_spec__life_events (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__flexible_spec__life_events; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__flexible_spec__life_events IS '{"path": ["adsets", "targeting", "flexible_spec", "life_events"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__flexible_spec__moms; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__flexible_spec__moms (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__flexible_spec__moms; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__flexible_spec__moms IS '{"path": ["adsets", "targeting", "flexible_spec", "moms"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__flexible_spec__net_worth; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__flexible_spec__net_worth (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__flexible_spec__net_worth; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__flexible_spec__net_worth IS '{"path": ["adsets", "targeting", "flexible_spec", "net_worth"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__flexible_spec__politics; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__flexible_spec__politics (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__flexible_spec__politics; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__flexible_spec__politics IS '{"path": ["adsets", "targeting", "flexible_spec", "politics"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__flexible_spec__relationship_statuses; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__flexible_spec__relationship_statuses (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__flexible_spec__relationship_statuses; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__flexible_spec__relationship_statuses IS '{"path": ["adsets", "targeting", "flexible_spec", "relationship_statuses"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__flexible_spec__user_adclusters; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__flexible_spec__user_adclusters (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__flexible_spec__user_adclusters; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__flexible_spec__user_adclusters IS '{"path": ["adsets", "targeting", "flexible_spec", "user_adclusters"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__flexible_spec__work_employers; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__flexible_spec__work_employers (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__flexible_spec__work_employers; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__flexible_spec__work_employers IS '{"path": ["adsets", "targeting", "flexible_spec", "work_employers"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__flexible_spec__work_positions; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__flexible_spec__work_positions (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__flexible_spec__work_positions; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__flexible_spec__work_positions IS '{"path": ["adsets", "targeting", "flexible_spec", "work_positions"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__friends_of_connections; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__friends_of_connections (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__friends_of_connections; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__friends_of_connections IS '{"path": ["adsets", "targeting", "friends_of_connections"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__genders; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__genders (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__genders; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__genders IS '{"path": ["adsets", "targeting", "genders"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__generation; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__generation (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__generation; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__generation IS '{"path": ["adsets", "targeting", "generation"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__geo_locations__cities; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__geo_locations__cities (
+    key text,
+    distance_unit text,
+    region text,
+    name text,
+    country text,
+    region_id text,
+    radius bigint,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__geo_locations__cities; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__geo_locations__cities IS '{"path": ["adsets", "targeting", "geo_locations", "cities"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"key": {"type": ["string", "null"], "from": ["key"]}, "distance_unit": {"type": ["string", "null"], "from": ["distance_unit"]}, "region": {"type": ["string", "null"], "from": ["region"]}, "name": {"type": ["string", "null"], "from": ["name"]}, "country": {"type": ["string", "null"], "from": ["country"]}, "region_id": {"type": ["string", "null"], "from": ["region_id"]}, "radius": {"type": ["integer", "null"], "from": ["radius"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__geo_locations__countries; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__geo_locations__countries (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__geo_locations__countries; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__geo_locations__countries IS '{"path": ["adsets", "targeting", "geo_locations", "countries"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__geo_locations__country_groups; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__geo_locations__country_groups (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__geo_locations__country_groups; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__geo_locations__country_groups IS '{"path": ["adsets", "targeting", "geo_locations", "country_groups"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__geo_locations__custom_locations; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__geo_locations__custom_locations (
+    address_string text,
+    country text,
+    distance_unit text,
+    latitude double precision,
+    longitude double precision,
+    name text,
+    primary_city_id bigint,
+    radius bigint,
+    region_id bigint,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__geo_locations__custom_locations; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__geo_locations__custom_locations IS '{"path": ["adsets", "targeting", "geo_locations", "custom_locations"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"address_string": {"type": ["string", "null"], "from": ["address_string"]}, "country": {"type": ["string", "null"], "from": ["country"]}, "distance_unit": {"type": ["string", "null"], "from": ["distance_unit"]}, "latitude": {"type": ["number", "null"], "from": ["latitude"]}, "longitude": {"type": ["number", "null"], "from": ["longitude"]}, "name": {"type": ["string", "null"], "from": ["name"]}, "primary_city_id": {"type": ["integer", "null"], "from": ["primary_city_id"]}, "radius": {"type": ["integer", "null"], "from": ["radius"]}, "region_id": {"type": ["integer", "null"], "from": ["region_id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__geo_locations__geo_markets; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__geo_locations__geo_markets (
+    key text,
+    name text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__geo_locations__geo_markets; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__geo_locations__geo_markets IS '{"path": ["adsets", "targeting", "geo_locations", "geo-markets"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"key": {"type": ["string", "null"], "from": ["key"]}, "name": {"type": ["string", "null"], "from": ["name"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__geo_locations__location_types; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__geo_locations__location_types (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__geo_locations__location_types; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__geo_locations__location_types IS '{"path": ["adsets", "targeting", "geo_locations", "location_types"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__geo_locations__regions; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__geo_locations__regions (
+    name text,
+    country text,
+    key text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__geo_locations__regions; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__geo_locations__regions IS '{"path": ["adsets", "targeting", "geo_locations", "regions"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "country": {"type": ["string", "null"], "from": ["country"]}, "key": {"type": ["string", "null"], "from": ["key"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__geo_locations__zips; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__geo_locations__zips (
+    country text,
+    key text,
+    name text,
+    primary_city_id bigint,
+    region_id bigint,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__geo_locations__zips; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__geo_locations__zips IS '{"path": ["adsets", "targeting", "geo_locations", "zips"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"country": {"type": ["string", "null"], "from": ["country"]}, "key": {"type": ["string", "null"], "from": ["key"]}, "name": {"type": ["string", "null"], "from": ["name"]}, "primary_city_id": {"type": ["integer", "null"], "from": ["primary_city_id"]}, "region_id": {"type": ["integer", "null"], "from": ["region_id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__home_ownership; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__home_ownership (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__home_ownership; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__home_ownership IS '{"path": ["adsets", "targeting", "home_ownership"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__home_type; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__home_type (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__home_type; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__home_type IS '{"path": ["adsets", "targeting", "home_type"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__income; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__income (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__income; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__income IS '{"path": ["adsets", "targeting", "income"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__industries; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__industries (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__industries; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__industries IS '{"path": ["adsets", "targeting", "industries"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__instagram_positions; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__instagram_positions (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__instagram_positions; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__instagram_positions IS '{"path": ["adsets", "targeting", "instagram_positions"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__interested_in; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__interested_in (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__interested_in; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__interested_in IS '{"path": ["adsets", "targeting", "interested_in"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__interests; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__interests (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__interests; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__interests IS '{"path": ["adsets", "targeting", "interests"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__locales; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__locales (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__locales; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__locales IS '{"path": ["adsets", "targeting", "locales"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__messenger_positions; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__messenger_positions (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__messenger_positions; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__messenger_positions IS '{"path": ["adsets", "targeting", "messenger_positions"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__moms; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__moms (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__moms; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__moms IS '{"path": ["adsets", "targeting", "moms"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__net_worth; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__net_worth (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__net_worth; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__net_worth IS '{"path": ["adsets", "targeting", "net_worth"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__office_type; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__office_type (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__office_type; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__office_type IS '{"path": ["adsets", "targeting", "office_type"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__politics; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__politics (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__politics; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__politics IS '{"path": ["adsets", "targeting", "politics"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__publisher_platforms; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__publisher_platforms (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__publisher_platforms; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__publisher_platforms IS '{"path": ["adsets", "targeting", "publisher_platforms"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__relationship_statuses; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__relationship_statuses (
+    _sdc_value bigint,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__relationship_statuses; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__relationship_statuses IS '{"path": ["adsets", "targeting", "relationship_statuses"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["integer", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__user_adclusters; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__user_adclusters (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__user_adclusters; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__user_adclusters IS '{"path": ["adsets", "targeting", "user_adclusters"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__user_device; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__user_device (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__user_device; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__user_device IS '{"path": ["adsets", "targeting", "user_device"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__user_os; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__user_os (
+    _sdc_value text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__user_os; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__user_os IS '{"path": ["adsets", "targeting", "user_os"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"_sdc_value": {"type": ["string", "null"], "from": ["_sdc_value"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: adsets__targeting__work_positions; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.adsets__targeting__work_positions (
+    name text,
+    id text,
+    _sdc_source_key_id text,
+    _sdc_source_key_updated_time timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE adsets__targeting__work_positions; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.adsets__targeting__work_positions IS '{"path": ["adsets", "targeting", "work_positions"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id", "_sdc_source_key_updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_source_key_updated_time": {"type": ["string", "null"], "from": ["_sdc_source_key_updated_time"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: campaigns; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.campaigns (
+    name text,
+    objective text,
+    id text,
+    account_id text,
+    effective_status text,
+    buying_type text,
+    spend_cap double precision,
+    start_time timestamp with time zone NOT NULL,
+    updated_time timestamp with time zone NOT NULL,
+    _sdc_received_at timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_table_version bigint,
+    _sdc_batched_at timestamp with time zone
+);
+
+
+--
+-- Name: TABLE campaigns; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.campaigns IS '{"path": ["campaigns"], "version": null, "schema_version": 2, "key_properties": ["id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "objective": {"type": ["string", "null"], "from": ["objective"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "account_id": {"type": ["string", "null"], "from": ["account_id"]}, "effective_status": {"type": ["string", "null"], "from": ["effective_status"]}, "buying_type": {"type": ["string", "null"], "from": ["buying_type"]}, "spend_cap": {"type": ["number", "null"], "from": ["spend_cap"]}, "start_time": {"type": ["string"], "from": ["start_time"], "format": "date-time"}, "updated_time": {"type": ["string"], "from": ["updated_time"], "format": "date-time"}, "_sdc_received_at": {"type": ["string", "null"], "from": ["_sdc_received_at"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_table_version": {"type": ["integer", "null"], "from": ["_sdc_table_version"]}, "_sdc_batched_at": {"type": ["string", "null"], "from": ["_sdc_batched_at"], "format": "date-time"}}}';
+
+
+--
+-- Name: campaigns__adlabels; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.campaigns__adlabels (
+    id text NOT NULL,
+    name text NOT NULL,
+    created_time timestamp with time zone NOT NULL,
+    updated_time timestamp with time zone NOT NULL,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE campaigns__adlabels; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.campaigns__adlabels IS '{"path": ["campaigns", "adlabels"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"id": {"type": ["string"], "from": ["id"]}, "name": {"type": ["string"], "from": ["name"]}, "created_time": {"type": ["string"], "from": ["created_time"], "format": "date-time"}, "updated_time": {"type": ["string"], "from": ["updated_time"], "format": "date-time"}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: campaigns__ads__data; Type: TABLE; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE TABLE raw_tap_facebook.campaigns__ads__data (
+    id text,
+    _sdc_source_key_id text,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE campaigns__ads__data; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_facebook.campaigns__ads__data IS '{"path": ["campaigns", "ads", "data"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key_id": {"type": ["string", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
 
 
 --
@@ -5895,6 +15680,13 @@ ALTER TABLE ONLY public.connections ALTER COLUMN id SET DEFAULT nextval('public.
 
 
 --
+-- Name: facebook_ad_accounts id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.facebook_ad_accounts ALTER COLUMN id SET DEFAULT nextval('public.facebook_ad_accounts_id_seq'::regclass);
+
+
+--
 -- Name: flipper_features id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -6031,6 +15823,14 @@ ALTER TABLE ONLY public.ar_internal_metadata
 
 ALTER TABLE ONLY public.connections
     ADD CONSTRAINT connections_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: facebook_ad_accounts facebook_ad_accounts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.facebook_ad_accounts
+    ADD CONSTRAINT facebook_ad_accounts_pkey PRIMARY KEY (id);
 
 
 --
@@ -6349,6 +16149,3170 @@ CREATE INDEX que_scheduler_audit_enqueued_job_class ON public.que_scheduler_audi
 --
 
 CREATE INDEX que_scheduler_audit_enqueued_job_id ON public.que_scheduler_audit_enqueued USING btree (job_id);
+
+
+--
+-- Name: tp_0087bebadd9698cfcccbb2674bb0c59d29599c69; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_0087bebadd9698cfcccbb2674bb0c59d29599c69 ON raw_tap_facebook.ads__tracking_specs__subtype USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_0095557671290426b42cfa85d35fadb4e2652333; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_0095557671290426b42cfa85d35fadb4e2652333 ON raw_tap_facebook.adsets__targeting__geo_locations__location_types USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_00aafda67d9b208c08497665bc164de44a9e26b5; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_00aafda67d9b208c08497665bc164de44a9e26b5 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__custom_au USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_0371a8c5b7467959c9ea48759146048a05ba15a9; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_0371a8c5b7467959c9ea48759146048a05ba15a9 ON raw_tap_facebook.ads__targeting__industries USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_03b34a3045d182a3c4e645b11e9ee3c408407fe7; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_03b34a3045d182a3c4e645b11e9ee3c408407fe7 ON raw_tap_facebook.ads__targeting__exclusions__home_ownership USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_041608a4546bb7a6603d52ad3f388638618c2d97; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_041608a4546bb7a6603d52ad3f388638618c2d97 ON raw_tap_facebook.ads__tracking_specs__page USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_049336f5a00b5c63c885486d8e15b1640a3056a7; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_049336f5a00b5c63c885486d8e15b1640a3056a7 ON raw_tap_facebook.ads__targeting__flexible_spec__excluded_connections USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_04ea416252758ddf6643b882e8289ed666c1d711; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_04ea416252758ddf6643b882e8289ed666c1d711 ON raw_tap_facebook.ads_insights__video_p50_watched_actions USING btree (_sdc_source_key_campaign_id, _sdc_source_key_adset_id, _sdc_source_key_ad_id, _sdc_source_key_date_start, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_04ffa8ec13b7aef7e6004baa2c649e5fee741353; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_04ffa8ec13b7aef7e6004baa2c649e5fee741353 ON raw_tap_facebook.adsets__targeting__flexible_spec__work_employers USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_081436b8cbfccee801acfb261bdcf9771a813b2c; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_081436b8cbfccee801acfb261bdcf9771a813b2c ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclu__21 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_08364abf67a560f56a5a8d4e0ba4bab28252175f; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_08364abf67a560f56a5a8d4e0ba4bab28252175f ON raw_tap_facebook.adcreative__object_story_spec__link_data__image_crops__100x72__ USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_08375180184d93271696aee0761e3ab45e9aaf98; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_08375180184d93271696aee0761e3ab45e9aaf98 ON raw_tap_facebook.ads__targeting__excluded_geo_locations__regions USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_0953cfdcc1090cf5d8913240da5868c54c526c43; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_0953cfdcc1090cf5d8913240da5868c54c526c43 ON raw_tap_facebook.adcreative__object_story_spec__template_data__image_crops__1__3 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_0a1a7846bcffd40e53c32ad852cb420ac09ece31; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_0a1a7846bcffd40e53c32ad852cb420ac09ece31 ON raw_tap_facebook.adcreative__object_story_spec__link_data__image_crops__600x360_ USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_0c0354295b9e80dd75fc5ddb47d2c212689adcbb; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_0c0354295b9e80dd75fc5ddb47d2c212689adcbb ON raw_tap_facebook.ads__targeting__flexible_spec__friends_of_connections USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_0c26ef45c53a5c44e4f21b733025da12b38a15ec; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_0c26ef45c53a5c44e4f21b733025da12b38a15ec ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexi__10 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_0c2cb9aaa830dc387929b615a37a844bd40f9804; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_0c2cb9aaa830dc387929b615a37a844bd40f9804 ON raw_tap_facebook.ads__targeting__flexible_spec__generation USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_0c6e1ab86a3e02d709f8ff078114ae72b243dab6; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_0c6e1ab86a3e02d709f8ff078114ae72b243dab6 ON raw_tap_facebook.adsets__adlabels USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_0c862a0c699501a1f096d73f3b3986108cd6962a; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_0c862a0c699501a1f096d73f3b3986108cd6962a ON raw_tap_facebook.ads_insights__website_ctr USING btree (_sdc_source_key_campaign_id, _sdc_source_key_adset_id, _sdc_source_key_ad_id, _sdc_source_key_date_start, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_0cafb66d00ed6aae2b5f03b39b3ca0ba180b9006; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_0cafb66d00ed6aae2b5f03b39b3ca0ba180b9006 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclusion USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_0cc7131885605c690faafbdb843e511df17a54cd; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_0cc7131885605c690faafbdb843e511df17a54cd ON raw_tap_facebook.adcreative__object_story_spec__link_data__image_crops__400x150_ USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_0d4e7423c1aa0e148ec5b313c806a64c1c8c99e2; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_0d4e7423c1aa0e148ec5b313c806a64c1c8c99e2 ON raw_tap_facebook.ads__targeting__exclusions__behaviors USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_0e333365b631b0b8ccd07d731df2d124087c66d6; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_0e333365b631b0b8ccd07d731df2d124087c66d6 ON raw_tap_facebook.ads__targeting__exclusions__relationship_statuses USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_0e4819eeb63df35b0989bea17e9303ebb107861f; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_0e4819eeb63df35b0989bea17e9303ebb107861f ON raw_tap_facebook.ads__targeting__facebook_positions USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_0e969911ef05f18990508a70c5e23df2b643b057; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_0e969911ef05f18990508a70c5e23df2b643b057 ON raw_tap_facebook.ads__targeting__exclusions__excluded_custom_audiences USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_0effbcbf3094e8851ff732723a3b286043641de4; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_0effbcbf3094e8851ff732723a3b286043641de4 ON raw_tap_facebook.adcreative__object_story_spec__template_data__child_attachm__13 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_0fbce8fd8dd340198664b22f461f599f6d1b49da; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_0fbce8fd8dd340198664b22f461f599f6d1b49da ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexi__23 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_10bf060ab2d6377e38e4636c2ba65c211a47df46; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_10bf060ab2d6377e38e4636c2ba65c211a47df46 ON raw_tap_facebook.adsets__targeting__exclusions__net_worth USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_10c1f0560ce64f35b50c7369073fdce977001bc1; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_10c1f0560ce64f35b50c7369073fdce977001bc1 ON raw_tap_facebook.ads__conversion_specs__object USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_11509862fae8f05cf8a35728b09a08c39af7a635; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_11509862fae8f05cf8a35728b09a08c39af7a635 ON raw_tap_facebook.adcreative__object_story_spec__template_data__image_crops__600x USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_12656550635e032e6630b300462a121014cd68df; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_12656550635e032e6630b300462a121014cd68df ON raw_tap_facebook.adcreative__object_story_spec__template_data__child_attachme__9 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_133a373a29fea6f120bbe8732f3a16b2630af54a; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_133a373a29fea6f120bbe8732f3a16b2630af54a ON raw_tap_facebook.adcreative__image_crops__400x500 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_1340d2228da3353332ae40f829e52163a0127a81; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_1340d2228da3353332ae40f829e52163a0127a81 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__publisher USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_13693aea9efb7a0839dfb83bbb2e8cc52314b2ff; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_13693aea9efb7a0839dfb83bbb2e8cc52314b2ff ON raw_tap_facebook.ads__conversion_specs__offer_creator USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_139747b672c7f846a44c928b128c8d4779c64aca; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_139747b672c7f846a44c928b128c8d4779c64aca ON raw_tap_facebook.ads__targeting__flexible_spec__education_majors USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_13e2746de35b397701bfc397223b9a2f3014a3d5; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_13e2746de35b397701bfc397223b9a2f3014a3d5 ON raw_tap_facebook.ads_insights__video_p25_watched_actions USING btree (_sdc_source_key_campaign_id, _sdc_source_key_adset_id, _sdc_source_key_ad_id, _sdc_source_key_date_start, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_14aeadc669b231d4db9648b26c99c7b7e7f23046; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_14aeadc669b231d4db9648b26c99c7b7e7f23046 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexib__4 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_14c3db078775b5cd67da7e3871cc8f2aa0f7bb80; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_14c3db078775b5cd67da7e3871cc8f2aa0f7bb80 ON raw_tap_facebook.adsets__targeting__facebook_positions USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_157ca11ef58a775d6e853bf26004f3ff8f798662; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_157ca11ef58a775d6e853bf26004f3ff8f798662 ON raw_tap_facebook.ads_insights__video_10_sec_watched_actions USING btree (_sdc_source_key_campaign_id, _sdc_source_key_adset_id, _sdc_source_key_ad_id, _sdc_source_key_date_start, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_164d164719140b167efe01b43a5fb87ae00ff363; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_164d164719140b167efe01b43a5fb87ae00ff363 ON raw_tap_facebook.adcreative__image_crops__90x160 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_16749c7b3427356d595abe2f7fce021cf277b0ae; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_16749c7b3427356d595abe2f7fce021cf277b0ae ON raw_tap_facebook.ads__targeting__relationship_statuses USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_1711fcab9bfe28f2af1dfacb0fa201af87744bfa; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_1711fcab9bfe28f2af1dfacb0fa201af87744bfa ON raw_tap_facebook.adsets__targeting__exclusions__custom_audiences USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_174c9b3e59727d7732e821c22776f041a3f1d567; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_174c9b3e59727d7732e821c22776f041a3f1d567 ON raw_tap_facebook.ads__targeting__locales USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_184d003bc81defd44a63a4b48e6c6157c037e8d6; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_184d003bc81defd44a63a4b48e6c6157c037e8d6 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclud__7 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_189d001952a2179c86eeefccaf89a2de1b51036c; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_189d001952a2179c86eeefccaf89a2de1b51036c ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclud__8 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_1c5a1c2ffb71a5479332e90dc410204e9c4f2d12; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_1c5a1c2ffb71a5479332e90dc410204e9c4f2d12 ON raw_tap_facebook.adsets__targeting__interested_in USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_1c859b5cdc2c22e6ed13a9d57a266bddfd65a0fe; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_1c859b5cdc2c22e6ed13a9d57a266bddfd65a0fe ON raw_tap_facebook.ads__targeting__geo_locations__zips USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_1d6e8d02e1f94138ca76da52eb5b44df5a92eba0; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_1d6e8d02e1f94138ca76da52eb5b44df5a92eba0 ON raw_tap_facebook.adsets__targeting__exclusions__work_positions USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_1dbbfa8a7f2b42d987e20e7349bd4bf7647439eb; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_1dbbfa8a7f2b42d987e20e7349bd4bf7647439eb ON raw_tap_facebook.ads__conversion_specs__fb_pixel_event USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_1dd75ad29001ad2372f5ff85b62f5226376dd9d6; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_1dd75ad29001ad2372f5ff85b62f5226376dd9d6 ON raw_tap_facebook.adsets__targeting__moms USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_1e19a6eff46928f1d02a9fcd785eedb68d738609; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_1e19a6eff46928f1d02a9fcd785eedb68d738609 ON raw_tap_facebook.adcreative__object_story_spec__template_data__child_attachm__14 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_1e28dbb762a4fea1f3ab19a317912e724f47bcaf; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_1e28dbb762a4fea1f3ab19a317912e724f47bcaf ON raw_tap_facebook.adsets__targeting__flexible_spec__custom_audiences USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_1f3a156224d1e2aa0b0e2a435fe122dea2b2e7bf; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_1f3a156224d1e2aa0b0e2a435fe122dea2b2e7bf ON raw_tap_facebook.adsets__targeting__geo_locations__geo_markets USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_20f8e99ff9ae29a11521a111eb4c5e9f3222f702; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_20f8e99ff9ae29a11521a111eb4c5e9f3222f702 ON raw_tap_facebook.adsets__targeting__relationship_statuses USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_21940f45afbc168a90bf4161b4b71b78d6edea90; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_21940f45afbc168a90bf4161b4b71b78d6edea90 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexi__13 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_21bf61c8791d4ffb35740af0221fe16c0b143cbc; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_21bf61c8791d4ffb35740af0221fe16c0b143cbc ON raw_tap_facebook.adcreative__object_story_spec__link_data__child_attachments___2 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id, _sdc_level_2_id);
+
+
+--
+-- Name: tp_222e7a8b8bfe0c0714c8b976e60b095c79d81788; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_222e7a8b8bfe0c0714c8b976e60b095c79d81788 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__user_devi USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_22444c4ed0c34ed6b2e14fbbac07ffb8777e3a87; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_22444c4ed0c34ed6b2e14fbbac07ffb8777e3a87 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclus__5 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_23e8804f1c9888bbd5139493265d153b7cedccf0; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_23e8804f1c9888bbd5139493265d153b7cedccf0 ON raw_tap_facebook.ads__targeting__work_positions USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_241bc9ddd8ebdff766ad5b2d80ca6c834afdaf28; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_241bc9ddd8ebdff766ad5b2d80ca6c834afdaf28 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclu__13 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_25b1b660cd990376f0b4632b7d3379ef10b8f62c; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_25b1b660cd990376f0b4632b7d3379ef10b8f62c ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclus__3 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_26b7139ea5369de7e42be4dfd878cb63477c8d8d; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_26b7139ea5369de7e42be4dfd878cb63477c8d8d ON raw_tap_facebook.ads__targeting__exclusions__family_statuses USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_2782084eb80178be28abaf8139681f886fdf8587; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_2782084eb80178be28abaf8139681f886fdf8587 ON raw_tap_facebook.ads__targeting__excluded_geo_locations__geo_markets USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_2943723a059e6390bf80926b359cffed3cb905b0; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_2943723a059e6390bf80926b359cffed3cb905b0 ON raw_tap_facebook.adcreative__object_story_spec__link_data__child_attachments___7 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_295871241187a63bef775a716b0856a48cb6ff18; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_295871241187a63bef775a716b0856a48cb6ff18 ON raw_tap_facebook.adsets__targeting__audience_network_positions USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_2ae2e7a5b64253fdc2a8ca06e7f5add1271a5060; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_2ae2e7a5b64253fdc2a8ca06e7f5add1271a5060 ON raw_tap_facebook.ads__conversion_specs__question_creator USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_2aec8d3fd0699f2508389360fb6ba68e4a5350dd; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_2aec8d3fd0699f2508389360fb6ba68e4a5350dd ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclu__14 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_2b1f2cc7b78643adcef06410ba4e811efb986689; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_2b1f2cc7b78643adcef06410ba4e811efb986689 ON raw_tap_facebook.ads__tracking_specs__offsite_pixel USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_2bec6ac91f8ff0c08a9a0452f28b7929500ae611; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_2bec6ac91f8ff0c08a9a0452f28b7929500ae611 ON raw_tap_facebook.adcreative__image_crops__191x100 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_2c422bda8eb46d55023b4d702da85529daa960aa; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_2c422bda8eb46d55023b4d702da85529daa960aa ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__work_posi USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_2c4c987eb11c87e326e4d5c2aa65ff5edeb5ccf7; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_2c4c987eb11c87e326e4d5c2aa65ff5edeb5ccf7 ON raw_tap_facebook.adsets__targeting__flexible_spec__excluded_custom_audiences USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_2c9855c1354d92b0a5af590a0bf00750925d6e8a; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_2c9855c1354d92b0a5af590a0bf00750925d6e8a ON raw_tap_facebook.ads__targeting__exclusions__interests USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_2cbce7962a44c51dd60262795b85e1bbafd654f5; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_2cbce7962a44c51dd60262795b85e1bbafd654f5 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__geo_lo__5 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_2cd95e8346f9f1799eed7d40cbc0221d4a97bf0d; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_2cd95e8346f9f1799eed7d40cbc0221d4a97bf0d ON raw_tap_facebook.adsets__targeting__exclusions__friends_of_connections USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_2d6b3f9f7b2932eb4ec6b30a7f583dd838cf340d; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_2d6b3f9f7b2932eb4ec6b30a7f583dd838cf340d ON raw_tap_facebook.adsets__targeting__home_ownership USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_2e3d72309bfd5544a2a6abb0710d8baa2e083af6; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_2e3d72309bfd5544a2a6abb0710d8baa2e083af6 ON raw_tap_facebook.adsets__targeting__user_os USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_2eabf5935477c56c6d2ae3a61c9b56ff294b51c6; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_2eabf5935477c56c6d2ae3a61c9b56ff294b51c6 ON raw_tap_facebook.adsets__targeting__work_positions USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_2ec87c1815db3f53fb02e0d6a35720e641ea3c17; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_2ec87c1815db3f53fb02e0d6a35720e641ea3c17 ON raw_tap_facebook.adcreative__image_crops__100x72 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_2efdd8b9ae94094fd5026cf5fdc051a3f1b94eb2; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_2efdd8b9ae94094fd5026cf5fdc051a3f1b94eb2 ON raw_tap_facebook.adsets__targeting__exclusions__politics USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_2f48ceee68d5dbe19dd1904602344bc13ea938df; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_2f48ceee68d5dbe19dd1904602344bc13ea938df ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__behaviors USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_3099c446259179882c8f9590c6352b64ba146318; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_3099c446259179882c8f9590c6352b64ba146318 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclu__12 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_31113889901ad2ca951b402dadca2244097fa670; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_31113889901ad2ca951b402dadca2244097fa670 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexi__21 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_316171a6d5c8b66fc0408355bf4857763333ceed; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_316171a6d5c8b66fc0408355bf4857763333ceed ON raw_tap_facebook.adcreative__object_story_spec__template_data__child_attachme__8 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id, _sdc_level_2_id);
+
+
+--
+-- Name: tp_3164fbb5d09e7ffd783067411ee4ccd0bf96ac4a; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_3164fbb5d09e7ffd783067411ee4ccd0bf96ac4a ON raw_tap_facebook.ads__tracking_specs__question_creator USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_3206b72d37b31f5f2c5280ef0885c52852415d5e; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_3206b72d37b31f5f2c5280ef0885c52852415d5e ON raw_tap_facebook.ads__tracking_specs__post_wall USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_32283cc1034bafd014ee5eb44ab797838495f081; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_32283cc1034bafd014ee5eb44ab797838495f081 ON raw_tap_facebook.ads__conversion_specs__post_object_wall USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_328a3343721c16d8e191d2d1616ff64f2c56ee33; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_328a3343721c16d8e191d2d1616ff64f2c56ee33 ON raw_tap_facebook.ads__targeting__generation USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_329bb3b62eebf7a8d986671fd3bb58cdded05f4d; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_329bb3b62eebf7a8d986671fd3bb58cdded05f4d ON raw_tap_facebook.ads__conversion_specs__offer USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_329d71e489745fedbb94700a677a67fd3579a03a; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_329d71e489745fedbb94700a677a67fd3579a03a ON raw_tap_facebook.adsets__targeting__geo_locations__custom_locations USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_32d1f26d53cc4b30d640b37c61dca89391146458; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_32d1f26d53cc4b30d640b37c61dca89391146458 ON raw_tap_facebook.adcreative__object_story_spec__link_data__app_link_spec__ios USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_33d260195b90c1f52554c3687c3b452f5bb3fdc2; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_33d260195b90c1f52554c3687c3b452f5bb3fdc2 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclus__4 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_343c7bee2aa49b6123138b204afc866cae4e48a5; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_343c7bee2aa49b6123138b204afc866cae4e48a5 ON raw_tap_facebook.adsets__targeting__user_device USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_34805d37a234e85acf3de1ea28a5b77dde337d2d; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_34805d37a234e85acf3de1ea28a5b77dde337d2d ON raw_tap_facebook.adcreative__object_story_spec__template_data__child_attachme__7 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_34bc06dd03ac09eefb77d120b05952a68d3fea08; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_34bc06dd03ac09eefb77d120b05952a68d3fea08 ON raw_tap_facebook.ads__targeting__excluded_geo_locations__country_groups USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_34fc0a687bcaf54c634cba11fa54e9f4c7346cae; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_34fc0a687bcaf54c634cba11fa54e9f4c7346cae ON raw_tap_facebook.ads__conversion_specs__conversion_id USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_358e02600170b8fdd36c402a2302b152b6d8c4e2; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_358e02600170b8fdd36c402a2302b152b6d8c4e2 ON raw_tap_facebook.ads__tracking_specs USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_3802d93cd8d1915f9abb45a8cb14b5e20ec234aa; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_3802d93cd8d1915f9abb45a8cb14b5e20ec234aa ON raw_tap_facebook.ads_insights__actions USING btree (_sdc_source_key_campaign_id, _sdc_source_key_adset_id, _sdc_source_key_ad_id, _sdc_source_key_date_start, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_3824afdebadcac4c023f98c41083a7def9c98c85; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_3824afdebadcac4c023f98c41083a7def9c98c85 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclu__10 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_3b7fae6e00d30cef9647a2189f81232cb941635c; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_3b7fae6e00d30cef9647a2189f81232cb941635c ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclus__6 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_3c52754aea03c35a4e24c1c50a309fb26b7b3080; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_3c52754aea03c35a4e24c1c50a309fb26b7b3080 ON raw_tap_facebook.adcreative__object_story_spec__template_data__child_attachme__3 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_3c8008b2abf47f82655e545381456de087d06a62; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_3c8008b2abf47f82655e545381456de087d06a62 ON raw_tap_facebook.ads__targeting__family_statuses USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_3d737663bd707df75c65e702aaa4f723132038ad; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_3d737663bd707df75c65e702aaa4f723132038ad ON raw_tap_facebook.adsets__targeting__user_adclusters USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_3d7d90141c61053c849353e15011464c688540bf; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_3d7d90141c61053c849353e15011464c688540bf ON raw_tap_facebook.ads_insights USING btree (campaign_id, adset_id, ad_id, date_start, _sdc_sequence);
+
+
+--
+-- Name: tp_3da50d3a79f873e20ba6503531298422a20f1e73; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_3da50d3a79f873e20ba6503531298422a20f1e73 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__moms USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_3e0275b6cb5e7e1b570e12f55d01cf53e43178bc; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_3e0275b6cb5e7e1b570e12f55d01cf53e43178bc ON raw_tap_facebook.ads__conversion_specs__page USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_3e2e1847d0304e2509648233cdac1201aed9afc8; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_3e2e1847d0304e2509648233cdac1201aed9afc8 ON raw_tap_facebook.adsets__targeting__excluded_geo_locations__geo_markets USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_3fdac2f49ec28e1c21c382cf503a309ee27f761e; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_3fdac2f49ec28e1c21c382cf503a309ee27f761e ON raw_tap_facebook.adcreative__object_story_spec__link_data__app_link_spec__ipad USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_3fdcef2ebf11ddfb5fc2a7f43d9c09195c2cdd24; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_3fdcef2ebf11ddfb5fc2a7f43d9c09195c2cdd24 ON raw_tap_facebook.adcreative__object_story_spec__template_data__child_attachm__12 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id, _sdc_level_2_id);
+
+
+--
+-- Name: tp_40fcab7a3ad65657192c9201cdb6572b5b9724d5; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_40fcab7a3ad65657192c9201cdb6572b5b9724d5 ON raw_tap_facebook.ads__targeting__excluded_user_device USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_41c5e32924403f5e74413e873ce16149858293bf; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_41c5e32924403f5e74413e873ce16149858293bf ON raw_tap_facebook.adsets__targeting__office_type USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_425b90fc92422a98b45aad4e499a988a3243b6ef; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_425b90fc92422a98b45aad4e499a988a3243b6ef ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclus__2 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_42a2bb7e72ee71e5db1a10dabc1265a48c7cc785; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_42a2bb7e72ee71e5db1a10dabc1265a48c7cc785 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclu__16 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_437697522e5a1bad74aeb00a0641422cbe5876ad; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_437697522e5a1bad74aeb00a0641422cbe5876ad ON raw_tap_facebook.adcreative__object_story_spec__template_data__image_crops__100x USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_43804704d95a8378f408906ccd3192519ac41fc5; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_43804704d95a8378f408906ccd3192519ac41fc5 ON raw_tap_facebook.adsets__targeting__home_type USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_44418b1b5cf178dda82f0f0c089931bb7ae2422b; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_44418b1b5cf178dda82f0f0c089931bb7ae2422b ON raw_tap_facebook.adcreative__object_story_spec__link_data__child_attachments___5 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_447a0da25fada846923be7785657647aaf430c11; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_447a0da25fada846923be7785657647aaf430c11 ON raw_tap_facebook.adsets__targeting__excluded_geo_locations__regions USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_4584ec4ce082fa266d26cb98873fd8d079b95ebb; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_4584ec4ce082fa266d26cb98873fd8d079b95ebb ON raw_tap_facebook.adsets__targeting__excluded_geo_locations__cities USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_45a33ca7ec13702ae2c202b2aac56a1bb47eef7d; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_45a33ca7ec13702ae2c202b2aac56a1bb47eef7d ON raw_tap_facebook.adcreative__object_story_spec__template_data__child_attachm__10 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id, _sdc_level_2_id);
+
+
+--
+-- Name: tp_4655affb5de02037fa85b4a90374e36f0be2bd71; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_4655affb5de02037fa85b4a90374e36f0be2bd71 ON raw_tap_facebook.ads__targeting__exclusions__politics USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_46831ad1b012f631b3068bbd5d52334d4f316a1d; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_46831ad1b012f631b3068bbd5d52334d4f316a1d ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexib__7 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_49293554ba3e61b77631a8e7712e11d6fad5f3dd; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_49293554ba3e61b77631a8e7712e11d6fad5f3dd ON raw_tap_facebook.ads__conversion_specs__dataset USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_4b2aecec7b0882ce5f08c33f515d836183c6a47c; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_4b2aecec7b0882ce5f08c33f515d836183c6a47c ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__geo_lo__3 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_4cbf48ac3e01fbe634359f7c01262ae437b1a5b6; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_4cbf48ac3e01fbe634359f7c01262ae437b1a5b6 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclud__9 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_4d4fa561679d3714ca8cf15e6f72476731c46a85; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_4d4fa561679d3714ca8cf15e6f72476731c46a85 ON raw_tap_facebook.ads__targeting__audience_network_positions USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_4da3e02f927fa8ac41d2928fa4930781499c599c; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_4da3e02f927fa8ac41d2928fa4930781499c599c ON raw_tap_facebook.adsets__targeting__flexible_spec USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_4ef79c79ab57c881f792e980c80d292973250a0a; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_4ef79c79ab57c881f792e980c80d292973250a0a ON raw_tap_facebook.adsets__targeting__flexible_spec__household_composition USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_4f9d0ce3e41ef49c34298b617b6c301aaf67ce9e; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_4f9d0ce3e41ef49c34298b617b6c301aaf67ce9e ON raw_tap_facebook.ads__targeting__flexible_spec__family_statuses USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_5052276c81474177be6f807a7f5c25796cbfbc96; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_5052276c81474177be6f807a7f5c25796cbfbc96 ON raw_tap_facebook.ads__targeting__geo_locations__geo_markets USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_5093d2fdf405d9fa0a6e8ab4f6890881ca8c334d; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_5093d2fdf405d9fa0a6e8ab4f6890881ca8c334d ON raw_tap_facebook.ads__targeting__user_adclusters USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_50b804b1024a5ae286ca29bcfc28e2853e788f93; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_50b804b1024a5ae286ca29bcfc28e2853e788f93 ON raw_tap_facebook.adcreative__image_crops__400x150 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_5103dcb93ab2c7c5cbbb4a464ee170bf4a3590da; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_5103dcb93ab2c7c5cbbb4a464ee170bf4a3590da ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__geo_lo__4 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_510b2ebdd6e4e73d31ca5cec2e37152cc7f71e75; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_510b2ebdd6e4e73d31ca5cec2e37152cc7f71e75 ON raw_tap_facebook.ads__targeting__flexible_spec__excluded_custom_audiences USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_529672fa17a3dd58ca1b70fbd6362e170b8fbabc; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_529672fa17a3dd58ca1b70fbd6362e170b8fbabc ON raw_tap_facebook.ads__tracking_specs__page_parent USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_53be362d523515bdbd55f5eee322356c5d79e690; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_53be362d523515bdbd55f5eee322356c5d79e690 ON raw_tap_facebook.adcreative__object_story_spec__link_data__image_crops__100x100_ USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_55493866de3d1a04c64885d9f591539fe8c2afa8; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_55493866de3d1a04c64885d9f591539fe8c2afa8 ON raw_tap_facebook.adsets__targeting__exclusions__education_majors USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_56e2a9bda002582c93142a44f48c09849162a4b8; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_56e2a9bda002582c93142a44f48c09849162a4b8 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__geo_lo__7 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_574f19e35d759ca2b5e61a94141fb7f39a3d8e28; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_574f19e35d759ca2b5e61a94141fb7f39a3d8e28 ON raw_tap_facebook.ads__targeting__excluded_geo_locations__custom_locations USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_58c545d362e51274714741e61e219895b1a293ff; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_58c545d362e51274714741e61e219895b1a293ff ON raw_tap_facebook.adsets__targeting__flexible_spec__family_statuses USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_59abb5ebd520576d5345b612ff50e14cb4930b5a; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_59abb5ebd520576d5345b612ff50e14cb4930b5a ON raw_tap_facebook.adsets__targeting__exclusions__excluded_connections USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_5add2421e93e0abdcf69d4d0b8ef78e5292e4257; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_5add2421e93e0abdcf69d4d0b8ef78e5292e4257 ON raw_tap_facebook.ads__tracking_specs__response USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_5b5eac21514ca4e056d7a19ef19ddb4c4a38959f; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_5b5eac21514ca4e056d7a19ef19ddb4c4a38959f ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__geo_lo__6 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_5b68f32848eeb55e1ccc6f23f12cc7e962ad85c3; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_5b68f32848eeb55e1ccc6f23f12cc7e962ad85c3 ON raw_tap_facebook.adsets__targeting__exclusions__moms USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_5bade832f8dd4ad93d958410bf775019a17cf630; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_5bade832f8dd4ad93d958410bf775019a17cf630 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexib__1 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_5bbe470af59ada372ed81e457ca7ff1f8596387b; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_5bbe470af59ada372ed81e457ca7ff1f8596387b ON raw_tap_facebook.ads__targeting__flexible_spec__home_ownership USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_5c578a692b4583685d0c02e2362827bf43397fbf; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_5c578a692b4583685d0c02e2362827bf43397fbf ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexib__8 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_5c74c6e55c4268af2774f8ff053eacbaccdd60b3; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_5c74c6e55c4268af2774f8ff053eacbaccdd60b3 ON raw_tap_facebook.ads__tracking_specs__object USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_5c957246b255ab0ff0144ccf4f0a29d9f9cb5097; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_5c957246b255ab0ff0144ccf4f0a29d9f9cb5097 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__income USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_5ce69254fc85daf7115502fe731167458a0b54f5; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_5ce69254fc85daf7115502fe731167458a0b54f5 ON raw_tap_facebook.ads_insights__video_p100_watched_actions USING btree (_sdc_source_key_campaign_id, _sdc_source_key_adset_id, _sdc_source_key_ad_id, _sdc_source_key_date_start, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_5e5c68de8f9abe64704d1975f97692c20c47e685; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_5e5c68de8f9abe64704d1975f97692c20c47e685 ON raw_tap_facebook.adcreative__object_story_spec__link_data__child_attachments__11 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_5e741e149902cbd159a31180dab643306974bcdb; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_5e741e149902cbd159a31180dab643306974bcdb ON raw_tap_facebook.adcreative__object_story_spec__link_data__app_link_spec__iphone USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_5e86efac30bf350c21a28c4183175c5ec82ae7a3; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_5e86efac30bf350c21a28c4183175c5ec82ae7a3 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__interests USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_5e8f91a94c6f6557f6529db371a35fc602519d3f; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_5e8f91a94c6f6557f6529db371a35fc602519d3f ON raw_tap_facebook.adsets__targeting__exclusions__life_events USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_5ec1a5d9ae66bd10c404c604f30c4dbe43e8d194; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_5ec1a5d9ae66bd10c404c604f30c4dbe43e8d194 ON raw_tap_facebook.ads__tracking_specs__offer USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_5f4801eb36eca259068716cca6bff3963f4a1977; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_5f4801eb36eca259068716cca6bff3963f4a1977 ON raw_tap_facebook.ads__targeting__excluded_connections USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_614570494c581b530df46d32ff21c7ff94433745; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_614570494c581b530df46d32ff21c7ff94433745 ON raw_tap_facebook.adcreative__object_story_spec__template_data__image_crops__4__3 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_6148186453d99da18de94e80189cc0b5d724cd42; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_6148186453d99da18de94e80189cc0b5d724cd42 ON raw_tap_facebook.adcreative__object_story_spec__link_data__image_crops__400x150 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_615cdf483677f82dcb579c21908f912e613d3d7f; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_615cdf483677f82dcb579c21908f912e613d3d7f ON raw_tap_facebook.adcreative__object_story_spec__template_data__image_crops__4__2 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_61de34c7de73c9f8fb551457a0c0e4e2c36a0a0d; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_61de34c7de73c9f8fb551457a0c0e4e2c36a0a0d ON raw_tap_facebook.ads__targeting__interested_in USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_6295d5fe95675a106fe8a7f0d035ba3d9a0b30fd; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_6295d5fe95675a106fe8a7f0d035ba3d9a0b30fd ON raw_tap_facebook.adcreative__adlabels USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_63165803c971ee96d74248b08528031b9e0ad013; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_63165803c971ee96d74248b08528031b9e0ad013 ON raw_tap_facebook.ads__targeting__custom_audiences USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_63793e228360072859f0761791796dfd63bfac2a; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_63793e228360072859f0761791796dfd63bfac2a ON raw_tap_facebook.ads__recommendations USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_66491e2ac20c34c0440133e37e1caaab07c341f2; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_66491e2ac20c34c0440133e37e1caaab07c341f2 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclu__24 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_670038e9e536a7f9eae11974beb52a078f443a52; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_670038e9e536a7f9eae11974beb52a078f443a52 ON raw_tap_facebook.adsets__targeting__net_worth USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_672501c270ce0b3c7fc1d5d36ab0a155be375af0; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_672501c270ce0b3c7fc1d5d36ab0a155be375af0 ON raw_tap_facebook.adsets__targeting__geo_locations__country_groups USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_68644d2577333de3cd8f385fa295488b09f7d9a1; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_68644d2577333de3cd8f385fa295488b09f7d9a1 ON raw_tap_facebook.ads__tracking_specs__post_object USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_68fdfcafed071521f3bbd4225b06f489b1619502; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_68fdfcafed071521f3bbd4225b06f489b1619502 ON raw_tap_facebook.ads__conversion_specs__post_object USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_6953acc16426885535dbf0418cf787b7e8f7ecd7; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_6953acc16426885535dbf0418cf787b7e8f7ecd7 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__home_owne USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_69ad11e22319bf838a394c3b4fc73d560f55d971; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_69ad11e22319bf838a394c3b4fc73d560f55d971 ON raw_tap_facebook.adcreative__object_story_spec__template_data__app_link_spec__io USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_6a075a52fdfc1c3f1030996da2d945d047552f90; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_6a075a52fdfc1c3f1030996da2d945d047552f90 ON raw_tap_facebook.ads__targeting__exclusions__household_composition USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_6aea914e6842b8d56166366059af147fa0d658c8; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_6aea914e6842b8d56166366059af147fa0d658c8 ON raw_tap_facebook.adsets__targeting__geo_locations__regions USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_6afaec2b68eb7d41a988a340747f28aaa005854e; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_6afaec2b68eb7d41a988a340747f28aaa005854e ON raw_tap_facebook.adsets__targeting__flexible_spec__relationship_statuses USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_6b4b38ecc885c10cf328ec2a098b6a4987cf24a0; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_6b4b38ecc885c10cf328ec2a098b6a4987cf24a0 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__home_type USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_6b9488f2c4ce102739c4cb84f564c3f07c3b4083; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_6b9488f2c4ce102739c4cb84f564c3f07c3b4083 ON raw_tap_facebook.ads__conversion_specs__offsite_pixel USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_6b9b04d2c08b56419328c3f9032034edf498b207; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_6b9b04d2c08b56419328c3f9032034edf498b207 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__audience_ USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_6bac2d79c869620c46cee58f8b65efecaf2f3cfc; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_6bac2d79c869620c46cee58f8b65efecaf2f3cfc ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__device_pl USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_6bf1aad9f7640aab0421fd84dd991c5ae5ade81d; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_6bf1aad9f7640aab0421fd84dd991c5ae5ade81d ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__locales USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_6c355018e5151d0a90f2bfcb1a1e8bd6138a5834; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_6c355018e5151d0a90f2bfcb1a1e8bd6138a5834 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclu__17 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_6c5d0b1ba9e67df84902d9dffa176a501efc0538; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_6c5d0b1ba9e67df84902d9dffa176a501efc0538 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexib__2 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_6cf9d435259404895e7b3154ccaee4897ad1c4e4; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_6cf9d435259404895e7b3154ccaee4897ad1c4e4 ON raw_tap_facebook.adcreative__image_crops__191x100___sdc_value USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_6d9cd34173c48b83103d56e62e6c022b78b53237; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_6d9cd34173c48b83103d56e62e6c022b78b53237 ON raw_tap_facebook.adsets__targeting__flexible_spec__friends_of_connections USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_6e624622376fb9209821620f608b0fb29f1bae24; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_6e624622376fb9209821620f608b0fb29f1bae24 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclu__19 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_6f032756de758efbdab6a9515948ef6023cff84d; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_6f032756de758efbdab6a9515948ef6023cff84d ON raw_tap_facebook.ads__targeting__excluded_geo_locations__zips USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_6f0d111dcfbc589fc9d1f07779a9ca8bdbc1f345; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_6f0d111dcfbc589fc9d1f07779a9ca8bdbc1f345 ON raw_tap_facebook.adcreative__object_story_spec__template_data__image_crops__1__4 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_6f51e8f3c09a5a7606540105a929568a462bbe07; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_6f51e8f3c09a5a7606540105a929568a462bbe07 ON raw_tap_facebook.adcreative__object_story_spec__template_data__app_link_spec__ip USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_700ecd0e8b641b56bb966a724459e94ceb7b461c; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_700ecd0e8b641b56bb966a724459e94ceb7b461c ON raw_tap_facebook.adcreative__object_story_spec__link_data__image_crops__100x100 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_706cb2df311b0036e0099d50e1216f5746da048b; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_706cb2df311b0036e0099d50e1216f5746da048b ON raw_tap_facebook.campaigns__adlabels USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_708e09f2a82203de5e3b3ec1624f0abfa6c21cb4; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_708e09f2a82203de5e3b3ec1624f0abfa6c21cb4 ON raw_tap_facebook.adcreative__object_story_spec__link_data__image_crops__400x500 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_71394f30f8ca1d2c84577583c1019e74fd641375; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_71394f30f8ca1d2c84577583c1019e74fd641375 ON raw_tap_facebook.ads__tracking_specs__question USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_713b04b62f54db18fe9ef827a8dc5b3770b535d7; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_713b04b62f54db18fe9ef827a8dc5b3770b535d7 ON raw_tap_facebook.ads_insights__video_30_sec_watched_actions USING btree (_sdc_source_key_campaign_id, _sdc_source_key_adset_id, _sdc_source_key_ad_id, _sdc_source_key_date_start, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_71d49d95d2ace3e8b90f5c7b4a09c4bf82c0c994; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_71d49d95d2ace3e8b90f5c7b4a09c4bf82c0c994 ON raw_tap_facebook.adsets__targeting__geo_locations__zips USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_7222ec990744414427f2f79bca569f8380aed9c5; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_7222ec990744414427f2f79bca569f8380aed9c5 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__politics USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_727eee733e07bbbc27bb8fde1f851088e4354076; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_727eee733e07bbbc27bb8fde1f851088e4354076 ON raw_tap_facebook.adcreative__image_crops__400x500___sdc_value USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_73539480c41b176c8b88845679ed6f73134ae3fa; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_73539480c41b176c8b88845679ed6f73134ae3fa ON raw_tap_facebook.adcreative__object_story_spec__link_data__child_attachments___6 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id, _sdc_level_2_id);
+
+
+--
+-- Name: tp_73b32cdfd6154f65343a159307f6dcf6e48d979e; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_73b32cdfd6154f65343a159307f6dcf6e48d979e ON raw_tap_facebook.adsets__targeting__exclusions__relationship_statuses USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_73f3f462882e5529d2a89c52e12df1e29bc67a7b; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_73f3f462882e5529d2a89c52e12df1e29bc67a7b ON raw_tap_facebook.adcreative__image_crops__100x72___sdc_value USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_74f7d34d7d97213e53715d05253f49ef353b77a3; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_74f7d34d7d97213e53715d05253f49ef353b77a3 ON raw_tap_facebook.adcreative__object_story_spec__template_data__image_crops__191x USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_751ed57c971290b04f639cb55fef4c1983aaa5dd; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_751ed57c971290b04f639cb55fef4c1983aaa5dd ON raw_tap_facebook.ads__targeting__exclusions__user_adclusters USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_75649ff771da749560afd06feef93e38457774ec; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_75649ff771da749560afd06feef93e38457774ec ON raw_tap_facebook.adcreative__object_story_spec__link_data__child_attachments__im USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id, _sdc_level_2_id);
+
+
+--
+-- Name: tp_756585c1c25545a69cddf484febae5567ff450ed; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_756585c1c25545a69cddf484febae5567ff450ed ON raw_tap_facebook.adsets__targeting__flexible_spec__net_worth USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_7595a134618439864ffb85bb45a4f0e58d7711d1; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_7595a134618439864ffb85bb45a4f0e58d7711d1 ON raw_tap_facebook.adcreative__object_story_spec__template_data__image_crops__4__1 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_75c17e5f86010f7dc6f4f64fbe336075679769ac; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_75c17e5f86010f7dc6f4f64fbe336075679769ac ON raw_tap_facebook.adcreative__object_story_spec__link_data__image_crops__191x100_ USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_75d7e03d3b60e9159ee2c5be9ef404d35db71066; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_75d7e03d3b60e9159ee2c5be9ef404d35db71066 ON raw_tap_facebook.adsets__targeting__exclusions__connections USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_765c13109e9c4fd628011bc3600934c4e238123e; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_765c13109e9c4fd628011bc3600934c4e238123e ON raw_tap_facebook.ads__tracking_specs__event USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_774df2b24965462ebbb1df9814eec7306d02fe33; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_774df2b24965462ebbb1df9814eec7306d02fe33 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexi__17 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_785d527d5c492dca4d76b3b61748ef022c684e3e; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_785d527d5c492dca4d76b3b61748ef022c684e3e ON raw_tap_facebook.ads__tracking_specs__fb_pixel_event USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_7892d806ff6016220a21930d5cb01e5000c74f39; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_7892d806ff6016220a21930d5cb01e5000c74f39 ON raw_tap_facebook.adsets__targeting__flexible_spec__home_type USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_78b98a9b06637bde07647076bd62169ceeef6b97; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_78b98a9b06637bde07647076bd62169ceeef6b97 ON raw_tap_facebook.adcreative__object_story_spec__link_data__app_link_spec__androi USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_7902d25fce31d577ce27047238ba5487297fd545; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_7902d25fce31d577ce27047238ba5487297fd545 ON raw_tap_facebook.adcreative__object_story_spec__link_data__image_crops__100x72 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_7956825f603eaf27590d5b5c7a62492300cb6876; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_7956825f603eaf27590d5b5c7a62492300cb6876 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexi__22 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_796cc18557b7d9275bd29ecd650570275f846198; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_796cc18557b7d9275bd29ecd650570275f846198 ON raw_tap_facebook.ads__targeting__exclusions__moms USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_7a713c7389c37181dc1d32a6227b44a282f6d69e; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_7a713c7389c37181dc1d32a6227b44a282f6d69e ON raw_tap_facebook.ads__targeting__education_statuses USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_7a9c0e9549d0f8e6386b37360e96c75bcf4ae2f6; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_7a9c0e9549d0f8e6386b37360e96c75bcf4ae2f6 ON raw_tap_facebook.ads__targeting__income USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_7aa132476f39260c8d1073301d4292ab5579cb1b; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_7aa132476f39260c8d1073301d4292ab5579cb1b ON raw_tap_facebook.adcreative__object_story_spec__link_data__image_crops__600x360 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_7afb0ef1f456739ed67aa68418edd9b280ff8441; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_7afb0ef1f456739ed67aa68418edd9b280ff8441 ON raw_tap_facebook.ads__targeting__user_os USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_7b39114eb7064a1ea67a354cd431702e5e67642c; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_7b39114eb7064a1ea67a354cd431702e5e67642c ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclus__7 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_7b8e08f6d22fe712e24a2521e7e337fbee453c2f; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_7b8e08f6d22fe712e24a2521e7e337fbee453c2f ON raw_tap_facebook.ads__tracking_specs__action_type USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_7b99f0372ec92d5ae6b6183e3b4e358602e15b5b; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_7b99f0372ec92d5ae6b6183e3b4e358602e15b5b ON raw_tap_facebook.ads_insights__action_values USING btree (_sdc_source_key_campaign_id, _sdc_source_key_adset_id, _sdc_source_key_ad_id, _sdc_source_key_date_start, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_7ba6e3b3b06d7588dccefb8ec0211c0016efb685; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_7ba6e3b3b06d7588dccefb8ec0211c0016efb685 ON raw_tap_facebook.adsets__targeting__geo_locations__countries USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_7c1b17867d20212ebe63852d9dce2ad57c090bc7; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_7c1b17867d20212ebe63852d9dce2ad57c090bc7 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexi__18 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_7d02bcfab20db2f707a1a6f75e08572fdfbcc867; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_7d02bcfab20db2f707a1a6f75e08572fdfbcc867 ON raw_tap_facebook.adsets__targeting__flexible_spec__work_positions USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_7d4577cf2254b368bc095abc29b08c601497b215; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_7d4577cf2254b368bc095abc29b08c601497b215 ON raw_tap_facebook.ads_insights__video_p75_watched_actions USING btree (_sdc_source_key_campaign_id, _sdc_source_key_adset_id, _sdc_source_key_ad_id, _sdc_source_key_date_start, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_7e4d05b6c170986e478b1e4771953c2d2e7e46b6; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_7e4d05b6c170986e478b1e4771953c2d2e7e46b6 ON raw_tap_facebook.adcreative__object_story_spec__link_data__child_attachments__12 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id, _sdc_level_2_id);
+
+
+--
+-- Name: tp_7e4fda7e4266e5898d341d428bae513e5002b0bd; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_7e4fda7e4266e5898d341d428bae513e5002b0bd ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__net_worth USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_7e5db144b06208c2cdeb07a33d373bb60b37180a; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_7e5db144b06208c2cdeb07a33d373bb60b37180a ON raw_tap_facebook.adcreative__object_story_spec__template_data__child_attachments USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id, _sdc_level_2_id);
+
+
+--
+-- Name: tp_7ee2a7a75a5b125e8a9b81f80d4f0384dd124cd5; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_7ee2a7a75a5b125e8a9b81f80d4f0384dd124cd5 ON raw_tap_facebook.adsets__targeting__exclusions__generation USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_7f64fefd67ec7b248b97d1f1c76cb3ba696183ac; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_7f64fefd67ec7b248b97d1f1c76cb3ba696183ac ON raw_tap_facebook.adsets__targeting__exclusions__excluded_custom_audiences USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_811bd4b1036139ff65b9d8a035de4239ef4503e4; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_811bd4b1036139ff65b9d8a035de4239ef4503e4 ON raw_tap_facebook.adsets__targeting__excluded_geo_locations__country_groups USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_81af1f3dda026302cd73a90dbdb99b458c66ceb2; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_81af1f3dda026302cd73a90dbdb99b458c66ceb2 ON raw_tap_facebook.ads__adlabels USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_81afa70273790d477e13c277d834a89ed89648d3; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_81afa70273790d477e13c277d834a89ed89648d3 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexib__6 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_830e921610a34a995b557f3c657cd33f0d277e19; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_830e921610a34a995b557f3c657cd33f0d277e19 ON raw_tap_facebook.ads__targeting__flexible_spec__work_employers USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_837a812b94e3504ab80245862ac807de403ce3ac; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_837a812b94e3504ab80245862ac807de403ce3ac ON raw_tap_facebook.adcreative__object_story_spec__link_data__child_attachments__10 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id, _sdc_level_2_id);
+
+
+--
+-- Name: tp_842b56bc5ef328d30dc5200054d1acb6f64ddc6f; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_842b56bc5ef328d30dc5200054d1acb6f64ddc6f ON raw_tap_facebook.adsets__targeting__excluded_user_device USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_84b8fb97b4694047f722db208bcaf0133ed9b5d7; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_84b8fb97b4694047f722db208bcaf0133ed9b5d7 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexib__9 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_850adbcf10383ea0619233e7e59eab1aad6fd3d9; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_850adbcf10383ea0619233e7e59eab1aad6fd3d9 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexi__11 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_85807d21b5d9395dd70fcd0bab522e807607317d; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_85807d21b5d9395dd70fcd0bab522e807607317d ON raw_tap_facebook.ads__targeting__exclusions__income USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_862185860331497bfa9018b7806276547179fb88; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_862185860331497bfa9018b7806276547179fb88 ON raw_tap_facebook.ads__conversion_specs__page_parent USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_86e467330875d736e023642a451b8049c4048566; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_86e467330875d736e023642a451b8049c4048566 ON raw_tap_facebook.adcreative__object_story_spec__link_data__child_attachments__13 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_8730269daa930f867c31c65153a23f74ed4258da; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_8730269daa930f867c31c65153a23f74ed4258da ON raw_tap_facebook.adsets__targeting__device_platforms USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_880861e32699876e8c9324b1216580e676cdc911; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_880861e32699876e8c9324b1216580e676cdc911 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclus__9 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_885052b23f2e61fdd3fb6592e0a8e219d5c55c36; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_885052b23f2e61fdd3fb6592e0a8e219d5c55c36 ON raw_tap_facebook.ads__tracking_specs__application USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_8980f9d1e0c03acded37b1b44c03006e12817024; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_8980f9d1e0c03acded37b1b44c03006e12817024 ON raw_tap_facebook.adsets__targeting__interests USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_8b527ee82c851e342bd29a248aa2c6fb762bc739; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_8b527ee82c851e342bd29a248aa2c6fb762bc739 ON raw_tap_facebook.ads__tracking_specs__post USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_8c96022bf36d56af3f7727b18713b4b80a661852; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_8c96022bf36d56af3f7727b18713b4b80a661852 ON raw_tap_facebook.adsets__targeting__flexible_spec__industries USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_8d0e85fd33e3d83751900e068a8baa9277eab587; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_8d0e85fd33e3d83751900e068a8baa9277eab587 ON raw_tap_facebook.adcreative__object_story_spec__link_data__child_attachments___8 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id, _sdc_level_2_id);
+
+
+--
+-- Name: tp_8d133202d3442ba1d2cd3ac3a7a1e72e9d3bf123; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_8d133202d3442ba1d2cd3ac3a7a1e72e9d3bf123 ON raw_tap_facebook.ads__targeting__flexible_spec__life_events USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_8d22a86f34e0001e3d8ac36214d5d5b33055a2c1; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_8d22a86f34e0001e3d8ac36214d5d5b33055a2c1 ON raw_tap_facebook.adcreative__object_story_spec__link_data__child_attachments___3 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_8d2e2065a55cb5c5d059be96e65d7b5f371f241e; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_8d2e2065a55cb5c5d059be96e65d7b5f371f241e ON raw_tap_facebook.ads__conversion_specs__leadgen USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_8d4f1de60d9cb2f5f48e963fef7d16fe67a1b5e0; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_8d4f1de60d9cb2f5f48e963fef7d16fe67a1b5e0 ON raw_tap_facebook.adcreative__object_story_spec__link_data__retailer_item_ids USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_8d8bd7049ee2fc8f889b3a0d8376c92fa60435eb; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_8d8bd7049ee2fc8f889b3a0d8376c92fa60435eb ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclud__4 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_8deb932f9294345ec9d66ebf263b01a9a265bb79; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_8deb932f9294345ec9d66ebf263b01a9a265bb79 ON raw_tap_facebook.adsets__targeting__family_statuses USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_8f281ff26e555250193772fd849e4d423e165ec7; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_8f281ff26e555250193772fd849e4d423e165ec7 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclus__1 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_8f83f9b7048ea06ee8bcaf6c5dded00c18c54537; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_8f83f9b7048ea06ee8bcaf6c5dded00c18c54537 ON raw_tap_facebook.adsets__targeting__custom_audiences USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_8fd44c5069601d23c2df4fdde469f4da2a99e5fe; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_8fd44c5069601d23c2df4fdde469f4da2a99e5fe ON raw_tap_facebook.adsets__targeting__generation USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_909eae1ccdfcb56cc4c4e59efaf6a1eddecef248; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_909eae1ccdfcb56cc4c4e59efaf6a1eddecef248 ON raw_tap_facebook.ads__targeting__geo_locations__countries USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_90cfd42a47c37c2ec739f77004a17fe815f73f95; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_90cfd42a47c37c2ec739f77004a17fe815f73f95 ON raw_tap_facebook.adcreative__object_story_spec__link_data__image_crops__90x160__ USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_9107a33aa28df654cacd5d4141e828e4bdce365d; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_9107a33aa28df654cacd5d4141e828e4bdce365d ON raw_tap_facebook.adsets__targeting__flexible_spec__generation USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_9230eae38981aade21428411a1b99debb1ee9f99; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_9230eae38981aade21428411a1b99debb1ee9f99 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__friends_o USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_92392921ef53a076780a81af19fcf8847f9d64e9; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_92392921ef53a076780a81af19fcf8847f9d64e9 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclu__20 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_926e049523fcbe152fb6771bac4b8180b9374c88; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_926e049523fcbe152fb6771bac4b8180b9374c88 ON raw_tap_facebook.ads__tracking_specs__creative USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_92b3083c8f40ae35895a455a5420518e7f0ddace; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_92b3083c8f40ae35895a455a5420518e7f0ddace ON raw_tap_facebook.ads__targeting__geo_locations__location_types USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_93c539a3118c274ac7f8f14d511b13162dbf7e69; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_93c539a3118c274ac7f8f14d511b13162dbf7e69 ON raw_tap_facebook.ads__targeting__geo_locations__cities USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_943b61bc55a90d4cc0273777e610c0421ff1808d; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_943b61bc55a90d4cc0273777e610c0421ff1808d ON raw_tap_facebook.adsets__targeting__exclusions__user_adclusters USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_9626a6cc13a2061683cda81decf5892671176b91; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_9626a6cc13a2061683cda81decf5892671176b91 ON raw_tap_facebook.adsets__targeting__excluded_publisher_categories USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_96aecc64adefec569b2026824ce297ad40c41add; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_96aecc64adefec569b2026824ce297ad40c41add ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__relations USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_972ae92043fd50345a2ceff10536adab1311bb65; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_972ae92043fd50345a2ceff10536adab1311bb65 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexib__3 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_977e42765e4def17b7e32f7df6c81d5a905e8d78; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_977e42765e4def17b7e32f7df6c81d5a905e8d78 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__geo_lo__2 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_98daac381d11a08667091c4874505454dd61f862; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_98daac381d11a08667091c4874505454dd61f862 ON raw_tap_facebook.adcreative__object_story_spec__template_data__child_attachme__2 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id, _sdc_level_2_id);
+
+
+--
+-- Name: tp_990d9fe8abbc5fe1d518c0e6c0dc4bdab447f48d; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_990d9fe8abbc5fe1d518c0e6c0dc4bdab447f48d ON raw_tap_facebook.ads__targeting__flexible_spec__household_composition USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_9934bb0190c8092595067af372d8f965111b618f; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_9934bb0190c8092595067af372d8f965111b618f ON raw_tap_facebook.ads__targeting__user_device USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_9a9210e504d2b2f3502fc38edff465f9eef0dbdb; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_9a9210e504d2b2f3502fc38edff465f9eef0dbdb ON raw_tap_facebook.ads__targeting__flexible_spec__behaviors USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_9afc02e9c73eeeca658179bdfcddbe0364123832; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_9afc02e9c73eeeca658179bdfcddbe0364123832 ON raw_tap_facebook.adcreative__object_story_spec__template_data__image_crops__1__1 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_9b40ca573554834add1cb7bad65c610533a408d7; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_9b40ca573554834add1cb7bad65c610533a408d7 ON raw_tap_facebook.adsets__targeting__flexible_spec__politics USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_9b5a72c30cf698b432ed6863639d4d4e48a6a179; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_9b5a72c30cf698b432ed6863639d4d4e48a6a179 ON raw_tap_facebook.ads__targeting__flexible_spec__custom_audiences USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_9b68e50c8cef84e4d9cd890be80cff2ce748a18d; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_9b68e50c8cef84e4d9cd890be80cff2ce748a18d ON raw_tap_facebook.ads__targeting__flexible_spec__net_worth USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_9ba0edbc4e6ae9a918d069b4731fb788c163f9df; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_9ba0edbc4e6ae9a918d069b4731fb788c163f9df ON raw_tap_facebook.ads__tracking_specs__event_type USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_9c8602e6f50b38a49ca793e83ec0318e462b52d2; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_9c8602e6f50b38a49ca793e83ec0318e462b52d2 ON raw_tap_facebook.ads__tracking_specs__event_creator USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_9cce32250536794d5bd331f9be47aa3956b1cfac; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_9cce32250536794d5bd331f9be47aa3956b1cfac ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__excluded_ USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_9e637f5d4b91afb224f98542f9b5503435568dc4; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_9e637f5d4b91afb224f98542f9b5503435568dc4 ON raw_tap_facebook.adsets__targeting__politics USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_9e7946193c788ebb05ef2d45d60d88e52a41f3b6; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_9e7946193c788ebb05ef2d45d60d88e52a41f3b6 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclud__5 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_a05af743c058f67a4d07d368a17de421f4eb2dee; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_a05af743c058f67a4d07d368a17de421f4eb2dee ON raw_tap_facebook.ads__targeting__flexible_spec__relationship_statuses USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_a068c09b8975595557bb74117efde24adf6ceea7; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_a068c09b8975595557bb74117efde24adf6ceea7 ON raw_tap_facebook.adsets__targeting__excluded_geo_locations__custom_locations USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_a09263b88dfbece901d25c3ceb162eb9e7221c20; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_a09263b88dfbece901d25c3ceb162eb9e7221c20 ON raw_tap_facebook.adsets__targeting__friends_of_connections USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_a20b18f21f0ed4e63bdc03b3b3b3509f2d21c916; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_a20b18f21f0ed4e63bdc03b3b3b3509f2d21c916 ON raw_tap_facebook.ads__conversion_specs__post_wall USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_a2588cf2233cef3acbd6044866cb818bfc0bc5ea; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_a2588cf2233cef3acbd6044866cb818bfc0bc5ea ON raw_tap_facebook.ads__targeting__exclusions__friends_of_connections USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_a2635b209c1759061d8bebbc37d9c1676ed78109; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_a2635b209c1759061d8bebbc37d9c1676ed78109 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__office_ty USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_a26863128c4cb58dde80e153a8a919a19b7c8927; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_a26863128c4cb58dde80e153a8a919a19b7c8927 ON raw_tap_facebook.adcreative__object_story_spec__link_data__child_attachments___1 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_a2a933731492b7428c30729633238e43842596ec; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_a2a933731492b7428c30729633238e43842596ec ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__generatio USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_a32972286847515167823467bec695f18534e1d3; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_a32972286847515167823467bec695f18534e1d3 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexi__12 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_a380290ebe4f4a1bff4877327cb109f85c7d3160; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_a380290ebe4f4a1bff4877327cb109f85c7d3160 ON raw_tap_facebook.ads__targeting__geo_locations__regions USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_a39f9d9839ed1dd443c9de2049e6ecd1cb5133d7; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_a39f9d9839ed1dd443c9de2049e6ecd1cb5133d7 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexib__5 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_a3e30831885d13c43ac9130e90c688831b9155c2; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_a3e30831885d13c43ac9130e90c688831b9155c2 ON raw_tap_facebook.adcreative__object_story_spec__template_data__child_attachme__4 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id, _sdc_level_2_id);
+
+
+--
+-- Name: tp_a4099fd4d577a9eb4d60e757ed165b79710c0087; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_a4099fd4d577a9eb4d60e757ed165b79710c0087 ON raw_tap_facebook.ads__targeting__device_platforms USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_a4200597cd40d10625a9d5c44be4a0268a3bd6a4; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_a4200597cd40d10625a9d5c44be4a0268a3bd6a4 ON raw_tap_facebook.adcreative__object_story_spec__template_data__child_attachme__5 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_a451b91d9219dfb3ea267f669d1edaf077fe6b10; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_a451b91d9219dfb3ea267f669d1edaf077fe6b10 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__messenger USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_a4fe9c083c684b41b6ebb65eb2cb0ed4f7a7ee77; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_a4fe9c083c684b41b6ebb65eb2cb0ed4f7a7ee77 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__education USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_a51238446c9e4a85a38a540a3d5ff5c678c7af1b; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_a51238446c9e4a85a38a540a3d5ff5c678c7af1b ON raw_tap_facebook.ads__targeting__exclusions__work_positions USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_a6066383bf23d5daeccb83671d46ff5a5f4f67cb; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_a6066383bf23d5daeccb83671d46ff5a5f4f67cb ON raw_tap_facebook.ads__conversion_specs__post USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_a6e9194a651e9ab46682342f3d4a56617d2d140b; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_a6e9194a651e9ab46682342f3d4a56617d2d140b ON raw_tap_facebook.ads__targeting__flexible_spec__moms USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_a70d845e2f95e257db236ae17f42e05f2ccee31b; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_a70d845e2f95e257db236ae17f42e05f2ccee31b ON raw_tap_facebook.ads__targeting__geo_locations__custom_locations USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_a73f056a125cb16adb09a76f7ea1282375e160ff; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_a73f056a125cb16adb09a76f7ea1282375e160ff ON raw_tap_facebook.ads__conversion_specs__object_domain USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_a758c07039101f7ebd538aca985c9741cc59a595; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_a758c07039101f7ebd538aca985c9741cc59a595 ON raw_tap_facebook.ads__conversion_specs__event USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_a7b4e1900d1ef72e70df48c04eba8180469ce65c; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_a7b4e1900d1ef72e70df48c04eba8180469ce65c ON raw_tap_facebook.ads_insights__cost_per_action_type USING btree (_sdc_source_key_campaign_id, _sdc_source_key_adset_id, _sdc_source_key_ad_id, _sdc_source_key_date_start, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_a8810a625847f114f1e45ae7ec9b676210ac35df; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_a8810a625847f114f1e45ae7ec9b676210ac35df ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__connectio USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_a961dc7fe917bfcc740d7ed6a57621fe55d433a0; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_a961dc7fe917bfcc740d7ed6a57621fe55d433a0 ON raw_tap_facebook.adsets__targeting__exclusions__behaviors USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_aab21e6db33b209d8fb42ac37bc29f944f588505; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_aab21e6db33b209d8fb42ac37bc29f944f588505 ON raw_tap_facebook.ads__tracking_specs__object_domain USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_ab560f4b1383f700f14a61caf69c89d87205d29a; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_ab560f4b1383f700f14a61caf69c89d87205d29a ON raw_tap_facebook.adsets__targeting__flexible_spec__excluded_connections USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_accd7002c0d129bcb55febdc1df7d086eef99984; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_accd7002c0d129bcb55febdc1df7d086eef99984 ON raw_tap_facebook.ads__targeting__politics USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_adabead0a6284fcf6d5d1fd0d5f36fbf2f19ea90; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_adabead0a6284fcf6d5d1fd0d5f36fbf2f19ea90 ON raw_tap_facebook.adcreative__object_story_spec__link_data__child_attachments___9 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_adcreative_id__sdc_sequence_idx; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_adcreative_id__sdc_sequence_idx ON raw_tap_facebook.adcreative USING btree (id, _sdc_sequence);
+
+
+--
+-- Name: tp_ads_id_updated_time__sdc_sequence_idx; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_ads_id_updated_time__sdc_sequence_idx ON raw_tap_facebook.ads USING btree (id, updated_time, _sdc_sequence);
+
+
+--
+-- Name: tp_adsets_id_updated_time__sdc_sequence_idx; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_adsets_id_updated_time__sdc_sequence_idx ON raw_tap_facebook.adsets USING btree (id, updated_time, _sdc_sequence);
+
+
+--
+-- Name: tp_ae0d77556beb349de8fcb24784800ec2a88ad498; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_ae0d77556beb349de8fcb24784800ec2a88ad498 ON raw_tap_facebook.ads__targeting__geo_locations__country_groups USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_ae1903adff7ee860e3c1665d4476e87b1de22b72; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_ae1903adff7ee860e3c1665d4476e87b1de22b72 ON raw_tap_facebook.ads_insights__unique_actions USING btree (_sdc_source_key_campaign_id, _sdc_source_key_adset_id, _sdc_source_key_ad_id, _sdc_source_key_date_start, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_ae7324d02e4aca74c8eb5e204d0207ba5bef6fab; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_ae7324d02e4aca74c8eb5e204d0207ba5bef6fab ON raw_tap_facebook.adcreative__image_crops__600x360 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_ae7a220af6f0ee5bc199c6eda08f7b1c63688d66; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_ae7a220af6f0ee5bc199c6eda08f7b1c63688d66 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__family_st USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_aed7b6df48d1c4cfe670e8cc459c3f9728da754f; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_aed7b6df48d1c4cfe670e8cc459c3f9728da754f ON raw_tap_facebook.adsets__targeting__flexible_spec__home_ownership USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_af83912816b47705712a267258618a8daccdad09; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_af83912816b47705712a267258618a8daccdad09 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__instagram USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_b06bb512ef889f2e42054b61ca3738fd6815877c; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_b06bb512ef889f2e42054b61ca3738fd6815877c ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclus__8 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_b089f98140a29dba1e22028eda7bf9d9fba3f5b4; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_b089f98140a29dba1e22028eda7bf9d9fba3f5b4 ON raw_tap_facebook.ads__targeting__flexible_spec__politics USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_b103dccc0464c17b59de1498ea068d5e0b1d5b3f; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_b103dccc0464c17b59de1498ea068d5e0b1d5b3f ON raw_tap_facebook.ads__conversion_specs__response USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_b14ebb516ddc3429701bd4d4e451eeb74870112b; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_b14ebb516ddc3429701bd4d4e451eeb74870112b ON raw_tap_facebook.ads__targeting__flexible_spec__interests USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_b1e7189c9a225d6750874d5ba1311dccdd19dce9; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_b1e7189c9a225d6750874d5ba1311dccdd19dce9 ON raw_tap_facebook.adcreative__object_story_spec__template_data__child_attachme__6 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id, _sdc_level_2_id);
+
+
+--
+-- Name: tp_b2e19c4c5719a07f0ca199811e4a3194739dfd02; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_b2e19c4c5719a07f0ca199811e4a3194739dfd02 ON raw_tap_facebook.adsets__targeting__exclusions__industries USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_b2ed46cf018780b1c03092e4ddc8110ee3ad5db0; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_b2ed46cf018780b1c03092e4ddc8110ee3ad5db0 ON raw_tap_facebook.ads__targeting__interests USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_b30459cce6f5d03ebc847d26da69e1f79d449a4b; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_b30459cce6f5d03ebc847d26da69e1f79d449a4b ON raw_tap_facebook.adsets__targeting__geo_locations__cities USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_b4d352b68aa847a720800ce06946da9e3d983359; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_b4d352b68aa847a720800ce06946da9e3d983359 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__industrie USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_b631643419622187105a9ceadde8e0a5dbed3cdf; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_b631643419622187105a9ceadde8e0a5dbed3cdf ON raw_tap_facebook.adsets__targeting__excluded_geo_locations__location_types USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_b69207526549031f0308aad0e7b8763905bac7ce; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_b69207526549031f0308aad0e7b8763905bac7ce ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclud__6 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_b79fc20094a27771fc75bd51a577683811ce752a; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_b79fc20094a27771fc75bd51a577683811ce752a ON raw_tap_facebook.adsets__targeting__exclusions__family_statuses USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_b7b8a37eefb4cf91f14416226e04db662cd55e49; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_b7b8a37eefb4cf91f14416226e04db662cd55e49 ON raw_tap_facebook.adcreative__object_story_spec__video_data__retailer_item_ids USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_b7bbe20d8cc83ba43f3e74778f3a3bf5817e9f2c; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_b7bbe20d8cc83ba43f3e74778f3a3bf5817e9f2c ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclu__23 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_b85885a96418e578308a8645902d7b1ada6312ee; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_b85885a96418e578308a8645902d7b1ada6312ee ON raw_tap_facebook.adsets__targeting__flexible_spec__income USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_b8d4522ff990138c5794581850c226ca0a80288e; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_b8d4522ff990138c5794581850c226ca0a80288e ON raw_tap_facebook.ads_insights__outbound_clicks USING btree (_sdc_source_key_campaign_id, _sdc_source_key_adset_id, _sdc_source_key_ad_id, _sdc_source_key_date_start, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_ba123403f1aa9809e0c79b9d7e899397aa9987be; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_ba123403f1aa9809e0c79b9d7e899397aa9987be ON raw_tap_facebook.adsets__targeting__flexible_spec__moms USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_ba73c300e700f7b87fcd1c25fb742273071352f3; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_ba73c300e700f7b87fcd1c25fb742273071352f3 ON raw_tap_facebook.ads__targeting__excluded_custom_audiences USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_ba82d4f8b379dd2f2c4009d78100fd99703a8c0b; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_ba82d4f8b379dd2f2c4009d78100fd99703a8c0b ON raw_tap_facebook.ads__targeting__connections USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_baaabea1a9c3a02bf89412c6049f48282578f3d3; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_baaabea1a9c3a02bf89412c6049f48282578f3d3 ON raw_tap_facebook.ads__tracking_specs__offer_creator USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_babbefbb1dd6bcc64ae9421352a74a5a9bbca4e8; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_babbefbb1dd6bcc64ae9421352a74a5a9bbca4e8 ON raw_tap_facebook.adcreative__object_story_spec__template_data__retailer_item_ids USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_bacb21afe1ee50196f990903867c6a63673a018d; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_bacb21afe1ee50196f990903867c6a63673a018d ON raw_tap_facebook.adsets__targeting__excluded_custom_audiences USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_bb4b3634b665f18c3a99960cd6f1ae79d947ab84; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_bb4b3634b665f18c3a99960cd6f1ae79d947ab84 ON raw_tap_facebook.campaigns__ads__data USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_bbe4c455ad9c1e1110ea0efbe1b776522aefe8c1; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_bbe4c455ad9c1e1110ea0efbe1b776522aefe8c1 ON raw_tap_facebook.ads__targeting__flexible_spec__work_positions USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_bc8fd1da23b7806ec3199459ab655871b69b27f8; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_bc8fd1da23b7806ec3199459ab655871b69b27f8 ON raw_tap_facebook.ads__targeting__exclusions__work_employers USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_bce46a17580d71e5c9899ed7ed4d3e1f9a313953; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_bce46a17580d71e5c9899ed7ed4d3e1f9a313953 ON raw_tap_facebook.adsets__targeting__instagram_positions USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_bcfb31473e5d11d5a25f8783ee5c8856a5504311; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_bcfb31473e5d11d5a25f8783ee5c8856a5504311 ON raw_tap_facebook.adsets__targeting__messenger_positions USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_bd0795a01ac348bc0c935d086c4810d63a5e953e; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_bd0795a01ac348bc0c935d086c4810d63a5e953e ON raw_tap_facebook.ads__targeting__flexible_spec__connections USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_be4be9542ce45678862ddebe4c3d9590c902154e; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_be4be9542ce45678862ddebe4c3d9590c902154e ON raw_tap_facebook.ads__targeting__home_type USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_be8c61fc3e1963539151ae2a04030127c0dfd5fd; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_be8c61fc3e1963539151ae2a04030127c0dfd5fd ON raw_tap_facebook.ads__targeting__exclusions__home_type USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_bf05d99662169371fc53c68fddd011b11e8ff6f2; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_bf05d99662169371fc53c68fddd011b11e8ff6f2 ON raw_tap_facebook.ads__conversion_specs__event_creator USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_c05aa71d615745d8c0f94515da183a7f02749c17; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_c05aa71d615745d8c0f94515da183a7f02749c17 ON raw_tap_facebook.ads__targeting__genders USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_c09ce396d4b68a7e262a0ba77cacc7ff6bd7013c; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_c09ce396d4b68a7e262a0ba77cacc7ff6bd7013c ON raw_tap_facebook.ads__targeting__exclusions__net_worth USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_c25a934292dbabca2c951a79422b174af58677b6; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_c25a934292dbabca2c951a79422b174af58677b6 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexi__15 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_c3a82feae744e80859ddfd22c344255f3071c6de; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_c3a82feae744e80859ddfd22c344255f3071c6de ON raw_tap_facebook.adcreative__image_crops__100x100___sdc_value USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_c3fad79c7e5953067e086cd7fc1404de8fcefd5a; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_c3fad79c7e5953067e086cd7fc1404de8fcefd5a ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__geo_locat USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_c4b0393e86a7ce3b237bc8c2565b8aa2a7261624; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_c4b0393e86a7ce3b237bc8c2565b8aa2a7261624 ON raw_tap_facebook.adcreative__image_crops__400x150___sdc_value USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_c4db496b002309a7be12aac1caca1faec0c48848; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_c4db496b002309a7be12aac1caca1faec0c48848 ON raw_tap_facebook.adcreative__object_story_spec__link_data__child_attachments___4 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id, _sdc_level_2_id);
+
+
+--
+-- Name: tp_c58121ad92cfa2573a78753ffa5964a696e70d28; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_c58121ad92cfa2573a78753ffa5964a696e70d28 ON raw_tap_facebook.adcreative__object_story_spec__link_data__image_crops__191x100 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_c61fae13d3dd71d4b45983308d28275b6ce85bc9; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_c61fae13d3dd71d4b45983308d28275b6ce85bc9 ON raw_tap_facebook.ads__targeting__behaviors USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_c833369176bab0cc52a6c7c5544ca60206a84efd; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_c833369176bab0cc52a6c7c5544ca60206a84efd ON raw_tap_facebook.ads__targeting__exclusions__connections USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_c87b0981303288325a0aba3fcee489fd807f603c; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_c87b0981303288325a0aba3fcee489fd807f603c ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__genders USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_c8891e05d4ba2e2e1a7a626c623a1927b97772b2; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_c8891e05d4ba2e2e1a7a626c623a1927b97772b2 ON raw_tap_facebook.ads__targeting__flexible_spec__income USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_c9f5f153e51dd6a09eb28c38e2bbb83b1e525b85; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_c9f5f153e51dd6a09eb28c38e2bbb83b1e525b85 ON raw_tap_facebook.adsets__targeting__excluded_geo_locations__countries USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_campaigns_id__sdc_sequence_idx; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_campaigns_id__sdc_sequence_idx ON raw_tap_facebook.campaigns USING btree (id, _sdc_sequence);
+
+
+--
+-- Name: tp_cb83309e082c5836b741f50e44a8f49dafb41186; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_cb83309e082c5836b741f50e44a8f49dafb41186 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclu__18 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_cbe71676603c73eced311c4b110533091c3bdd78; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_cbe71676603c73eced311c4b110533091c3bdd78 ON raw_tap_facebook.adsets__targeting__exclusions__home_type USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_cd4b22ac77c699fd0bbc5aa71339ed68869eec19; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_cd4b22ac77c699fd0bbc5aa71339ed68869eec19 ON raw_tap_facebook.ads__targeting__exclusions__custom_audiences USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_ce5d543db69ec1807808120979eb44d6e591c989; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_ce5d543db69ec1807808120979eb44d6e591c989 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexi__14 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_ce858e8717e91128d3e051b84b33f5ec4019ee97; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_ce858e8717e91128d3e051b84b33f5ec4019ee97 ON raw_tap_facebook.adsets__targeting__exclusions__interests USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_cedfee4136533b4b50a3c3965521a54301f0c4a9; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_cedfee4136533b4b50a3c3965521a54301f0c4a9 ON raw_tap_facebook.adsets__targeting__flexible_spec__education_majors USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_cf30fd474f1ea7368721deb56a633e64515a37bf; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_cf30fd474f1ea7368721deb56a633e64515a37bf ON raw_tap_facebook.adcreative__image_crops__100x100 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_d04f40035c8e8044cb4296f9176465e2684b7278; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_d04f40035c8e8044cb4296f9176465e2684b7278 ON raw_tap_facebook.ads__targeting__exclusions__life_events USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_d0d8b30fce757de6f5bfd940c2a9107f080d35b0; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_d0d8b30fce757de6f5bfd940c2a9107f080d35b0 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclu__11 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_d15f538d1f23dc33a93ee6911c19ddae8c66cc35; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_d15f538d1f23dc33a93ee6911c19ddae8c66cc35 ON raw_tap_facebook.ads__targeting__excluded_publisher_categories USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_d19e66b6546f1d6482d6e0ef39745d405bccd86b; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_d19e66b6546f1d6482d6e0ef39745d405bccd86b ON raw_tap_facebook.adsets__targeting__exclusions__work_employers USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_d3c87fb79db814b8075f847db5852153f10b6d45; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_d3c87fb79db814b8075f847db5852153f10b6d45 ON raw_tap_facebook.ads__targeting__office_type USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_d4b6a3b5ff92fc190431e4d3f79807fe41d4fd5f; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_d4b6a3b5ff92fc190431e4d3f79807fe41d4fd5f ON raw_tap_facebook.ads__targeting__flexible_spec__user_adclusters USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_d4de62b6c233ed111fdf8b0d58aa7ef929ca9033; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_d4de62b6c233ed111fdf8b0d58aa7ef929ca9033 ON raw_tap_facebook.adsets__targeting__exclusions__household_composition USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_d5798b547278c3eb930ad82216d2a2d3a7512837; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_d5798b547278c3eb930ad82216d2a2d3a7512837 ON raw_tap_facebook.adcreative__object_story_spec__template_data__app_link_spec___1 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_d57df9ec7101341251d9ac9e11902c1fbc4fbc5e; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_d57df9ec7101341251d9ac9e11902c1fbc4fbc5e ON raw_tap_facebook.ads__targeting__flexible_spec__industries USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_d7614af738edd654ce7ebb3aebec50c01e8bcfdc; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_d7614af738edd654ce7ebb3aebec50c01e8bcfdc ON raw_tap_facebook.adcreative__object_story_spec__template_data__child_attachm__11 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_d77bcf43fb669b7381705daaabce02b69c380581; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_d77bcf43fb669b7381705daaabce02b69c380581 ON raw_tap_facebook.adcreative__object_story_spec__template_data__image_crops__1__2 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_d7eeccac15272e8888e07b51f37e1772991ea2d1; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_d7eeccac15272e8888e07b51f37e1772991ea2d1 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__user_os USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_d8692ba8e357482170cb16cfed2807dae9fdd8f5; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_d8692ba8e357482170cb16cfed2807dae9fdd8f5 ON raw_tap_facebook.ads__targeting__exclusions__industries USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_d8e32520ac033971e085050c3ecd4917ab871c51; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_d8e32520ac033971e085050c3ecd4917ab871c51 ON raw_tap_facebook.adsets__targeting__flexible_spec__connections USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_d97caff5eddd25b9e1d297c127f61b05625e80b9; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_d97caff5eddd25b9e1d297c127f61b05625e80b9 ON raw_tap_facebook.ads__targeting__net_worth USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_d9eb9f3051f876e306ade93b5e9af0019d576dc2; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_d9eb9f3051f876e306ade93b5e9af0019d576dc2 ON raw_tap_facebook.adsets__targeting__publisher_platforms USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_da01e7f8168063eb641c8cd69eaaf3e2b488cbf6; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_da01e7f8168063eb641c8cd69eaaf3e2b488cbf6 ON raw_tap_facebook.adsets__targeting__flexible_spec__behaviors USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_da20f635ecc5afedd00d33fbafbb6c7d8bdcfee8; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_da20f635ecc5afedd00d33fbafbb6c7d8bdcfee8 ON raw_tap_facebook.ads__conversion_specs__application USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_da39f2de2ac2720085dbd3978a4bd18637129785; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_da39f2de2ac2720085dbd3978a4bd18637129785 ON raw_tap_facebook.ads__targeting__moms USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_dabc3a78235b3b232078a843644736f0ff1cf350; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_dabc3a78235b3b232078a843644736f0ff1cf350 ON raw_tap_facebook.adsets__targeting__behaviors USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_daeb28fa32c13149d304c5a89d55dc3a3de61f55; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_daeb28fa32c13149d304c5a89d55dc3a3de61f55 ON raw_tap_facebook.ads__targeting__flexible_spec__home_type USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_db00b3d424ef2c62377682303aa06a6f478ee7dd; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_db00b3d424ef2c62377682303aa06a6f478ee7dd ON raw_tap_facebook.adsets__targeting__flexible_spec__interests USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_db6d06ed1d67fc40293f1039b69e40d5cc321fa6; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_db6d06ed1d67fc40293f1039b69e40d5cc321fa6 ON raw_tap_facebook.ads__tracking_specs__fb_pixel USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_dbda3d5a11597a92f339ef44aab97110c5f0de30; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_dbda3d5a11597a92f339ef44aab97110c5f0de30 ON raw_tap_facebook.ads__targeting__exclusions__excluded_connections USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_dc0a783fc0d547273860b9d2c2471ce03fc0f1b8; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_dc0a783fc0d547273860b9d2c2471ce03fc0f1b8 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__user_adcl USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_dc81f53e082fcc8f9bbfb0e40579f0a9ce41d32a; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_dc81f53e082fcc8f9bbfb0e40579f0a9ce41d32a ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclu__15 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_dcc208366b9fc594d8cd22b5fd7148d8e9241d36; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_dcc208366b9fc594d8cd22b5fd7148d8e9241d36 ON raw_tap_facebook.adcreative__object_story_spec__template_data__image_crops__90x1 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_dd0eaff73f4c5b366af90d4d993deb1e28e10da0; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_dd0eaff73f4c5b366af90d4d993deb1e28e10da0 ON raw_tap_facebook.adcreative__object_story_spec__template_data__app_link_spec__an USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_dd8f1d0303205ee13d04b7387e071f8bd0823f26; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_dd8f1d0303205ee13d04b7387e071f8bd0823f26 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexi__16 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_ddc64a4e6da529662e157a4689417141f517220a; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_ddc64a4e6da529662e157a4689417141f517220a ON raw_tap_facebook.ads__tracking_specs__leadgen USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_ddddf8819acf5ea5de0b2154065751ed9c831801; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_ddddf8819acf5ea5de0b2154065751ed9c831801 ON raw_tap_facebook.adsets__targeting__excluded_connections USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_df269f3ef2e761e5165ec6a950d0af1e55053360; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_df269f3ef2e761e5165ec6a950d0af1e55053360 ON raw_tap_facebook.ads__targeting__publisher_platforms USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_dfead2a9dbbb283e05bbb818f1fe8192c4565dfa; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_dfead2a9dbbb283e05bbb818f1fe8192c4565dfa ON raw_tap_facebook.ads__targeting__excluded_geo_locations__countries USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_e0cedaf614885e403fd94d79e0f1a0a42ba4d3a3; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_e0cedaf614885e403fd94d79e0f1a0a42ba4d3a3 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__intereste USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_e11cf4c1e342d32c268ac95df93605248ff41f42; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_e11cf4c1e342d32c268ac95df93605248ff41f42 ON raw_tap_facebook.adcreative__object_story_spec__template_data__image_crops__9__1 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_e12549be0da68c0eff44dfbaccbd629166bf0a26; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_e12549be0da68c0eff44dfbaccbd629166bf0a26 ON raw_tap_facebook.adcreative__object_story_spec__template_data__child_attachme__1 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_e183f572e6caed3e1d7459429802c7ca2943135d; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_e183f572e6caed3e1d7459429802c7ca2943135d ON raw_tap_facebook.ads__tracking_specs__post_object_wall USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_e3047dff558e0b32acb7fd9fb0b352cce067a562; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_e3047dff558e0b32acb7fd9fb0b352cce067a562 ON raw_tap_facebook.adsets__targeting__exclusions__home_ownership USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_e3c37725bd57e74b6350db39de8b472f9d2d780f; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_e3c37725bd57e74b6350db39de8b472f9d2d780f ON raw_tap_facebook.ads__targeting__flexible_spec USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_e5b71ba2dedb51969b344b70d71cba5f0de2d0fc; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_e5b71ba2dedb51969b344b70d71cba5f0de2d0fc ON raw_tap_facebook.adcreative__object_story_spec__link_data__image_crops__400x500_ USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_e6e33c9a51c5418aa2aac364132f92d14b0e88a2; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_e6e33c9a51c5418aa2aac364132f92d14b0e88a2 ON raw_tap_facebook.adsets__targeting__income USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_e709ee665bb0d681241322bb0e6df9cd34736582; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_e709ee665bb0d681241322bb0e6df9cd34736582 ON raw_tap_facebook.adcreative__image_crops__600x360___sdc_value USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_e726799df8f7639dfd2bc608c4fa6bbfa1106257; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_e726799df8f7639dfd2bc608c4fa6bbfa1106257 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__facebook_ USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_e7c584cdad7dd1cbfa44b57e267bc59b45ea4afc; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_e7c584cdad7dd1cbfa44b57e267bc59b45ea4afc ON raw_tap_facebook.ads__targeting__instagram_positions USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_e88d9e601b2063aa1c61798e1f1e80a790a35ac3; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_e88d9e601b2063aa1c61798e1f1e80a790a35ac3 ON raw_tap_facebook.adsets__targeting__industries USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_e8a8f1a04739d396b1588cbf28b46f0715927be2; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_e8a8f1a04739d396b1588cbf28b46f0715927be2 ON raw_tap_facebook.adsets__targeting__connections USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_ea7f318bfc856966bf4e2c3fde7ffc13e3de0a14; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_ea7f318bfc856966bf4e2c3fde7ffc13e3de0a14 ON raw_tap_facebook.adcreative__object_story_spec__template_data__image_crops__6__1 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_eae3756fee1549ae0b19058f5ac65c87fa99f9c9; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_eae3756fee1549ae0b19058f5ac65c87fa99f9c9 ON raw_tap_facebook.ads__conversion_specs USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_eae416db1b84d2b2e07067aa5774fbfa2700565c; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_eae416db1b84d2b2e07067aa5774fbfa2700565c ON raw_tap_facebook.ads__conversion_specs__subtype USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_eaedf778d2b245b570a11ceecdf944514d813c19; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_eaedf778d2b245b570a11ceecdf944514d813c19 ON raw_tap_facebook.adcreative__image_crops__90x160___sdc_value USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_eb2a64c3abfff256125acbadafdcf7ddff94a7e8; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_eb2a64c3abfff256125acbadafdcf7ddff94a7e8 ON raw_tap_facebook.ads__targeting__exclusions__education_majors USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_eba8c4dc4609a2da3863530c4f8dc90f0bdfb801; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_eba8c4dc4609a2da3863530c4f8dc90f0bdfb801 ON raw_tap_facebook.adsets__targeting__genders USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_ec09a41f7c448a23d94ad1bf6b5b39e5832009d0; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_ec09a41f7c448a23d94ad1bf6b5b39e5832009d0 ON raw_tap_facebook.adcreative__object_story_spec__link_data__image_crops__90x160 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_ec30718012cd4619fd58fc60c62c52fdb8598e9b; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_ec30718012cd4619fd58fc60c62c52fdb8598e9b ON raw_tap_facebook.ads__conversion_specs__fb_pixel USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_ecdd311fb5804b0cb43721432098d1bfc243b90d; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_ecdd311fb5804b0cb43721432098d1bfc243b90d ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexi__20 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_ed1e0704c4e91bb5b50cdbbff3e177f3bd0f2e5e; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_ed1e0704c4e91bb5b50cdbbff3e177f3bd0f2e5e ON raw_tap_facebook.adsets__targeting__excluded_geo_locations__zips USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_ed8aa68fa6ed66777080e3b29ad9ded1fbcbfc6f; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_ed8aa68fa6ed66777080e3b29ad9ded1fbcbfc6f ON raw_tap_facebook.ads_insights__cost_per_unique_action_type USING btree (_sdc_source_key_campaign_id, _sdc_source_key_adset_id, _sdc_source_key_ad_id, _sdc_source_key_date_start, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_edcc5d7f4efa159a91f8668b0a0ddd1d9b2de5f3; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_edcc5d7f4efa159a91f8668b0a0ddd1d9b2de5f3 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclud__1 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_ee026c4714786e07ce5013ac37e5b6c6f6df2f07; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_ee026c4714786e07ce5013ac37e5b6c6f6df2f07 ON raw_tap_facebook.ads__tracking_specs__dataset USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_effded0ea855bcae3eec6d4205482ab018f98068; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_effded0ea855bcae3eec6d4205482ab018f98068 ON raw_tap_facebook.ads__targeting__excluded_geo_locations__location_types USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_f00ab06cd5880da4b1d278bde0dfa897a3886de7; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_f00ab06cd5880da4b1d278bde0dfa897a3886de7 ON raw_tap_facebook.ads__targeting__friends_of_connections USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_f04deadd024cea3056c314d481620642bc225c69; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_f04deadd024cea3056c314d481620642bc225c69 ON raw_tap_facebook.adcreative__object_story_spec__template_data__image_crops__400x USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_f04df387a74fa0ef540c378a30a3d7a34d993ff4; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_f04df387a74fa0ef540c378a30a3d7a34d993ff4 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexible_ USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_f0dac63b6df90555d3f4fb66c930bd77f08df4e1; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_f0dac63b6df90555d3f4fb66c930bd77f08df4e1 ON raw_tap_facebook.ads__conversion_specs__event_type USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_f0df626f7cebe9b4b85843d209cd20c9ce757979; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_f0df626f7cebe9b4b85843d209cd20c9ce757979 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__flexi__19 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_f22894ba427db7586022202b7f2e68e729299d9e; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_f22894ba427db7586022202b7f2e68e729299d9e ON raw_tap_facebook.adsets__targeting__flexible_spec__life_events USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_f4168050c44c642a0b57f8a897ef0aee4089d3da; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_f4168050c44c642a0b57f8a897ef0aee4089d3da ON raw_tap_facebook.ads__conversion_specs__question USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_f453dd19909c5234ab7db509a76831be5255a726; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_f453dd19909c5234ab7db509a76831be5255a726 ON raw_tap_facebook.ads__targeting__excluded_geo_locations__cities USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_f6599f23d230726643301314513343fc31513698; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_f6599f23d230726643301314513343fc31513698 ON raw_tap_facebook.ads__tracking_specs__conversion_id USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_f691ce9acb5173d7f3cbc31db3eeaf510408a11b; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_f691ce9acb5173d7f3cbc31db3eeaf510408a11b ON raw_tap_facebook.ads__targeting__messenger_positions USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_f745420c82f3016215460355ce766f80823dc4dc; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_f745420c82f3016215460355ce766f80823dc4dc ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__geo_lo__1 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_f789e0392e1547188c3467b3afbb9fb652400455; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_f789e0392e1547188c3467b3afbb9fb652400455 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclud__2 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_f8be1d60a3538f69f61eacd0838d1fda91c8f902; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_f8be1d60a3538f69f61eacd0838d1fda91c8f902 ON raw_tap_facebook.adcreative__object_story_spec__link_data__child_attachments USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_f91bedcc0a1348897675e47ac865088c46872bf0; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_f91bedcc0a1348897675e47ac865088c46872bf0 ON raw_tap_facebook.ads__targeting__home_ownership USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_f9329d419161e4b33427aa3d6ea47e3d9d6d517f; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_f9329d419161e4b33427aa3d6ea47e3d9d6d517f ON raw_tap_facebook.adsets__targeting__exclusions__income USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_f98e7f37f67e9abe45746b06f75481f5f034e222; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_f98e7f37f67e9abe45746b06f75481f5f034e222 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclu__22 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_fad2845c4613c7d35abe0fe829d6c8fd51772440; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_fad2845c4613c7d35abe0fe829d6c8fd51772440 ON raw_tap_facebook.adsets__targeting__flexible_spec__user_adclusters USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_fb65692b0cb6722ebf9cfc07cd2284f6df3b8d8d; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_fb65692b0cb6722ebf9cfc07cd2284f6df3b8d8d ON raw_tap_facebook.ads__targeting__exclusions__generation USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_fbc5d7be0c450a5e7f590848db837efbf39c7410; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_fbc5d7be0c450a5e7f590848db837efbf39c7410 ON raw_tap_facebook.adcreative__object_story_spec__video_data__targeting__exclud__3 USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_fc13eb3bbc749321d6ab90c0a9c6917215ad1b6f; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_fc13eb3bbc749321d6ab90c0a9c6917215ad1b6f ON raw_tap_facebook.ads__conversion_specs__creative USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_fce2054e0bb6a691bed1f20346dbd0e3dcda6555; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_fce2054e0bb6a691bed1f20346dbd0e3dcda6555 ON raw_tap_facebook.ads__conversion_specs__action_type USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_ffcc00f25d083a6951e8ab024fd8d1a1a2fadd68; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_ffcc00f25d083a6951e8ab024fd8d1a1a2fadd68 ON raw_tap_facebook.adsets__targeting__locales USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_ffcc3b6c26fe2fdb85a10f382bf297c2b3a454fd; Type: INDEX; Schema: raw_tap_facebook; Owner: -
+--
+
+CREATE INDEX tp_ffcc3b6c26fe2fdb85a10f382bf297c2b3a454fd ON raw_tap_facebook.adsets__targeting__education_statuses USING btree (_sdc_source_key_id, _sdc_source_key_updated_time, _sdc_sequence, _sdc_level_0_id);
 
 
 --
@@ -6926,6 +19890,13 @@ CREATE INDEX fct_snowplow_page_views__index_on_account_id__max_tstamp ON warehou
 
 
 --
+-- Name: fct_snowplow_sessions__index_on_account_id__session_start; Type: INDEX; Schema: warehouse; Owner: -
+--
+
+CREATE INDEX fct_snowplow_sessions__index_on_account_id__session_start ON warehouse.fct_snowplow_sessions USING btree (account_id, session_start);
+
+
+--
 -- Name: stg_shopify_customer_order_aggregates__index_on_account_id__cus; Type: INDEX; Schema: warehouse; Owner: -
 --
 
@@ -6973,6 +19944,14 @@ CREATE TRIGGER que_state_notify AFTER INSERT OR DELETE OR UPDATE ON public.que_j
 
 ALTER TABLE ONLY public.singer_sync_attempts
     ADD CONSTRAINT fk_rails_04e4497db5 FOREIGN KEY (account_id) REFERENCES public.accounts(id);
+
+
+--
+-- Name: facebook_ad_accounts fk_rails_37efb3d349; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.facebook_ad_accounts
+    ADD CONSTRAINT fk_rails_37efb3d349 FOREIGN KEY (creator_id) REFERENCES public.users(id);
 
 
 --
@@ -7104,6 +20083,14 @@ ALTER TABLE ONLY public.plaid_item_accounts
 
 
 --
+-- Name: facebook_ad_accounts fk_rails_cda709da07; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.facebook_ad_accounts
+    ADD CONSTRAINT fk_rails_cda709da07 FOREIGN KEY (account_id) REFERENCES public.accounts(id);
+
+
+--
 -- Name: plaid_items fk_rails_d063f9be8a; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7173,6 +20160,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190916215131'),
 ('20190917231914'),
 ('20190917231933'),
-('20190925155649');
+('20190925155649'),
+('20190930180547');
 
 

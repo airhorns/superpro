@@ -1,0 +1,60 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://graph.facebook.com/v4.0/10213720435438964/adaccounts?access_token=<FB_OAUTH_ACCESS_TOKEN>&appsecret_proof=1c4ae6ca99ad8215fcd755cecf6cf83c80d05106737769d4fe13f43da1d54499&fields=name,account_status,currency,age&limit=10
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - fbbizsdk-ruby-v4.0
+      X-Honeycomb-Trace:
+      - 1;dataset=core-production-rails,trace_id=89dd6d7f-0079-4d66-b253-8bf8b5b1bfec,parent_id=0b5ea7f0-f925-4deb-b510-878bd6244eba,context=e30=
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Etag:
+      - '"7e9e6839f31dc3459444283373a5a7bcc57ef240"'
+      X-Business-Use-Case-Usage:
+      - '{"57930665":[{"type":"ads_management","call_count":6,"total_cputime":1,"total_time":1,"estimated_time_to_regain_access":0}]}'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Facebook-Api-Version:
+      - v4.0
+      Strict-Transport-Security:
+      - max-age=15552000; preload
+      Pragma:
+      - no-cache
+      X-Fb-Rev:
+      - '1001233663'
+      Access-Control-Allow-Origin:
+      - "*"
+      Cache-Control:
+      - private, no-cache, no-store, must-revalidate
+      X-Fb-Trace-Id:
+      - AgzpCcUuG0k
+      X-Fb-Request-Id:
+      - ArdSMDxTSELANiTEHWrLb8c
+      Expires:
+      - Sat, 01 Jan 2000 00:00:00 GMT
+      X-Fb-Debug:
+      - iTwYFqf3iantcrqxYXXn/OTroyCfyO5D+hSckGBqEkgUNGDHz9JG7GX0qwvzvhEUvAT58eHHUTkIQXfX36jTnw==
+      Date:
+      - Mon, 30 Sep 2019 19:54:09 GMT
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '190'
+    body:
+      encoding: UTF-8
+      string: '{"data":[{"name":"Harry Brundage","account_status":1,"currency":"USD","age":0,"id":"act_57930665"}],"paging":{"cursors":{"before":"NjAwMjcxMDE4NzI0MgZDZD","after":"NjAwMjcxMDE4NzI0MgZDZD"}}}'
+    http_version: 
+  recorded_at: Mon, 30 Sep 2019 19:54:09 GMT
+recorded_with: VCR 5.0.0

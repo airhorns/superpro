@@ -56,6 +56,7 @@ module Superpro
     config.shopify = config_for(:shopify)
     config.singer_importer = config_for(:singer_importer)
     config.google = config_for(:google)
+    config.facebook = config_for(:facebook)
     config.kubernetes = config_for(:kubernetes)
     config.kafka = config_for(:kafka)
 

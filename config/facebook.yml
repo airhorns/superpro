@@ -1,0 +1,10 @@
+development: &development
+  app_id: "765734280530762"
+  app_secret: ad0530a49744834223fe42a25b004984
+test:
+  <<: *development
+integration_test:
+  <<: *development
+production:
+  app_id: "2456355657944129"
+  app_secret: ""

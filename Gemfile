@@ -25,9 +25,15 @@ gem 'rails-i18n'
 # Integrations
 gem 'omniauth'
 gem 'plaid'
-gem 'shopify_api'
+
 gem 'omniauth-shopify-oauth2'
+gem 'shopify_api'
+
+gem 'omniauth-facebook'
+gem 'facebookbusiness'
+
 gem 'rest-client'
+gem 'omniauth-google-oauth2'
 gem 'google-api-client'
 
 # Performance & Infrastructure
@@ -68,7 +74,6 @@ gem "honeycomb-beeline", '~> 1.0.1', require: false # needs custom requiring in 
 gem 'k8s-client'
 
 # Admin
-gem 'omniauth-google-oauth2'
 gem 'trestle'
 gem 'trestle-omniauth'
 

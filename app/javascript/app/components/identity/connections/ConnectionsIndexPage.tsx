@@ -6,6 +6,7 @@ import { GetConnectionsIndexPageComponent } from "app/app-graph";
 import { ShopifyConnectionCard } from "./ShopifyConnectionCard";
 import { GoogleAnalyticsConnectionCard } from "./GoogleAnalyticsConnectionCard";
 import { ConnectionIndexEntry } from "./ConnectionIndexEntry";
+import { FacebookConnectionCard } from "./FacebookConnectionCard";
 
 gql`
   query GetConnectionsIndexPage {
@@ -33,6 +34,7 @@ export default (props: {}) => {
             <Heading level="2">Add a new Connection</Heading>
             <Box direction="row-responsive" gap="medium" wrap>
               <ShopifyConnectionCard />
+              <FacebookConnectionCard />
               <GoogleAnalyticsConnectionCard />
             </Box>
           </Box>

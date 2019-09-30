@@ -39,6 +39,8 @@ class Account < ApplicationRecord
   has_many :singer_sync_states, inverse_of: :account, dependent: :destroy
   has_many :singer_sync_attempts, inverse_of: :account, dependent: :destroy
 
+  has_many :facebook_ad_accounts, inverse_of: :account, dependent: :destroy
+
   belongs_to :creator, class_name: "User", inverse_of: :created_accounts
 
   def flipper_id

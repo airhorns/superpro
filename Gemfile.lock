@@ -195,6 +195,9 @@ GEM
       tzinfo
     excon (0.66.0)
     execjs (2.7.0)
+    facebookbusiness (0.4.0.7)
+      faraday (~> 0.15)
+      json (~> 2.2)
     factory_bot (5.1.0)
       activesupport (>= 4.2.0)
     factory_bot_rails (5.1.0)
@@ -286,6 +289,7 @@ GEM
       concurrent-ruby (~> 1.0)
     ice_nine (0.11.2)
     jaro_winkler (1.5.3)
+    json (2.2.0)
     json-schema (2.8.1)
       addressable (>= 2.4)
     jsonpath (0.9.9)
@@ -398,6 +402,8 @@ GEM
     omniauth (1.9.0)
       hashie (>= 3.4.6, < 3.7.0)
       rack (>= 1.6.2, < 3)
+    omniauth-facebook (5.0.0)
+      omniauth-oauth2 (~> 1.2)
     omniauth-google-oauth2 (0.8.0)
       jwt (>= 2.0)
       omniauth (>= 1.1.1)
@@ -642,6 +648,7 @@ DEPENDENCIES
   devise_invitable
   discard
   ejson
+  facebookbusiness
   factory_bot_rails
   faker
   flipper (~> 0.16)!
@@ -673,6 +680,7 @@ DEPENDENCIES
   money-rails
   oj
   omniauth
+  omniauth-facebook
   omniauth-google-oauth2
   omniauth-shopify-oauth2
   pg (>= 0.18, < 2.0)

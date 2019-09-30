@@ -19,6 +19,7 @@ const AccountSettingsPage = React.lazy(() => import("./components/identity/Accou
 const ConnectionsIndexPage = React.lazy(() => import("./components/identity/connections/ConnectionsIndexPage"));
 const ConnectionCompletionErrorPage = React.lazy(() => import("./components/identity/connections/ConnectionCompletionErrorPage"));
 const GoogleAnalyticsCompletePage = React.lazy(() => import("./components/identity/connections/GoogleAnalyticsCompletePage"));
+const FacebookCompletePage = React.lazy(() => import("./components/identity/connections/FacebookCompletePage"));
 const MicroOrderTimingReport = React.lazy(() => import("./components/sales/MicroOrderTimingReport"));
 const SalesOverviewReport = React.lazy(() => import("./components/sales/SalesOverviewReport"));
 const YearlyOrdersReviewReport = React.lazy(() => import("./components/sales/YearlyOrdersReviewReport"));
@@ -65,6 +66,11 @@ export const App = () => {
                             path="/settings/connections/google_analytics/:credentialId/complete"
                             exact
                             component={GoogleAnalyticsCompletePage}
+                          />
+                          <Route
+                            path="/settings/connections/facebook/:facebookAdAccountId/complete"
+                            exact
+                            component={FacebookCompletePage}
                           />
                           <Route component={NotFoundPage} />
                         </Switch>

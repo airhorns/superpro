@@ -17,6 +17,13 @@ class App::ConnectionSessionsController < AppAreaController
       else
         redirect_to "/settings/connections"
       end
+    when "facebook"
+      fb_credential, errors = Connections::ConnectFacebook.new(current_account, current_user).connect_using_auth_hash(auth_hash)
+      if errors
+        redirect_to "/settings/connections/error", provider: "Facebook"
+      else
+        redirect_to "/settings/connections/facebook/#{fb_credential.id}/complete"
+      end
     else
       raise "Unknown connection session provider callback"
     end
