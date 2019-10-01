@@ -12,4 +12,8 @@ class DataModel::Types::Base
   def self.process(value)
     value
   end
+
+  def self.default_operator
+    :sum
+  end
 end

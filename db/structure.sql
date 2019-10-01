@@ -1320,7 +1320,6 @@ CREATE TABLE raw_tap_facebook.adcreative (
     object_story_id text,
     image_url text,
     id text,
-    account_id text,
     actor_id text,
     applink_treatment text,
     call_to_action_type text,
@@ -1457,7 +1456,10 @@ CREATE TABLE raw_tap_facebook.adcreative (
     _sdc_received_at timestamp with time zone,
     _sdc_sequence bigint,
     _sdc_table_version bigint,
-    _sdc_batched_at timestamp with time zone
+    _sdc_batched_at timestamp with time zone,
+    account_id__s text,
+    account_id__i bigint,
+    fb_account_id text NOT NULL
 );
 
 
@@ -1465,7 +1467,7 @@ CREATE TABLE raw_tap_facebook.adcreative (
 -- Name: TABLE adcreative; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
 --
 
-COMMENT ON TABLE raw_tap_facebook.adcreative IS '{"path": ["adcreative"], "version": null, "schema_version": 2, "key_properties": ["id"], "mappings": {"body": {"type": ["string", "null"], "from": ["body"]}, "object_story_id": {"type": ["string", "null"], "from": ["object_story_id"]}, "image_url": {"type": ["string", "null"], "from": ["image_url"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "account_id": {"type": ["string", "null"], "from": ["account_id"]}, "actor_id": {"type": ["string", "null"], "from": ["actor_id"]}, "applink_treatment": {"type": ["string", "null"], "from": ["applink_treatment"]}, "call_to_action_type": {"type": ["string", "null"], "from": ["call_to_action_type"]}, "effective_instagram_story_id": {"type": ["string", "null"], "from": ["effective_instagram_story_id"]}, "effective_object_story_id": {"type": ["string", "null"], "from": ["effective_object_story_id"]}, "title": {"type": ["string", "null"], "from": ["title"]}, "name": {"type": ["string", "null"], "from": ["name"]}, "instagram_actor_id": {"type": ["string", "null"], "from": ["instagram_actor_id"]}, "instagram_permalink_url": {"type": ["string", "null"], "from": ["instagram_permalink_url"]}, "instagram_story_id": {"type": ["string", "null"], "from": ["instagram_story_id"]}, "link_og_id": {"type": ["string", "null"], "from": ["link_og_id"]}, "object_id": {"type": ["string", "null"], "from": ["object_id"]}, "object_story_spec__page_id": {"type": ["string", "null"], "from": ["object_story_spec", "page_id"]}, "object_story_spec__instagram_actor_id": {"type": ["string", "null"], "from": ["object_story_spec", "instagram_actor_id"]}, "object_story_spec__link_data__additional_image_index": {"type": ["integer", "null"], "from": ["object_story_spec", "link_data", "additional_image_index"]}, "object_story_spec__link_data__attachment_style": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "attachment_style"]}, "object_story_spec__link_data__branded_content_sponsor_page_id": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "branded_content_sponsor_page_id"]}, "object_story_spec__link_data__branded_content_sponsor_relations": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "branded_content_sponsor_relationship"]}, "object_story_spec__link_data__call_to_action__value__app_destin": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "call_to_action", "value", "app_destination"]}, "object_story_spec__link_data__call_to_action__value__app_link": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "call_to_action", "value", "app_link"]}, "object_story_spec__link_data__call_to_action__value__applicatio": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "call_to_action", "value", "application"]}, "object_story_spec__link_data__call_to_action__value__event_id": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "call_to_action", "value", "event_id"]}, "object_story_spec__link_data__call_to_action__value__lead_gen_f": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "call_to_action", "value", "lead_gen_form_id"]}, "object_story_spec__link_data__call_to_action__value__link": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "call_to_action", "value", "link"]}, "object_story_spec__link_data__call_to_action__value__link_capti": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "call_to_action", "value", "link_caption"]}, "object_story_spec__link_data__call_to_action__value__link_forma": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "call_to_action", "value", "link_format"]}, "object_story_spec__link_data__call_to_action__value__page": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "call_to_action", "value", "page"]}, "object_story_spec__link_data__call_to_action__value__product_li": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "call_to_action", "value", "product_link"]}, "object_story_spec__link_data__call_to_action__type": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "call_to_action", "type"]}, "object_story_spec__link_data__caption": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "caption"]}, "object_story_spec__link_data__multi_share_optimized": {"type": ["boolean", "null"], "from": ["object_story_spec", "link_data", "multi_share_optimized"]}, "object_story_spec__link_data__link": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "link"]}, "object_story_spec__link_data__description": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "description"]}, "object_story_spec__link_data__event_id": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "event_id"]}, "object_story_spec__link_data__force_single_link": {"type": ["boolean", "null"], "from": ["object_story_spec", "link_data", "force_single_link"]}, "object_story_spec__link_data__multi_share_end_card": {"type": ["boolean", "null"], "from": ["object_story_spec", "link_data", "multi_share_end_card"]}, "object_story_spec__link_data__message": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "message"]}, "object_story_spec__link_data__image_hash": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "image_hash"]}, "object_story_spec__link_data__picture": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "picture"]}, "object_story_spec__link_data__name": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "name"]}, "object_story_spec__link_data__offer_id": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "offer_id"]}, "object_story_spec__link_data__page_welcome_message": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "page_welcome_message"]}, "object_story_spec__link_data__show_multiple_images": {"type": ["boolean", "null"], "from": ["object_story_spec", "link_data", "show_multiple_images"]}, "object_story_spec__photo_data__branded_content_sponsor_page_id": {"type": ["string", "null"], "from": ["object_story_spec", "photo_data", "branded_content_sponsor_page_id"]}, "object_story_spec__photo_data__branded_content_sponsor_relation": {"type": ["string", "null"], "from": ["object_story_spec", "photo_data", "branded_content_sponsor_relationship"]}, "object_story_spec__photo_data__caption": {"type": ["string", "null"], "from": ["object_story_spec", "photo_data", "caption"]}, "object_story_spec__photo_data__image_hash": {"type": ["string", "null"], "from": ["object_story_spec", "photo_data", "image_hash"]}, "object_story_spec__photo_data__page_welcome_message": {"type": ["string", "null"], "from": ["object_story_spec", "photo_data", "page_welcome_message"]}, "object_story_spec__photo_data__url": {"type": ["string", "null"], "from": ["object_story_spec", "photo_data", "url"]}, "object_story_spec__template_data__additional_image_index": {"type": ["integer", "null"], "from": ["object_story_spec", "template_data", "additional_image_index"]}, "object_story_spec__template_data__attachment_style": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "attachment_style"]}, "object_story_spec__template_data__branded_content_sponsor_page_": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "branded_content_sponsor_page_id"]}, "object_story_spec__template_data__branded_content_sponsor_relat": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "branded_content_sponsor_relationship"]}, "object_story_spec__template_data__call_to_action__value__app_de": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "call_to_action", "value", "app_destination"]}, "object_story_spec__template_data__call_to_action__value__app_li": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "call_to_action", "value", "app_link"]}, "object_story_spec__template_data__call_to_action__value__applic": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "call_to_action", "value", "application"]}, "object_story_spec__template_data__call_to_action__value__event_": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "call_to_action", "value", "event_id"]}, "object_story_spec__template_data__call_to_action__value__lead_g": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "call_to_action", "value", "lead_gen_form_id"]}, "object_story_spec__template_data__call_to_action__value__link": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "call_to_action", "value", "link"]}, "object_story_spec__template_data__call_to_action__value__link_c": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "call_to_action", "value", "link_caption"]}, "object_story_spec__template_data__call_to_action__value__link_f": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "call_to_action", "value", "link_format"]}, "object_story_spec__template_data__call_to_action__value__page": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "call_to_action", "value", "page"]}, "object_story_spec__template_data__call_to_action__value__produc": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "call_to_action", "value", "product_link"]}, "object_story_spec__template_data__call_to_action__type": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "call_to_action", "type"]}, "object_story_spec__template_data__caption": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "caption"]}, "object_story_spec__template_data__multi_share_optimized": {"type": ["boolean", "null"], "from": ["object_story_spec", "template_data", "multi_share_optimized"]}, "object_story_spec__template_data__link": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "link"]}, "object_story_spec__template_data__description": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "description"]}, "object_story_spec__template_data__event_id": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "event_id"]}, "object_story_spec__template_data__force_single_link": {"type": ["boolean", "null"], "from": ["object_story_spec", "template_data", "force_single_link"]}, "object_story_spec__template_data__multi_share_end_card": {"type": ["boolean", "null"], "from": ["object_story_spec", "template_data", "multi_share_end_card"]}, "object_story_spec__template_data__message": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "message"]}, "object_story_spec__template_data__image_hash": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "image_hash"]}, "object_story_spec__template_data__picture": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "picture"]}, "object_story_spec__template_data__name": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "name"]}, "object_story_spec__template_data__offer_id": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "offer_id"]}, "object_story_spec__template_data__page_welcome_message": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "page_welcome_message"]}, "object_story_spec__template_data__show_multiple_images": {"type": ["boolean", "null"], "from": ["object_story_spec", "template_data", "show_multiple_images"]}, "object_story_spec__text_data__message": {"type": ["string", "null"], "from": ["object_story_spec", "text_data", "message"]}, "object_story_spec__video_data__additional_image_index": {"type": ["integer", "null"], "from": ["object_story_spec", "video_data", "additional_image_index"]}, "object_story_spec__video_data__branded_content_sponsor_page_id": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "branded_content_sponsor_page_id"]}, "object_story_spec__video_data__branded_content_sponsor_relation": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "branded_content_sponsor_relationship"]}, "object_story_spec__video_data__call_to_action__value__app_desti": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "call_to_action", "value", "app_destination"]}, "object_story_spec__video_data__call_to_action__value__app_link": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "call_to_action", "value", "app_link"]}, "object_story_spec__video_data__call_to_action__value__applicati": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "call_to_action", "value", "application"]}, "object_story_spec__video_data__call_to_action__value__event_id": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "call_to_action", "value", "event_id"]}, "object_story_spec__video_data__call_to_action__value__lead_gen_": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "call_to_action", "value", "lead_gen_form_id"]}, "object_story_spec__video_data__call_to_action__value__link": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "call_to_action", "value", "link"]}, "object_story_spec__video_data__call_to_action__value__link_capt": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "call_to_action", "value", "link_caption"]}, "object_story_spec__video_data__call_to_action__value__link_form": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "call_to_action", "value", "link_format"]}, "object_story_spec__video_data__call_to_action__value__page": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "call_to_action", "value", "page"]}, "object_story_spec__video_data__call_to_action__value__product_l": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "call_to_action", "value", "product_link"]}, "object_story_spec__video_data__call_to_action__type": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "call_to_action", "type"]}, "object_story_spec__video_data__image_hash": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "image_hash"]}, "object_story_spec__video_data__image_url": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "image_url"]}, "object_story_spec__video_data__link_description": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "link_description"]}, "object_story_spec__video_data__message": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "message"]}, "object_story_spec__video_data__offer_id": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "offer_id"]}, "object_story_spec__video_data__page_welcome_message": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "page_welcome_message"]}, "object_story_spec__video_data__targeting__age_max": {"type": ["integer", "null"], "from": ["object_story_spec", "video_data", "targeting", "age_max"]}, "object_story_spec__video_data__targeting__age_min": {"type": ["integer", "null"], "from": ["object_story_spec", "video_data", "targeting", "age_min"]}, "object_story_spec__video_data__targeting__targeting_optimizatio": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "targeting", "targeting_optimization"]}, "object_story_spec__video_data__targeting__app_install_state": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "targeting", "app_install_state"]}, "object_story_spec__video_data__title": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "title"]}, "object_story_spec__video_data__video_id": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "video_id"]}, "object_type": {"type": ["string", "null"], "from": ["object_type"]}, "object_url": {"type": ["string", "null"], "from": ["object_url"]}, "product_set_id": {"type": ["string", "null"], "from": ["product_set_id"]}, "status": {"type": ["string", "null"], "from": ["status"]}, "template_url": {"type": ["string", "null"], "from": ["template_url"]}, "template_url_spec__android__app_name": {"type": ["string", "null"], "from": ["template_url_spec", "android", "app_name"]}, "template_url_spec__android__package": {"type": ["string", "null"], "from": ["template_url_spec", "android", "package"]}, "template_url_spec__android__url": {"type": ["string", "null"], "from": ["template_url_spec", "android", "url"]}, "template_url_spec__config__app_id": {"type": ["string", "null"], "from": ["template_url_spec", "config", "app_id"]}, "template_url_spec__ios__app_name": {"type": ["string", "null"], "from": ["template_url_spec", "ios", "app_name"]}, "template_url_spec__ios__app_store_id": {"type": ["string", "null"], "from": ["template_url_spec", "ios", "app_store_id"]}, "template_url_spec__ios__url": {"type": ["string", "null"], "from": ["template_url_spec", "ios", "url"]}, "template_url_spec__ipad__app_name": {"type": ["string", "null"], "from": ["template_url_spec", "ipad", "app_name"]}, "template_url_spec__ipad__app_store_id": {"type": ["string", "null"], "from": ["template_url_spec", "ipad", "app_store_id"]}, "template_url_spec__ipad__url": {"type": ["string", "null"], "from": ["template_url_spec", "ipad", "url"]}, "template_url_spec__iphone__app_name": {"type": ["string", "null"], "from": ["template_url_spec", "iphone", "app_name"]}, "template_url_spec__iphone__app_store_id": {"type": ["string", "null"], "from": ["template_url_spec", "iphone", "app_store_id"]}, "template_url_spec__iphone__url": {"type": ["string", "null"], "from": ["template_url_spec", "iphone", "url"]}, "template_url_spec__web__should_fallback": {"type": ["string", "null"], "from": ["template_url_spec", "web", "should_fallback"]}, "template_url_spec__web__url": {"type": ["string", "null"], "from": ["template_url_spec", "web", "url"]}, "template_url_spec__windows_phone__app_id": {"type": ["string", "null"], "from": ["template_url_spec", "windows_phone", "app_id"]}, "template_url_spec__windows_phone__app_name": {"type": ["string", "null"], "from": ["template_url_spec", "windows_phone", "app_name"]}, "template_url_spec__windows_phone__url": {"type": ["string", "null"], "from": ["template_url_spec", "windows_phone", "url"]}, "thumbnail_url": {"type": ["string", "null"], "from": ["thumbnail_url"]}, "image_hash": {"type": ["string", "null"], "from": ["image_hash"]}, "url_tags": {"type": ["string", "null"], "from": ["url_tags"]}, "video_id": {"type": ["string", "null"], "from": ["video_id"]}, "link_url": {"type": ["string", "null"], "from": ["link_url"]}, "_sdc_received_at": {"type": ["string", "null"], "from": ["_sdc_received_at"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_table_version": {"type": ["integer", "null"], "from": ["_sdc_table_version"]}, "_sdc_batched_at": {"type": ["string", "null"], "from": ["_sdc_batched_at"], "format": "date-time"}}}';
+COMMENT ON TABLE raw_tap_facebook.adcreative IS '{"path": ["adcreative"], "version": null, "schema_version": 2, "key_properties": ["id"], "mappings": {"body": {"type": ["string", "null"], "from": ["body"]}, "object_story_id": {"type": ["string", "null"], "from": ["object_story_id"]}, "image_url": {"type": ["string", "null"], "from": ["image_url"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "actor_id": {"type": ["string", "null"], "from": ["actor_id"]}, "applink_treatment": {"type": ["string", "null"], "from": ["applink_treatment"]}, "call_to_action_type": {"type": ["string", "null"], "from": ["call_to_action_type"]}, "effective_instagram_story_id": {"type": ["string", "null"], "from": ["effective_instagram_story_id"]}, "effective_object_story_id": {"type": ["string", "null"], "from": ["effective_object_story_id"]}, "title": {"type": ["string", "null"], "from": ["title"]}, "name": {"type": ["string", "null"], "from": ["name"]}, "instagram_actor_id": {"type": ["string", "null"], "from": ["instagram_actor_id"]}, "instagram_permalink_url": {"type": ["string", "null"], "from": ["instagram_permalink_url"]}, "instagram_story_id": {"type": ["string", "null"], "from": ["instagram_story_id"]}, "link_og_id": {"type": ["string", "null"], "from": ["link_og_id"]}, "object_id": {"type": ["string", "null"], "from": ["object_id"]}, "object_story_spec__page_id": {"type": ["string", "null"], "from": ["object_story_spec", "page_id"]}, "object_story_spec__instagram_actor_id": {"type": ["string", "null"], "from": ["object_story_spec", "instagram_actor_id"]}, "object_story_spec__link_data__additional_image_index": {"type": ["integer", "null"], "from": ["object_story_spec", "link_data", "additional_image_index"]}, "object_story_spec__link_data__attachment_style": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "attachment_style"]}, "object_story_spec__link_data__branded_content_sponsor_page_id": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "branded_content_sponsor_page_id"]}, "object_story_spec__link_data__branded_content_sponsor_relations": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "branded_content_sponsor_relationship"]}, "object_story_spec__link_data__call_to_action__value__app_destin": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "call_to_action", "value", "app_destination"]}, "object_story_spec__link_data__call_to_action__value__app_link": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "call_to_action", "value", "app_link"]}, "object_story_spec__link_data__call_to_action__value__applicatio": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "call_to_action", "value", "application"]}, "object_story_spec__link_data__call_to_action__value__event_id": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "call_to_action", "value", "event_id"]}, "object_story_spec__link_data__call_to_action__value__lead_gen_f": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "call_to_action", "value", "lead_gen_form_id"]}, "object_story_spec__link_data__call_to_action__value__link": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "call_to_action", "value", "link"]}, "object_story_spec__link_data__call_to_action__value__link_capti": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "call_to_action", "value", "link_caption"]}, "object_story_spec__link_data__call_to_action__value__link_forma": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "call_to_action", "value", "link_format"]}, "object_story_spec__link_data__call_to_action__value__page": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "call_to_action", "value", "page"]}, "object_story_spec__link_data__call_to_action__value__product_li": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "call_to_action", "value", "product_link"]}, "object_story_spec__link_data__call_to_action__type": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "call_to_action", "type"]}, "object_story_spec__link_data__caption": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "caption"]}, "object_story_spec__link_data__multi_share_optimized": {"type": ["boolean", "null"], "from": ["object_story_spec", "link_data", "multi_share_optimized"]}, "object_story_spec__link_data__link": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "link"]}, "object_story_spec__link_data__description": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "description"]}, "object_story_spec__link_data__event_id": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "event_id"]}, "object_story_spec__link_data__force_single_link": {"type": ["boolean", "null"], "from": ["object_story_spec", "link_data", "force_single_link"]}, "object_story_spec__link_data__multi_share_end_card": {"type": ["boolean", "null"], "from": ["object_story_spec", "link_data", "multi_share_end_card"]}, "object_story_spec__link_data__message": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "message"]}, "object_story_spec__link_data__image_hash": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "image_hash"]}, "object_story_spec__link_data__picture": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "picture"]}, "object_story_spec__link_data__name": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "name"]}, "object_story_spec__link_data__offer_id": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "offer_id"]}, "object_story_spec__link_data__page_welcome_message": {"type": ["string", "null"], "from": ["object_story_spec", "link_data", "page_welcome_message"]}, "object_story_spec__link_data__show_multiple_images": {"type": ["boolean", "null"], "from": ["object_story_spec", "link_data", "show_multiple_images"]}, "object_story_spec__photo_data__branded_content_sponsor_page_id": {"type": ["string", "null"], "from": ["object_story_spec", "photo_data", "branded_content_sponsor_page_id"]}, "object_story_spec__photo_data__branded_content_sponsor_relation": {"type": ["string", "null"], "from": ["object_story_spec", "photo_data", "branded_content_sponsor_relationship"]}, "object_story_spec__photo_data__caption": {"type": ["string", "null"], "from": ["object_story_spec", "photo_data", "caption"]}, "object_story_spec__photo_data__image_hash": {"type": ["string", "null"], "from": ["object_story_spec", "photo_data", "image_hash"]}, "object_story_spec__photo_data__page_welcome_message": {"type": ["string", "null"], "from": ["object_story_spec", "photo_data", "page_welcome_message"]}, "object_story_spec__photo_data__url": {"type": ["string", "null"], "from": ["object_story_spec", "photo_data", "url"]}, "object_story_spec__template_data__additional_image_index": {"type": ["integer", "null"], "from": ["object_story_spec", "template_data", "additional_image_index"]}, "object_story_spec__template_data__attachment_style": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "attachment_style"]}, "object_story_spec__template_data__branded_content_sponsor_page_": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "branded_content_sponsor_page_id"]}, "object_story_spec__template_data__branded_content_sponsor_relat": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "branded_content_sponsor_relationship"]}, "object_story_spec__template_data__call_to_action__value__app_de": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "call_to_action", "value", "app_destination"]}, "object_story_spec__template_data__call_to_action__value__app_li": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "call_to_action", "value", "app_link"]}, "object_story_spec__template_data__call_to_action__value__applic": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "call_to_action", "value", "application"]}, "object_story_spec__template_data__call_to_action__value__event_": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "call_to_action", "value", "event_id"]}, "object_story_spec__template_data__call_to_action__value__lead_g": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "call_to_action", "value", "lead_gen_form_id"]}, "object_story_spec__template_data__call_to_action__value__link": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "call_to_action", "value", "link"]}, "object_story_spec__template_data__call_to_action__value__link_c": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "call_to_action", "value", "link_caption"]}, "object_story_spec__template_data__call_to_action__value__link_f": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "call_to_action", "value", "link_format"]}, "object_story_spec__template_data__call_to_action__value__page": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "call_to_action", "value", "page"]}, "object_story_spec__template_data__call_to_action__value__produc": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "call_to_action", "value", "product_link"]}, "object_story_spec__template_data__call_to_action__type": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "call_to_action", "type"]}, "object_story_spec__template_data__caption": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "caption"]}, "object_story_spec__template_data__multi_share_optimized": {"type": ["boolean", "null"], "from": ["object_story_spec", "template_data", "multi_share_optimized"]}, "object_story_spec__template_data__link": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "link"]}, "object_story_spec__template_data__description": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "description"]}, "object_story_spec__template_data__event_id": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "event_id"]}, "object_story_spec__template_data__force_single_link": {"type": ["boolean", "null"], "from": ["object_story_spec", "template_data", "force_single_link"]}, "object_story_spec__template_data__multi_share_end_card": {"type": ["boolean", "null"], "from": ["object_story_spec", "template_data", "multi_share_end_card"]}, "object_story_spec__template_data__message": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "message"]}, "object_story_spec__template_data__image_hash": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "image_hash"]}, "object_story_spec__template_data__picture": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "picture"]}, "object_story_spec__template_data__name": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "name"]}, "object_story_spec__template_data__offer_id": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "offer_id"]}, "object_story_spec__template_data__page_welcome_message": {"type": ["string", "null"], "from": ["object_story_spec", "template_data", "page_welcome_message"]}, "object_story_spec__template_data__show_multiple_images": {"type": ["boolean", "null"], "from": ["object_story_spec", "template_data", "show_multiple_images"]}, "object_story_spec__text_data__message": {"type": ["string", "null"], "from": ["object_story_spec", "text_data", "message"]}, "object_story_spec__video_data__additional_image_index": {"type": ["integer", "null"], "from": ["object_story_spec", "video_data", "additional_image_index"]}, "object_story_spec__video_data__branded_content_sponsor_page_id": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "branded_content_sponsor_page_id"]}, "object_story_spec__video_data__branded_content_sponsor_relation": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "branded_content_sponsor_relationship"]}, "object_story_spec__video_data__call_to_action__value__app_desti": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "call_to_action", "value", "app_destination"]}, "object_story_spec__video_data__call_to_action__value__app_link": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "call_to_action", "value", "app_link"]}, "object_story_spec__video_data__call_to_action__value__applicati": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "call_to_action", "value", "application"]}, "object_story_spec__video_data__call_to_action__value__event_id": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "call_to_action", "value", "event_id"]}, "object_story_spec__video_data__call_to_action__value__lead_gen_": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "call_to_action", "value", "lead_gen_form_id"]}, "object_story_spec__video_data__call_to_action__value__link": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "call_to_action", "value", "link"]}, "object_story_spec__video_data__call_to_action__value__link_capt": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "call_to_action", "value", "link_caption"]}, "object_story_spec__video_data__call_to_action__value__link_form": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "call_to_action", "value", "link_format"]}, "object_story_spec__video_data__call_to_action__value__page": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "call_to_action", "value", "page"]}, "object_story_spec__video_data__call_to_action__value__product_l": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "call_to_action", "value", "product_link"]}, "object_story_spec__video_data__call_to_action__type": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "call_to_action", "type"]}, "object_story_spec__video_data__image_hash": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "image_hash"]}, "object_story_spec__video_data__image_url": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "image_url"]}, "object_story_spec__video_data__link_description": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "link_description"]}, "object_story_spec__video_data__message": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "message"]}, "object_story_spec__video_data__offer_id": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "offer_id"]}, "object_story_spec__video_data__page_welcome_message": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "page_welcome_message"]}, "object_story_spec__video_data__targeting__age_max": {"type": ["integer", "null"], "from": ["object_story_spec", "video_data", "targeting", "age_max"]}, "object_story_spec__video_data__targeting__age_min": {"type": ["integer", "null"], "from": ["object_story_spec", "video_data", "targeting", "age_min"]}, "object_story_spec__video_data__targeting__targeting_optimizatio": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "targeting", "targeting_optimization"]}, "object_story_spec__video_data__targeting__app_install_state": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "targeting", "app_install_state"]}, "object_story_spec__video_data__title": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "title"]}, "object_story_spec__video_data__video_id": {"type": ["string", "null"], "from": ["object_story_spec", "video_data", "video_id"]}, "object_type": {"type": ["string", "null"], "from": ["object_type"]}, "object_url": {"type": ["string", "null"], "from": ["object_url"]}, "product_set_id": {"type": ["string", "null"], "from": ["product_set_id"]}, "status": {"type": ["string", "null"], "from": ["status"]}, "template_url": {"type": ["string", "null"], "from": ["template_url"]}, "template_url_spec__android__app_name": {"type": ["string", "null"], "from": ["template_url_spec", "android", "app_name"]}, "template_url_spec__android__package": {"type": ["string", "null"], "from": ["template_url_spec", "android", "package"]}, "template_url_spec__android__url": {"type": ["string", "null"], "from": ["template_url_spec", "android", "url"]}, "template_url_spec__config__app_id": {"type": ["string", "null"], "from": ["template_url_spec", "config", "app_id"]}, "template_url_spec__ios__app_name": {"type": ["string", "null"], "from": ["template_url_spec", "ios", "app_name"]}, "template_url_spec__ios__app_store_id": {"type": ["string", "null"], "from": ["template_url_spec", "ios", "app_store_id"]}, "template_url_spec__ios__url": {"type": ["string", "null"], "from": ["template_url_spec", "ios", "url"]}, "template_url_spec__ipad__app_name": {"type": ["string", "null"], "from": ["template_url_spec", "ipad", "app_name"]}, "template_url_spec__ipad__app_store_id": {"type": ["string", "null"], "from": ["template_url_spec", "ipad", "app_store_id"]}, "template_url_spec__ipad__url": {"type": ["string", "null"], "from": ["template_url_spec", "ipad", "url"]}, "template_url_spec__iphone__app_name": {"type": ["string", "null"], "from": ["template_url_spec", "iphone", "app_name"]}, "template_url_spec__iphone__app_store_id": {"type": ["string", "null"], "from": ["template_url_spec", "iphone", "app_store_id"]}, "template_url_spec__iphone__url": {"type": ["string", "null"], "from": ["template_url_spec", "iphone", "url"]}, "template_url_spec__web__should_fallback": {"type": ["string", "null"], "from": ["template_url_spec", "web", "should_fallback"]}, "template_url_spec__web__url": {"type": ["string", "null"], "from": ["template_url_spec", "web", "url"]}, "template_url_spec__windows_phone__app_id": {"type": ["string", "null"], "from": ["template_url_spec", "windows_phone", "app_id"]}, "template_url_spec__windows_phone__app_name": {"type": ["string", "null"], "from": ["template_url_spec", "windows_phone", "app_name"]}, "template_url_spec__windows_phone__url": {"type": ["string", "null"], "from": ["template_url_spec", "windows_phone", "url"]}, "thumbnail_url": {"type": ["string", "null"], "from": ["thumbnail_url"]}, "image_hash": {"type": ["string", "null"], "from": ["image_hash"]}, "url_tags": {"type": ["string", "null"], "from": ["url_tags"]}, "video_id": {"type": ["string", "null"], "from": ["video_id"]}, "link_url": {"type": ["string", "null"], "from": ["link_url"]}, "_sdc_received_at": {"type": ["string", "null"], "from": ["_sdc_received_at"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_table_version": {"type": ["integer", "null"], "from": ["_sdc_table_version"]}, "_sdc_batched_at": {"type": ["string", "null"], "from": ["_sdc_batched_at"], "format": "date-time"}, "account_id__s": {"type": ["string", "null"], "from": ["account_id"]}, "account_id__i": {"type": ["integer", "null"], "from": ["account_id"]}, "fb_account_id": {"type": ["string"], "from": ["fb_account_id"]}}}';
 
 
 --
@@ -5125,7 +5127,6 @@ COMMENT ON TABLE raw_tap_facebook.adcreative__object_story_spec__video_data__tar
 
 CREATE TABLE raw_tap_facebook.ads (
     bid_type text,
-    account_id text,
     campaign_id text,
     adset_id text,
     bid_amount bigint,
@@ -5151,7 +5152,10 @@ CREATE TABLE raw_tap_facebook.ads (
     _sdc_received_at timestamp with time zone,
     _sdc_sequence bigint,
     _sdc_table_version bigint,
-    _sdc_batched_at timestamp with time zone
+    _sdc_batched_at timestamp with time zone,
+    account_id__s text,
+    account_id__i bigint,
+    fb_account_id text NOT NULL
 );
 
 
@@ -5159,7 +5163,7 @@ CREATE TABLE raw_tap_facebook.ads (
 -- Name: TABLE ads; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
 --
 
-COMMENT ON TABLE raw_tap_facebook.ads IS '{"path": ["ads"], "version": null, "schema_version": 2, "key_properties": ["id", "updated_time"], "mappings": {"bid_type": {"type": ["string", "null"], "from": ["bid_type"]}, "account_id": {"type": ["string", "null"], "from": ["account_id"]}, "campaign_id": {"type": ["string", "null"], "from": ["campaign_id"]}, "adset_id": {"type": ["string", "null"], "from": ["adset_id"]}, "bid_amount": {"type": ["integer", "null"], "from": ["bid_amount"]}, "bid_info__clicks": {"type": ["integer", "null"], "from": ["bid_info", "CLICKS"]}, "bid_info__actions": {"type": ["integer", "null"], "from": ["bid_info", "ACTIONS"]}, "bid_info__reach": {"type": ["integer", "null"], "from": ["bid_info", "REACH"]}, "bid_info__impressions": {"type": ["integer", "null"], "from": ["bid_info", "IMPRESSIONS"]}, "bid_info__social": {"type": ["integer", "null"], "from": ["bid_info", "SOCIAL"]}, "status": {"type": ["string", "null"], "from": ["status"]}, "creative__creative_id": {"type": ["string", "null"], "from": ["creative", "creative_id"]}, "creative__id": {"type": ["string", "null"], "from": ["creative", "id"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "updated_time": {"type": ["string", "null"], "from": ["updated_time"], "format": "date-time"}, "created_time": {"type": ["string", "null"], "from": ["created_time"], "format": "date-time"}, "name": {"type": ["string", "null"], "from": ["name"]}, "targeting__age_max": {"type": ["integer", "null"], "from": ["targeting", "age_max"]}, "targeting__age_min": {"type": ["integer", "null"], "from": ["targeting", "age_min"]}, "targeting__targeting_optimization": {"type": ["string", "null"], "from": ["targeting", "targeting_optimization"]}, "targeting__app_install_state": {"type": ["string", "null"], "from": ["targeting", "app_install_state"]}, "effective_status": {"type": ["string", "null"], "from": ["effective_status"]}, "last_updated_by_app_id": {"type": ["string", "null"], "from": ["last_updated_by_app_id"]}, "source_ad_id": {"type": ["string", "null"], "from": ["source_ad_id"]}, "_sdc_received_at": {"type": ["string", "null"], "from": ["_sdc_received_at"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_table_version": {"type": ["integer", "null"], "from": ["_sdc_table_version"]}, "_sdc_batched_at": {"type": ["string", "null"], "from": ["_sdc_batched_at"], "format": "date-time"}}}';
+COMMENT ON TABLE raw_tap_facebook.ads IS '{"path": ["ads"], "version": null, "schema_version": 2, "key_properties": ["id", "updated_time"], "mappings": {"bid_type": {"type": ["string", "null"], "from": ["bid_type"]}, "campaign_id": {"type": ["string", "null"], "from": ["campaign_id"]}, "adset_id": {"type": ["string", "null"], "from": ["adset_id"]}, "bid_amount": {"type": ["integer", "null"], "from": ["bid_amount"]}, "bid_info__clicks": {"type": ["integer", "null"], "from": ["bid_info", "CLICKS"]}, "bid_info__actions": {"type": ["integer", "null"], "from": ["bid_info", "ACTIONS"]}, "bid_info__reach": {"type": ["integer", "null"], "from": ["bid_info", "REACH"]}, "bid_info__impressions": {"type": ["integer", "null"], "from": ["bid_info", "IMPRESSIONS"]}, "bid_info__social": {"type": ["integer", "null"], "from": ["bid_info", "SOCIAL"]}, "status": {"type": ["string", "null"], "from": ["status"]}, "creative__creative_id": {"type": ["string", "null"], "from": ["creative", "creative_id"]}, "creative__id": {"type": ["string", "null"], "from": ["creative", "id"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "updated_time": {"type": ["string", "null"], "from": ["updated_time"], "format": "date-time"}, "created_time": {"type": ["string", "null"], "from": ["created_time"], "format": "date-time"}, "name": {"type": ["string", "null"], "from": ["name"]}, "targeting__age_max": {"type": ["integer", "null"], "from": ["targeting", "age_max"]}, "targeting__age_min": {"type": ["integer", "null"], "from": ["targeting", "age_min"]}, "targeting__targeting_optimization": {"type": ["string", "null"], "from": ["targeting", "targeting_optimization"]}, "targeting__app_install_state": {"type": ["string", "null"], "from": ["targeting", "app_install_state"]}, "effective_status": {"type": ["string", "null"], "from": ["effective_status"]}, "last_updated_by_app_id": {"type": ["string", "null"], "from": ["last_updated_by_app_id"]}, "source_ad_id": {"type": ["string", "null"], "from": ["source_ad_id"]}, "_sdc_received_at": {"type": ["string", "null"], "from": ["_sdc_received_at"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_table_version": {"type": ["integer", "null"], "from": ["_sdc_table_version"]}, "_sdc_batched_at": {"type": ["string", "null"], "from": ["_sdc_batched_at"], "format": "date-time"}, "account_id__s": {"type": ["string", "null"], "from": ["account_id"]}, "account_id__i": {"type": ["integer", "null"], "from": ["account_id"]}, "fb_account_id": {"type": ["string"], "from": ["fb_account_id"]}}}';
 
 
 --
@@ -8442,7 +8446,6 @@ CREATE TABLE raw_tap_facebook.ads_insights (
     social_spend double precision,
     reach bigint,
     canvas_avg_view_percent double precision,
-    account_id text,
     date_start timestamp with time zone,
     objective text,
     impressions bigint,
@@ -8452,7 +8455,10 @@ CREATE TABLE raw_tap_facebook.ads_insights (
     _sdc_received_at timestamp with time zone,
     _sdc_sequence bigint,
     _sdc_table_version bigint,
-    _sdc_batched_at timestamp with time zone
+    _sdc_batched_at timestamp with time zone,
+    account_id__s text,
+    account_id__i bigint,
+    fb_account_id text NOT NULL
 );
 
 
@@ -8460,7 +8466,7 @@ CREATE TABLE raw_tap_facebook.ads_insights (
 -- Name: TABLE ads_insights; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
 --
 
-COMMENT ON TABLE raw_tap_facebook.ads_insights IS '{"path": ["ads_insights"], "version": null, "schema_version": 2, "key_properties": ["campaign_id", "adset_id", "ad_id", "date_start"], "mappings": {"clicks": {"type": ["integer", "null"], "from": ["clicks"]}, "date_stop": {"type": ["string", "null"], "from": ["date_stop"], "format": "date-time"}, "ad_id": {"type": ["string", "null"], "from": ["ad_id"]}, "unique_inline_link_click_ctr": {"type": ["number", "null"], "from": ["unique_inline_link_click_ctr"]}, "adset_id": {"type": ["string", "null"], "from": ["adset_id"]}, "frequency": {"type": ["number", "null"], "from": ["frequency"]}, "account_name": {"type": ["string", "null"], "from": ["account_name"]}, "canvas_avg_view_time": {"type": ["number", "null"], "from": ["canvas_avg_view_time"]}, "unique_inline_link_clicks": {"type": ["integer", "null"], "from": ["unique_inline_link_clicks"]}, "inline_post_engagement": {"type": ["integer", "null"], "from": ["inline_post_engagement"]}, "relevance_score__score": {"type": ["number", "null"], "from": ["relevance_score", "score"]}, "relevance_score__status": {"type": ["string", "null"], "from": ["relevance_score", "status"]}, "campaign_name": {"type": ["string", "null"], "from": ["campaign_name"]}, "inline_link_clicks": {"type": ["integer", "null"], "from": ["inline_link_clicks"]}, "campaign_id": {"type": ["string", "null"], "from": ["campaign_id"]}, "cpc": {"type": ["number", "null"], "from": ["cpc"]}, "ad_name": {"type": ["string", "null"], "from": ["ad_name"]}, "cost_per_unique_inline_link_click": {"type": ["number", "null"], "from": ["cost_per_unique_inline_link_click"]}, "cpm": {"type": ["number", "null"], "from": ["cpm"]}, "cost_per_inline_post_engagement": {"type": ["number", "null"], "from": ["cost_per_inline_post_engagement"]}, "inline_link_click_ctr": {"type": ["number", "null"], "from": ["inline_link_click_ctr"]}, "cpp": {"type": ["number", "null"], "from": ["cpp"]}, "unique_link_clicks_ctr": {"type": ["number", "null"], "from": ["unique_link_clicks_ctr"]}, "spend": {"type": ["number", "null"], "from": ["spend"]}, "cost_per_unique_click": {"type": ["number", "null"], "from": ["cost_per_unique_click"]}, "adset_name": {"type": ["string", "null"], "from": ["adset_name"]}, "unique_clicks": {"type": ["integer", "null"], "from": ["unique_clicks"]}, "social_spend": {"type": ["number", "null"], "from": ["social_spend"]}, "reach": {"type": ["integer", "null"], "from": ["reach"]}, "canvas_avg_view_percent": {"type": ["number", "null"], "from": ["canvas_avg_view_percent"]}, "account_id": {"type": ["string", "null"], "from": ["account_id"]}, "date_start": {"type": ["string", "null"], "from": ["date_start"], "format": "date-time"}, "objective": {"type": ["string", "null"], "from": ["objective"]}, "impressions": {"type": ["integer", "null"], "from": ["impressions"]}, "unique_ctr": {"type": ["number", "null"], "from": ["unique_ctr"]}, "cost_per_inline_link_click": {"type": ["number", "null"], "from": ["cost_per_inline_link_click"]}, "ctr": {"type": ["number", "null"], "from": ["ctr"]}, "_sdc_received_at": {"type": ["string", "null"], "from": ["_sdc_received_at"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_table_version": {"type": ["integer", "null"], "from": ["_sdc_table_version"]}, "_sdc_batched_at": {"type": ["string", "null"], "from": ["_sdc_batched_at"], "format": "date-time"}}}';
+COMMENT ON TABLE raw_tap_facebook.ads_insights IS '{"path": ["ads_insights"], "version": null, "schema_version": 2, "key_properties": ["campaign_id", "adset_id", "ad_id", "date_start"], "mappings": {"clicks": {"type": ["integer", "null"], "from": ["clicks"]}, "date_stop": {"type": ["string", "null"], "from": ["date_stop"], "format": "date-time"}, "ad_id": {"type": ["string", "null"], "from": ["ad_id"]}, "unique_inline_link_click_ctr": {"type": ["number", "null"], "from": ["unique_inline_link_click_ctr"]}, "adset_id": {"type": ["string", "null"], "from": ["adset_id"]}, "frequency": {"type": ["number", "null"], "from": ["frequency"]}, "account_name": {"type": ["string", "null"], "from": ["account_name"]}, "canvas_avg_view_time": {"type": ["number", "null"], "from": ["canvas_avg_view_time"]}, "unique_inline_link_clicks": {"type": ["integer", "null"], "from": ["unique_inline_link_clicks"]}, "inline_post_engagement": {"type": ["integer", "null"], "from": ["inline_post_engagement"]}, "relevance_score__score": {"type": ["number", "null"], "from": ["relevance_score", "score"]}, "relevance_score__status": {"type": ["string", "null"], "from": ["relevance_score", "status"]}, "campaign_name": {"type": ["string", "null"], "from": ["campaign_name"]}, "inline_link_clicks": {"type": ["integer", "null"], "from": ["inline_link_clicks"]}, "campaign_id": {"type": ["string", "null"], "from": ["campaign_id"]}, "cpc": {"type": ["number", "null"], "from": ["cpc"]}, "ad_name": {"type": ["string", "null"], "from": ["ad_name"]}, "cost_per_unique_inline_link_click": {"type": ["number", "null"], "from": ["cost_per_unique_inline_link_click"]}, "cpm": {"type": ["number", "null"], "from": ["cpm"]}, "cost_per_inline_post_engagement": {"type": ["number", "null"], "from": ["cost_per_inline_post_engagement"]}, "inline_link_click_ctr": {"type": ["number", "null"], "from": ["inline_link_click_ctr"]}, "cpp": {"type": ["number", "null"], "from": ["cpp"]}, "unique_link_clicks_ctr": {"type": ["number", "null"], "from": ["unique_link_clicks_ctr"]}, "spend": {"type": ["number", "null"], "from": ["spend"]}, "cost_per_unique_click": {"type": ["number", "null"], "from": ["cost_per_unique_click"]}, "adset_name": {"type": ["string", "null"], "from": ["adset_name"]}, "unique_clicks": {"type": ["integer", "null"], "from": ["unique_clicks"]}, "social_spend": {"type": ["number", "null"], "from": ["social_spend"]}, "reach": {"type": ["integer", "null"], "from": ["reach"]}, "canvas_avg_view_percent": {"type": ["number", "null"], "from": ["canvas_avg_view_percent"]}, "date_start": {"type": ["string", "null"], "from": ["date_start"], "format": "date-time"}, "objective": {"type": ["string", "null"], "from": ["objective"]}, "impressions": {"type": ["integer", "null"], "from": ["impressions"]}, "unique_ctr": {"type": ["number", "null"], "from": ["unique_ctr"]}, "cost_per_inline_link_click": {"type": ["number", "null"], "from": ["cost_per_inline_link_click"]}, "ctr": {"type": ["number", "null"], "from": ["ctr"]}, "_sdc_received_at": {"type": ["string", "null"], "from": ["_sdc_received_at"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_table_version": {"type": ["integer", "null"], "from": ["_sdc_table_version"]}, "_sdc_batched_at": {"type": ["string", "null"], "from": ["_sdc_batched_at"], "format": "date-time"}, "account_id__s": {"type": ["string", "null"], "from": ["account_id"]}, "account_id__i": {"type": ["integer", "null"], "from": ["account_id"]}, "fb_account_id": {"type": ["string"], "from": ["fb_account_id"]}}}';
 
 
 --
@@ -8860,7 +8866,6 @@ CREATE TABLE raw_tap_facebook.adsets (
     promoted_object__product_set_id text,
     promoted_object__offer_id text,
     id text,
-    account_id text,
     updated_time timestamp with time zone,
     daily_budget double precision,
     budget_remaining double precision,
@@ -8880,7 +8885,10 @@ CREATE TABLE raw_tap_facebook.adsets (
     _sdc_received_at timestamp with time zone,
     _sdc_sequence bigint,
     _sdc_table_version bigint,
-    _sdc_batched_at timestamp with time zone
+    _sdc_batched_at timestamp with time zone,
+    account_id__s text,
+    account_id__i bigint,
+    fb_account_id text NOT NULL
 );
 
 
@@ -8888,7 +8896,7 @@ CREATE TABLE raw_tap_facebook.adsets (
 -- Name: TABLE adsets; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
 --
 
-COMMENT ON TABLE raw_tap_facebook.adsets IS '{"path": ["adsets"], "version": null, "schema_version": 2, "key_properties": ["id", "updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "end_time": {"type": ["string", "null"], "from": ["end_time"], "format": "date-time"}, "promoted_object__custom_event_type": {"type": ["string", "null"], "from": ["promoted_object", "custom_event_type"]}, "promoted_object__pixel_id": {"type": ["string", "null"], "from": ["promoted_object", "pixel_id"]}, "promoted_object__pixel_rule": {"type": ["string", "null"], "from": ["promoted_object", "pixel_rule"]}, "promoted_object__page_id": {"type": ["string", "null"], "from": ["promoted_object", "page_id"]}, "promoted_object__object_store_url": {"type": ["string", "null"], "from": ["promoted_object", "object_store_url"]}, "promoted_object__application_id": {"type": ["string", "null"], "from": ["promoted_object", "application_id"]}, "promoted_object__product_set_id": {"type": ["string", "null"], "from": ["promoted_object", "product_set_id"]}, "promoted_object__offer_id": {"type": ["string", "null"], "from": ["promoted_object", "offer_id"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "account_id": {"type": ["string", "null"], "from": ["account_id"]}, "updated_time": {"type": ["string", "null"], "from": ["updated_time"], "format": "date-time"}, "daily_budget": {"type": ["number", "null"], "from": ["daily_budget"]}, "budget_remaining": {"type": ["number", "null"], "from": ["budget_remaining"]}, "effective_status": {"type": ["string", "null"], "from": ["effective_status"]}, "campaign_id": {"type": ["string", "null"], "from": ["campaign_id"]}, "created_time": {"type": ["string", "null"], "from": ["created_time"], "format": "date-time"}, "start_time": {"type": ["string", "null"], "from": ["start_time"], "format": "date-time"}, "lifetime_budget": {"type": ["number", "null"], "from": ["lifetime_budget"]}, "targeting__age_max": {"type": ["integer", "null"], "from": ["targeting", "age_max"]}, "targeting__age_min": {"type": ["integer", "null"], "from": ["targeting", "age_min"]}, "targeting__targeting_optimization": {"type": ["string", "null"], "from": ["targeting", "targeting_optimization"]}, "targeting__app_install_state": {"type": ["string", "null"], "from": ["targeting", "app_install_state"]}, "bid_info__clicks": {"type": ["integer", "null"], "from": ["bid_info", "CLICKS"]}, "bid_info__actions": {"type": ["integer", "null"], "from": ["bid_info", "ACTIONS"]}, "bid_info__impressions": {"type": ["integer", "null"], "from": ["bid_info", "IMPRESSIONS"]}, "bid_info__reach": {"type": ["integer", "null"], "from": ["bid_info", "REACH"]}, "_sdc_received_at": {"type": ["string", "null"], "from": ["_sdc_received_at"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_table_version": {"type": ["integer", "null"], "from": ["_sdc_table_version"]}, "_sdc_batched_at": {"type": ["string", "null"], "from": ["_sdc_batched_at"], "format": "date-time"}}}';
+COMMENT ON TABLE raw_tap_facebook.adsets IS '{"path": ["adsets"], "version": null, "schema_version": 2, "key_properties": ["id", "updated_time"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "end_time": {"type": ["string", "null"], "from": ["end_time"], "format": "date-time"}, "promoted_object__custom_event_type": {"type": ["string", "null"], "from": ["promoted_object", "custom_event_type"]}, "promoted_object__pixel_id": {"type": ["string", "null"], "from": ["promoted_object", "pixel_id"]}, "promoted_object__pixel_rule": {"type": ["string", "null"], "from": ["promoted_object", "pixel_rule"]}, "promoted_object__page_id": {"type": ["string", "null"], "from": ["promoted_object", "page_id"]}, "promoted_object__object_store_url": {"type": ["string", "null"], "from": ["promoted_object", "object_store_url"]}, "promoted_object__application_id": {"type": ["string", "null"], "from": ["promoted_object", "application_id"]}, "promoted_object__product_set_id": {"type": ["string", "null"], "from": ["promoted_object", "product_set_id"]}, "promoted_object__offer_id": {"type": ["string", "null"], "from": ["promoted_object", "offer_id"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "updated_time": {"type": ["string", "null"], "from": ["updated_time"], "format": "date-time"}, "daily_budget": {"type": ["number", "null"], "from": ["daily_budget"]}, "budget_remaining": {"type": ["number", "null"], "from": ["budget_remaining"]}, "effective_status": {"type": ["string", "null"], "from": ["effective_status"]}, "campaign_id": {"type": ["string", "null"], "from": ["campaign_id"]}, "created_time": {"type": ["string", "null"], "from": ["created_time"], "format": "date-time"}, "start_time": {"type": ["string", "null"], "from": ["start_time"], "format": "date-time"}, "lifetime_budget": {"type": ["number", "null"], "from": ["lifetime_budget"]}, "targeting__age_max": {"type": ["integer", "null"], "from": ["targeting", "age_max"]}, "targeting__age_min": {"type": ["integer", "null"], "from": ["targeting", "age_min"]}, "targeting__targeting_optimization": {"type": ["string", "null"], "from": ["targeting", "targeting_optimization"]}, "targeting__app_install_state": {"type": ["string", "null"], "from": ["targeting", "app_install_state"]}, "bid_info__clicks": {"type": ["integer", "null"], "from": ["bid_info", "CLICKS"]}, "bid_info__actions": {"type": ["integer", "null"], "from": ["bid_info", "ACTIONS"]}, "bid_info__impressions": {"type": ["integer", "null"], "from": ["bid_info", "IMPRESSIONS"]}, "bid_info__reach": {"type": ["integer", "null"], "from": ["bid_info", "REACH"]}, "_sdc_received_at": {"type": ["string", "null"], "from": ["_sdc_received_at"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_table_version": {"type": ["integer", "null"], "from": ["_sdc_table_version"]}, "_sdc_batched_at": {"type": ["string", "null"], "from": ["_sdc_batched_at"], "format": "date-time"}, "account_id__s": {"type": ["string", "null"], "from": ["account_id"]}, "account_id__i": {"type": ["integer", "null"], "from": ["account_id"]}, "fb_account_id": {"type": ["string"], "from": ["fb_account_id"]}}}';
 
 
 --
@@ -10989,7 +10997,6 @@ CREATE TABLE raw_tap_facebook.campaigns (
     name text,
     objective text,
     id text,
-    account_id text,
     effective_status text,
     buying_type text,
     spend_cap double precision,
@@ -10998,7 +11005,10 @@ CREATE TABLE raw_tap_facebook.campaigns (
     _sdc_received_at timestamp with time zone,
     _sdc_sequence bigint,
     _sdc_table_version bigint,
-    _sdc_batched_at timestamp with time zone
+    _sdc_batched_at timestamp with time zone,
+    account_id__s text,
+    account_id__i bigint,
+    fb_account_id text NOT NULL
 );
 
 
@@ -11006,7 +11016,7 @@ CREATE TABLE raw_tap_facebook.campaigns (
 -- Name: TABLE campaigns; Type: COMMENT; Schema: raw_tap_facebook; Owner: -
 --
 
-COMMENT ON TABLE raw_tap_facebook.campaigns IS '{"path": ["campaigns"], "version": null, "schema_version": 2, "key_properties": ["id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "objective": {"type": ["string", "null"], "from": ["objective"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "account_id": {"type": ["string", "null"], "from": ["account_id"]}, "effective_status": {"type": ["string", "null"], "from": ["effective_status"]}, "buying_type": {"type": ["string", "null"], "from": ["buying_type"]}, "spend_cap": {"type": ["number", "null"], "from": ["spend_cap"]}, "start_time": {"type": ["string"], "from": ["start_time"], "format": "date-time"}, "updated_time": {"type": ["string"], "from": ["updated_time"], "format": "date-time"}, "_sdc_received_at": {"type": ["string", "null"], "from": ["_sdc_received_at"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_table_version": {"type": ["integer", "null"], "from": ["_sdc_table_version"]}, "_sdc_batched_at": {"type": ["string", "null"], "from": ["_sdc_batched_at"], "format": "date-time"}}}';
+COMMENT ON TABLE raw_tap_facebook.campaigns IS '{"path": ["campaigns"], "version": null, "schema_version": 2, "key_properties": ["id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "objective": {"type": ["string", "null"], "from": ["objective"]}, "id": {"type": ["string", "null"], "from": ["id"]}, "effective_status": {"type": ["string", "null"], "from": ["effective_status"]}, "buying_type": {"type": ["string", "null"], "from": ["buying_type"]}, "spend_cap": {"type": ["number", "null"], "from": ["spend_cap"]}, "start_time": {"type": ["string"], "from": ["start_time"], "format": "date-time"}, "updated_time": {"type": ["string"], "from": ["updated_time"], "format": "date-time"}, "_sdc_received_at": {"type": ["string", "null"], "from": ["_sdc_received_at"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_table_version": {"type": ["integer", "null"], "from": ["_sdc_table_version"]}, "_sdc_batched_at": {"type": ["string", "null"], "from": ["_sdc_batched_at"], "format": "date-time"}, "account_id__s": {"type": ["string", "null"], "from": ["account_id"]}, "account_id__i": {"type": ["integer", "null"], "from": ["account_id"]}, "fb_account_id": {"type": ["string"], "from": ["fb_account_id"]}}}';
 
 
 --
@@ -12337,6 +12347,199 @@ CREATE TABLE raw_tap_shopify.metafields (
 --
 
 COMMENT ON TABLE raw_tap_shopify.metafields IS '{"path": ["metafields"], "version": null, "schema_version": 2, "key_properties": ["id"], "mappings": {"owner_id": {"type": ["integer", "null"], "from": ["owner_id"]}, "admin_graphql_api_id": {"type": ["string", "null"], "from": ["admin_graphql_api_id"]}, "owner_resource": {"type": ["string", "null"], "from": ["owner_resource"]}, "value_type": {"type": ["string", "null"], "from": ["value_type"]}, "key": {"type": ["string", "null"], "from": ["key"]}, "created_at": {"type": ["string", "null"], "from": ["created_at"], "format": "date-time"}, "id": {"type": ["integer", "null"], "from": ["id"]}, "namespace": {"type": ["string", "null"], "from": ["namespace"]}, "description": {"type": ["string", "null"], "from": ["description"]}, "value__i": {"type": ["integer", "null"], "from": ["value"]}, "value__s": {"type": ["string", "null"], "from": ["value"]}, "updated_at": {"type": ["string", "null"], "from": ["updated_at"], "format": "date-time"}, "account_id": {"type": ["integer"], "from": ["account_id"]}, "shop_id": {"type": ["integer"], "from": ["shop_id"]}, "_sdc_received_at": {"type": ["string", "null"], "from": ["_sdc_received_at"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_table_version": {"type": ["integer", "null"], "from": ["_sdc_table_version"]}, "_sdc_batched_at": {"type": ["string", "null"], "from": ["_sdc_batched_at"], "format": "date-time"}}}';
+
+
+--
+-- Name: order_refunds; Type: TABLE; Schema: raw_tap_shopify; Owner: -
+--
+
+CREATE TABLE raw_tap_shopify.order_refunds (
+    order_id bigint,
+    restock boolean,
+    processed_at text,
+    user_id bigint,
+    note text,
+    id bigint,
+    created_at timestamp with time zone,
+    admin_graphql_api_id text,
+    account_id bigint NOT NULL,
+    shop_id bigint NOT NULL,
+    _sdc_received_at timestamp with time zone,
+    _sdc_sequence bigint,
+    _sdc_table_version bigint,
+    _sdc_batched_at timestamp with time zone
+);
+
+
+--
+-- Name: TABLE order_refunds; Type: COMMENT; Schema: raw_tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_shopify.order_refunds IS '{"path": ["order_refunds"], "version": null, "schema_version": 2, "key_properties": ["id"], "mappings": {"order_id": {"type": ["integer", "null"], "from": ["order_id"]}, "restock": {"type": ["boolean", "null"], "from": ["restock"]}, "processed_at": {"type": ["string", "null"], "from": ["processed_at"]}, "user_id": {"type": ["integer", "null"], "from": ["user_id"]}, "note": {"type": ["string", "null"], "from": ["note"]}, "id": {"type": ["integer", "null"], "from": ["id"]}, "created_at": {"type": ["string", "null"], "from": ["created_at"], "format": "date-time"}, "admin_graphql_api_id": {"type": ["string", "null"], "from": ["admin_graphql_api_id"]}, "account_id": {"type": ["integer"], "from": ["account_id"]}, "shop_id": {"type": ["integer"], "from": ["shop_id"]}, "_sdc_received_at": {"type": ["string", "null"], "from": ["_sdc_received_at"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_table_version": {"type": ["integer", "null"], "from": ["_sdc_table_version"]}, "_sdc_batched_at": {"type": ["string", "null"], "from": ["_sdc_batched_at"], "format": "date-time"}}}';
+
+
+--
+-- Name: order_refunds__order_adjustments; Type: TABLE; Schema: raw_tap_shopify; Owner: -
+--
+
+CREATE TABLE raw_tap_shopify.order_refunds__order_adjustments (
+    order_id bigint,
+    tax_amount double precision,
+    refund_id bigint,
+    amount double precision,
+    kind text,
+    id bigint,
+    reason text,
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE order_refunds__order_adjustments; Type: COMMENT; Schema: raw_tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_shopify.order_refunds__order_adjustments IS '{"path": ["order_refunds", "order_adjustments"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"order_id": {"type": ["integer", "null"], "from": ["order_id"]}, "tax_amount": {"type": ["number", "null"], "from": ["tax_amount"]}, "refund_id": {"type": ["integer", "null"], "from": ["refund_id"]}, "amount": {"type": ["number", "null"], "from": ["amount"]}, "kind": {"type": ["string", "null"], "from": ["kind"]}, "id": {"type": ["integer", "null"], "from": ["id"]}, "reason": {"type": ["string", "null"], "from": ["reason"]}, "_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: order_refunds__refund_line_items; Type: TABLE; Schema: raw_tap_shopify; Owner: -
+--
+
+CREATE TABLE raw_tap_shopify.order_refunds__refund_line_items (
+    location_id bigint,
+    subtotal_set__shop_money__currency_code text,
+    subtotal_set__shop_money__amount text,
+    subtotal_set__presentment_money__currency_code text,
+    subtotal_set__presentment_money__amount text,
+    total_tax_set__shop_money__currency_code text,
+    total_tax_set__shop_money__amount text,
+    total_tax_set__presentment_money__currency_code text,
+    total_tax_set__presentment_money__amount text,
+    line_item_id bigint,
+    total_tax double precision,
+    quantity bigint,
+    id bigint,
+    line_item__gift_card boolean,
+    line_item__price text,
+    line_item__fulfillment_service text,
+    line_item__sku text,
+    line_item__fulfillment_status text,
+    line_item__quantity bigint,
+    line_item__variant_id bigint,
+    line_item__grams bigint,
+    line_item__requires_shipping boolean,
+    line_item__vendor text,
+    line_item__price_set__shop_money__amount text,
+    line_item__price_set__shop_money__currency_code text,
+    line_item__price_set__presentment_money__amount text,
+    line_item__price_set__presentment_money__currency_code text,
+    line_item__variant_inventory_management text,
+    line_item__pre_tax_price text,
+    line_item__variant_title text,
+    line_item__total_discount_set__shop_money__currency_code text,
+    line_item__total_discount_set__shop_money__amount text,
+    line_item__total_discount_set__presentment_money__currency_code text,
+    line_item__total_discount_set__presentment_money__amount text,
+    line_item__pre_tax_price_set__shop_money__amount text,
+    line_item__pre_tax_price_set__shop_money__currency_code text,
+    line_item__pre_tax_price_set__presentment_money__amount text,
+    line_item__pre_tax_price_set__presentment_money__currency_code text,
+    line_item__fulfillable_quantity bigint,
+    line_item__id bigint,
+    line_item__admin_graphql_api_id text,
+    line_item__total_discount text,
+    line_item__name text,
+    line_item__product_exists boolean,
+    line_item__taxable boolean,
+    line_item__product_id bigint,
+    line_item__title text,
+    subtotal double precision,
+    restock_type text,
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE order_refunds__refund_line_items; Type: COMMENT; Schema: raw_tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_shopify.order_refunds__refund_line_items IS '{"path": ["order_refunds", "refund_line_items"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"location_id": {"type": ["integer", "null"], "from": ["location_id"]}, "subtotal_set__shop_money__currency_code": {"type": ["string", "null"], "from": ["subtotal_set", "shop_money", "currency_code"]}, "subtotal_set__shop_money__amount": {"type": ["string", "null"], "from": ["subtotal_set", "shop_money", "amount"]}, "subtotal_set__presentment_money__currency_code": {"type": ["string", "null"], "from": ["subtotal_set", "presentment_money", "currency_code"]}, "subtotal_set__presentment_money__amount": {"type": ["string", "null"], "from": ["subtotal_set", "presentment_money", "amount"]}, "total_tax_set__shop_money__currency_code": {"type": ["string", "null"], "from": ["total_tax_set", "shop_money", "currency_code"]}, "total_tax_set__shop_money__amount": {"type": ["string", "null"], "from": ["total_tax_set", "shop_money", "amount"]}, "total_tax_set__presentment_money__currency_code": {"type": ["string", "null"], "from": ["total_tax_set", "presentment_money", "currency_code"]}, "total_tax_set__presentment_money__amount": {"type": ["string", "null"], "from": ["total_tax_set", "presentment_money", "amount"]}, "line_item_id": {"type": ["integer", "null"], "from": ["line_item_id"]}, "total_tax": {"type": ["number", "null"], "from": ["total_tax"]}, "quantity": {"type": ["integer", "null"], "from": ["quantity"]}, "id": {"type": ["integer", "null"], "from": ["id"]}, "line_item__gift_card": {"type": ["boolean", "null"], "from": ["line_item", "gift_card"]}, "line_item__price": {"type": ["string", "null"], "from": ["line_item", "price"]}, "line_item__fulfillment_service": {"type": ["string", "null"], "from": ["line_item", "fulfillment_service"]}, "line_item__sku": {"type": ["string", "null"], "from": ["line_item", "sku"]}, "line_item__fulfillment_status": {"type": ["string", "null"], "from": ["line_item", "fulfillment_status"]}, "line_item__quantity": {"type": ["integer", "null"], "from": ["line_item", "quantity"]}, "line_item__variant_id": {"type": ["integer", "null"], "from": ["line_item", "variant_id"]}, "line_item__grams": {"type": ["integer", "null"], "from": ["line_item", "grams"]}, "line_item__requires_shipping": {"type": ["boolean", "null"], "from": ["line_item", "requires_shipping"]}, "line_item__vendor": {"type": ["string", "null"], "from": ["line_item", "vendor"]}, "line_item__price_set__shop_money__amount": {"type": ["string", "null"], "from": ["line_item", "price_set", "shop_money", "amount"]}, "line_item__price_set__shop_money__currency_code": {"type": ["string", "null"], "from": ["line_item", "price_set", "shop_money", "currency_code"]}, "line_item__price_set__presentment_money__amount": {"type": ["string", "null"], "from": ["line_item", "price_set", "presentment_money", "amount"]}, "line_item__price_set__presentment_money__currency_code": {"type": ["string", "null"], "from": ["line_item", "price_set", "presentment_money", "currency_code"]}, "line_item__variant_inventory_management": {"type": ["string", "null"], "from": ["line_item", "variant_inventory_management"]}, "line_item__pre_tax_price": {"type": ["string", "null"], "from": ["line_item", "pre_tax_price"]}, "line_item__variant_title": {"type": ["string", "null"], "from": ["line_item", "variant_title"]}, "line_item__total_discount_set__shop_money__currency_code": {"type": ["string", "null"], "from": ["line_item", "total_discount_set", "shop_money", "currency_code"]}, "line_item__total_discount_set__shop_money__amount": {"type": ["string", "null"], "from": ["line_item", "total_discount_set", "shop_money", "amount"]}, "line_item__total_discount_set__presentment_money__currency_code": {"type": ["string", "null"], "from": ["line_item", "total_discount_set", "presentment_money", "currency_code"]}, "line_item__total_discount_set__presentment_money__amount": {"type": ["string", "null"], "from": ["line_item", "total_discount_set", "presentment_money", "amount"]}, "line_item__pre_tax_price_set__shop_money__amount": {"type": ["string", "null"], "from": ["line_item", "pre_tax_price_set", "shop_money", "amount"]}, "line_item__pre_tax_price_set__shop_money__currency_code": {"type": ["string", "null"], "from": ["line_item", "pre_tax_price_set", "shop_money", "currency_code"]}, "line_item__pre_tax_price_set__presentment_money__amount": {"type": ["string", "null"], "from": ["line_item", "pre_tax_price_set", "presentment_money", "amount"]}, "line_item__pre_tax_price_set__presentment_money__currency_code": {"type": ["string", "null"], "from": ["line_item", "pre_tax_price_set", "presentment_money", "currency_code"]}, "line_item__fulfillable_quantity": {"type": ["integer", "null"], "from": ["line_item", "fulfillable_quantity"]}, "line_item__id": {"type": ["integer", "null"], "from": ["line_item", "id"]}, "line_item__admin_graphql_api_id": {"type": ["string", "null"], "from": ["line_item", "admin_graphql_api_id"]}, "line_item__total_discount": {"type": ["string", "null"], "from": ["line_item", "total_discount"]}, "line_item__name": {"type": ["string", "null"], "from": ["line_item", "name"]}, "line_item__product_exists": {"type": ["boolean", "null"], "from": ["line_item", "product_exists"]}, "line_item__taxable": {"type": ["boolean", "null"], "from": ["line_item", "taxable"]}, "line_item__product_id": {"type": ["integer", "null"], "from": ["line_item", "product_id"]}, "line_item__title": {"type": ["string", "null"], "from": ["line_item", "title"]}, "subtotal": {"type": ["number", "null"], "from": ["subtotal"]}, "restock_type": {"type": ["string", "null"], "from": ["restock_type"]}, "_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: order_refunds__refund_line_items__line_item__discount_allocatio; Type: TABLE; Schema: raw_tap_shopify; Owner: -
+--
+
+CREATE TABLE raw_tap_shopify.order_refunds__refund_line_items__line_item__discount_allocatio (
+    amount text,
+    amount_set__shop_money__currency_code text,
+    amount_set__shop_money__amount text,
+    amount_set__presentment_money__currency_code text,
+    amount_set__presentment_money__amount text,
+    discount_application_index bigint,
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE order_refunds__refund_line_items__line_item__discount_allocatio; Type: COMMENT; Schema: raw_tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_shopify.order_refunds__refund_line_items__line_item__discount_allocatio IS '{"path": ["order_refunds", "refund_line_items", "line_item", "discount_allocations"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"amount": {"type": ["string", "null"], "from": ["amount"]}, "amount_set__shop_money__currency_code": {"type": ["string", "null"], "from": ["amount_set", "shop_money", "currency_code"]}, "amount_set__shop_money__amount": {"type": ["string", "null"], "from": ["amount_set", "shop_money", "amount"]}, "amount_set__presentment_money__currency_code": {"type": ["string", "null"], "from": ["amount_set", "presentment_money", "currency_code"]}, "amount_set__presentment_money__amount": {"type": ["string", "null"], "from": ["amount_set", "presentment_money", "amount"]}, "discount_application_index": {"type": ["integer", "null"], "from": ["discount_application_index"]}, "_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: order_refunds__refund_line_items__line_item__properties; Type: TABLE; Schema: raw_tap_shopify; Owner: -
+--
+
+CREATE TABLE raw_tap_shopify.order_refunds__refund_line_items__line_item__properties (
+    name text,
+    value text,
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE order_refunds__refund_line_items__line_item__properties; Type: COMMENT; Schema: raw_tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_shopify.order_refunds__refund_line_items__line_item__properties IS '{"path": ["order_refunds", "refund_line_items", "line_item", "properties"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"name": {"type": ["string", "null"], "from": ["name"]}, "value": {"type": ["string", "null"], "from": ["value"]}, "_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: order_refunds__refund_line_items__line_item__tax_lines; Type: TABLE; Schema: raw_tap_shopify; Owner: -
+--
+
+CREATE TABLE raw_tap_shopify.order_refunds__refund_line_items__line_item__tax_lines (
+    price_set__shop_money__amount text,
+    price_set__shop_money__currency_code text,
+    price_set__presentment_money__amount text,
+    price_set__presentment_money__currency_code text,
+    price text,
+    title text,
+    rate double precision,
+    _sdc_source_key_id bigint,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL,
+    _sdc_level_1_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE order_refunds__refund_line_items__line_item__tax_lines; Type: COMMENT; Schema: raw_tap_shopify; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_shopify.order_refunds__refund_line_items__line_item__tax_lines IS '{"path": ["order_refunds", "refund_line_items", "line_item", "tax_lines"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key_id"], "mappings": {"price_set__shop_money__amount": {"type": ["string", "null"], "from": ["price_set", "shop_money", "amount"]}, "price_set__shop_money__currency_code": {"type": ["string", "null"], "from": ["price_set", "shop_money", "currency_code"]}, "price_set__presentment_money__amount": {"type": ["string", "null"], "from": ["price_set", "presentment_money", "amount"]}, "price_set__presentment_money__currency_code": {"type": ["string", "null"], "from": ["price_set", "presentment_money", "currency_code"]}, "price": {"type": ["string", "null"], "from": ["price"]}, "title": {"type": ["string", "null"], "from": ["title"]}, "rate": {"type": ["number", "null"], "from": ["rate"]}, "_sdc_source_key_id": {"type": ["integer", "null"], "from": ["_sdc_source_key_id"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
 
 
 --
@@ -14552,6 +14755,22 @@ CREATE VIEW warehouse.fct_shopify_repurchase_intervals AS
 
 
 --
+-- Name: fct_shopify_rfm_thresholds; Type: TABLE; Schema: warehouse; Owner: -
+--
+
+CREATE TABLE warehouse.fct_shopify_rfm_thresholds (
+    account_id bigint,
+    business_line text,
+    recency_quintile integer,
+    frequency_quintile integer,
+    monetary_quintile integer,
+    monetary_threshold double precision,
+    recency_threshold double precision,
+    frequency_threshold bigint
+);
+
+
+--
 -- Name: stg_shopify_refund_items; Type: VIEW; Schema: warehouse; Owner: -
 --
 
@@ -15090,6 +15309,7 @@ CREATE TABLE warehouse.stg_shopify_customer_order_aggregates (
 CREATE TABLE warehouse.stg_shopify_customer_rfm (
     customer_id bigint,
     account_id bigint,
+    business_line text,
     total_order_count bigint,
     total_spend double precision,
     days_since_last_order double precision,
@@ -19456,6 +19676,13 @@ CREATE INDEX tp_06dea7a54012a5308443bd58a0ae23e631e9213c ON raw_tap_shopify.orde
 
 
 --
+-- Name: tp_0700238328ab768d9079d8d9e1fc6ed5cfe12978; Type: INDEX; Schema: raw_tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_0700238328ab768d9079d8d9e1fc6ed5cfe12978 ON raw_tap_shopify.order_refunds__order_adjustments USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
 -- Name: tp_0d134550071deb758fed45722da81a359e65095a; Type: INDEX; Schema: raw_tap_shopify; Owner: -
 --
 
@@ -19477,6 +19704,13 @@ CREATE INDEX tp_1a1b7987ba58452a9ec9e8b8f64c92f478426dd8 ON raw_tap_shopify.orde
 
 
 --
+-- Name: tp_1c9cb348dd4e1aa3a3d5b61ab51f65a2cd7112eb; Type: INDEX; Schema: raw_tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_1c9cb348dd4e1aa3a3d5b61ab51f65a2cd7112eb ON raw_tap_shopify.order_refunds__refund_line_items__line_item__discount_allocatio USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
 -- Name: tp_2183e11468a71d813749c170d2f8410b35934905; Type: INDEX; Schema: raw_tap_shopify; Owner: -
 --
 
@@ -19495,6 +19729,13 @@ CREATE INDEX tp_220e3ab4bc7660ea86b1a3960dc0a820957f1e9d ON raw_tap_shopify.orde
 --
 
 CREATE INDEX tp_25584c9d792a8de2f3996715d2b97c87bb6c69a4 ON raw_tap_shopify.customers__addresses USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_26e09eba80ea0cb606a7ec5c96ce729b72d48496; Type: INDEX; Schema: raw_tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_26e09eba80ea0cb606a7ec5c96ce729b72d48496 ON raw_tap_shopify.order_refunds__refund_line_items USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id);
 
 
 --
@@ -19523,6 +19764,13 @@ CREATE INDEX tp_3ac284582230f9b20fc645e351caee93a43b440d ON raw_tap_shopify.aban
 --
 
 CREATE INDEX tp_40475734a450efe054a96f6ca605abecb086860a ON raw_tap_shopify.abandoned_checkouts__line_items__discount_allocations USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_40936818a822358c348fb4224d06349d290f7a37; Type: INDEX; Schema: raw_tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_40936818a822358c348fb4224d06349d290f7a37 ON raw_tap_shopify.order_refunds__refund_line_items__line_item__properties USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
 
 
 --
@@ -19729,6 +19977,13 @@ CREATE INDEX tp_c8e8d7ef6baac72a152f76be15423abe9e0fbfbf ON raw_tap_shopify.orde
 
 
 --
+-- Name: tp_cbb35ff172142b2911bd5fb37d3175cc38014e19; Type: INDEX; Schema: raw_tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_cbb35ff172142b2911bd5fb37d3175cc38014e19 ON raw_tap_shopify.order_refunds__refund_line_items__line_item__tax_lines USING btree (_sdc_source_key_id, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
 -- Name: tp_cdf9a38e8cb995d6bfa62b1da979883210992284; Type: INDEX; Schema: raw_tap_shopify; Owner: -
 --
 
@@ -19820,6 +20075,13 @@ CREATE INDEX tp_metafields_id__sdc_sequence_idx ON raw_tap_shopify.metafields US
 
 
 --
+-- Name: tp_order_refunds_id__sdc_sequence_idx; Type: INDEX; Schema: raw_tap_shopify; Owner: -
+--
+
+CREATE INDEX tp_order_refunds_id__sdc_sequence_idx ON raw_tap_shopify.order_refunds USING btree (id, _sdc_sequence);
+
+
+--
 -- Name: tp_orders_id__sdc_sequence_idx; Type: INDEX; Schema: raw_tap_shopify; Owner: -
 --
 
@@ -19848,38 +20110,10 @@ CREATE INDEX tp_sales_order_id__sdc_sequence_idx ON tap_csv.sales USING btree (o
 
 
 --
--- Name: dim_shopify_customers__index_on_customer_id; Type: INDEX; Schema: warehouse; Owner: -
+-- Name: fct_shopify_rfm_thresholds__index_on_account_id__business_line; Type: INDEX; Schema: warehouse; Owner: -
 --
 
-CREATE INDEX dim_shopify_customers__index_on_customer_id ON warehouse.dim_shopify_customers USING btree (customer_id);
-
-
---
--- Name: fct_shopify_customer_pareto__index_on_account_id__year__custome; Type: INDEX; Schema: warehouse; Owner: -
---
-
-CREATE INDEX fct_shopify_customer_pareto__index_on_account_id__year__custome ON warehouse.fct_shopify_customer_pareto USING btree (account_id, year, customer_rank);
-
-
---
--- Name: fct_shopify_orders__index_on_account_id__customer_id__created_a; Type: INDEX; Schema: warehouse; Owner: -
---
-
-CREATE INDEX fct_shopify_orders__index_on_account_id__customer_id__created_a ON warehouse.fct_shopify_orders USING btree (account_id, customer_id, created_at);
-
-
---
--- Name: fct_shopify_orders__index_on_cancelled_at; Type: INDEX; Schema: warehouse; Owner: -
---
-
-CREATE INDEX fct_shopify_orders__index_on_cancelled_at ON warehouse.fct_shopify_orders USING btree (cancelled_at);
-
-
---
--- Name: fct_shopify_orders__index_on_customer_id__created_at; Type: INDEX; Schema: warehouse; Owner: -
---
-
-CREATE INDEX fct_shopify_orders__index_on_customer_id__created_at ON warehouse.fct_shopify_orders USING btree (customer_id, created_at);
+CREATE INDEX fct_shopify_rfm_thresholds__index_on_account_id__business_line ON warehouse.fct_shopify_rfm_thresholds USING btree (account_id, business_line);
 
 
 --
@@ -19890,38 +20124,10 @@ CREATE INDEX fct_snowplow_page_views__index_on_account_id__max_tstamp ON warehou
 
 
 --
--- Name: fct_snowplow_sessions__index_on_account_id__session_start; Type: INDEX; Schema: warehouse; Owner: -
---
-
-CREATE INDEX fct_snowplow_sessions__index_on_account_id__session_start ON warehouse.fct_snowplow_sessions USING btree (account_id, session_start);
-
-
---
--- Name: stg_shopify_customer_order_aggregates__index_on_account_id__cus; Type: INDEX; Schema: warehouse; Owner: -
---
-
-CREATE INDEX stg_shopify_customer_order_aggregates__index_on_account_id__cus ON warehouse.stg_shopify_customer_order_aggregates USING btree (account_id, customer_id);
-
-
---
--- Name: stg_shopify_customer_order_aggregates__index_on_customer_id; Type: INDEX; Schema: warehouse; Owner: -
---
-
-CREATE INDEX stg_shopify_customer_order_aggregates__index_on_customer_id ON warehouse.stg_shopify_customer_order_aggregates USING btree (customer_id);
-
-
---
 -- Name: stg_shopify_customer_rfm__index_on_account_id__customer_id; Type: INDEX; Schema: warehouse; Owner: -
 --
 
 CREATE INDEX stg_shopify_customer_rfm__index_on_account_id__customer_id ON warehouse.stg_shopify_customer_rfm USING btree (account_id, customer_id);
-
-
---
--- Name: stg_shopify_customer_rolling_rfm__index_on_account_id__week__rf; Type: INDEX; Schema: warehouse; Owner: -
---
-
-CREATE INDEX stg_shopify_customer_rolling_rfm__index_on_account_id__week__rf ON warehouse.stg_shopify_customer_rolling_rfm USING btree (account_id, week, rfm_label);
 
 
 --

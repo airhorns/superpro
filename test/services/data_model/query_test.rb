@@ -70,7 +70,7 @@ class DataModel::QueryTest < ActiveSupport::TestCase
       orderings: [{ id: "total_price", direction: "asc" }],
     )
 
-    assert_equal [], result
+    assert_equal [{ "total_price" => nil }], result
   end
 
   test "it can execute a query with a filter on an id field" do

@@ -45,7 +45,7 @@ export class ReportBuilderController extends SuperFormController<ReportDocument>
       const measureFieldIntrospection = assert(this.warehouse.measure(model, field));
       const measure: Measure = { id, model, field };
       if (measureFieldIntrospection.requiresOperators) {
-        measure.operator = measureFieldIntrospection.defaultOperator;
+        measure.operator = assert(measureFieldIntrospection.defaultOperator);
       }
       block.query.measures.push(measure);
 

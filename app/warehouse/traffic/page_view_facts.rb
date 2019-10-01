@@ -24,7 +24,7 @@ class Traffic::PageViewFacts < DataModel::FactTable
   measure :onload_time_in_ms, DataModel::Types::Duration
   measure :total_time_in_ms, DataModel::Types::Duration
 
-  measure :bounce_pct, DataModel::Types::Percentage do
+  measure :bounce_pct, DataModel::Types::Percentage, allow_operators: false do
     table_node[:is_bounce].count / Arel::Nodes::NamedFunction.new("nullif", [table_node[:session_id].count(true), Arel.sql("0")])
   end
 

@@ -16,8 +16,13 @@ class DataModel::MeasureField
 
     @allow_operators = allow_operators
     if @allow_operators
-      @default_operator = default_operator || :sum
-      @require_operators = require_operators
+      @default_operator = if default_operator
+                            default_operator
+                          elsif default_operator.nil?
+                            @data_type.default_operator
+                          end
+
+      @require_operators = !!require_operators
     else
       @require_operators = false
     end

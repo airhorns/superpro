@@ -6,5 +6,5 @@ class Types::Warehouse::WarehouseIntrospectionMeasureFieldType < Types::BaseObje
   field :data_type, Types::Warehouse::WarehouseDataTypeEnum, null: false
   field :allows_operators, Boolean, null: false
   field :requires_operators, Boolean, null: false
-  field :default_operator, String, null: false
+  field :default_operator, String, null: true
 end

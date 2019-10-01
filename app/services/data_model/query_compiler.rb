@@ -7,6 +7,7 @@ module DataModel
       @account = account
       @warehouse = warehouse
       @query_specification = query_specification
+      @has_aggregations_visitor = HasAggregationsNodeVisitor.new
 
       @aliases_by_id = {}
       @ids_by_alias = {}
@@ -63,13 +64,15 @@ module DataModel
 
       filters = filter_specs.map { |filter_spec| filter_node_for_filter_spec(model, projections_by_id, filter_spec) }
       filters << table[:account_id].eq(@account.id)
+      havings, wheres = filters.partition { |filter| contains_aggregation_nodes?(filter) }
 
       manager = Arel::SelectManager.new
       manager.project(*projections)
       manager.group(*groups) if !groups.empty?
       manager.order(*orders) if !orders.empty?
       manager.from(table)
-      filters.each { |filter| manager.where(filter) }
+      wheres.each { |filter| manager.where(filter) }
+      havings.each { |filter| manager.having(filter) }
       manager.take(5000)
 
       manager
@@ -163,10 +166,14 @@ module DataModel
       end
 
       if !operator.valid_on_type?(field.data_type)
-        raise InvalidQueryError, "Operator #{operator} is invalid on this field's type which is #{field.data_type}"
+        raise InvalidQueryError, "Operator #{operator.key} is invalid on this field #{field.field_name} because it's type is #{field.data_type}"
       end
 
       operator.apply(expression)
+    end
+
+    def contains_aggregation_nodes?(node)
+      @has_aggregations_visitor.accept(node)
     end
 
     def model_field_for(spec)

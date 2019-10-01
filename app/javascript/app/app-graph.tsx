@@ -660,7 +660,7 @@ export type WarehouseIntrospectionMeasureField = {
   __typename: "WarehouseIntrospectionMeasureField";
   allowsOperators: Scalars["Boolean"];
   dataType: WarehouseDataTypeEnum;
-  defaultOperator: Scalars["String"];
+  defaultOperator?: Maybe<Scalars["String"]>;
   fieldLabel: Scalars["String"];
   fieldName: Scalars["String"];
   requiresOperators: Scalars["Boolean"];
