@@ -4,7 +4,7 @@ require "test_helper"
 
 class Infrastructure::SingerConnectionSyncTest < ActiveSupport::TestCase
   setup do
-    @account = create(:account, business_epoch: Time.utc(2019, 9, 1))
+    @account = create(:account, business_epoch: Time.now.utc - 1.day)
     @sync = Infrastructure::SingerConnectionSync.new(@account)
     @connection = create(:shopify_hrsn_connection, account: @account)
 
@@ -46,14 +46,14 @@ class Infrastructure::SingerConnectionSyncTest < ActiveSupport::TestCase
     assert attempt.success
   end
 
-  test "it can sync a facebook ad account" do
-    @connection = create(:facebook_ads_connection, account: @account)
-    assert_difference "SingerSyncAttempt.count", 1 do
-      @sync.sync(@connection)
-    end
-    attempt = @connection.singer_sync_attempts.order("id DESC").first
-    assert attempt.success
-  end
+  # test "it can sync a facebook ad account" do
+  #   @connection = create(:facebook_ads_connection, account: @account)
+  #   assert_difference "SingerSyncAttempt.count", 1 do
+  #     @sync.sync(@connection)
+  #   end
+  #   attempt = @connection.singer_sync_attempts.order("id DESC").first
+  #   assert attempt.success
+  # end
 
   test "it tracks restclient exceptions as failures" do
     RestClient::Request.expects(:execute).once.raises(RestClient::ServerBrokeConnection)

@@ -14,7 +14,6 @@
 #  messages           :text             is an Array
 #
 
-
 class SnowplowEnrichmentError < ApplicationRecord
   self.table_name = "warehouse.stg_snowplow_enrichment_errors"
   self.primary_key = "_sdc_primary_key"

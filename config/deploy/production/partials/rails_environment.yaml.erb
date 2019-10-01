@@ -10,62 +10,21 @@
   value: <%= if defined?(rails_log_level) then rails_log_level else "debug" end %>
 - name: RELEASE
   value: <%= current_sha %>
-- name: DATABASE_URL
-  valueFrom:
-    secretKeyRef:
-      name: application-secrets
-      key: DATABASE_URL
 - name: GOOGLE_CLOUD_PROJECT
   value: superpro-production
 - name: ASSETS_GCS_BUCKET
   value: core-assets-gsbxqmgsbxqm.superpro.io
-- name: SECRET_KEY_BASE
-  valueFrom:
-    secretKeyRef:
-      name: application-secrets
-      key: SECRET_KEY_BASE
-- name: BACKEND_SENTRY_DSN
-  valueFrom:
-    secretKeyRef:
-      name: application-secrets
-      key: BACKEND_SENTRY_DSN
 - name: FRONTEND_SENTRY_DSN
   value: "https://d4676dd73d8243d88d527f4cf82746e4@sentry.io/1499721"
-- name: ADMIN_GOOGLE_OAUTH_CLIENT_SECRET
+
+<% ["DATABASE_URL", "SECRET_KEY_BASE", "BACKEND_SENTRY_DSN", "ADMIN_GOOGLE_OAUTH_CLIENT_SECRET", "APP_GOOGLE_OAUTH_CLIENT_SECRET", "SEGMENT_BACKEND_WRITE_KEY", "SENDGRID_APIKEY", "SINGER_IMPORTER_AUTH_TOKEN", "KAFKA_SASL_PLAIN_PASSWORD", "SHOPIFY_API_SECRET_KEY", "FACEBOOK_APP_SECRET"].each do |secret_env_var| %>
+- name: <%= secret_env_var %>
   valueFrom:
     secretKeyRef:
       name: application-secrets
-      key: ADMIN_GOOGLE_OAUTH_CLIENT_SECRET
-- name: APP_GOOGLE_OAUTH_CLIENT_SECRET
-  valueFrom:
-    secretKeyRef:
-      name: application-secrets
-      key: APP_GOOGLE_OAUTH_CLIENT_SECRET
-- name: SEGMENT_BACKEND_WRITE_KEY
-  valueFrom:
-    secretKeyRef:
-      name: application-secrets
-      key: SEGMENT_BACKEND_WRITE_KEY
-- name: SENDGRID_APIKEY
-  valueFrom:
-    secretKeyRef:
-      name: application-secrets
-      key: SENDGRID_APIKEY
-- name: SINGER_IMPORTER_AUTH_TOKEN
-  valueFrom:
-    secretKeyRef:
-      name: application-secrets
-      key: SINGER_IMPORTER_AUTH_TOKEN
-- name: KAFKA_SASL_PLAIN_PASSWORD
-  valueFrom:
-    secretKeyRef:
-      name: application-secrets
-      key: KAFKA_SASL_PLAIN_PASSWORD
-- name: SHOPIFY_API_SECRET_KEY
-  valueFrom:
-    secretKeyRef:
-      name: application-secrets
-      key: SHOPIFY_API_SECRET_KEY
+      key: <%= secret_env_var %>
+<% end %>
+
 <% # This is some messed up shit that allows the rails application to create pods of itself. Because we use kubernetes-deploy to render out all these nice partials, the Rails app needs to be able to do the same, so we pass in the same data rendered out here as an environment variable that can then be decoded and reused in Rails. Sketchy. %>
 <% if locals[:expose_contents_as_variable] %>
 - name: RAILS_POD_TEMPLATE_YAML

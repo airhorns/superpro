@@ -275,7 +275,7 @@ export type CompleteGoogleAnalyticsSetupPayload = {
 };
 
 /** Objects which may be connected to the system */
-export type ConnectionIntegrationUnion = PlaidItem | ShopifyShop | GoogleAnalyticsCredential;
+export type ConnectionIntegrationUnion = PlaidItem | ShopifyShop | GoogleAnalyticsCredential | FacebookAdAccount;
 
 export type Connectionobj = {
   __typename: "Connectionobj";

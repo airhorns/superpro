@@ -27,6 +27,9 @@ const result: IntrospectionResultData = {
           },
           {
             name: "GoogleAnalyticsCredential"
+          },
+          {
+            name: "FacebookAdAccount"
           }
         ]
       }

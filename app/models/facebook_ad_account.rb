@@ -22,7 +22,6 @@
 #  fk_rails_...  (creator_id => users.id)
 #
 
-
 class FacebookAdAccount < ApplicationRecord
   include AccountScoped
   belongs_to :creator, class_name: "User", optional: false

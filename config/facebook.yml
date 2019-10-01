@@ -7,4 +7,4 @@ integration_test:
   <<: *development
 production:
   app_id: "2456355657944129"
-  app_secret: ""
+  app_secret: "<%= ENV['FACEBOOK_APP_SECRET'] %>"

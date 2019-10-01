@@ -22,7 +22,6 @@
 #  fk_rails_...  (creator_id => users.id)
 #
 
-
 require "test_helper"
 
 class FacebookAdAccountTest < ActiveSupport::TestCase
