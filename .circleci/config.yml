@@ -181,18 +181,12 @@ jobs:
 
   lint_kubernetes:
     docker:
-      - image: circleci/ruby:2.6.2
+      - image: superpro/deploy-container
     working_directory: ~/repo
     steps:
       - checkout
       - restore_cache: *ruby_dependencies_restore_cache
       - run: *ruby_dependencies
-      - run:
-          name: Install kubeval
-          command: |
-            wget https://github.com/instrumenta/kubeval/releases/download/0.10.0/kubeval-linux-amd64.tar.gz
-            tar xf kubeval-linux-amd64.tar.gz
-            sudo cp kubeval /usr/local/bin
       - run:
           name: Lint rendered Kubernetes templates
           command: bin/kubernetes-lint
