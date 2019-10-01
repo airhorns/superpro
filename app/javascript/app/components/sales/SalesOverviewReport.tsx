@@ -11,7 +11,7 @@ export default FullReportPage("Sales Overview", {
       query: {
         measures: [
           { model: "Sales::OrderFacts", field: "total_price", operator: "sum", id: "total_price" },
-          { model: "Sales::OrderFacts", field: "customer_count", id: "customer_count" }
+          { model: "Sales::OrderFacts", field: "unique_customer_count", id: "customer_count" }
         ],
         dimensions: [{ model: "Sales::OrderFacts", field: "created_at", operator: "date_trunc_day", id: "date" }],
         filters: [

@@ -11,7 +11,7 @@ export default FullReportPage("Orders Review", {
       query: {
         measures: [
           { model: "Sales::OrderFacts", field: "total_price", operator: "sum", id: "total_price" },
-          { model: "Sales::OrderFacts", field: "customer_count", id: "customer_count" },
+          { model: "Sales::OrderFacts", field: "unique_customer_count", id: "customer_count" },
           { model: "Sales::OrderFacts", field: "order_count", id: "order_count" },
           { model: "Sales::OrderFacts", field: "total_price", operator: "average", id: "average_order_value" },
           { model: "Sales::OrderFacts", field: "orders_per_customer", id: "average_order_value" }
@@ -25,7 +25,7 @@ export default FullReportPage("Orders Review", {
       query: {
         measures: [
           { model: "Sales::OrderFacts", field: "total_price", operator: "sum", id: "total_price" },
-          { model: "Sales::OrderFacts", field: "customer_count", id: "customer_count" },
+          { model: "Sales::OrderFacts", field: "unique_customer_count", id: "customer_count" },
           { model: "Sales::OrderFacts", field: "order_count", id: "order_count" },
           { model: "Sales::OrderFacts", field: "total_price", operator: "average", id: "average_order_value" },
           { model: "Sales::OrderFacts", field: "orders_per_customer", id: "average_order_value" }

@@ -14,9 +14,14 @@ class DataModel::MeasureField
     @field_label = label || field_name.to_s.titleize
     @data_type = data_type
 
-    @default_operator = default_operator || :sum
     @allow_operators = allow_operators
-    @require_operators = require_operators.nil? ? allow_operators : true  # operators are only required if they're allowed
+    if @allow_operators
+      @default_operator = default_operator || :sum
+      @require_operators = require_operators
+    else
+      @require_operators = false
+    end
+
     @custom_sql_node = sql || block_given? && yield
   end
 

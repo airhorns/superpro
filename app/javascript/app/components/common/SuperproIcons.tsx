@@ -36,7 +36,8 @@ import {
   CirclePlay,
   Pause as GrommetPause,
   CloudDownload,
-  Directions
+  Directions,
+  Stakeholder
 } from "grommet-icons";
 
 // Navigation & Root level ideas
@@ -45,6 +46,7 @@ export const Home = GrommetHome;
 export const Reports = Analytics;
 export const Sales = Currency;
 export const Traffic = Directions;
+export const Customers = Stakeholder;
 export const Invite = UserAdd;
 export const Settings = Configure;
 

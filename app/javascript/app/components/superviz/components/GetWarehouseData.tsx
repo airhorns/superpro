@@ -11,7 +11,7 @@ import { Alert } from "superlib/Alert";
 import { WarehouseQuery } from "../WarehouseQuery";
 import { assert } from "superlib";
 import { DateTime } from "luxon";
-import { keyBy } from "lodash";
+import { keyBy, isFunction } from "lodash";
 
 gql`
   query WarehouseQuery($query: JSONScalar!) {
@@ -52,7 +52,10 @@ const hydrate = (records: any[], queryIntrospection: WarehouseQueryIntrospection
   });
 };
 
-export const GetWarehouseData = (props: { query: WarehouseQuery; children: React.ReactNode }) => {
+export const GetWarehouseData = (props: {
+  query: WarehouseQuery;
+  children: React.ReactNode | ((result: SuccessfulWarehouseQueryResult) => React.ReactNode);
+}) => {
   return (
     <SimpleQuery
       component={WarehouseQueryComponent}
@@ -83,7 +86,11 @@ export const GetWarehouseData = (props: { query: WarehouseQuery; children: React
           records: hydrate(data.warehouseQuery.records, queryIntrospection)
         };
 
-        return <VizQueryContext.Provider value={result}>{props.children}</VizQueryContext.Provider>;
+        return (
+          <VizQueryContext.Provider value={result}>
+            {isFunction(props.children) ? props.children(result) : props.children}
+          </VizQueryContext.Provider>
+        );
       }}
     </SimpleQuery>
   );

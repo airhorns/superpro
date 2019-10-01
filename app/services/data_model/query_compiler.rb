@@ -81,6 +81,8 @@ module DataModel
 
       if measure_spec[:operator]
         expression = apply_operator(expression, field, measure_spec[:operator].to_sym)
+      elsif field.default_operator
+        expression = apply_operator(expression, field, field.default_operator)
       end
 
       expression
