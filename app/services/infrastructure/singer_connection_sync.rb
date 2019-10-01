@@ -81,6 +81,7 @@ module Infrastructure
       case connection.integration
       when ShopifyShop then "shopify"
       when GoogleAnalyticsCredential then "google-analytics"
+      when FacebookAdAccount then "facebook"
       else raise "Unknown connection integration class #{connection.integration.class} for connection #{connection.id}"
       end
     end
@@ -101,15 +102,21 @@ module Infrastructure
         config
       when GoogleAnalyticsCredential
         {
-          "oauth_credentials" => {
-            "access_token" => connection.integration.token,
-            "refresh_token" => connection.integration.refresh_token,
-            "client_id" => Rails.configuration.google[:google_oauth_client_id],
-            "client_secret" => Rails.configuration.google[:google_oauth_client_secret],
+          oauth_credentials: {
+            access_token: connection.integration.token,
+            refresh_token: connection.integration.refresh_token,
+            client_id: Rails.configuration.google[:google_oauth_client_id],
+            client_secret: Rails.configuration.google[:google_oauth_client_secret],
           },
-          "view_id": connection.integration.view_id.to_s,
-          "quota_user": "sp-accountid-#{connection.account_id}",
-          "start_date": start_date,
+          view_id: connection.integration.view_id.to_s,
+          quota_user: "sp-accountid-#{connection.account_id}",
+          start_date: start_date,
+        }
+      when FacebookAdAccount
+        {
+          access_token: connection.integration.access_token,
+          account_id: connection.integration.fb_account_id.sub("act_", ""),
+          start_date: start_date,
         }
       else
         raise "Unknown connection integration class #{connection.integration.class} for connection #{connection.id}"
@@ -122,6 +129,7 @@ module Infrastructure
       case connection.integration
       when ShopifyShop then field_values[:shop_id] = connection.integration.shop_id
       when GoogleAnalyticsCredential then field_values[:view_id] = connection.integration.view_id
+      when FacebookAdAccount then field_values[:fb_account_id] = connection.integration.fb_account_id
       else raise "Unknown connection integration class #{connection.integration.class} for connection #{connection.id}"
       end
 

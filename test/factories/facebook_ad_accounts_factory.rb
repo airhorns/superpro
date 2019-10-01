@@ -9,5 +9,11 @@ FactoryBot.define do
     grantor_id { "10213720435438964" }
     grantor_name { "Joe Blow" }
     configured { false }
+
+    factory :configured_facebook_ad_account do
+      configured { false }
+      fb_account_id { "act_57930665" }
+      fb_account_name { "Test Account" }
+    end
   end
 end

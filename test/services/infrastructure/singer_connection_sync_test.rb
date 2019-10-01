@@ -46,6 +46,15 @@ class Infrastructure::SingerConnectionSyncTest < ActiveSupport::TestCase
     assert attempt.success
   end
 
+  test "it can sync a facebook ad account" do
+    @connection = create(:facebook_ads_connection, account: @account)
+    assert_difference "SingerSyncAttempt.count", 1 do
+      @sync.sync(@connection)
+    end
+    attempt = @connection.singer_sync_attempts.order("id DESC").first
+    assert attempt.success
+  end
+
   test "it tracks restclient exceptions as failures" do
     RestClient::Request.expects(:execute).once.raises(RestClient::ServerBrokeConnection)
 

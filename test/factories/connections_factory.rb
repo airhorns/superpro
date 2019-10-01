@@ -35,4 +35,14 @@ FactoryBot.define do
       connection.integration ||= build(:google_analytics_credential, account: connection.account)
     end
   end
+
+  factory :facebook_ads_connection, class: Connection do
+    display_name { "Test Facebook Ads Connection" }
+    strategy { "singer" }
+    association :account
+
+    after(:build) do |connection|
+      connection.integration ||= build(:configured_facebook_ad_account, account: connection.account)
+    end
+  end
 end
