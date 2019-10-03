@@ -40,21 +40,27 @@ module DataModel
 
       projections = []
       groups = []
+      joins = []
       projections_by_id = {}
 
       measure_specs.each do |measure_spec|
-        alias_name = alias_for(measure_spec)
+        alias_name = column_alias_for(measure_spec)
         node = projection_node_for_measure_spec(model, measure_spec)
         projections << safe_alias_node(node, alias_name)
         projections_by_id[measure_spec[:id]] = { node: node, spec: measure_spec, type: :measure, alias_name: alias_name }
       end
 
       dimension_specs.each do |dimension_spec|
-        alias_name = alias_for(dimension_spec)
+        alias_name = column_alias_for(dimension_spec)
         node = projection_node_for_dimension_spec(model, dimension_spec)
         projections << safe_alias_node(node, alias_name)
         groups << Arel.sql(alias_name)
         projections_by_id[dimension_spec[:id]] = { node: node, spec: dimension_spec, type: :dimension, alias_name: alias_name }
+
+        join_node = join_node_for_dimension_spec(model, dimension_spec)
+        if join_node
+          joins << join_node
+        end
       end
 
       orders = ordering_specs.map { |ordering_spec| ordering_node_for_ordering_spec(ordering_spec) } || [default_ordering]
@@ -71,6 +77,7 @@ module DataModel
       manager.group(*groups) if !groups.empty?
       manager.order(*orders) if !orders.empty?
       manager.from(table)
+      joins.uniq.each { |join| manager.from(join) }
       wheres.each { |filter| manager.where(filter) }
       havings.each { |filter| manager.having(filter) }
       manager.take(5000)
@@ -93,13 +100,26 @@ module DataModel
 
     def projection_node_for_dimension_spec(model, dimension_spec)
       field = model.dimension_fields.fetch(dimension_spec[:field].to_sym)
-      expression = field.custom_sql_node || model.table_node[field.field_name]
+      source_table = field.requires_join? ? field.join.model.table_node : model.table_node
+      expression = field.custom_sql_node || source_table[field.column_name]
 
       if dimension_spec[:operator]
         expression = apply_operator(expression, field, dimension_spec[:operator].to_sym)
       end
 
       expression
+    end
+
+    def join_node_for_dimension_spec(model, dimension_spec)
+      field = model.dimension_fields.fetch(dimension_spec[:field].to_sym)
+      if field.join
+        relation_node = field.join.model.table_node
+        fact_join_column = model.table_node[field.join.key_in_fact_table]
+        dimension_primary_column = field.join.model.table_node[field.join.model.primary_key]
+        constraint_node = Arel::Nodes::On.new(fact_join_column.eq(dimension_primary_column))
+
+        model.table_node.create_join relation_node, constraint_node, Arel::Nodes::OuterJoin
+      end
     end
 
     def ordering_node_for_ordering_spec(ordering_spec)
@@ -181,7 +201,7 @@ module DataModel
       model.all_fields.fetch(spec[:field].to_sym)
     end
 
-    def alias_for(spec)
+    def column_alias_for(spec)
       @aliases_by_id[spec[:id]] ||= begin
         segments = [spec[:model], spec[:field], spec[:operator]].compact.map { |segment| segment.gsub(/^[^A-Za-z]/, "_").gsub(/[^A-Za-z0-9]/, "_").downcase }
         alias_name = segments.join("__")

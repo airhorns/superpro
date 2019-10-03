@@ -113,6 +113,15 @@ class DataModel::QueryTest < ActiveSupport::TestCase
     assert_equal [], result
   end
 
+  test "it can execute a query with a join to a dimension" do
+    result = run_query(
+      measures: [{ model: "Sales::OrderFacts", field: "total_price", operator: "sum", id: "total_price" }],
+      dimensions: [{ model: "Sales::OrderFacts", field: "customer_first_name", id: "first_name" }],
+    )
+
+    assert_equal [], result
+  end
+
   test "it doesnt allow queries on one account to find data from another" do
     other_account = create(:account)
     create(:shopify_shop, name: "Alpha", account: @account)

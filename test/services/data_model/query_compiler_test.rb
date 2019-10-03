@@ -63,6 +63,15 @@ class DataModel::QueryCompilerTest < ActiveSupport::TestCase
     assert_matches_snapshot sql
   end
 
+  test "it can compile a query with join to a dimension" do
+    sql = compile(
+      measures: [{ model: "Sales::OrderFacts", field: "total_price", operator: "sum", id: "total_price" }],
+      dimensions: [{ model: "Sales::OrderFacts", field: "customer_first_name", id: "first_name" }],
+    )
+
+    assert_matches_snapshot sql
+  end
+
   test "it can execute a query with percentile operators" do
     assert_matches_snapshot compile(
       measures: [{ model: "Sales::OrderFacts", field: "total_price", operator: "p90", id: "total_price" }],
