@@ -67,7 +67,16 @@ export interface Dimension {
     | "date_part_day_of_week"
     | "date_part_week"
     | "date_part_month"
-    | "date_part_year";
+    | "date_part_year"
+    | "average"
+    | "sum"
+    | "min"
+    | "max"
+    | "count"
+    | "count_distinct"
+    | "p80"
+    | "p90"
+    | "p95";
 }
 export interface Ordering {
   /**

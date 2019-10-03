@@ -44,7 +44,7 @@ export const MeasureForm = (props: { block: VizBlock | TableBlock; blockIndex: n
       <ReactSelect
         theme={SuperproReactSelectTheme}
         value={selectedOption}
-        styles={{ container: provided => ({ ...provided, minWidth: 200 }) }}
+        styles={{ container: provided => ({ ...provided, minWidth: "300px" }) }}
         options={measureOptionGroups}
         formatOptionLabel={(option, context) => {
           if (context.context == "menu") {

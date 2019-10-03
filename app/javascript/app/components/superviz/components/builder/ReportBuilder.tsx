@@ -21,7 +21,12 @@ export class ReportBuilder extends React.Component<ReportBuilderProps, { doc: Re
   constructor(props: ReportBuilderProps) {
     super(props);
 
-    const initialDoc: ReportDocument = props.initialDoc || { type: "document", id: generate(), blocks: [] };
+    const initialDoc: ReportDocument = props.initialDoc || {
+      type: "document",
+      id: generate(),
+      blocks: [{ type: "viz_block", title: "New Report", query: { measures: [], dimensions: [] }, viz: { type: "viz", systems: [] } }]
+    };
+
     // Initialize the controller
     this.controller = new ReportBuilderController(
       initialDoc,

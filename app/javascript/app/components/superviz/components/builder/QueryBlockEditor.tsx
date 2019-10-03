@@ -7,6 +7,7 @@ import { VizBlockRenderer } from "../render/VizBlockRenderer";
 import { ReportBuilderContext } from "./ReportBuilder";
 import { Add } from "app/components/common/SuperproIcons";
 import { MeasureForm } from "./MeasureForm";
+import { DimensionForm } from "./DimensionForm";
 
 export const AddMeasureButton = (props: { block: VizBlock | TableBlock; blockIndex: number }) => {
   const controller = React.useContext(ReportBuilderContext);
@@ -17,16 +18,25 @@ export const AddMeasureButton = (props: { block: VizBlock | TableBlock; blockInd
   return <Button icon={<Add />} onClick={onClick} />;
 };
 
+export const AddDimensionButton = (props: { block: VizBlock | TableBlock; blockIndex: number }) => {
+  const controller = React.useContext(ReportBuilderContext);
+  const onClick = React.useCallback(() => {
+    controller.addDimension(props.blockIndex, "Sales::OrderFacts", "created_at", "date_trunc_day");
+  }, [controller, props.blockIndex]);
+
+  return <Button icon={<Add />} onClick={onClick} />;
+};
+
 export const QueryBlockEditor = (props: { block: VizBlock | TableBlock; index: number }) => {
   const controller = React.useContext(ReportBuilderContext);
   let output: React.ReactNode;
 
-  if (props.block.query.measures.length == 0 || props.block.query.dimensions.length == 0) {
+  if (props.block.query.measures.length == 0 && props.block.query.dimensions.length == 0) {
     output = <Text color="status-disabled">Select some data to populate this block</Text>;
   } else if (props.block.type == "viz_block") {
-    output = <VizBlockRenderer doc={controller.doc} block={props.block} />;
+    output = <VizBlockRenderer key={controller.clock} doc={controller.doc} block={props.block} />;
   } else if (props.block.type == "table_block") {
-    output = <TableBlockRenderer doc={controller.doc} block={props.block} />;
+    output = <TableBlockRenderer key={controller.clock} doc={controller.doc} block={props.block} />;
   }
 
   return (
@@ -40,12 +50,18 @@ export const QueryBlockEditor = (props: { block: VizBlock | TableBlock; index: n
       </Row>
       <Row gap="small">
         <Heading level="3">Split by:</Heading>
+        {props.block.query.dimensions.map(dimension => (
+          <DimensionForm key={dimension.id} block={props.block} blockIndex={props.index} dimension={dimension} />
+        ))}
+        <AddDimensionButton block={props.block} blockIndex={props.index} />
       </Row>
       <Row gap="small">
         <Heading level="3">Filtering out:</Heading>
       </Row>
 
-      {output}
+      <Box margin={{ top: "medium" }} height="500px">
+        {output}
+      </Box>
     </Box>
   );
 };

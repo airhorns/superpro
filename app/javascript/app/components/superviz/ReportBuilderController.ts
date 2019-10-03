@@ -2,9 +2,9 @@ import { SuperFormController, SuperFormChangeCallback } from "superlib/superform
 import { ReportDocument, Block, isQueryBlock, VizSystem } from "./schema";
 import shortid from "shortid";
 import { assert } from "superlib";
-import { find } from "lodash";
+import { find, isUndefined } from "lodash";
 import { Warehouse } from "./Warehouse";
-import { Measure } from "./WarehouseQuery";
+import { Measure, Dimension } from "./WarehouseQuery";
 
 export class ReportBuilderController extends SuperFormController<ReportDocument> {
   warehouse: Warehouse;
@@ -65,6 +65,26 @@ export class ReportBuilderController extends SuperFormController<ReportDocument>
     });
   }
 
+  addDimension(blockIndex: number, model: string, field: string, operator?: Dimension["operator"]) {
+    this.dispatch((doc: ReportDocument) => {
+      const block = assert(doc.blocks[blockIndex]);
+      if (!isQueryBlock(block)) {
+        throw "Can't change the measures of a block that doesn't make a query";
+      }
+      const id = shortid.generate();
+      const dimension: Dimension = { id, model, field, operator };
+      block.query.dimensions.push(dimension);
+
+      if (block.type == "viz_block") {
+        block.viz.systems.forEach(system => {
+          if (isUndefined(system.xId)) {
+            system.xId = id;
+          }
+        });
+      }
+    });
+  }
+
   setMeasureField(blockIndex: number, measureId: string, model: string, field: string) {
     this.dispatch((doc: ReportDocument) => {
       const block = assert(doc.blocks[blockIndex]);
@@ -75,6 +95,35 @@ export class ReportBuilderController extends SuperFormController<ReportDocument>
       const measure = assert(find(block.query.measures, { id: measureId }));
       measure.model = model;
       measure.field = field;
+    });
+  }
+
+  setDimensionField(blockIndex: number, dimensionId: string, model: string, field: string) {
+    this.dispatch((doc: ReportDocument) => {
+      const block = assert(doc.blocks[blockIndex]);
+      if (!isQueryBlock(block)) {
+        throw "Can't change the dimensions of a block that doesn't make a query";
+      }
+
+      const dimension = assert(find(block.query.dimensions, { id: dimensionId }));
+      dimension.model = model;
+      dimension.field = field;
+    });
+  }
+
+  setDimensionOperator(blockIndex: number, dimensionId: string, operator?: Dimension["operator"] | null) {
+    this.dispatch((doc: ReportDocument) => {
+      const block = assert(doc.blocks[blockIndex]);
+      if (!isQueryBlock(block)) {
+        throw "Can't change the dimensions of a block that doesn't make a query";
+      }
+
+      const dimension = assert(find(block.query.dimensions, { id: dimensionId }));
+      if (operator) {
+        dimension.operator = operator;
+      } else {
+        delete dimension.operator;
+      }
     });
   }
 }

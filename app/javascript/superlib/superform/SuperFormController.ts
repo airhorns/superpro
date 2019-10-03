@@ -13,6 +13,7 @@ export class SuperFormController<T extends DocType> {
   currentBatch: Command<T>[] | null = null;
   backend: Backend<T>;
   errors: SuperFormErrors<T> = {};
+  clock: number = 0;
 
   constructor(initialDoc: T, onChange: SuperFormChangeCallback<T>, backendClass: typeof Backend = AutomergeBackend) {
     // Initialize the backend
@@ -54,6 +55,7 @@ export class SuperFormController<T extends DocType> {
 
     // Otherwise, apply the change using the backend. The backend will call the onChange callback passed in the constructor.
     this.backend.change(command);
+    this.clock += 1;
   };
 
   batch = (batchDefinition: () => void) => {

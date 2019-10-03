@@ -42,7 +42,7 @@ export const Select = <T extends DocType, Option extends SelectOptionType = Sele
       className={`SuperSelect SuperSelect-${pathToClassName(props.path)}`}
       theme={SuperproReactSelectTheme}
       value={selectedOption}
-      styles={{ container: provided => ({ ...provided, minWidth: 200 }) }}
+      styles={{ container: provided => ({ ...provided, minWidth: "200px" }) }}
       filterOption={props.filterOption}
       options={props.options}
       onChange={(option: ValueType<SelectOptionType>) => {

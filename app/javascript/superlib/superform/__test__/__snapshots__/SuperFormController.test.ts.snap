@@ -42,6 +42,7 @@ exports[`it should call the change callback with the new doc when set 1`] = `
           "onChange": [Function],
         },
         "batch": [Function],
+        "clock": 1,
         "currentBatch": null,
         "dispatch": [Function],
         "errors": Object {},
