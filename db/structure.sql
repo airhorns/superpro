@@ -16,6 +16,13 @@ CREATE SCHEMA dbt_harry;
 
 
 --
+-- Name: raw_science; Type: SCHEMA; Schema: -; Owner: -
+--
+
+CREATE SCHEMA raw_science;
+
+
+--
 -- Name: raw_tap_csv; Type: SCHEMA; Schema: -; Owner: -
 --
 
@@ -48,6 +55,13 @@ CREATE SCHEMA raw_tap_kafka;
 --
 
 CREATE SCHEMA raw_tap_shopify;
+
+
+--
+-- Name: science; Type: SCHEMA; Schema: -; Owner: -
+--
+
+CREATE SCHEMA science;
 
 
 --
@@ -122,6 +136,44 @@ COMMENT ON TABLE public.que_jobs IS '4';
 
 
 --
+-- Name: calculate_earth_surface_distance(double precision, double precision, double precision, double precision, character varying); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.calculate_earth_surface_distance(lat1 double precision, lon1 double precision, lat2 double precision, lon2 double precision, units character varying) RETURNS double precision
+    LANGUAGE plpgsql
+    AS $$
+    DECLARE
+        dist float = 0;
+        radlat1 float;
+        radlat2 float;
+        theta float;
+        radtheta float;
+    BEGIN
+        IF lat1 = lat2 OR lon1 = lon2
+            THEN RETURN dist;
+        ELSE
+            radlat1 = pi() * lat1 / 180;
+            radlat2 = pi() * lat2 / 180;
+            theta = lon1 - lon2;
+            radtheta = pi() * theta / 180;
+            dist = sin(radlat1) * sin(radlat2) + cos(radlat1) * cos(radlat2) * cos(radtheta);
+
+            IF dist > 1 THEN dist = 1; END IF;
+
+            dist = acos(dist);
+            dist = dist * 180 / pi();
+            dist = dist * 60 * 1.1515;
+
+            IF units = 'K' THEN dist = dist * 1.609344; END IF;
+            IF units = 'N' THEN dist = dist * 0.8684; END IF;
+
+            RETURN dist;
+        END IF;
+    END;
+$$;
+
+
+--
 -- Name: convert_timezone(text, text, timestamp with time zone); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -189,6 +241,19 @@ begin
 
     return diff;
 end;
+$$;
+
+
+--
+-- Name: datediff(character varying, timestamp with time zone, timestamp with time zone); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.datediff(units character varying, start_t timestamp with time zone, end_t timestamp with time zone) RETURNS integer
+    LANGUAGE plpgsql
+    AS $$
+begin
+    return datediff(units, start_t::timestamp, end_t::timestamp);
+end
 $$;
 
 
@@ -1309,6 +1374,19 @@ CREATE SEQUENCE public.users_id_seq
 --
 
 ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
+
+
+--
+-- Name: stg_shopify_customer_predicted_clv; Type: TABLE; Schema: raw_science; Owner: -
+--
+
+CREATE TABLE raw_science.stg_shopify_customer_predicted_clv (
+    predicted_clv double precision,
+    customer_id bigint,
+    business_line text,
+    months_into_future bigint,
+    account_id bigint
+);
 
 
 --
@@ -14572,6 +14650,12 @@ CREATE TABLE warehouse.dim_shopify_customers (
     previous_3_month_spend double precision,
     previous_6_month_spend double precision,
     previous_12_month_spend double precision,
+    future_3_month_predicted_spend double precision,
+    future_3_month_predicted_spend_quintile integer,
+    future_12_month_predicted_spend double precision,
+    future_12_month_predicted_spend_quintile integer,
+    future_24_month_predicted_spend double precision,
+    future_24_month_predicted_spend_quintile integer,
     most_recent_order_id bigint,
     most_recent_order_number bigint,
     most_recent_order_at timestamp with time zone,
@@ -14721,37 +14805,61 @@ CREATE TABLE warehouse.fct_shopify_orders (
 --
 
 CREATE VIEW warehouse.fct_shopify_repurchase_intervals AS
- WITH orders AS (
+ WITH successful_orders AS (
          SELECT fct_shopify_orders.customer_id,
             fct_shopify_orders.account_id,
+            fct_shopify_orders.order_id,
+            fct_shopify_orders.order_seq_number,
             fct_shopify_orders.total_price,
-            fct_shopify_orders.created_at AS order_date,
-            lag(fct_shopify_orders.created_at) OVER (PARTITION BY fct_shopify_orders.customer_id ORDER BY fct_shopify_orders.created_at) AS previous_order_date
+            fct_shopify_orders.created_at AS order_date
            FROM warehouse.fct_shopify_orders
           WHERE (fct_shopify_orders.cancelled_at IS NULL)
-        ), repurchases AS (
+        ), orders AS (
+         SELECT successful_orders.customer_id,
+            successful_orders.account_id,
+            successful_orders.order_id,
+            successful_orders.order_seq_number,
+            successful_orders.total_price,
+            successful_orders.order_date,
+            lag(successful_orders.order_date) OVER (PARTITION BY successful_orders.customer_id ORDER BY successful_orders.order_date) AS previous_order_date,
+            lead(successful_orders.order_date) OVER (PARTITION BY successful_orders.customer_id ORDER BY successful_orders.order_date) AS next_order_date
+           FROM successful_orders
+        ), buckets AS (
          SELECT orders.customer_id,
             orders.account_id,
+            orders.order_id,
+            orders.order_seq_number,
+            orders.total_price,
             orders.order_date,
             orders.previous_order_date,
+            orders.next_order_date,
             date_part('day'::text, (orders.order_date - orders.previous_order_date)) AS days_since_previous_order,
             width_bucket(date_part('day'::text, (orders.order_date - orders.previous_order_date)), (0)::double precision, (600)::double precision, 30) AS days_since_previous_order_bucket,
-            orders.total_price AS repeat_purchase_total_price
+            date_part('day'::text, (orders.order_date - orders.next_order_date)) AS days_until_next_order,
+            width_bucket(date_part('day'::text, (orders.order_date - orders.next_order_date)), (0)::double precision, (600)::double precision, 30) AS days_until_next_order_bucket
            FROM orders
-          WHERE (orders.previous_order_date IS NOT NULL)
         )
- SELECT repurchases.customer_id,
-    repurchases.account_id,
-    repurchases.order_date,
-    repurchases.previous_order_date,
-    repurchases.days_since_previous_order,
-    repurchases.days_since_previous_order_bucket,
-    repurchases.repeat_purchase_total_price,
+ SELECT buckets.customer_id,
+    buckets.account_id,
+    buckets.order_id,
+    buckets.order_seq_number,
+    buckets.total_price,
+    buckets.order_date,
+    buckets.previous_order_date,
+    buckets.next_order_date,
+    buckets.days_since_previous_order,
+    buckets.days_since_previous_order_bucket,
+    buckets.days_until_next_order,
+    buckets.days_until_next_order_bucket,
         CASE
-            WHEN (repurchases.days_since_previous_order_bucket < 30) THEN concat(lpad(((repurchases.days_since_previous_order_bucket)::character varying)::text, 2, '0'::text), ': ', ((repurchases.days_since_previous_order_bucket - 1) * 20), ' - ', ((repurchases.days_since_previous_order_bucket * 20) - 1), ' days')
+            WHEN (buckets.days_since_previous_order_bucket < 30) THEN concat(lpad(((buckets.days_since_previous_order_bucket)::character varying)::text, 2, '0'::text), ': ', ((buckets.days_since_previous_order_bucket - 1) * 20), ' - ', ((buckets.days_since_previous_order_bucket * 20) - 1), ' days')
             ELSE '30: 580+ days'::text
-        END AS days_since_previous_order_bucket_label
-   FROM repurchases;
+        END AS days_since_previous_order_bucket_label,
+        CASE
+            WHEN (buckets.days_until_next_order_bucket < 30) THEN concat(lpad(((buckets.days_until_next_order_bucket)::character varying)::text, 2, '0'::text), ': ', ((buckets.days_until_next_order_bucket - 1) * 20), ' - ', ((buckets.days_until_next_order_bucket * 20) - 1), ' days')
+            ELSE '30: 580+ days'::text
+        END AS days_until_next_order_bucket_label
+   FROM buckets;
 
 
 --
@@ -20110,6 +20218,48 @@ CREATE INDEX tp_sales_order_id__sdc_sequence_idx ON tap_csv.sales USING btree (o
 
 
 --
+-- Name: dim_shopify_customers__index_on_account_id__business_line; Type: INDEX; Schema: warehouse; Owner: -
+--
+
+CREATE INDEX dim_shopify_customers__index_on_account_id__business_line ON warehouse.dim_shopify_customers USING btree (account_id, business_line);
+
+
+--
+-- Name: dim_shopify_customers__index_on_account_id__customer_id; Type: INDEX; Schema: warehouse; Owner: -
+--
+
+CREATE INDEX dim_shopify_customers__index_on_account_id__customer_id ON warehouse.dim_shopify_customers USING btree (account_id, customer_id);
+
+
+--
+-- Name: fct_shopify_customer_pareto__index_on_account_id__year__custome; Type: INDEX; Schema: warehouse; Owner: -
+--
+
+CREATE INDEX fct_shopify_customer_pareto__index_on_account_id__year__custome ON warehouse.fct_shopify_customer_pareto USING btree (account_id, year, customer_rank);
+
+
+--
+-- Name: fct_shopify_orders__index_on_account_id__customer_id__created_a; Type: INDEX; Schema: warehouse; Owner: -
+--
+
+CREATE INDEX fct_shopify_orders__index_on_account_id__customer_id__created_a ON warehouse.fct_shopify_orders USING btree (account_id, customer_id, created_at);
+
+
+--
+-- Name: fct_shopify_orders__index_on_cancelled_at; Type: INDEX; Schema: warehouse; Owner: -
+--
+
+CREATE INDEX fct_shopify_orders__index_on_cancelled_at ON warehouse.fct_shopify_orders USING btree (cancelled_at);
+
+
+--
+-- Name: fct_shopify_orders__index_on_customer_id__created_at; Type: INDEX; Schema: warehouse; Owner: -
+--
+
+CREATE INDEX fct_shopify_orders__index_on_customer_id__created_at ON warehouse.fct_shopify_orders USING btree (customer_id, created_at);
+
+
+--
 -- Name: fct_shopify_rfm_thresholds__index_on_account_id__business_line; Type: INDEX; Schema: warehouse; Owner: -
 --
 
@@ -20124,10 +20274,31 @@ CREATE INDEX fct_snowplow_page_views__index_on_account_id__max_tstamp ON warehou
 
 
 --
--- Name: stg_shopify_customer_rfm__index_on_account_id__customer_id; Type: INDEX; Schema: warehouse; Owner: -
+-- Name: fct_snowplow_sessions__index_on_account_id__session_start; Type: INDEX; Schema: warehouse; Owner: -
 --
 
-CREATE INDEX stg_shopify_customer_rfm__index_on_account_id__customer_id ON warehouse.stg_shopify_customer_rfm USING btree (account_id, customer_id);
+CREATE INDEX fct_snowplow_sessions__index_on_account_id__session_start ON warehouse.fct_snowplow_sessions USING btree (account_id, session_start);
+
+
+--
+-- Name: stg_shopify_customer_order_aggregates__index_on_account_id__cus; Type: INDEX; Schema: warehouse; Owner: -
+--
+
+CREATE INDEX stg_shopify_customer_order_aggregates__index_on_account_id__cus ON warehouse.stg_shopify_customer_order_aggregates USING btree (account_id, customer_id);
+
+
+--
+-- Name: stg_shopify_customer_order_aggregates__index_on_customer_id; Type: INDEX; Schema: warehouse; Owner: -
+--
+
+CREATE INDEX stg_shopify_customer_order_aggregates__index_on_customer_id ON warehouse.stg_shopify_customer_order_aggregates USING btree (customer_id);
+
+
+--
+-- Name: stg_shopify_customer_rolling_rfm__index_on_account_id__week__rf; Type: INDEX; Schema: warehouse; Owner: -
+--
+
+CREATE INDEX stg_shopify_customer_rolling_rfm__index_on_account_id__week__rf ON warehouse.stg_shopify_customer_rolling_rfm USING btree (account_id, week, rfm_label);
 
 
 --

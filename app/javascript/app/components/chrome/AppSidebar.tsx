@@ -7,8 +7,7 @@ import { SiderInfoComponent } from "../../app-graph";
 import { UserAvatar } from "../common/UserAvatar";
 import { signOut } from "../../lib/auth";
 import { Settings } from "../../lib/settings";
-// import { Flag } from "../../../superlib";
-import { Invite, Settings as SettingsIcon, Reports, Sales, Traffic, Customers } from "../common/SuperproIcons";
+import { Invite, Settings as SettingsIcon, Sales, Traffic, Customers } from "../common/SuperproIcons";
 import { NavigationSectionButton, NavigationSubItemButton } from "./Navigation";
 
 gql`
@@ -69,7 +68,7 @@ export const AppSidebar = withRouter(
                   <NavigationSectionButton path="/launchpad" text="Launchpad" icon={<Launch />} onClick={this.close} />
                   <NavigationSectionButton path="/sales" text="Sales" icon={<Sales />} onClick={this.close}>
                     <NavigationSubItemButton path="/sales/overview" exact text="Overview" onClick={this.close} />
-                    <NavigationSubItemButton path="/sales/repurchase_cohorts" exact text="Repurchase Cohorts" onClick={this.close} />
+                    <NavigationSubItemButton path="/sales/repurchase_rates" exact text="Repurchase Rates" onClick={this.close} />
                     <NavigationSubItemButton path="/sales/micro_order_timing" exact text="Order Timing" onClick={this.close} />
                     <NavigationSubItemButton path="/sales/yearly_review" exact text="Yearly Review" onClick={this.close} />
                   </NavigationSectionButton>

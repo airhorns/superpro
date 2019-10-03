@@ -9,7 +9,7 @@ class Sales::OrderFacts < DataModel::FactTable
   measure :unique_customer_count, DataModel::Types::Number, sql: table_node[:customer_id].count(true), allow_operators: false
   measure :order_count, DataModel::Types::Number, sql: table_node[:order_id].count(true), allow_operators: false
   measure :orders_per_customer, DataModel::Types::Number, allow_operators: false do
-    table_node[:order_id].count(true) / Arel::Nodes::NamedFunction.new("nullif", [table_node[:customer_id].count(true), Arel.sql("0")])
+    table_node[:order_id].count(true) / nullif(table_node[:customer_id].count(true), Arel.sql("0"))
   end
 
   dimension :created_at, DataModel::Types::DateTime, label: "Order Date"

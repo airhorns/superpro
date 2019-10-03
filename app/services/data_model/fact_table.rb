@@ -2,6 +2,8 @@
 
 module DataModel
   class FactTable
+    extend DataModel::ArelHelpers
+
     class_attribute :table, instance_predicate: false, instance_accessor: false
     class_attribute :measure_fields, instance_predicate: false, instance_accessor: false
     class_attribute :dimension_fields, instance_predicate: false, instance_accessor: false

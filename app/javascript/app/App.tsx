@@ -23,7 +23,7 @@ const FacebookCompletePage = React.lazy(() => import("./components/identity/conn
 const MicroOrderTimingReport = React.lazy(() => import("./components/sales/MicroOrderTimingReport"));
 const SalesOverviewReport = React.lazy(() => import("./components/sales/SalesOverviewReport"));
 const YearlyOrdersReviewReport = React.lazy(() => import("./components/sales/YearlyOrdersReviewReport"));
-const RepurchaseCohortsReport = React.lazy(() => import("./components/sales/RepurchaseCohortsReport"));
+const RepurchaseRatesReport = React.lazy(() => import("./components/sales/RepurchaseRatesReport"));
 const TrafficOverviewReport = React.lazy(() => import("./components/traffic/TrafficOverviewReport"));
 const SlowLandingPagesReport = React.lazy(() => import("./components/traffic/SlowLandingPagesReport"));
 const RFMBreakdownReport = React.lazy(() => import("./components/customers/RFMBreakdownReport"));
@@ -52,7 +52,7 @@ export const App = () => {
                           <Route path="/sales" exact component={SalesOverviewReport} />
                           <Route path="/sales/overview" exact component={SalesOverviewReport} />
                           <Route path="/sales/yearly_review" exact component={YearlyOrdersReviewReport} />
-                          <Route path="/sales/repurchase_cohorts" exact component={RepurchaseCohortsReport} />
+                          <Route path="/sales/repurchase_rates" exact component={RepurchaseRatesReport} />
                           <Route path="/sales/micro_order_timing" exact component={MicroOrderTimingReport} />
                           <Route path="/traffic" exact component={TrafficOverviewReport} />
                           <Route path="/traffic/overview" exact component={TrafficOverviewReport} />
