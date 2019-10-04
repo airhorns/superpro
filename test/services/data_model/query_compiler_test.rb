@@ -79,6 +79,13 @@ class DataModel::QueryCompilerTest < ActiveSupport::TestCase
     )
   end
 
+  test "it can select from a complicated custom exrepssion" do
+    assert_matches_snapshot compile(
+      measures: [{ model: "Sales::RepurchaseIntervalFacts", field: "early_repurchase_rate", id: "early_repurchase_rate" }],
+      dimensions: [{ model: "Sales::RepurchaseIntervalFacts", field: "order_date", operator: "date_trunc_day", id: "date" }],
+    )
+  end
+
   def compile(query_spec)
     assert DataModel::Query.new(@account, SuperproWarehouse, query_spec).validate!
     DataModel::QueryCompiler.new(@account, SuperproWarehouse, query_spec).sql

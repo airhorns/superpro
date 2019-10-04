@@ -12,7 +12,7 @@ export default FullReportPage("Repurchase Rates", {
           { model: "Sales::RepurchaseIntervalFacts", field: "early_repurchase_rate", id: "early_repurchase_rate" },
           { model: "Sales::RepurchaseIntervalFacts", field: "overall_repurchase_rate", id: "overall_repurchase_rate" }
         ],
-        dimensions: [{ model: "Sales::RepurchaseIntervalFacts", field: "order_date", id: "date" }]
+        dimensions: [{ model: "Sales::RepurchaseIntervalFacts", field: "order_date", operator: "date_trunc_week", id: "date" }]
       },
       viz: {
         type: "viz",

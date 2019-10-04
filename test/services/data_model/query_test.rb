@@ -138,6 +138,15 @@ class DataModel::QueryTest < ActiveSupport::TestCase
     assert_equal [{ "name" => "Gamma" }], DataModel::Query.new(other_account, SuperproWarehouse, spec).run
   end
 
+  test "it can select from a complicated custom exrepssion" do
+    result = run_query(
+      measures: [{ model: "Sales::RepurchaseIntervalFacts", field: "early_repurchase_rate", id: "early_repurchase_rate" }],
+      dimensions: [{ model: "Sales::RepurchaseIntervalFacts", field: "order_date", operator: "date_trunc_day", id: "date" }],
+    )
+
+    assert_equal [], result
+  end
+
   def run_query(spec)
     DataModel::Query.new(@account, SuperproWarehouse, spec).run
   end
