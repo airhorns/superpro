@@ -6,13 +6,14 @@ import { SuccessfulWarehouseQueryResult } from "../GetWarehouseData";
 import { flatMap, defaultTo, find } from "lodash";
 import { DateTime } from "luxon";
 import { assert } from "superlib";
+import { WarehouseDataTypeEnum } from "app/app-graph";
 
 type DomainTuple = [number, number];
 
 const palette = ["#00429d", "#4771b2", "#73a2c6", "#a5d5d8", "#ffffe0", "#ffbcaf", "#f4777f", "#cf3759", "#93003a"];
 
-const tickFormatter = (datatype: string, _domain: DomainTuple) => {
-  if (datatype == "date_time") {
+const tickFormatter = (dataType: WarehouseDataTypeEnum, _domain: DomainTuple) => {
+  if (dataType == "DateTime") {
     return (date: DateTime) => date.toLocaleString(DateTime.DATE_MED);
   }
 
@@ -20,8 +21,14 @@ const tickFormatter = (datatype: string, _domain: DomainTuple) => {
 };
 
 const dataDomain = (result: SuccessfulWarehouseQueryResult, id: string): DomainTuple => {
+  const dataType = assert(result.queryIntrospection.fieldsById[id]).dataType;
   const data = result.records.map(record => record[id]);
-  return [Math.min(0, ...data), Math.max(...data)];
+
+  if (dataType == "DateTime") {
+    return [Math.min(...data), Math.max(...data)];
+  } else {
+    return [Math.min(0, ...data), Math.max(...data)];
+  }
 };
 
 const renderSystem = (result: SuccessfulWarehouseQueryResult, system: VizSystem, index: number) => {
