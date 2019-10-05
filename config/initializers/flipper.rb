@@ -7,3 +7,7 @@ Flipper.configure do |config|
     Flipper.new(adapter)
   end
 end
+
+Flipper.register(:staff) do |actor|
+  actor.respond_to?(:internal_tags) && actor.internal_tags.include?("staff")
+end

@@ -68,4 +68,8 @@ class User < ApplicationRecord
       super
     end
   end
+
+  def flipper_id
+    "user-#{id}"
+  end
 end

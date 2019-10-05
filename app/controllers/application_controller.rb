@@ -70,4 +70,10 @@ class ApplicationController < ActionController::Base
       render status: :forbidden, json: { error: "Already signed in as a user, this action is forbidden" }
     end
   end
+
+  def flipper_flag_enabled?(flag)
+    account_enabled = respond_to?(:current_account) && current_account && Flipper[flag].enabled?(current_account)
+    user_enabled = respond_to?(:current_user) && current_user && Flipper[flag].enabled?(current_user)
+    account_enabled || user_enabled
+  end
 end

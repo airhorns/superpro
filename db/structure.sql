@@ -1353,7 +1353,8 @@ CREATE TABLE public.users (
     invitation_limit integer,
     invited_by_type character varying,
     invited_by_id bigint,
-    invitations_count integer DEFAULT 0
+    invitations_count integer DEFAULT 0,
+    internal_tags character varying[] DEFAULT '{}'::character varying[] NOT NULL
 );
 
 
@@ -20538,6 +20539,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190917231914'),
 ('20190917231933'),
 ('20190925155649'),
-('20190930180547');
+('20190930180547'),
+('20191005201916');
 
 

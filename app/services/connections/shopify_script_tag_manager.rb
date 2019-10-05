@@ -11,7 +11,7 @@ module Connections
     }.freeze
 
     def self.ensure_connection_setup_in_background(connection)
-      if Flipper["feature.shopify_script_tags"].enabled?(connection.account)
+      if Flipper["feature.shopifyScriptTags"].enabled?(connection.account)
         Connections::EnsureShopifyShopScriptTagSetupJob.enqueue(shopify_shop_id: connection.integration_id)
       end
     end

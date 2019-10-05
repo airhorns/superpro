@@ -6,7 +6,6 @@ module Connections
   class ShopifyScriptTagManagerTest < ActiveSupport::TestCase
     setup do
       @account = create(:account)
-      Flipper["feature.shopify_script_tags"].enable(@account)
       @shop = create(:sole_destroyer_shopify_shop, account: @account)
       @connection = create(:shopify_connection, integration: @shop)
 
