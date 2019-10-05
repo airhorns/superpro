@@ -63,7 +63,7 @@ export default class AcceptInvitePage extends React.Component<RouteComponentProp
       <PageBox documentTitle="Welcome to Superpro">
         <Box gap="medium">
           <Heading level="1">Welcome to Superpro</Heading>
-          <Text>You&apos;ve been invited to join. Please fill out your account details below to get started.</Text>
+          <Text>You&apos;ve been invited to join. Please fill out your details to create your account below.</Text>
           <SimplePromise callback={this.loadInviteData}>
             {response => {
               if (!response.data.success) {
@@ -96,7 +96,7 @@ export default class AcceptInvitePage extends React.Component<RouteComponentProp
                         <FieldBox label="Password Confirmation" path="user.password_confirmation">
                           <Input path="user.password_confirmation" type="password" />
                         </FieldBox>
-                        <Button type="submit" primary label="Complete Sign Up" margin={{ top: "medium" }} data-test-id="sign-up-submit" />
+                        <Button type="submit" primary label="Complete Sign Up" margin={{ top: "medium" }} data-testid="sign-up-submit" />
                       </Box>
                     )}
                   </SuperForm>

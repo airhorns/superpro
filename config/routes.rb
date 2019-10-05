@@ -21,6 +21,7 @@ Rails.application.routes.draw do
       post "clean", to: "test_support#clean"
       post "force_login", to: "test_support#force_login"
       post "empty_account", to: "test_support#empty_account"
+      post "set_account_flipper_flag", to: "test_support#set_account_flipper_flag"
       get "last_delivered_email", to: "test_support#last_delivered_email"
     end
   end

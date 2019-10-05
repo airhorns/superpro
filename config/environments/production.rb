@@ -19,9 +19,6 @@ Rails.application.configure do
   config.cache_store = :redis_cache_store, { driver: :hiredis, url: ENV.fetch("REDIS_URL") }
   config.session_store :cache_store, key: "superpro_production_sessions"
 
-  # We use ejson instead of the master key
-  config.require_master_key = false
-
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
   config.public_file_server.enabled = true

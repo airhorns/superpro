@@ -4,9 +4,9 @@
 # is set up to run a webserver for Cypress.
 
 Rails.application.configure do
-  # Settings specified here will take precedence over those in config/application.rb.
-  config.cache_classes = true
-  config.eager_load = true
+  # Reload in integration tests so its easier to rerun the tests
+  config.cache_classes = false
+  config.eager_load = false
 
   # Configure public file server for tests with Cache-Control for performance.
   config.public_file_server.enabled = true
@@ -20,9 +20,6 @@ Rails.application.configure do
 
   config.cache_store = :redis_cache_store, { url: "redis://localhost:6379/2" }
   config.session_store :cache_store, key: "superpro_integration_test_sessions"
-
-  # We use ejson instead of the master key
-  config.require_master_key = false
 
   # Raise exceptions instead of rendering exception templates.
   config.action_dispatch.show_exceptions = false

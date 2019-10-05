@@ -11,7 +11,7 @@ class Auth::InvitationsController < DeviseController
 
   # GET /resource/invitation/accept?invitation_token=abcdef
   def edit
-    unless params[:invitation_token] && (self.resource = resource_class.find_by(invitation_token: params[:invitation_token]))
+    unless params[:invitation_token] && (self.resource = resource_class.find_by_invitation_token(params[:invitation_token], true)) # rubocop:disable Rails/DynamicFindBy
       return render json: { success: false, user: nil }
     end
 

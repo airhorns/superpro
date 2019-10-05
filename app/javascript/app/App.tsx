@@ -1,7 +1,7 @@
 import React from "react";
 import { ApolloProvider } from "react-apollo";
 import { ApolloProvider as ApolloHooksProvider } from "react-apollo-hooks";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import { getClient } from "./lib/apollo";
 import { SuperproGrommetTheme, SentryErrorBoundary, SuperproGlobalStyle, SegmentIdentify, HotkeysContainer, Flag } from "../superlib";
 import { Grommet, Box } from "grommet";
@@ -62,7 +62,17 @@ export const App = () => {
                             </Switch>
                           </Route>
                           <Route>
-                            <Flag name={["gate.productAccess"]} fallbackRender={() => <Route component={NotFoundPage} />}>
+                            <Flag
+                              name={["gate.productAccess"]}
+                              fallbackRender={() => (
+                                <Switch>
+                                  <Route path="/" exact>
+                                    <Redirect to="/s/welcome" />
+                                  </Route>
+                                  <Route component={NotFoundPage} />
+                                </Switch>
+                              )}
+                            >
                               <AppSidebar embeddedInPageHeader={false} />
                               <Switch>
                                 <Route path="/" exact component={HomePage} />

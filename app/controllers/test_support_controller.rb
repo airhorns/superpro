@@ -25,4 +25,15 @@ class TestSupportController < ActionController::Base
   def last_delivered_email
     render json: ActionMailer::Base.deliveries.last.as_json
   end
+
+  def set_account_flipper_flag
+    account = Account.find(params[:account_id])
+    flipper = Flipper[params[:flag]]
+
+    if params[:value]
+      flipper.enable(account)
+    else
+      flipper.disable(account)
+    end
+  end
 end

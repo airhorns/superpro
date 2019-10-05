@@ -41,3 +41,15 @@ Cypress.Commands.add("getLastEmail", () =>
     .its("body")
     .as("last_email")
 );
+
+Cypress.Commands.add("setAccountFlipperFlag", (flag, value) =>
+  cy.get("@account").then(account =>
+    cy.request({
+      method: "POST",
+      url: "/test_support/set_account_flipper_flag",
+      body: { flag, value, account_id: account.id },
+      log: true,
+      failOnStatusCode: true
+    })
+  )
+);

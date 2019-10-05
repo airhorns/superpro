@@ -48,6 +48,9 @@ module Superpro
     # Needed for views and postgres extensions
     config.active_record.schema_format = :sql
 
+    # We use ejson instead of the master key
+    config.require_master_key = false
+
     config.x.domains.app = "should set in the environments"
     config.x.domains.admin = "should be set in the environments"
 
