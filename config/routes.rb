@@ -60,6 +60,12 @@ Rails.application.routes.draw do
       mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "graphql", as: "app_graphiql"
       post "/graphql", to: "graphql#execute"
 
+      # Special requests that dont just go into the normal application chrome
+      scope "s" do
+        get "/connections/:provider/:integration_id/complete", to: "client_side_app#index", as: "connection_setup_complete"
+        get "/connections/errors", to: "client_side_app#index", as: "connection_setup_error"
+      end
+
       # Forward all the other requests to the edit area client side router
       get "*path", to: "client_side_app#index", as: "app_client_side_app"
       root to: "client_side_app#index", as: "app_root"

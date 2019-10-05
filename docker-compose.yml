@@ -42,7 +42,7 @@ services:
     command: redis-server --appendonly yes
 
   singer-importer:
-    image: gcr.io/superpro-production/singer-importer:391f914a61e4422d2d8978bf6750e29c9724a554
+    image: gcr.io/superpro-production/singer-importer:1b486eb79bf9ab0aea0f43847283d7ddbf714ec4
     ports:
       - 4002:5000
     restart: on-failure

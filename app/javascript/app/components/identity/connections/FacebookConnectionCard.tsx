@@ -8,6 +8,7 @@ export const FacebookConnectionCard = () => {
     <ConnectionCard
       name="Facebook"
       description="Superpro connects to [Facebook](https://facebook.com/) to import your Facebook and Instagram advertising data."
+      typename="FacebookAdAccount"
     >
       <Button icon={<Add />} label="Connect Facebook" href="/connection_auth/facebook" />
     </ConnectionCard>

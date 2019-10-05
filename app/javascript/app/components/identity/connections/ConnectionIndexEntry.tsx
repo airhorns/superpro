@@ -12,6 +12,7 @@ import {
   useDiscardConnectionMutation
 } from "app/app-graph";
 import { Restart, Trash, CloudGo, Test, Pause, Play } from "app/components/common/SuperproIcons";
+import { ConnectionGlyph } from "./ConnectionGlyph";
 
 gql`
   fragment ConnectionIndexEntry on Connectionobj {
@@ -155,26 +156,52 @@ export const ConnectionIndexEntry = (props: { connection: ConnectionIndexEntryFr
   }, [props.connection.id, discardConnection]);
 
   return (
-    <Box pad="small" key={props.connection.id}>
-      <Heading level="3">{props.connection.displayName}</Heading>
-      <Row justify="between">
-        <ConnectionEnabledIndicator enabled={props.connection.enabled} />
-        <ConnectionSyncDiagram syncAttempts={props.connection.syncAttempts.nodes} />
-        <Menu
-          label="Actions"
-          items={[
-            { icon: <Test />, label: "Test Connection" },
-            { icon: <CloudGo />, label: "Sync Now", onClick: onSyncClick },
-            { icon: <Restart />, label: "Restart Sync", onClick: onRestartClick },
-            {
-              icon: props.connection.enabled ? <Pause /> : <Play />,
-              label: props.connection.enabled ? "Pause" : "Resume",
-              onClick: () => onToggleEnabled(!props.connection.enabled)
-            },
-            { icon: <Trash />, label: "Delete", onClick: onDiscardClick }
-          ]}
-        />
-      </Row>
-    </Box>
+    <Row pad="small" gap="small" key={props.connection.id}>
+      <ConnectionGlyph typename={props.connection.integration.__typename} />
+      <Box flex={{ grow: 1 }}>
+        <Heading level="3">{props.connection.displayName}</Heading>
+        <Row justify="between">
+          <ConnectionEnabledIndicator enabled={props.connection.enabled} />
+          <ConnectionSyncDiagram syncAttempts={props.connection.syncAttempts.nodes} />
+          <Menu
+            label="Actions"
+            items={[
+              {
+                icon: (
+                  <Box margin={{ right: "small" }}>
+                    <CloudGo />
+                  </Box>
+                ),
+                label: "Sync Now",
+                onClick: onSyncClick
+              },
+              {
+                icon: (
+                  <Box margin={{ right: "small" }}>
+                    <Restart />
+                  </Box>
+                ),
+                label: "Restart Sync",
+                onClick: onRestartClick
+              },
+              {
+                icon: <Box margin={{ right: "small" }}>{props.connection.enabled ? <Pause /> : <Play />}</Box>,
+                label: props.connection.enabled ? "Pause" : "Resume",
+                onClick: () => onToggleEnabled(!props.connection.enabled)
+              },
+              {
+                icon: (
+                  <Box margin={{ right: "small" }}>
+                    <Trash />
+                  </Box>
+                ),
+                label: "Delete",
+                onClick: onDiscardClick
+              }
+            ]}
+          />
+        </Row>
+      </Box>
+    </Row>
   );
 };

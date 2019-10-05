@@ -6,6 +6,7 @@ import { GetFacebookAdAccountsComponent, useCompleteFacebookAdAccountSetupMutati
 import { Page } from "../../common";
 import { SuperForm, Select } from "superlib/superform";
 import { mutationSuccess, toast } from "superlib";
+import { returnToOrigin } from "./utils";
 
 gql`
   query GetFacebookAdAccounts($facebookAdAccountId: ID!) {
@@ -59,16 +60,16 @@ export default (props: RouteComponentProps<{ facebookAdAccountId: string }>) => 
       const data = mutationSuccess(result, "completeFacebookAdAccountSetup");
       if (data) {
         toast.success("Facebook set up successfully!");
-        props.history.push("/settings/connections");
+        returnToOrigin(props);
       } else {
         toast.error("Facebook failed to set up. Please try again.");
       }
     },
-    [completeSetup, props.history, props.match.params.facebookAdAccountId]
+    [completeSetup, props]
   );
 
   return (
-    <Page.Layout title="Complete Facebook Connection Setup">
+    <Page.TakeoverLayout title="Complete Facebook Connection Setup">
       <Page.Load
         component={GetFacebookAdAccountsComponent}
         require={["availableFacebookAdAccounts"]}
@@ -86,6 +87,6 @@ export default (props: RouteComponentProps<{ facebookAdAccountId: string }>) => 
           </SuperForm>
         )}
       </Page.Load>
-    </Page.Layout>
+    </Page.TakeoverLayout>
   );
 };

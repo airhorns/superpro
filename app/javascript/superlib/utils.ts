@@ -1,8 +1,10 @@
 import { get, set, isUndefined, isNull, isFunction, isArray, toPath, cloneDeep } from "lodash";
 import memoizeOne from "memoize-one";
+import queryString from "query-string";
 import { DateTime } from "luxon";
 import { FetchResult } from "react-apollo";
 import { SuperFormController, DocType, SuperFormErrors } from "./superform";
+import { RouteComponentProps } from "react-router";
 export type AssertedKeys<T, K extends keyof T> = { [Key in K]: NonNullable<T[Key]> } & T;
 
 export function assert<T>(value: T | undefined | null): T {
@@ -177,3 +179,13 @@ export const RelayConnectionQueryUpdater = memoizeOne((connectionName: string) =
       )
     : previousResult;
 });
+
+export const replaceLocationWithNewParams = (
+  params: { [key: string]: any },
+  location: RouteComponentProps["location"],
+  history: RouteComponentProps["history"]
+) => {
+  const string = queryString.stringify(params);
+  const newLocation = string.length > 0 ? `${location.pathname}?${string}` : location.pathname;
+  history.replace(newLocation);
+};

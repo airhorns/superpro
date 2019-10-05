@@ -1,11 +1,13 @@
 import React from "react";
 import { RouteComponentProps } from "react-router";
+
 import { Box, Paragraph, Button } from "grommet";
 import gql from "graphql-tag";
 import { GetGoogleAnalyticsViewsComponent, useCompleteGoogleAnalyticsSetupMutation, GetConnectionsIndexPageDocument } from "app/app-graph";
 import { Page } from "../../common";
 import { SuperForm, Select } from "superlib/superform";
 import { mutationSuccess, toast } from "superlib";
+import { returnToOrigin } from "./utils";
 
 gql`
   query GetGoogleAnalyticsViews($credentialId: ID!) {
@@ -61,16 +63,16 @@ export default (props: RouteComponentProps<{ credentialId: string }>) => {
       const data = mutationSuccess(result, "completeGoogleAnalyticsSetup");
       if (data) {
         toast.success("Google Analytics set up successfully!");
-        props.history.push("/settings/connections");
+        returnToOrigin(props);
       } else {
         toast.error("Google Analytics failed to set up. Please try again.");
       }
     },
-    [completeSetup, props.history, props.match.params.credentialId]
+    [completeSetup, props]
   );
 
   return (
-    <Page.Layout title="Complete Google Analytics Connection Setup">
+    <Page.TakeoverLayout title="Complete Google Analytics Connection Setup">
       <Page.Load
         component={GetGoogleAnalyticsViewsComponent}
         require={["googleAnalyticsViews"]}
@@ -90,6 +92,6 @@ export default (props: RouteComponentProps<{ credentialId: string }>) => {
           </SuperForm>
         )}
       </Page.Load>
-    </Page.Layout>
+    </Page.TakeoverLayout>
   );
 };

@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import { ConnectionCard } from "./ConnectionCard";
 import { useConnectShopifyMutation, GetConnectionsIndexPageDocument } from "app/app-graph";
 import { mutationSuccess, toast, SimpleModal } from "superlib";
-import { Box, Heading, Button, Anchor, Tabs, Tab } from "grommet";
+import { Box, Heading, Button, Tabs, Tab, Text } from "grommet";
 import { Add } from "app/components/common/SuperproIcons";
 import { Input, FieldBox, SuperForm } from "superlib/superform";
 
@@ -28,7 +28,7 @@ interface ShopifyShop {
   };
 }
 
-interface NewShopFormValues {
+interface NewPrivateAppShopFormValues {
   apiKey: string;
   password: string;
   domain: string;
@@ -38,7 +38,7 @@ const NewShopifyConnectionForm = () => {
   const connectShopify = useConnectShopifyMutation();
 
   const onSubmit = React.useCallback(
-    async (formValues: NewShopFormValues, setShow: (modalShow: boolean) => void) => {
+    async (formValues: NewPrivateAppShopFormValues, setShow: (modalShow: boolean) => void) => {
       let success = false;
       let result;
       try {
@@ -63,26 +63,39 @@ const NewShopifyConnectionForm = () => {
   return (
     <SimpleModal triggerLabel="Connect Shopify" triggerIcon={<Add />}>
       {setShow => (
-        <SuperForm<NewShopFormValues> onSubmit={doc => onSubmit(doc, setShow)} initialValues={{ apiKey: "", password: "", domain: "" }}>
-          {form => (
-            <Box height="medium" width="medium">
-              <Heading level="3">Connect New Shopify Shop</Heading>
-              <Tabs>
-                <Tab title="Standard App">
+        <Box width="medium" gap="small">
+          <Heading level="3">Connect New Shopify Shop</Heading>
+          <Tabs>
+            <Tab title="Standard App">
+              <SuperForm<{ domain: string }>
+                onSubmit={doc => (window.location.href = `/connection_auth/shopify?shop=${encodeURIComponent(doc.domain)}`)}
+                initialValues={{ domain: "" }}
+              >
+                {() => (
                   <Box align="center">
                     <p>Visit Shopify to give Superpro permission to access your store.</p>
                     <FieldBox path="domain" label="Shopify Shop domain">
                       <Input path="domain" />
                     </FieldBox>
-                    <Button
-                      icon={<Add />}
-                      label="Connect Shopify"
-                      href={`/connection_auth/shopify?shop=${encodeURIComponent(form.doc.domain)}`}
-                    />
+                    <Text color="status-disabled">
+                      Please enter your <code>something.myshopify.com</code> domain to begin the process, including the&nbsp;
+                      <code>myshopify.com</code>&nbsp; part.
+                    </Text>
+                    <Box pad="small" margin={{ top: "medium" }}>
+                      <Button icon={<Add />} label="Connect Shopify" type="submit" />
+                    </Box>
                   </Box>
-                </Tab>
-                <Tab title="Private App">
+                )}
+              </SuperForm>
+            </Tab>
+            <Tab title="Private App">
+              <SuperForm<NewPrivateAppShopFormValues>
+                onSubmit={doc => onSubmit(doc, setShow)}
+                initialValues={{ apiKey: "", password: "", domain: "" }}
+              >
+                {() => (
                   <Box gap="small">
+                    <p>If you&quot;ve been instructed to use a Private App from Shopify to connect Superpro, add its details here.</p>
                     <FieldBox path="domain" label="Shopify Shop domain">
                       <Input path="domain" />
                     </FieldBox>
@@ -94,11 +107,11 @@ const NewShopifyConnectionForm = () => {
                     </FieldBox>
                     <Button type="submit" label="Connect" />
                   </Box>
-                </Tab>
-              </Tabs>
-            </Box>
-          )}
-        </SuperForm>
+                )}
+              </SuperForm>
+            </Tab>
+          </Tabs>
+        </Box>
       )}
     </SimpleModal>
   );
@@ -109,6 +122,7 @@ export const ShopifyConnectionCard = () => {
     <ConnectionCard
       name="Shopify"
       description="Superpro connects to [Shopify](https://www.shopify.com/) to import your order, inventory, customer, and web traffic data."
+      typename="ShopifyShop"
     >
       <NewShopifyConnectionForm />
     </ConnectionCard>
