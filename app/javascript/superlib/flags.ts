@@ -3,6 +3,7 @@ import { KeyPath } from "useful-types";
 
 export interface SuperproFlags {
   "gate.publicSignUps": boolean;
+  "gate.productAccess": boolean;
 }
 
 const { FlagsProvider, Flag, useFlag, useFlags } = createFlags<SuperproFlags>();

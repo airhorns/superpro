@@ -3,7 +3,7 @@ import { ApolloProvider } from "react-apollo";
 import { ApolloProvider as ApolloHooksProvider } from "react-apollo-hooks";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { getClient } from "./lib/apollo";
-import { SuperproGrommetTheme, SentryErrorBoundary, SuperproGlobalStyle, SegmentIdentify, HotkeysContainer } from "../superlib";
+import { SuperproGrommetTheme, SentryErrorBoundary, SuperproGlobalStyle, SegmentIdentify, HotkeysContainer, Flag } from "../superlib";
 import { Grommet, Box } from "grommet";
 import { Settings } from "./lib/settings";
 import { ToastContainer, FlagsProvider } from "../superlib";
@@ -48,39 +48,43 @@ export const App = () => {
                       <Box fill direction="row-responsive" id="Superpro-Layout">
                         <Switch>
                           <Route path="/s">
-                            <Route path="/s/welcome" exact component={WelcomePage} />
-                            <Route path="/s/connection_setup" exact component={ConnectionsSetupPage} />
-                            <Route path="/s/connections/error" exact component={ConnectionCompletionErrorPage} />
-                            <Route
-                              path="/s/connections/google_analytics/:credentialId/complete"
-                              exact
-                              component={GoogleAnalyticsCompletePage}
-                            />
-                            <Route path="/s/connections/facebook/:facebookAdAccountId/complete" exact component={FacebookCompletePage} />
-                          </Route>
-                          <Route>
-                            <AppSidebar embeddedInPageHeader={false} />
                             <Switch>
-                              <Route path="/" exact component={HomePage} />
-                              <Route path="/launchpad" exact component={Launchpad} />
-                              <Route path="/invite" exact component={InviteUsersPage} />
-                              <Route path="/sales" exact component={SalesOverviewReport} />
-                              <Route path="/sales/overview" exact component={SalesOverviewReport} />
-                              <Route path="/sales/yearly_review" exact component={YearlyOrdersReviewReport} />
-                              <Route path="/sales/repurchase_rates" exact component={RepurchaseRatesReport} />
-                              <Route path="/sales/micro_order_timing" exact component={MicroOrderTimingReport} />
-                              <Route path="/traffic" exact component={TrafficOverviewReport} />
-                              <Route path="/traffic/overview" exact component={TrafficOverviewReport} />
-                              <Route path="/traffic/slow_landing_pages" exact component={SlowLandingPagesReport} />
-                              <Route path="/customers/rfm_breakdown" exact component={RFMBreakdownReport} />
-                              <Route path="/report_builder" exact component={ReporrtBuilderPage} />
-                              <Route path="/settings" exact component={AccountSettingsPage} />
-                              <Route path="/settings/account" exact component={AccountSettingsPage} />
-                              <Route path="/settings/users" exact component={UsersSettingsPage} />
-                              <Route path="/settings/connections" exact component={ConnectionsIndexPage} />
-
+                              <Route path="/s/welcome" exact component={WelcomePage} />
+                              <Route path="/s/connection_setup" exact component={ConnectionsSetupPage} />
+                              <Route path="/s/connections/error" exact component={ConnectionCompletionErrorPage} />
+                              <Route
+                                path="/s/connections/google_analytics/:credentialId/complete"
+                                exact
+                                component={GoogleAnalyticsCompletePage}
+                              />
+                              <Route path="/s/connections/facebook/:facebookAdAccountId/complete" exact component={FacebookCompletePage} />
                               <Route component={NotFoundPage} />
                             </Switch>
+                          </Route>
+                          <Route>
+                            <Flag name={["gate.productAccess"]} fallbackRender={() => <Route component={NotFoundPage} />}>
+                              <AppSidebar embeddedInPageHeader={false} />
+                              <Switch>
+                                <Route path="/" exact component={HomePage} />
+                                <Route path="/launchpad" exact component={Launchpad} />
+                                <Route path="/invite" exact component={InviteUsersPage} />
+                                <Route path="/sales" exact component={SalesOverviewReport} />
+                                <Route path="/sales/overview" exact component={SalesOverviewReport} />
+                                <Route path="/sales/yearly_review" exact component={YearlyOrdersReviewReport} />
+                                <Route path="/sales/repurchase_rates" exact component={RepurchaseRatesReport} />
+                                <Route path="/sales/micro_order_timing" exact component={MicroOrderTimingReport} />
+                                <Route path="/traffic" exact component={TrafficOverviewReport} />
+                                <Route path="/traffic/overview" exact component={TrafficOverviewReport} />
+                                <Route path="/traffic/slow_landing_pages" exact component={SlowLandingPagesReport} />
+                                <Route path="/customers/rfm_breakdown" exact component={RFMBreakdownReport} />
+                                <Route path="/report_builder" exact component={ReporrtBuilderPage} />
+                                <Route path="/settings" exact component={AccountSettingsPage} />
+                                <Route path="/settings/account" exact component={AccountSettingsPage} />
+                                <Route path="/settings/users" exact component={UsersSettingsPage} />
+                                <Route path="/settings/connections" exact component={ConnectionsIndexPage} />
+                                <Route component={NotFoundPage} />
+                              </Switch>
+                            </Flag>
                           </Route>
                         </Switch>
                       </Box>

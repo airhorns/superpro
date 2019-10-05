@@ -2,7 +2,7 @@
 
 module BaseClientSideAppSettings
   include ActiveSupport::Concern
-  EXPORTED_FLAGS = ["gate.publicSignUps"].freeze
+  EXPORTED_FLAGS = ["gate.publicSignUps", "gate.productAccess"].freeze
 
   def base_settings
     @base_settings ||= begin
