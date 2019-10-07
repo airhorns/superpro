@@ -24,6 +24,6 @@ class DataModel::QueryIntrospectionTest < ActiveSupport::TestCase
     }
 
     introspection = DataModel::QueryIntrospection.new(@account, SuperproWarehouse, query)
-    assert_equal DataModel::Types::Number, introspection.as_json[:fields].detect { |field| field[:id] == "created_at" }[:data_type]
+    assert_equal DataModel::Types::String, introspection.as_json[:fields].detect { |field| field[:id] == "created_at" }[:data_type]
   end
 end

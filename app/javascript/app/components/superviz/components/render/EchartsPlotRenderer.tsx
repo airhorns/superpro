@@ -45,8 +45,7 @@ import { ReportDocument, VizBlock } from "../..";
 import { assert } from "superlib";
 import { WarehouseDataTypeEnum } from "app/app-graph";
 import { compact, uniq } from "lodash";
-
-const palette = ["#cf3759", "#00429d", "#93003a", "#4771b2", "#a5d5d8", "#f4777f", "#ffbcaf", "#73a2c6"];
+import { theme } from "superlib/EChartsTheme";
 
 const axisTypeForDataType = (dataType: WarehouseDataTypeEnum): EChartOption.BasicComponents.CartesianAxis.Type => {
   if (dataType == "DateTime") {
@@ -75,30 +74,36 @@ const xAxesForBlock = (block: VizBlock, result: SuccessfulWarehouseQueryResult) 
     return {
       id: xId,
       name: field.label,
-      type: axisTypeForDataType(field.dataType)
+      type: axisTypeForDataType(field.dataType),
+      ...theme.xAxis
     };
   });
 };
 
 const yAxesForBlock = (block: VizBlock, result: SuccessfulWarehouseQueryResult) => {
   const yIds = uniq(compact(block.viz.systems.map(system => system.yId)));
-  const showSplitLines = yIds.length == 1;
+  const multiAxis = yIds.length > 1;
 
   return yIds.map((yId, index) => {
     const field = assert(result.queryIntrospection.fieldsById[yId]);
-    return {
+    const axis: EChartOption.YAxis = {
       id: yId,
       name: field.label,
       type: axisTypeForDataType(field.dataType),
-      axisLine: {
-        lineStyle: {
-          color: palette[index]
-        }
-      },
       splitLine: {
-        show: showSplitLines
-      }
+        show: !multiAxis
+      },
+      ...theme.yAxis
     };
+
+    if (multiAxis) {
+      axis.axisLine = axis.axisLine || {};
+      axis.axisLine.lineStyle = {
+        color: multiAxis ? theme.color[index] : undefined
+      };
+    }
+
+    return axis;
   });
 };
 
@@ -132,7 +137,6 @@ const dimensionsForBlock = (block: VizBlock, result: SuccessfulWarehouseQueryRes
 export const EchartsPlotRenderer = (props: { result: SuccessfulWarehouseQueryResult; doc: ReportDocument; block: VizBlock }) => {
   const option: EChartOption = {
     legend: {},
-    color: palette,
     tooltip: {
       trigger: "axis",
       axisPointer: {
@@ -156,7 +160,7 @@ export const EchartsPlotRenderer = (props: { result: SuccessfulWarehouseQueryRes
       notMerge={true}
       lazyUpdate={true}
       style={{ height: "100%" }}
-      // theme={"theme_name"}
+      theme="superpro"
       // onChartReady={this.onChartReadyCallback}
       // onEvents={EventsDict}
       opts={{ renderer: "svg" }}

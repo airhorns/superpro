@@ -3,7 +3,7 @@ import { Page } from "../common";
 import { GetWarehouseData } from "../superviz/components/GetWarehouseData";
 import { Box, TableCell, Heading } from "grommet";
 import { StyledDataTable, StyledDataTableHeader, StyledDataTableRow, StyledDataTableBody } from "superlib/WaterTable/StyledDataTable";
-import { range, keyBy, get, round } from "lodash";
+import { range, keyBy, get, round, flatMap } from "lodash";
 import { isUndefined } from "util";
 
 const RFMBreakdownQuery = {
@@ -41,25 +41,19 @@ export const RFMBreakdownTable = (props: { recordIndex: { [key: string]: any }; 
         </StyledDataTableRow>
       </StyledDataTableHeader>
       <StyledDataTableBody>
-        {range(1, 6).map(monetary => (
-          <>
-            {range(1, 6).map(frequency => (
-              <StyledDataTableRow key={frequency}>
-                <TableCell>{frequency == 1 && `M=${monetary}`}</TableCell>
-                <TableCell>F={frequency}</TableCell>
-                {range(1, 6).map(recency => {
-                  const val: number = get(props.recordIndex[recordIndexKey(recency, frequency, monetary)], props.measureKey);
-                  const formattedVal = isUndefined(val) ? "-" : props.format(val);
-                  return (
-                    <>
-                      <TableCell>{formattedVal}</TableCell>
-                    </>
-                  );
-                })}
-              </StyledDataTableRow>
-            ))}
-          </>
-        ))}
+        {flatMap(range(1, 6), monetary =>
+          range(1, 6).map(frequency => (
+            <StyledDataTableRow key={`${monetary}-${frequency}`}>
+              <TableCell>{frequency == 1 && `M=${monetary}`}</TableCell>
+              <TableCell>F={frequency}</TableCell>
+              {range(1, 6).map(recency => {
+                const val: number = get(props.recordIndex[recordIndexKey(recency, frequency, monetary)], props.measureKey);
+                const formattedVal = isUndefined(val) ? "-" : props.format(val);
+                return <TableCell key={recency}>{formattedVal}</TableCell>;
+              })}
+            </StyledDataTableRow>
+          ))
+        )}
       </StyledDataTableBody>
     </StyledDataTable>
   </Box>
