@@ -19,15 +19,15 @@ en:
       invited: "You have a pending invitation, accept it to finish creating your account."
     mailer:
       confirmation_instructions:
-        subject: "Superpro Account confirmation instructions"
+        subject: "Superpro user account confirmation instructions"
       reset_password_instructions:
-        subject: "Superpro user password reset instructions"
+        subject: "Superpro user account password reset instructions"
       unlock_instructions:
-        subject: "Superpro account unlock instructions"
+        subject: "Superpro user account unlock instructions"
       email_changed:
         subject: "Superpro user account email changed"
       password_change:
-        subject: "Superpro password changed"
+        subject: "Superpro user account password changed"
     omniauth_callbacks:
       failure: "Could not authenticate you from %{kind} because \"%{reason}\"."
       success: "Successfully authenticated from %{kind} account."

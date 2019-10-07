@@ -1,9 +1,9 @@
 import React from "react";
 import { VizBlock, ReportDocument } from "../../schema";
 import { GetWarehouseData } from "../GetWarehouseData";
-import { RechartsPlotRenderer } from "./RechartsPlotRenderer";
 import { CohortTableRenderer } from "./CohortTableRenderer";
 import { Box, Heading } from "grommet";
+import { EchartsPlotRenderer } from "./EchartsPlotRenderer";
 
 export const VizBlockRenderer = (props: { doc: ReportDocument; block: VizBlock }) => (
   <GetWarehouseData query={props.block.query}>
@@ -12,7 +12,7 @@ export const VizBlockRenderer = (props: { doc: ReportDocument; block: VizBlock }
       if (props.block.viz.systems[0].vizType == "cohorts") {
         viz = <CohortTableRenderer doc={props.doc} block={props.block} result={result} />;
       } else {
-        viz = <RechartsPlotRenderer doc={props.doc} block={props.block} result={result} />;
+        viz = <EchartsPlotRenderer doc={props.doc} block={props.block} result={result} />;
       }
 
       return (

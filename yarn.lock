@@ -1368,6 +1368,13 @@
   resolved "https://registry.yarnpkg.com/@types/dinero.js/-/dinero.js-1.4.1.tgz#b3ed13b8e1e65fba627861b77548beaab3f648be"
   integrity sha512-ojh/uTkoMJBLvUrvUa+EBLZJ8q0qfso8NKWdact4lQgPI3HA/Q8znxYO9jvWDVMA/DcJjBh3lKF3ekGn1gbwwA==
 
+"@types/echarts@^4.1.15":
+  version "4.1.15"
+  resolved "https://registry.yarnpkg.com/@types/echarts/-/echarts-4.1.15.tgz#00ec3a3af3c486b6b1b13edc26a4676d4e6cc668"
+  integrity sha512-WzkfgZ4TxfFiLEQBCkf+VDdssU8Nxu6qgzpca/0c3M89mf0JM0F8tMcRzoi+h6+5wfLxsRzydbTL3ORJnksn4A==
+  dependencies:
+    "@types/zrender" "*"
+
 "@types/eslint-visitor-keys@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@types/eslint-visitor-keys/-/eslint-visitor-keys-1.0.0.tgz#1ee30d79544ca84d68d4b3cdb0af4f205663dd2d"
@@ -1730,6 +1737,11 @@
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/@types/zen-observable/-/zen-observable-0.8.0.tgz#8b63ab7f1aa5321248aad5ac890a485656dcea4d"
   integrity sha512-te5lMAWii1uEJ4FwLjzdlbw3+n0FZNOvFXHxQDKeT0dilh7HOzdMzV2TrJVUzq8ep7J4Na8OUYPRLSQkJHAlrg==
+
+"@types/zrender@*":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@types/zrender/-/zrender-4.0.0.tgz#a6806f12ec4eccaaebd9b0d816f049aca6188fbd"
+  integrity sha512-s89GOIeKFiod2KSqHkfd2rzx+T2DVu7ihZCBEBnhFrzvQPUmzvDSBot9Fi1DfMQm9Odg+rTqoMGC38RvrwJK2w==
 
 "@typescript-eslint/eslint-plugin@^1.3.0":
   version "1.11.0"
@@ -4378,6 +4390,21 @@ ecc-jsbn@~0.1.1:
   dependencies:
     jsbn "~0.1.0"
     safer-buffer "^2.1.0"
+
+echarts-for-react@^2.0.15-beta.1:
+  version "2.0.15-beta.1"
+  resolved "https://registry.yarnpkg.com/echarts-for-react/-/echarts-for-react-2.0.15-beta.1.tgz#1afa21ee0f08f9023eff0b5ab3351f2fe0f708b6"
+  integrity sha512-wR8XaI3j/4JvTidZrrJVfP/RqSggLRlzKOwcruytyLSA6AyE51T7mK+EucfwZ0NkX8H6tPFCHCvgJH1LyXjiIg==
+  dependencies:
+    fast-deep-equal "^2.0.1"
+    size-sensor "^0.2.0"
+
+echarts@^4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/echarts/-/echarts-4.3.0.tgz#3728c2b5e8f277898f7299b4fe1cfc537170abd5"
+  integrity sha512-tX2dAyhI9D78eVrlKhqJGdrM7Ku599HHvPxT2Pu6tgb/dBP8tYmkWjn8r1Ea9oABQxAKXr0p2/tG1OzKdzULbw==
+  dependencies:
+    zrender "4.1.0"
 
 ee-first@1.1.1:
   version "1.1.1"
@@ -10951,6 +10978,11 @@ sisteransi@^1.0.0:
   resolved "https://registry.yarnpkg.com/sisteransi/-/sisteransi-1.0.0.tgz#77d9622ff909080f1c19e5f4a1df0c1b0a27b88c"
   integrity sha512-N+z4pHB4AmUv0SjveWRd6q1Nj5w62m5jodv+GD8lvmbY/83T/rpbJGZOnK5T149OldDj4Db07BSv9xY4K6NTPQ==
 
+size-sensor@^0.2.0:
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/size-sensor/-/size-sensor-0.2.5.tgz#e8ffb7cc5258893472bfda4f5734d66583247757"
+  integrity sha512-Rip8d6LmCHIBUY5iIS3nKln1X4bF8260oFI4suo6MX+vOV/aNpNWYKTyjamSJMbxP17qMlR0DmGXFEio3BYJUg==
+
 slash@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/slash/-/slash-2.0.0.tgz#de552851a1759df3a8f206535442f5ec4ddeab44"
@@ -12754,3 +12786,8 @@ zen-observable@^0.8.0:
   version "0.8.14"
   resolved "https://registry.yarnpkg.com/zen-observable/-/zen-observable-0.8.14.tgz#d33058359d335bc0db1f0af66158b32872af3bf7"
   integrity sha512-kQz39uonEjEESwh+qCi83kcC3rZJGh4mrZW7xjkSQYXkq//JZHTtKo+6yuVloTgMtzsIWOJrjIrKvk/dqm0L5g==
+
+zrender@4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/zrender/-/zrender-4.1.0.tgz#866ab97d0744c473d9b314ac5a89e7207c140608"
+  integrity sha512-PkWDpBSRIZAKyBBSkizWCP5/bIL5s/+W+FM/AwkivN4m4QCVH04PS0nJmBB/E6CnUNQv9ZPfIV4tthg1qEP1gg==
