@@ -1,0 +1,8 @@
+development: &development
+  secure_mode_secret_key: blerg
+test:
+  <<: *development
+integration_test:
+  <<: *development
+production:
+  secure_mode_secret_key: <%= ENV['INTERCOM_SECURE_MODE_SECRET_KEY'] %>

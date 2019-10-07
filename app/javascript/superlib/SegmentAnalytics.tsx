@@ -6,7 +6,7 @@ const Settings = (window as any).INJECTED_SETTINGS;
 export const SegmentIdentify = (props: { children: React.ReactNode }) => {
   React.useEffect(() => {
     if (!isUndefined(Settings.analytics.identify)) {
-      analytics.identify(Settings.analytics.identify, Settings.analytics.identifyTraits);
+      analytics.identify(Settings.analytics.identify, Settings.analytics.identifyTraits, Settings.analytics.segmentOpts);
     }
 
     if (!isUndefined(Settings.analytics.group)) {

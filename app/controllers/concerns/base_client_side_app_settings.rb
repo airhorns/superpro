@@ -7,6 +7,10 @@ module BaseClientSideAppSettings
   def base_settings
     @base_settings ||= begin
       Flipper.preload(EXPORTED_FLAGS)
+      segment_opts = { Intercom: {} }
+      if current_user
+        segment_opts[:Intercom][:user_hash] = OpenSSL::HMAC.hexdigest("sha256", Rails.configuration.intercom[:secure_mode_secret_key], current_user.id.to_s)
+      end
 
       {
         devMode: Rails.env.development?,
@@ -20,6 +24,7 @@ module BaseClientSideAppSettings
             fullName: current_user.try(:full_name),
             email: current_user.try(:email),
           },
+          identifySegmentOpts: segment_opts,
           group: respond_to?(:current_account) && current_account.try(:id),
           groupTraits: {
             name: respond_to?(:current_account) && current_account.try(:name),
