@@ -6,5 +6,5 @@ test:
 integration_test:
   <<: *development
 production:
-  google_oauth_client_id: 1056215503718-ecvqitvd7f2uuom78ijk5l6ep1d9t6rp.apps.googleusercontent.com
+  google_oauth_client_id: 230193514794-02hdq1l78cs4b2hr5p2f4mbgacd56see.apps.googleusercontent.com
   google_oauth_client_secret: <%= ENV['ADMIN_GOOGLE_OAUTH_CLIENT_SECRET'] %>
