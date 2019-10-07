@@ -19,15 +19,15 @@ en:
       invited: "You have a pending invitation, accept it to finish creating your account."
     mailer:
       confirmation_instructions:
-        subject: "Confirmation instructions"
+        subject: "Superpro Account confirmation instructions"
       reset_password_instructions:
-        subject: "Reset password instructions"
+        subject: "Superpro user password reset instructions"
       unlock_instructions:
-        subject: "Unlock instructions"
+        subject: "Superpro account unlock instructions"
       email_changed:
-        subject: "Email Changed"
+        subject: "Superpro user account email changed"
       password_change:
-        subject: "Password Changed"
+        subject: "Superpro password changed"
     omniauth_callbacks:
       failure: "Could not authenticate you from %{kind} because \"%{reason}\"."
       success: "Successfully authenticated from %{kind} account."
@@ -68,7 +68,7 @@ en:
         submit_button: "Set my password"
     mailer:
       invitation_instructions:
-        subject: "Invitation instructions"
+        subject: "You've been invited to Superpro!"
         hello: "Hello!"
         someone_invited_you: "Someone has invited you to Superpro, the best place to go for analytics on your e-commerce business. You can accept it through the link below."
         accept: "Accept invitation"

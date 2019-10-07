@@ -11,6 +11,9 @@ export default class ConnectionsSetupChromelessPage extends Page {
           <Heading>Setup your connections</Heading>
           <Paragraph textAlign="center">Connect the services you use to Superpro so your data is available for analysis.</Paragraph>
           <ConnectionsIndexContent {...this.props} />
+          <Paragraph textAlign="center">
+            Once your connections have been set up, Superpro will be in touch shortly about the next steps!
+          </Paragraph>
         </Box>
       </Page.TakeoverLayout>
     );

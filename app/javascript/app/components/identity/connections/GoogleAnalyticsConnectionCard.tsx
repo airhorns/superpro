@@ -17,7 +17,7 @@ export const GoogleAnalyticsConnectionCard = () => {
   return (
     <ConnectionCard
       name="Google Analytics"
-      description="Superpro connects to [Google Analytics](https://analytics.google.com/) to import your order, inventory, customer, and web traffic data."
+      description="Superpro connects to [Google Analytics](https://analytics.google.com/) to import web traffic and conversion data."
       typename="GoogleAnalyticsCredential"
     >
       <Button icon={<Add />} label="Connect Google Analytics" href="/connection_auth/google_analytics_oauth" />
