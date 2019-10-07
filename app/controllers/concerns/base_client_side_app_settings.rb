@@ -2,7 +2,7 @@
 
 module BaseClientSideAppSettings
   include ActiveSupport::Concern
-  EXPORTED_FLAGS = ["gate.publicSignUps", "gate.productAccess", "feature.facebookAds", "feature.googleAds", "feature.klaviyo"].freeze
+  EXPORTED_FLAGS = ["gate.publicSignUps", "gate.productAccess", "feature.facebookAds", "feature.googleAds", "feature.googleAnalytics", "feature.klaviyo"].freeze
 
   def base_settings
     @base_settings ||= begin

@@ -6,6 +6,7 @@ export interface SuperproFlags {
   "gate.productAccess": boolean;
   "feature.facebookAds": boolean;
   "feature.googleAds": boolean;
+  "feature.googleAnalytics": boolean;
   "feature.klaviyo": boolean;
 }
 
