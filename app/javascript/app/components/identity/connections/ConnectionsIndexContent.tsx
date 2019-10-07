@@ -12,6 +12,7 @@ import { RouteComponentProps } from "react-router";
 import { toast, replaceLocationWithNewParams } from "superlib";
 import { GoogleAdsConnectionCard } from "./GoogleAdsConnectionCard";
 import { KlaviyoConnectionCard } from "./KlaviyoConnectionCard";
+import { BrontoConnectionCard } from "./BrontoConnectionCard";
 
 gql`
   query GetConnectionsIndexPage {
@@ -51,6 +52,7 @@ export const ConnectionsIndexContent = (props: RouteComponentProps) => {
               <GoogleAdsConnectionCard />
               <GoogleAnalyticsConnectionCard />
               <KlaviyoConnectionCard />
+              <BrontoConnectionCard />
             </Box>
           </Box>
         </Box>

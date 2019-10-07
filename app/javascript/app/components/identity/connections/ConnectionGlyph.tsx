@@ -6,11 +6,12 @@ import FacebookGlyph from "images/glyphs/facebook.png";
 import GoogleAnalyticsGlyph from "images/glyphs/google-analytics.svg";
 import GoogleAdsGlyph from "images/glyphs/google-ads.svg";
 import KlaviyoGlyph from "images/glyphs/klaviyo.svg";
+import BrontoGlyph from "images/glyphs/bronto.png";
 import { Connect } from "grommet-icons";
 import { ConnectionIntegrationUnion } from "app/app-graph";
 
 export interface ConnectionGlyphProps extends BoxProps {
-  typename?: ConnectionIntegrationUnion["__typename"] | "klaviyo" | "google-ads";
+  typename?: ConnectionIntegrationUnion["__typename"] | "klaviyo" | "google-ads" | "bronto";
   size?: BoxProps["width"];
 }
 
@@ -37,6 +38,10 @@ export const ConnectionGlyph = (props: ConnectionGlyphProps) => {
     }
     case "google-ads": {
       image = <Image src={GoogleAdsGlyph} fit="contain" />;
+      break;
+    }
+    case "bronto": {
+      image = <Image src={BrontoGlyph} fit="contain" />;
       break;
     }
     default: {

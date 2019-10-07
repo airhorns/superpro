@@ -8,6 +8,7 @@ export interface SuperproFlags {
   "feature.googleAds": boolean;
   "feature.googleAnalytics": boolean;
   "feature.klaviyo": boolean;
+  "feature.bronto": boolean;
 }
 
 const { FlagsProvider, Flag, useFlag, useFlags } = createFlags<SuperproFlags>();
