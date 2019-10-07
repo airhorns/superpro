@@ -20,7 +20,7 @@ const colorScale = scaleLinear()
   .range([0, 0.8]);
 
 const cohortPivot = (result: SuccessfulWarehouseQueryResult, system: VizSystem) => {
-  return Object.entries(groupBy(result.records, system.extra.cohortId)).map(([cohortId, recordGroup]) => {
+  return Object.entries(groupBy(result.records, record => record[system.extra.cohortId].toISOString())).map(([cohortId, recordGroup]) => {
     const pivotedRecord: CohortRecord = {
       key: cohortId,
       [system.extra.cohortId]: DateTime.fromISO(cohortId)

@@ -38,13 +38,13 @@ module DataModel
         named_function("date_trunc", [Arel.sql("'year'"), node])
       end
 
-      operator :date_part_hour, valid_on: :datelike?, output_type: Types::Number do |node|
+      operator :date_part_hour, valid_on: :datelike?, output_type: Types::String do |node|
         named_function("date_part", [Arel.sql("'hour'"), node])
       end
-      operator :date_part_day_of_month, valid_on: :datelike?, output_type: Types::Number do |node|
+      operator :date_part_day_of_month, valid_on: :datelike?, output_type: Types::String do |node|
         named_function("date_part", [Arel.sql("'day'"), node])
       end
-      operator :date_part_day_of_week, valid_on: :datelike?, output_type: Types::Number do |node|
+      operator :date_part_day_of_week, valid_on: :datelike?, output_type: Types::String do |node|
         named_function("date_part", [Arel.sql("'dow'"), node])
       end
       operator :date_part_week, valid_on: :datelike?, output_type: Types::Number do |node|

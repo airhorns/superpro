@@ -46,6 +46,8 @@ import { assert } from "superlib";
 import { WarehouseDataTypeEnum } from "app/app-graph";
 import { compact, uniq } from "lodash";
 
+const palette = ["#cf3759", "#00429d", "#93003a", "#4771b2", "#a5d5d8", "#f4777f", "#ffbcaf", "#73a2c6"];
+
 const axisTypeForDataType = (dataType: WarehouseDataTypeEnum): EChartOption.BasicComponents.CartesianAxis.Type => {
   if (dataType == "DateTime") {
     return "time";
@@ -53,6 +55,16 @@ const axisTypeForDataType = (dataType: WarehouseDataTypeEnum): EChartOption.Basi
     return "category";
   } else {
     return "value";
+  }
+};
+
+const dimensionTypeForDataType = (dataType: WarehouseDataTypeEnum): EChartOption.Dataset.DimensionObject["type"] => {
+  if (dataType == "DateTime") {
+    return "time";
+  } else if (dataType == "String") {
+    return "ordinal";
+  } else {
+    return "number";
   }
 };
 
@@ -70,27 +82,48 @@ const xAxesForBlock = (block: VizBlock, result: SuccessfulWarehouseQueryResult) 
 
 const yAxesForBlock = (block: VizBlock, result: SuccessfulWarehouseQueryResult) => {
   const yIds = uniq(compact(block.viz.systems.map(system => system.yId)));
-  return yIds.map(yId => {
+  const showSplitLines = yIds.length == 1;
+
+  return yIds.map((yId, index) => {
     const field = assert(result.queryIntrospection.fieldsById[yId]);
     return {
       id: yId,
       name: field.label,
-      type: axisTypeForDataType(field.dataType)
+      type: axisTypeForDataType(field.dataType),
+      axisLine: {
+        lineStyle: {
+          color: palette[index]
+        }
+      },
+      splitLine: {
+        show: showSplitLines
+      }
     };
   });
 };
 
-const seriesForBlock = (block: VizBlock, result: SuccessfulWarehouseQueryResult) => {
-  return block.viz.systems.map(system => {
-    return { type: system.vizType };
+const seriesForBlock = (block: VizBlock, _result: SuccessfulWarehouseQueryResult) => {
+  return block.viz.systems.map((system, index) => {
+    return {
+      type: system.vizType,
+      yAxisIndex: index,
+      encode: {
+        x: system.xId,
+        y: system.yId
+      }
+    };
   });
 };
 
-const dimensionsForBlock = (block: VizBlock, result: SuccessfulWarehouseQueryResult) => {
-  const dimensions = uniq(compact(block.viz.systems.map(system => system.xId))).map(xId => ({ name: xId }));
+const dimensionsForBlock = (block: VizBlock, result: SuccessfulWarehouseQueryResult): EChartOption.Dataset.DimensionObject[] => {
+  const dimensions = uniq(compact(block.viz.systems.map(system => system.xId))).map(xId => {
+    const field = assert(result.queryIntrospection.fieldsById[xId]);
+    return { name: xId, type: dimensionTypeForDataType(field.dataType) };
+  });
 
   const measures = block.viz.systems.map(system => {
-    return { name: system.yId };
+    const field = assert(result.queryIntrospection.fieldsById[system.yId]);
+    return { name: system.yId, type: dimensionTypeForDataType(field.dataType) };
   });
 
   return dimensions.concat(measures);
@@ -99,7 +132,13 @@ const dimensionsForBlock = (block: VizBlock, result: SuccessfulWarehouseQueryRes
 export const EchartsPlotRenderer = (props: { result: SuccessfulWarehouseQueryResult; doc: ReportDocument; block: VizBlock }) => {
   const option: EChartOption = {
     legend: {},
-    tooltip: {},
+    color: palette,
+    tooltip: {
+      trigger: "axis",
+      axisPointer: {
+        type: "cross"
+      }
+    },
     dataset: {
       dimensions: dimensionsForBlock(props.block, props.result),
       source: props.result.records
@@ -116,6 +155,7 @@ export const EchartsPlotRenderer = (props: { result: SuccessfulWarehouseQueryRes
       option={option}
       notMerge={true}
       lazyUpdate={true}
+      style={{ height: "100%" }}
       // theme={"theme_name"}
       // onChartReady={this.onChartReadyCallback}
       // onEvents={EventsDict}

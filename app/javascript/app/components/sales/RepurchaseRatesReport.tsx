@@ -18,7 +18,8 @@ export default FullReportPage("Repurchase Rates", {
           {
             type: "viz_system",
             vizType: "line",
-            yId: "early_repurchase_rate"
+            yId: "early_repurchase_rate",
+            xId: "date"
           }
         ]
       }
@@ -36,7 +37,8 @@ export default FullReportPage("Repurchase Rates", {
           {
             type: "viz_system",
             vizType: "line",
-            yId: "overall_repurchase_rate"
+            yId: "overall_repurchase_rate",
+            xId: "date"
           }
         ]
       }
