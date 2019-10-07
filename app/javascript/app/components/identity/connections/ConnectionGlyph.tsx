@@ -4,11 +4,13 @@ import { omit } from "lodash";
 import ShopifyGlyph from "images/glyphs/shopify.svg";
 import FacebookGlyph from "images/glyphs/facebook.png";
 import GoogleAnalyticsGlyph from "images/glyphs/google-analytics.svg";
+import GoogleAdsGlyph from "images/glyphs/google-ads.svg";
+import KlaviyoGlyph from "images/glyphs/klaviyo.svg";
 import { Connect } from "grommet-icons";
 import { ConnectionIntegrationUnion } from "app/app-graph";
 
 export interface ConnectionGlyphProps extends BoxProps {
-  typename?: ConnectionIntegrationUnion["__typename"];
+  typename?: ConnectionIntegrationUnion["__typename"] | "klaviyo" | "google-ads";
   size?: BoxProps["width"];
 }
 
@@ -27,6 +29,14 @@ export const ConnectionGlyph = (props: ConnectionGlyphProps) => {
     }
     case "GoogleAnalyticsCredential": {
       image = <Image src={GoogleAnalyticsGlyph} fit="contain" />;
+      break;
+    }
+    case "klaviyo": {
+      image = <Image src={KlaviyoGlyph} fit="contain" />;
+      break;
+    }
+    case "google-ads": {
+      image = <Image src={GoogleAdsGlyph} fit="contain" />;
       break;
     }
     default: {

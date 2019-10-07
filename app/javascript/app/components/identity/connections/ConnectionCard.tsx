@@ -1,13 +1,12 @@
 import React from "react";
 import { Box, Heading, Markdown } from "grommet";
 import { Row } from "superlib";
-import { ConnectionGlyph } from "./ConnectionGlyph";
-import { ConnectionIntegrationUnion } from "app/app-graph";
+import { ConnectionGlyph, ConnectionGlyphProps } from "./ConnectionGlyph";
 
 export const ConnectionCard = (props: {
   name: string;
   description: string;
-  typename?: ConnectionIntegrationUnion["__typename"];
+  typename?: ConnectionGlyphProps["typename"];
   children?: React.ReactNode;
 }) => {
   return (

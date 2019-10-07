@@ -10,6 +10,8 @@ import { ConnectionIndexEntry } from "./ConnectionIndexEntry";
 import { FacebookConnectionCard } from "./FacebookConnectionCard";
 import { RouteComponentProps } from "react-router";
 import { toast, replaceLocationWithNewParams } from "superlib";
+import { GoogleAdsConnectionCard } from "./GoogleAdsConnectionCard";
+import { KlaviyoConnectionCard } from "./KlaviyoConnectionCard";
 
 gql`
   query GetConnectionsIndexPage {
@@ -46,7 +48,9 @@ export const ConnectionsIndexContent = (props: RouteComponentProps) => {
             <Box direction="row-responsive" gap="medium" wrap>
               <ShopifyConnectionCard />
               <FacebookConnectionCard />
+              <GoogleAdsConnectionCard />
               <GoogleAnalyticsConnectionCard />
+              <KlaviyoConnectionCard />
             </Box>
           </Box>
         </Box>
