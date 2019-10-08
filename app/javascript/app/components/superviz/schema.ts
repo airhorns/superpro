@@ -39,8 +39,9 @@ export interface Viz {
 export interface VizSystem {
   type: "viz_system";
   vizType: VizType;
-  xId?: string;
   yId: string;
+  xId?: string; // not always required if it's just a big number count or one bar to compare against one other
+  segmentIds?: string[]; // how to split out the yId measure for comparison betweens segment
   contextMarkdown?: string;
   extra?: any;
 }

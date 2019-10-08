@@ -8,7 +8,7 @@ export const TableBlockRenderer = (props: { doc: ReportDocument; block: TableBlo
   <GetWarehouseData query={props.block.query}>
     <VizQueryContext.Consumer>
       {result => {
-        const tableColumns = Object.values(result.queryIntrospection.fields).map(field => ({
+        const tableColumns = Object.values(result.outputIntrospection.fields).map(field => ({
           key: field.id,
           header: field.label,
           render: (record: any, _index: number) => String(record[field.id]),

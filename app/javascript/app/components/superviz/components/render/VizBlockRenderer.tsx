@@ -4,9 +4,10 @@ import { GetWarehouseData } from "../GetWarehouseData";
 import { CohortTableRenderer } from "./CohortTableRenderer";
 import { Box, Heading } from "grommet";
 import { EchartsPlotRenderer } from "./EchartsPlotRenderer";
+import { pivotForViz } from "../../pivot";
 
 export const VizBlockRenderer = (props: { doc: ReportDocument; block: VizBlock }) => (
-  <GetWarehouseData query={props.block.query}>
+  <GetWarehouseData query={props.block.query} pivot={pivotForViz(props.block)}>
     {result => {
       let viz: React.ReactNode;
       if (props.block.viz.systems[0].vizType == "cohorts") {

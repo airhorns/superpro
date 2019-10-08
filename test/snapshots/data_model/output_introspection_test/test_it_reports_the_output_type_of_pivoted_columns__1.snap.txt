@@ -1,0 +1,6 @@
+{
+  "id": "total_price",
+  "data_type": "DataModel::Types::Currency",
+  "label": "Sum of Total Price",
+  "sortable": false
+}

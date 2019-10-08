@@ -7,6 +7,7 @@ module Types::Warehouse::WarehouseQueries
     field :warehouse_query, Types::Warehouse::WarehouseQueryResultType, null: false do
       description "Execute a query against the Superpro data model"
       argument :query, Types::JSONScalar, required: true
+      argument :pivot, Types::JSONScalar, required: false
     end
 
     field :warehouse_introspection, Types::Warehouse::WarehouseIntrospectionType, null: false do
@@ -14,14 +15,22 @@ module Types::Warehouse::WarehouseQueries
     end
   end
 
-  def warehouse_query(query:)
-    query_specification = query.permit!.to_h
-    query = DataModel::Query.new(context[:current_account], SuperproWarehouse, query_specification)
+  def warehouse_query(query:, pivot: nil)
+    query = DataModel::Query.new(context[:current_account], SuperproWarehouse, query.permit!.to_h)
     query.validate!
+    results = query.run
+
+    pivoter = nil
+    if pivot
+      pivoter = DataModel::Pivot.new(context[:current_account], SuperproWarehouse, query, pivot.permit!.to_h)
+      results = pivoter.run(results)
+    end
+
+    introspection = DataModel::OutputIntrospection.new(query, pivoter)
 
     {
-      records: query.run,
-      query_introspection: query.introspection.as_json,
+      records: results,
+      output_introspection: introspection,
       errors: nil,
     }
   end

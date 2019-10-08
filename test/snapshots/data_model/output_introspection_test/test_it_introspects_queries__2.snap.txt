@@ -1,0 +1,8 @@
+[
+  {
+    "id": "cancelled_status",
+    "data_type": "DataModel::Types::Boolean",
+    "label": "Cancelled",
+    "sortable": false
+  }
+]

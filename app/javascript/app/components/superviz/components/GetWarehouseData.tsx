@@ -1,24 +1,38 @@
 import React from "react";
 import gql from "graphql-tag";
-import { SimpleQuery } from "superlib/SimpleQuery";
+import { DateTime } from "luxon";
+import { keyBy, groupBy, isFunction } from "lodash";
 import {
   WarehouseQueryComponent,
   WarehouseQueryResult,
-  WarehouseQueryIntrospection,
-  WarehouseQueryIntrospectionField
+  WarehouseOutputIntrospectionMeasure,
+  WarehouseOutputIntrospectionDimension,
+  WarehouseQueryQueryVariables
 } from "app/app-graph";
-import { Alert } from "superlib/Alert";
+import { assert, Alert, SimpleQuery } from "superlib";
 import { WarehouseQuery } from "../WarehouseQuery";
-import { assert } from "superlib";
-import { DateTime } from "luxon";
-import { keyBy, isFunction } from "lodash";
+import { WarehousePivot } from "../pivot";
 
 gql`
-  query WarehouseQuery($query: JSONScalar!) {
-    warehouseQuery(query: $query) {
+  query WarehouseQuery($query: JSONScalar!, $pivot: JSONScalar) {
+    warehouseQuery(query: $query, pivot: $pivot) {
       records
-      queryIntrospection {
-        fields {
+      outputIntrospection {
+        measures {
+          id
+          dataType
+          label
+          sortable
+          pivotGroupId
+        }
+        pivotedMeasures {
+          id
+          dataType
+          label
+          sortable
+          pivotGroupId
+        }
+        dimensions {
           id
           dataType
           label
@@ -31,8 +45,13 @@ gql`
 `;
 
 export interface SuccessfulWarehouseQueryResult {
-  queryIntrospection: Exclude<WarehouseQueryResult["queryIntrospection"], null | undefined> & {
-    fieldsById: { [id: string]: WarehouseQueryIntrospectionField };
+  outputIntrospection: Exclude<WarehouseQueryResult["outputIntrospection"], null | undefined> & {
+    fields: (WarehouseOutputIntrospectionMeasure | WarehouseOutputIntrospectionDimension)[];
+    fieldsById: { [id: string]: WarehouseOutputIntrospectionMeasure | WarehouseOutputIntrospectionDimension };
+    measuresById: { [id: string]: WarehouseOutputIntrospectionMeasure };
+    measuresByPivotGroupId: { [id: string]: WarehouseOutputIntrospectionMeasure[] };
+    pivotedMeasuresById: { [id: string]: WarehouseOutputIntrospectionMeasure };
+    dimensionsById: { [id: string]: WarehouseOutputIntrospectionDimension };
   };
   records: Exclude<WarehouseQueryResult["records"], null | undefined>;
 }
@@ -40,9 +59,9 @@ export interface SuccessfulWarehouseQueryResult {
 export const VizQueryContext = React.createContext<SuccessfulWarehouseQueryResult>(null as any);
 
 // Parse any incoming rich datatypes into a rich object for downstream consumption
-const hydrate = (records: any[], queryIntrospection: WarehouseQueryIntrospection) => {
+const hydrate = (records: any[], outputIntrospection: SuccessfulWarehouseQueryResult["outputIntrospection"]) => {
   return records.map(record => {
-    for (const field of queryIntrospection.fields) {
+    for (const field of outputIntrospection.fields) {
       if (field.dataType == "DateTime") {
         record[field.id] = DateTime.fromISO(record[field.id]).toJSDate();
       }
@@ -54,13 +73,19 @@ const hydrate = (records: any[], queryIntrospection: WarehouseQueryIntrospection
 
 export const GetWarehouseData = (props: {
   query: WarehouseQuery;
+  pivot?: WarehousePivot;
   children: React.ReactNode | ((result: SuccessfulWarehouseQueryResult) => React.ReactNode);
 }) => {
+  const variables: WarehouseQueryQueryVariables = { query: props.query };
+  if (props.pivot) {
+    variables.pivot = props.pivot;
+  }
+
   return (
     <SimpleQuery
       component={WarehouseQueryComponent}
       require={["warehouseQuery"]}
-      variables={{ query: props.query }}
+      variables={variables}
       context={{
         queryParams: {
           warehouseFields: props.query.measures
@@ -75,15 +100,23 @@ export const GetWarehouseData = (props: {
           return <Alert type="error" message="There was an error loading this data. Please try again." />;
         }
 
-        const returnedIntrospection = assert(data.warehouseQuery.queryIntrospection);
+        const rawOutputIntrospection = assert(data.warehouseQuery.outputIntrospection);
+        const fields = (rawOutputIntrospection.measures as (
+          | WarehouseOutputIntrospectionMeasure
+          | WarehouseOutputIntrospectionDimension)[]).concat(rawOutputIntrospection.dimensions);
 
-        const queryIntrospection: SuccessfulWarehouseQueryResult["queryIntrospection"] = Object.assign({}, returnedIntrospection, {
-          fieldsById: keyBy(returnedIntrospection.fields, "id")
+        const outputIntrospection: SuccessfulWarehouseQueryResult["outputIntrospection"] = Object.assign({}, rawOutputIntrospection, {
+          fields: fields,
+          fieldsById: keyBy(fields, "id"),
+          measuresById: keyBy(rawOutputIntrospection.measures, "id"),
+          measuresByPivotGroupId: groupBy(rawOutputIntrospection.measures, "pivotGroupId"),
+          pivotedMeasuresById: keyBy(rawOutputIntrospection.pivotedMeasures, "id"),
+          dimensionsById: keyBy(rawOutputIntrospection.dimensions, "id")
         });
 
         const result: SuccessfulWarehouseQueryResult = {
-          queryIntrospection,
-          records: hydrate(data.warehouseQuery.records, queryIntrospection)
+          outputIntrospection,
+          records: hydrate(data.warehouseQuery.records, outputIntrospection)
         };
 
         return (

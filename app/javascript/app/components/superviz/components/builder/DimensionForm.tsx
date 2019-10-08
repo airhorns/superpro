@@ -6,7 +6,6 @@ import { VizBlock, TableBlock } from "../../schema";
 import { ReportBuilderContext } from "./ReportBuilder";
 import { Dimension } from "../../WarehouseQuery";
 import { find, isUndefined } from "lodash";
-import { SelectOptionType } from "superlib/superform";
 
 interface DimensionOptionType {
   value: string;

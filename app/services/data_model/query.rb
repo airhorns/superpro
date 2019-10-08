@@ -17,44 +17,63 @@ module DataModel
       end
     end
 
-    attr_reader :account, :warehouse, :specification
+    attr_reader :account, :warehouse, :specification, :measures, :dimensions
 
     def initialize(account, warehouse, specification)
       @account = account
       @warehouse = warehouse
       @specification = specification
+
+      @measures = @specification.fetch(:measures, [])
+      @dimensions = @specification.fetch(:dimensions, [])
+      @specs_by_id = (@measures + @dimensions).index_by { |spec| spec[:id].to_s }
     end
 
     def validate!
       JSON::Validator.validate!(self.class.query_schema, @specification)
-      if @specification[:measures].empty? && @specification[:dimensions].empty?
+      if @measures.empty? && @dimensions.empty?
         raise "Nothing to query given"
       end
 
-      @specification[:measures].each do |measure|
-      end
       true
     end
 
-    def introspection
-      @introspection ||= DataModel::QueryIntrospection.new(@account, @warehouse, @specification)
+    def run
+      @results ||= begin
+        compiler = QueryCompiler.new(@account, @warehouse, @specification)
+        raw_results = execute(compiler.sql)
+        process(raw_results, compiler)
+      end
     end
 
-    def run
-      compiler = QueryCompiler.new(@account, @warehouse, @specification)
-      raw_results = execute(compiler.sql)
-      process(raw_results, compiler)
+    def all_field_ids
+      @specs_by_id.keys
+    end
+
+    def type_for_field_id(id)
+      type_for_field_spec(@specs_by_id.fetch(id.to_s))
+    end
+
+    def type_for_field_spec(spec)
+      model_field_for_field_spec(spec).data_type
+    end
+
+    def model_field_for_field_spec(spec)
+      model = @warehouse.fact_tables[spec[:model]] || @warehouse.dimension_tables[spec[:model]]
+      if model.nil?
+        raise "Unknown model field in spec #{spec}"
+      end
+
+      model.all_fields.fetch(spec[:field].to_sym)
     end
 
     private
 
     def process(results, compiler)
-      introspection = self.introspection
-
       results.map do |result|
         result.each_with_object({}) do |(key, value), return_result|
           id_key = compiler.ids_by_alias.fetch(key)
-          data_type = introspection.type_for_field_id(id_key)
+          data_type = type_for_field_id(id_key)
           return_result[id_key] = data_type.process(value)
         end
       end

@@ -21,7 +21,7 @@ const tickFormatter = (dataType: WarehouseDataTypeEnum, _domain: DomainTuple) =>
 };
 
 const dataDomain = (result: SuccessfulWarehouseQueryResult, id: string): DomainTuple => {
-  const dataType = assert(result.queryIntrospection.fieldsById[id]).dataType;
+  const dataType = assert(result.outputIntrospection.fieldsById[id]).dataType;
   const data = result.records.map(record => record[id]);
 
   if (dataType == "DateTime") {
@@ -32,7 +32,7 @@ const dataDomain = (result: SuccessfulWarehouseQueryResult, id: string): DomainT
 };
 
 const renderSystem = (result: SuccessfulWarehouseQueryResult, system: VizSystem, index: number) => {
-  const dependentVariableField = assert(result.queryIntrospection.fieldsById[system.yId]);
+  const dependentVariableField = assert(result.outputIntrospection.fieldsById[system.yId]);
   const dependentVariableDomain: DomainTuple = dataDomain(result, system.yId);
 
   let marks: React.ReactNode;
@@ -66,7 +66,7 @@ const renderSystem = (result: SuccessfulWarehouseQueryResult, system: VizSystem,
       tickFormatter={tickFormatter(dependentVariableField.dataType, dependentVariableDomain)}
       padding={{ top: 20, bottom: 20 }}
       label={{
-        value: assert(find(result.queryIntrospection.fields, { id: system.yId })).label,
+        value: assert(find(result.outputIntrospection.fields, { id: system.yId })).label,
         position: (index == 0 ? "insideLeft" : "right") as any,
         angle: index == 0 ? -90 : 90
       }}
@@ -84,10 +84,10 @@ const renderXAxis = (result: SuccessfulWarehouseQueryResult, block: VizBlock) =>
 
   if (globalXId) {
     const domain = dataDomain(result, globalXId);
-    const dataType = assert(result.queryIntrospection.fieldsById[globalXId]).dataType;
+    const dataType = assert(result.outputIntrospection.fieldsById[globalXId]).dataType;
     props.tickFormatter = tickFormatter(dataType, domain);
     props.label = {
-      value: assert(find(result.queryIntrospection.fields, { id: globalXId })).label,
+      value: assert(find(result.outputIntrospection.fields, { id: globalXId })).label,
       position: "bottom"
     };
 

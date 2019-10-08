@@ -1,0 +1,14 @@
+[
+  {
+    "id": "total_price",
+    "data_type": "DataModel::Types::Currency",
+    "label": "Sum of Total Price",
+    "sortable": false
+  },
+  {
+    "id": "total_weight",
+    "data_type": "DataModel::Types::Weight",
+    "label": "Average Total Weight",
+    "sortable": false
+  }
+]
