@@ -271,7 +271,7 @@ GEM
     health_check (3.0.0)
       railties (>= 5.0)
     hiredis (0.6.3)
-    honeycomb-beeline (1.0.1)
+    honeycomb-beeline (1.1.0)
       libhoney (~> 1.8)
     htmlentities (4.3.4)
     http (4.1.1)
@@ -661,7 +661,7 @@ DEPENDENCIES
   graphql-batch
   health_check
   hiredis
-  honeycomb-beeline (~> 1.0.1)
+  honeycomb-beeline (~> 1.1.0)
   json-schema
   jwt
   k8s-client
