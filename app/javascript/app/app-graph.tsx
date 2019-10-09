@@ -705,7 +705,10 @@ export type WarehouseQueryResult = {
 export type SiderInfoQueryVariables = {};
 
 export type SiderInfoQuery = { __typename: "AppQuery" } & {
-  currentUser: { __typename: "User" } & Pick<User, "email" | "fullName" | "authAreaUrl"> & UserCardFragment;
+  currentUser: { __typename: "User" } & Pick<User, "email" | "fullName" | "authAreaUrl"> & {
+      accounts: Array<{ __typename: "Account" } & Pick<Account, "id">>;
+    } & UserCardFragment;
+  currentAccount: { __typename: "Account" } & Pick<Account, "name">;
 };
 
 export type UserCardFragment = { __typename: "User" } & Pick<User, "id" | "email" | "primaryTextIdentifier">;
@@ -1069,6 +1072,12 @@ export const SiderInfoDocument = gql`
       fullName
       authAreaUrl
       ...UserCard
+      accounts {
+        id
+      }
+    }
+    currentAccount {
+      name
     }
   }
   ${UserCardFragmentDoc}

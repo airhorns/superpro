@@ -17,6 +17,12 @@ gql`
       fullName
       authAreaUrl
       ...UserCard
+      accounts {
+        id
+      }
+    }
+    currentAccount {
+      name
     }
   }
 `;
@@ -61,6 +67,13 @@ export const AppSidebar = withRouter(
                   <Box background="accent-3" align="center" flex={false}>
                     <Text size="xsmall" color="white">
                       DEV ENV
+                    </Text>
+                  </Box>
+                )}
+                {data.currentUser && data.currentUser.accounts.length > 0 && (
+                  <Box background="accent-4" align="center" flex={false}>
+                    <Text size="xsmall" color="white">
+                      {data.currentAccount.name}
                     </Text>
                   </Box>
                 )}

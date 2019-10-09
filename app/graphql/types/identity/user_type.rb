@@ -26,7 +26,11 @@ class Types::Identity::UserType < Types::BaseObject
   end
 
   def accounts
-    object.permissioned_accounts.kept
+    if object == context[:current_user]
+      object.permissioned_accounts.kept
+    else
+      []
+    end
   end
 
   def auth_area_url
