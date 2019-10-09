@@ -35,7 +35,7 @@ interface NewPrivateAppShopFormValues {
 }
 
 const NewShopifyConnectionForm = () => {
-  const connectShopify = useConnectShopifyMutation();
+  const connectShopify = useConnectShopifyMutation()[0];
 
   const onSubmit = React.useCallback(
     async (formValues: NewPrivateAppShopFormValues, setShow: (modalShow: boolean) => void) => {

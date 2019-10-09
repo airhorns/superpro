@@ -33,7 +33,7 @@ interface PlaidItem {
 }
 
 export const PlaidConnectionCard = (props: { plaidItems: PlaidItem[] }) => {
-  const connectPlaid = useConnectPlaidMutation();
+  const connectPlaid = useConnectPlaidMutation()[0];
   const onSuccess = React.useCallback(
     async (publicToken: string) => {
       let success = false;

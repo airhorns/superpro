@@ -2,7 +2,7 @@ import { get, set, isUndefined, isNull, isFunction, isArray, toPath, cloneDeep }
 import memoizeOne from "memoize-one";
 import queryString from "query-string";
 import { DateTime } from "luxon";
-import { FetchResult } from "react-apollo";
+import { ExecutionResult } from "@apollo/react-common";
 import { SuperFormController, DocType, SuperFormErrors } from "./superform";
 import { RouteComponentProps } from "react-router";
 export type AssertedKeys<T, K extends keyof T> = { [Key in K]: NonNullable<T[Key]> } & T;
@@ -117,12 +117,16 @@ export type SuccessfulMutationResponse<T> = {
   [K in keyof Omit<T, "errors">]: Exclude<T[K], null>;
 };
 
-export type FetchResultShape<Result extends FetchResult> = Result extends FetchResult<infer Shape> ? Shape : never;
+export type ExecutionResultShape<Result extends ExecutionResult> = Result extends ExecutionResult<infer Shape> ? Shape : never;
 
 // TypeScript incantation to get back the data asserting that it is present for a given mutation, detecting transport
 // and validation errors at type check time
-export const mutationSuccess = <Result extends FetchResult<Shape>, Shape = FetchResultShape<Result>, Key extends keyof Shape = keyof Shape>(
-  result: Result | undefined | void,
+export const mutationSuccess = <
+  Result extends ExecutionResult<Shape>,
+  Shape = ExecutionResultShape<Result>,
+  Key extends keyof Shape = keyof Shape
+>(
+  result: Result | undefined,
   key: Key
 ): SuccessfulMutationResponse<Exclude<Shape[Key], null>> | undefined => {
   if (result && !result.errors && result.data && !(result.data[key] as any).errors) {

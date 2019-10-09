@@ -1,16 +1,20 @@
 import * as React from "react";
-import * as ReactApollo from "react-apollo";
+import * as ApolloReactComponents from "@apollo/react-components";
 import { AssertedKeys, assertKeys } from "./utils";
 import { Alert } from "./Alert";
 import { PageLoadSpin } from "./Spin";
 import { Omit } from "type-zoo";
-import { QueryResult } from "react-apollo";
+import { QueryResult } from "@apollo/react-common";
 import { isEqual } from "lodash";
 
 // gql-gen generates SFCs that omit the variables key from the QueryProps then & with a { variables: Variables } that is mandatory or a {variables?: Variables } that isnt in order to better type check the invocations of the component. This makes it real annoying to dereference.
 export type GeneratedQueryComponentType<Data, Variables> =
-  | React.ComponentType<Omit<ReactApollo.QueryProps<Data, Variables>, "query" | "variables"> & { variables?: Variables }>
-  | React.ComponentType<Omit<ReactApollo.QueryProps<Data, Variables>, "query" | "variables"> & { variables: Variables }>;
+  | React.ComponentType<
+      Omit<ApolloReactComponents.QueryComponentOptions<Data, Variables>, "query" | "variables"> & { variables?: Variables }
+    >
+  | React.ComponentType<
+      Omit<ApolloReactComponents.QueryComponentOptions<Data, Variables>, "query" | "variables"> & { variables: Variables }
+    >;
 
 export type ComponentDataType<Component> = Component extends GeneratedQueryComponentType<infer Data, any> ? Data : never;
 export type ComponentVariablesType<Component> = Component extends GeneratedQueryComponentType<any, infer Variables> ? Variables : never;
@@ -24,7 +28,7 @@ export interface SimpleQueryProps<
   Variables,
   RequiredKeys extends keyof Data,
   Component extends GeneratedQueryComponentType<Data, Variables>
-> extends Omit<ReactApollo.QueryProps<Data, Variables>, "children" | "query" | "variables"> {
+> extends Omit<ApolloReactComponents.QueryComponentOptions<Data, Variables>, "children" | "query" | "variables"> {
   component: Component;
   variables?: Variables;
   children?: (data: AssertedKeys<Data, RequiredKeys>, result: QueryResult<Data, Variables>) => React.ReactNode;
@@ -49,7 +53,7 @@ export class SimpleQuery<
   Data = ComponentDataType<Component>,
   Variables = ComponentVariablesType<Component>
 > extends React.Component<SimpleQueryProps<Data, Variables, RequiredKeys, Component>> {
-  handleResult = (result: ReactApollo.QueryResult<Data, Variables>) => {
+  handleResult = (result: QueryResult<Data, Variables>) => {
     if (result.loading) {
       if (!result.data || isEqual(result.data, {}) || (result.data && this.props.spinForSubsequentLoads)) {
         return <PageLoadSpin />;

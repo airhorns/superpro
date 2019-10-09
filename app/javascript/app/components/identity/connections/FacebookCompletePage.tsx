@@ -46,7 +46,7 @@ interface CompleteGoogleAnalyticsSetupFormValues {
 }
 
 export default (props: RouteComponentProps<{ facebookAdAccountId: string }>) => {
-  const completeSetup = useCompleteFacebookAdAccountSetupMutation();
+  const completeSetup = useCompleteFacebookAdAccountSetupMutation()[0];
   const onSubmit = React.useCallback(
     async (form: CompleteGoogleAnalyticsSetupFormValues) => {
       let result;

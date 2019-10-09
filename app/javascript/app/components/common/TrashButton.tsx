@@ -4,20 +4,20 @@ import { Button, ButtonProps } from "grommet";
 import { Trash } from "./SuperproIcons";
 import { IconProps } from "grommet-icons";
 import { toast } from "superlib";
-import { MutationProps } from "react-apollo";
+import { MutationComponentOptions } from "@apollo/react-components";
 
 export type TrashButtonProps = ButtonProps & { size?: IconProps["size"] };
 export const TrashButton = (props: TrashButtonProps) => (
   <Button {...omit(props, ["size"])} hoverIndicator plain={false} color="status-critical" icon={<Trash size={props.size} />} />
 );
 
-export interface MutationTrashButtonProps<P extends Omit<MutationProps<any, any>, "mutation">> extends TrashButtonProps {
+export interface MutationTrashButtonProps<P extends Omit<MutationComponentOptions<any, any>, "mutation">> extends TrashButtonProps {
   mutationComponent: React.ComponentType<P>;
   mutationProps: Omit<P, "children">;
   resourceName: string;
 }
 
-export const MutationTrashButton = <P extends Omit<MutationProps<any, any>, "mutation">>(props: MutationTrashButtonProps<P>) => {
+export const MutationTrashButton = <P extends Omit<MutationComponentOptions<any, any>, "mutation">>(props: MutationTrashButtonProps<P>) => {
   const Component = props.mutationComponent;
   return (
     <Component {...(props.mutationProps as any)}>

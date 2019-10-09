@@ -13,6 +13,9 @@
     "analyze-bundle": "RAILS_ENV=production NODE_ENV=production bin/webpack --profile --json > tmp/webpack-stats.json && webpack-bundle-analyzer tmp/webpack-stats.json"
   },
   "dependencies": {
+    "@apollo/react-common": "^3.1.2",
+    "@apollo/react-components": "^3.1.2",
+    "@apollo/react-hooks": "^3.1.2",
     "@babel/core": "^7.5.0",
     "@babel/preset-react": "^7.0.0",
     "@graphql-codegen/add": "^1.0.0",
@@ -95,8 +98,6 @@
     "polished": "^3.4.0",
     "query-string": "^6.6.0",
     "react": "^16.7.0",
-    "react-apollo": "^2.4.1",
-    "react-apollo-hooks": "^0.4.5",
     "react-beautiful-dnd": "^11.0.3",
     "react-display-name": "^0.2.4",
     "react-dom": "^16.7.0",

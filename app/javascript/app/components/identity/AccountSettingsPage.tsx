@@ -37,7 +37,7 @@ interface AccountSettingsFormValues {
 }
 
 export default (_props: {}) => {
-  const updateAccountSettings = useUpdateAccountSettingsMutation();
+  const updateAccountSettings = useUpdateAccountSettingsMutation()[0];
   const handleSubmit = React.useCallback(
     async (formValues: AccountSettingsFormValues) => {
       let success = false;

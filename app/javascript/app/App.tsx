@@ -1,6 +1,6 @@
 import React from "react";
-import { ApolloProvider } from "react-apollo";
-import { ApolloProvider as ApolloHooksProvider } from "react-apollo-hooks";
+import { ApolloProvider } from "@apollo/react-components";
+import { ApolloProvider as ApolloHooksProvider } from "@apollo/react-hooks";
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import { getClient } from "./lib/apollo";
 import { SuperproGrommetTheme, SentryErrorBoundary, SuperproGlobalStyle, SegmentIdentify, HotkeysContainer, Flag } from "../superlib";

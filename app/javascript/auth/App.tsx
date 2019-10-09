@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Grommet } from "grommet";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { ApolloProvider } from "react-apollo";
+import { ApolloProvider } from "@apollo/react-components";
 import { SuperproGrommetTheme, SuperproGlobalStyle } from "../superlib/SuperproTheme";
 import { NotFoundPage } from "./components/NotFoundPage";
 import { LoginPage } from "./components/LoginPage";

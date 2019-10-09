@@ -11,7 +11,7 @@ import {
   GetConnectionsIndexPageDocument,
   useDiscardConnectionMutation
 } from "app/app-graph";
-import { Restart, Trash, CloudGo, Test, Pause, Play } from "app/components/common/SuperproIcons";
+import { Restart, Trash, CloudGo, Pause, Play } from "app/components/common/SuperproIcons";
 import { ConnectionGlyph } from "./ConnectionGlyph";
 
 gql`
@@ -90,10 +90,10 @@ const ConnectionEnabledIndicator = (props: { enabled: boolean }) => {
 };
 
 export const ConnectionIndexEntry = (props: { connection: ConnectionIndexEntryFragment }) => {
-  const restartConnectionSync = useRestartConnectionSyncMutation();
-  const syncConnectionNow = useSyncConnectionNowMutation();
-  const setConnectionEnabled = useSetConnectionEnabledMutation();
-  const discardConnection = useDiscardConnectionMutation();
+  const restartConnectionSync = useRestartConnectionSyncMutation()[0];
+  const syncConnectionNow = useSyncConnectionNowMutation()[0];
+  const setConnectionEnabled = useSetConnectionEnabledMutation()[0];
+  const discardConnection = useDiscardConnectionMutation()[0];
 
   const onRestartClick = React.useCallback(async () => {
     let result;

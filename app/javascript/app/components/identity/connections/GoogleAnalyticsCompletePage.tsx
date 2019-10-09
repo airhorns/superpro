@@ -49,7 +49,7 @@ interface CompleteGoogleAnalyticsSetupFormValues {
 }
 
 export default (props: RouteComponentProps<{ credentialId: string }>) => {
-  const completeSetup = useCompleteGoogleAnalyticsSetupMutation();
+  const completeSetup = useCompleteGoogleAnalyticsSetupMutation()[0];
   const onSubmit = React.useCallback(
     async (form: CompleteGoogleAnalyticsSetupFormValues) => {
       let result;

@@ -51,8 +51,8 @@ export const AppSidebar = withRouter(
       return (
         <SiderInfoComponent>
           {({ loading, error, data }) => {
-            if (error) return `Error: ${error && error.message}`;
-            if (!data) return "No data";
+            if (error) return <Box>Error: {error && error.message}</Box>;
+            if (!data) return <Box>No data</Box>;
             return (
               <>
                 <Box pad="small" align="center" flex={false}>
