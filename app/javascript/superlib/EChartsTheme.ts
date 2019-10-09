@@ -138,7 +138,7 @@ export const theme: EChartTheme = {
   },
 
   xAxis: {
-    nameGap: 32,
+    nameGap: 44,
     nameLocation: "center",
     axisLabel: {
       fontSize: 18
