@@ -7,7 +7,7 @@ module Connections
     setup do
       @account = create(:account)
       @shop = create(:sole_destroyer_shopify_shop, account: @account)
-      @connection = create(:shopify_connection, integration: @shop)
+      @connection = create(:shopify_connection, integration: @shop, account: @account)
 
       ShopifyShopSession.with_shop(@shop) do
         ShopifyAPI::ScriptTag.all.each do |tag|
@@ -50,6 +50,19 @@ module Connections
         ShopifyShopSession.with_shop(@shop) do
           assert_equal 1, ShopifyAPI::ScriptTag.all.size
         end
+      end
+    end
+
+    test "it doesn't create tags for accounts that have the skip setup tag" do
+      with_synchronous_jobs do
+        @account.internal_tags << "skip-script-tag"
+        @account.save!
+        assert_nil @shop.script_tag_setup_at
+
+        ShopifyScriptTagManager.ensure_connection_setup_in_background(@connection)
+
+        @shop.reload
+        assert_nil @shop.script_tag_setup_at
       end
     end
   end

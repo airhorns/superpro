@@ -79,63 +79,6 @@ CREATE SCHEMA warehouse;
 
 
 --
--- Name: que_validate_tags(jsonb); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION public.que_validate_tags(tags_array jsonb) RETURNS boolean
-    LANGUAGE sql
-    AS $$
-  SELECT bool_and(
-    jsonb_typeof(value) = 'string'
-    AND
-    char_length(value::text) <= 100
-  )
-  FROM jsonb_array_elements(tags_array)
-$$;
-
-
-SET default_tablespace = '';
-
-SET default_with_oids = false;
-
---
--- Name: que_jobs; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.que_jobs (
-    priority smallint DEFAULT 100 NOT NULL,
-    run_at timestamp with time zone DEFAULT now() NOT NULL,
-    id bigint NOT NULL,
-    job_class text NOT NULL,
-    error_count integer DEFAULT 0 NOT NULL,
-    last_error_message text,
-    queue text DEFAULT 'default'::text NOT NULL,
-    last_error_backtrace text,
-    finished_at timestamp with time zone,
-    expired_at timestamp with time zone,
-    args jsonb DEFAULT '[]'::jsonb NOT NULL,
-    data jsonb DEFAULT '{}'::jsonb NOT NULL,
-    CONSTRAINT error_length CHECK (((char_length(last_error_message) <= 500) AND (char_length(last_error_backtrace) <= 10000))),
-    CONSTRAINT job_class_length CHECK ((char_length(
-CASE job_class
-    WHEN 'ActiveJob::QueueAdapters::QueAdapter::JobWrapper'::text THEN ((args -> 0) ->> 'job_class'::text)
-    ELSE job_class
-END) <= 200)),
-    CONSTRAINT queue_length CHECK ((char_length(queue) <= 100)),
-    CONSTRAINT valid_args CHECK ((jsonb_typeof(args) = 'array'::text)),
-    CONSTRAINT valid_data CHECK (((jsonb_typeof(data) = 'object'::text) AND ((NOT (data ? 'tags'::text)) OR ((jsonb_typeof((data -> 'tags'::text)) = 'array'::text) AND (jsonb_array_length((data -> 'tags'::text)) <= 5) AND public.que_validate_tags((data -> 'tags'::text))))))
-)
-WITH (fillfactor='90');
-
-
---
--- Name: TABLE que_jobs; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON TABLE public.que_jobs IS '4';
-
-
---
 -- Name: calculate_earth_surface_distance(double precision, double precision, double precision, double precision, character varying); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -268,6 +211,63 @@ BEGIN
   RETURN COALESCE(v,s);
 END;
 $$;
+
+
+--
+-- Name: que_validate_tags(jsonb); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.que_validate_tags(tags_array jsonb) RETURNS boolean
+    LANGUAGE sql
+    AS $$
+  SELECT bool_and(
+    jsonb_typeof(value) = 'string'
+    AND
+    char_length(value::text) <= 100
+  )
+  FROM jsonb_array_elements(tags_array)
+$$;
+
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: que_jobs; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.que_jobs (
+    priority smallint DEFAULT 100 NOT NULL,
+    run_at timestamp with time zone DEFAULT now() NOT NULL,
+    id bigint NOT NULL,
+    job_class text NOT NULL,
+    error_count integer DEFAULT 0 NOT NULL,
+    last_error_message text,
+    queue text DEFAULT 'default'::text NOT NULL,
+    last_error_backtrace text,
+    finished_at timestamp with time zone,
+    expired_at timestamp with time zone,
+    args jsonb DEFAULT '[]'::jsonb NOT NULL,
+    data jsonb DEFAULT '{}'::jsonb NOT NULL,
+    CONSTRAINT error_length CHECK (((char_length(last_error_message) <= 500) AND (char_length(last_error_backtrace) <= 10000))),
+    CONSTRAINT job_class_length CHECK ((char_length(
+CASE job_class
+    WHEN 'ActiveJob::QueueAdapters::QueAdapter::JobWrapper'::text THEN ((args -> 0) ->> 'job_class'::text)
+    ELSE job_class
+END) <= 200)),
+    CONSTRAINT queue_length CHECK ((char_length(queue) <= 100)),
+    CONSTRAINT valid_args CHECK ((jsonb_typeof(args) = 'array'::text)),
+    CONSTRAINT valid_data CHECK (((jsonb_typeof(data) = 'object'::text) AND ((NOT (data ? 'tags'::text)) OR ((jsonb_typeof((data -> 'tags'::text)) = 'array'::text) AND (jsonb_array_length((data -> 'tags'::text)) <= 5) AND public.que_validate_tags((data -> 'tags'::text))))))
+)
+WITH (fillfactor='90');
+
+
+--
+-- Name: TABLE que_jobs; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON TABLE public.que_jobs IS '4';
 
 
 --
@@ -654,7 +654,8 @@ CREATE TABLE public.accounts (
     discarded_at timestamp without time zone,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    business_epoch timestamp without time zone DEFAULT '2018-01-01 01:01:00'::timestamp without time zone
+    business_epoch timestamp without time zone DEFAULT '2018-01-01 01:01:00'::timestamp without time zone,
+    internal_tags character varying[] DEFAULT '{}'::character varying[] NOT NULL
 );
 
 
@@ -14836,8 +14837,8 @@ CREATE VIEW warehouse.fct_shopify_repurchase_intervals AS
             orders.next_order_date,
             date_part('day'::text, (orders.order_date - orders.previous_order_date)) AS days_since_previous_order,
             width_bucket(date_part('day'::text, (orders.order_date - orders.previous_order_date)), (0)::double precision, (600)::double precision, 30) AS days_since_previous_order_bucket,
-            date_part('day'::text, (orders.order_date - orders.next_order_date)) AS days_until_next_order,
-            width_bucket(date_part('day'::text, (orders.order_date - orders.next_order_date)), (0)::double precision, (600)::double precision, 30) AS days_until_next_order_bucket
+            date_part('day'::text, (orders.next_order_date - orders.order_date)) AS days_until_next_order,
+            width_bucket(date_part('day'::text, (orders.next_order_date - orders.order_date)), (0)::double precision, (600)::double precision, 30) AS days_until_next_order_bucket
            FROM orders
         )
  SELECT buckets.customer_id,
@@ -20219,20 +20220,6 @@ CREATE INDEX tp_sales_order_id__sdc_sequence_idx ON tap_csv.sales USING btree (o
 
 
 --
--- Name: dim_shopify_customers__index_on_account_id__business_line; Type: INDEX; Schema: warehouse; Owner: -
---
-
-CREATE INDEX dim_shopify_customers__index_on_account_id__business_line ON warehouse.dim_shopify_customers USING btree (account_id, business_line);
-
-
---
--- Name: dim_shopify_customers__index_on_account_id__customer_id; Type: INDEX; Schema: warehouse; Owner: -
---
-
-CREATE INDEX dim_shopify_customers__index_on_account_id__customer_id ON warehouse.dim_shopify_customers USING btree (account_id, customer_id);
-
-
---
 -- Name: fct_shopify_customer_pareto__index_on_account_id__year__custome; Type: INDEX; Schema: warehouse; Owner: -
 --
 
@@ -20261,13 +20248,6 @@ CREATE INDEX fct_shopify_orders__index_on_customer_id__created_at ON warehouse.f
 
 
 --
--- Name: fct_shopify_rfm_thresholds__index_on_account_id__business_line; Type: INDEX; Schema: warehouse; Owner: -
---
-
-CREATE INDEX fct_shopify_rfm_thresholds__index_on_account_id__business_line ON warehouse.fct_shopify_rfm_thresholds USING btree (account_id, business_line);
-
-
---
 -- Name: fct_snowplow_page_views__index_on_account_id__max_tstamp; Type: INDEX; Schema: warehouse; Owner: -
 --
 
@@ -20282,24 +20262,10 @@ CREATE INDEX fct_snowplow_sessions__index_on_account_id__session_start ON wareho
 
 
 --
--- Name: stg_shopify_customer_order_aggregates__index_on_account_id__cus; Type: INDEX; Schema: warehouse; Owner: -
+-- Name: stg_shopify_customer_rfm__index_on_account_id__customer_id; Type: INDEX; Schema: warehouse; Owner: -
 --
 
-CREATE INDEX stg_shopify_customer_order_aggregates__index_on_account_id__cus ON warehouse.stg_shopify_customer_order_aggregates USING btree (account_id, customer_id);
-
-
---
--- Name: stg_shopify_customer_order_aggregates__index_on_customer_id; Type: INDEX; Schema: warehouse; Owner: -
---
-
-CREATE INDEX stg_shopify_customer_order_aggregates__index_on_customer_id ON warehouse.stg_shopify_customer_order_aggregates USING btree (customer_id);
-
-
---
--- Name: stg_shopify_customer_rolling_rfm__index_on_account_id__week__rf; Type: INDEX; Schema: warehouse; Owner: -
---
-
-CREATE INDEX stg_shopify_customer_rolling_rfm__index_on_account_id__week__rf ON warehouse.stg_shopify_customer_rolling_rfm USING btree (account_id, week, rfm_label);
+CREATE INDEX stg_shopify_customer_rfm__index_on_account_id__customer_id ON warehouse.stg_shopify_customer_rfm USING btree (account_id, customer_id);
 
 
 --
@@ -20540,6 +20506,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190917231933'),
 ('20190925155649'),
 ('20190930180547'),
-('20191005201916');
+('20191005201916'),
+('20191009141154');
 
 

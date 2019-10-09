@@ -11,13 +11,19 @@ module Connections
     }.freeze
 
     def self.ensure_connection_setup_in_background(connection)
-      if Flipper["feature.shopifyScriptTags"].enabled?(connection.account)
+      if should_install_for_account?(connection.account)
         Connections::EnsureShopifyShopScriptTagSetupJob.enqueue(shopify_shop_id: connection.integration_id)
       end
     end
 
     def self.ensure_shop_setup(shopify_shop)
-      self.new(shopify_shop.account).ensure_script_tag_exists(shopify_shop)
+      if should_install_for_account?(shopify_shop.account)
+        self.new(shopify_shop.account).ensure_script_tag_exists(shopify_shop)
+      end
+    end
+
+    def self.should_install_for_account?(account)
+      Flipper["feature.shopifyScriptTags"].enabled?(account) && !account.internal_tags.include?("skip-script-tag")
     end
 
     def initialize(account)
@@ -25,6 +31,8 @@ module Connections
     end
 
     def ensure_script_tag_exists(shopify_shop)
+      return unless self.class.should_install_for_account?(shopify_shop.account)
+
       ShopifyShopSession.with_shop(shopify_shop) do
         script_tags = ShopifyAPI::ScriptTag.all
         existing = script_tags.detect { |script_tag| DESIRED_SCRIPT_TAG_ATTRIBUTES <= script_tag.attributes }
