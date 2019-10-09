@@ -12,7 +12,7 @@ import { ConnectionIntegrationUnion } from "app/app-graph";
 
 export interface ConnectionGlyphProps extends BoxProps {
   typename?: ConnectionIntegrationUnion["__typename"] | "klaviyo" | "google-ads" | "bronto";
-  size?: BoxProps["width"];
+  size?: string;
 }
 
 export const ConnectionGlyph = (props: ConnectionGlyphProps) => {
