@@ -55,7 +55,7 @@
     "@types/react-select": "^2.0.17",
     "@types/segment-analytics": "^0.0.31",
     "@types/shortid": "^0.0.29",
-    "@types/slate": "^0.44.12",
+    "@types/slate": "^0.47.1",
     "@types/slate-react": "^0.22.1",
     "@types/styled-components": "^4.1.14",
     "@types/url-join": "^4.0.0",
