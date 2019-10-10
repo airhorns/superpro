@@ -68,6 +68,40 @@ export default FullReportPage("Sales Overview", {
           }
         ]
       }
+    },
+    {
+      type: "viz_block",
+      title: "New vs Returning Revenue",
+      query: {
+        measures: [{ model: "Sales::OrderFacts", field: "total_price", operator: "sum", id: "sales" }],
+        dimensions: [
+          { model: "Sales::OrderFacts", field: "created_at", operator: "date_trunc_day", id: "date" },
+          { model: "Sales::OrderFacts", field: "new_vs_repeat", id: "new_vs_repeat" }
+        ],
+        filters: [
+          {
+            id: "date",
+            operator: "greater_than",
+            values: [
+              DateTime.local()
+                .minus({ days: 30 })
+                .toISO()
+            ]
+          }
+        ]
+      },
+      viz: {
+        type: "viz",
+        systems: [
+          {
+            type: "viz_system",
+            vizType: "line",
+            xId: "date",
+            yId: "sales",
+            segmentIds: ["new_vs_repeat"]
+          }
+        ]
+      }
     }
   ]
 });
