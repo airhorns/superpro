@@ -26,7 +26,7 @@
     "@graphql-codegen/typescript-operations": "^1.0.0",
     "@graphql-codegen/typescript-react-apollo": "^1.0.0",
     "@rails/webpacker": "^4.0.7",
-    "@sentry/browser": "^5.5.0",
+    "@sentry/browser": "^5.7.0",
     "@types/activestorage": "^5.2.2",
     "@types/classnames": "^2.2.7",
     "@types/d3-scale": "^2.1.1",
