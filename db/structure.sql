@@ -14598,6 +14598,19 @@ CREATE VIEW warehouse.base_superpro_accounts AS
 
 
 --
+-- Name: base_superpro_business_lines; Type: VIEW; Schema: warehouse; Owner: -
+--
+
+CREATE VIEW warehouse.base_superpro_business_lines AS
+ SELECT business_lines.id AS business_line_id,
+    business_lines.account_id,
+    business_lines.name,
+    business_lines.created_at,
+    business_lines.updated_at
+   FROM public.business_lines;
+
+
+--
 -- Name: base_superpro_shopify_shops; Type: VIEW; Schema: warehouse; Owner: -
 --
 
@@ -14609,6 +14622,19 @@ CREATE VIEW warehouse.base_superpro_shopify_shops AS
     shopify_shops.created_at,
     shopify_shops.updated_at
    FROM public.shopify_shops;
+
+
+--
+-- Name: dim_business_lines; Type: TABLE; Schema: warehouse; Owner: -
+--
+
+CREATE TABLE warehouse.dim_business_lines (
+    business_line_id bigint,
+    account_id bigint,
+    name character varying,
+    created_at timestamp(6) without time zone,
+    updated_at timestamp(6) without time zone
+);
 
 
 --
@@ -14667,6 +14693,7 @@ CREATE VIEW warehouse.dim_date AS
 CREATE TABLE warehouse.dim_shopify_customers (
     customer_id bigint,
     account_id bigint,
+    shop_id bigint,
     email text,
     verified_email boolean,
     first_name text,
@@ -14686,12 +14713,6 @@ CREATE TABLE warehouse.dim_shopify_customers (
     previous_3_month_spend double precision,
     previous_6_month_spend double precision,
     previous_12_month_spend double precision,
-    future_3_month_predicted_spend double precision,
-    future_3_month_predicted_spend_quintile integer,
-    future_12_month_predicted_spend double precision,
-    future_12_month_predicted_spend_quintile integer,
-    future_24_month_predicted_spend double precision,
-    future_24_month_predicted_spend_quintile integer,
     most_recent_order_id bigint,
     most_recent_order_number bigint,
     most_recent_order_at timestamp with time zone,
@@ -14707,7 +14728,7 @@ CREATE TABLE warehouse.dim_shopify_customers (
     rfm_label text,
     rfm_value_label text,
     rfm_desirability_score integer,
-    business_line text
+    business_line_id bigint
 );
 
 
@@ -14720,7 +14741,7 @@ CREATE TABLE warehouse.fct_shopify_customer_pareto (
     customer_id bigint,
     year double precision,
     sales double precision,
-    business_line text,
+    business_line_id bigint,
     percent_of_sales double precision,
     cumulative_percent_of_sales double precision,
     customer_rank bigint
@@ -14830,6 +14851,7 @@ CREATE TABLE warehouse.fct_shopify_orders (
     shipping_discount double precision,
     final_discounts double precision,
     final_shipping_cost double precision,
+    business_line_id bigint,
     order_seq_number bigint,
     new_vs_repeat text,
     cancelled boolean
@@ -14904,7 +14926,7 @@ CREATE VIEW warehouse.fct_shopify_repurchase_intervals AS
 
 CREATE TABLE warehouse.fct_shopify_rfm_thresholds (
     account_id bigint,
-    business_line text,
+    business_line_id bigint,
     recency_quintile integer,
     frequency_quintile integer,
     monetary_quintile integer,
@@ -15253,112 +15275,6 @@ CREATE TABLE warehouse.fct_snowplow_sessions (
 
 
 --
--- Name: stg_shopify_customers; Type: VIEW; Schema: warehouse; Owner: -
---
-
-CREATE VIEW warehouse.stg_shopify_customers AS
- WITH raw_customers AS (
-         SELECT customers.last_order_name,
-            customers.currency,
-            customers.email,
-            customers.multipass_identifier,
-            customers.default_address__city,
-            customers.default_address__address1,
-            customers.default_address__zip,
-            customers.default_address__id,
-            customers.default_address__country_name,
-            customers.default_address__province,
-            customers.default_address__phone,
-            customers.default_address__country,
-            customers.default_address__first_name,
-            customers.default_address__customer_id,
-            customers.default_address__default,
-            customers.default_address__last_name,
-            customers.default_address__country_code,
-            customers.default_address__name,
-            customers.default_address__province_code,
-            customers.default_address__address2,
-            customers.default_address__company,
-            customers.orders_count,
-            customers.state,
-            customers.verified_email,
-            customers.total_spent,
-            customers.last_order_id,
-            customers.first_name,
-            customers.updated_at,
-            customers.note,
-            customers.phone,
-            customers.admin_graphql_api_id,
-            customers.last_name,
-            customers.tags,
-            customers.tax_exempt,
-            customers.id,
-            customers.accepts_marketing,
-            customers.created_at,
-            customers.account_id,
-            customers.shop_id,
-            customers._sdc_received_at,
-            customers._sdc_sequence,
-            customers._sdc_table_version,
-            customers._sdc_batched_at
-           FROM raw_tap_shopify.customers
-        ), trimmed_tags AS (
-         SELECT t.id,
-            array_agg(btrim(t.tag)) AS tags
-           FROM ( SELECT raw_customers_1.id,
-                    row_number() OVER () AS rn,
-                    unnest(string_to_array(raw_customers_1.tags, ', '::text)) AS tag
-                   FROM raw_customers raw_customers_1) t
-          GROUP BY t.id, t.rn
-        )
- SELECT raw_customers.id AS customer_id,
-    raw_customers.account_id,
-    NULLIF(lower(raw_customers.email), ''::text) AS email,
-    raw_customers.verified_email,
-    NULLIF(raw_customers.first_name, ''::text) AS first_name,
-    NULLIF(raw_customers.last_name, ''::text) AS last_name,
-    raw_customers.accepts_marketing,
-    raw_customers.state,
-    raw_customers.tax_exempt,
-    trimmed_tags.tags,
-    raw_customers.default_address__id AS default_address_id,
-    raw_customers.created_at,
-    raw_customers.updated_at
-   FROM (raw_customers
-     LEFT JOIN trimmed_tags ON ((trimmed_tags.id = raw_customers.id)));
-
-
---
--- Name: stg_shopify_business_lines; Type: VIEW; Schema: warehouse; Owner: -
---
-
-CREATE VIEW warehouse.stg_shopify_business_lines AS
- WITH customers AS (
-         SELECT stg_shopify_customers.customer_id,
-            stg_shopify_customers.account_id,
-            stg_shopify_customers.email,
-            stg_shopify_customers.verified_email,
-            stg_shopify_customers.first_name,
-            stg_shopify_customers.last_name,
-            stg_shopify_customers.accepts_marketing,
-            stg_shopify_customers.state,
-            stg_shopify_customers.tax_exempt,
-            stg_shopify_customers.tags,
-            stg_shopify_customers.default_address_id,
-            stg_shopify_customers.created_at,
-            stg_shopify_customers.updated_at
-           FROM warehouse.stg_shopify_customers
-        )
- SELECT customers.customer_id,
-    customers.account_id,
-        CASE
-            WHEN ((customers.tags @> ARRAY['wholesale'::text]) OR (customers.tags @> ARRAY['Wholesale'::text])) THEN 'Wholesale'::text
-            ELSE 'Direct to Consumer'::text
-        END AS business_line
-   FROM customers;
-
-
---
 -- Name: stg_shopify_checkouts; Type: VIEW; Schema: warehouse; Owner: -
 --
 
@@ -15421,6 +15337,156 @@ CREATE VIEW warehouse.stg_shopify_checkouts AS
 
 
 --
+-- Name: stg_shopify_customers; Type: VIEW; Schema: warehouse; Owner: -
+--
+
+CREATE VIEW warehouse.stg_shopify_customers AS
+ WITH raw_customers AS (
+         SELECT customers.last_order_name,
+            customers.currency,
+            customers.email,
+            customers.multipass_identifier,
+            customers.default_address__city,
+            customers.default_address__address1,
+            customers.default_address__zip,
+            customers.default_address__id,
+            customers.default_address__country_name,
+            customers.default_address__province,
+            customers.default_address__phone,
+            customers.default_address__country,
+            customers.default_address__first_name,
+            customers.default_address__customer_id,
+            customers.default_address__default,
+            customers.default_address__last_name,
+            customers.default_address__country_code,
+            customers.default_address__name,
+            customers.default_address__province_code,
+            customers.default_address__address2,
+            customers.default_address__company,
+            customers.orders_count,
+            customers.state,
+            customers.verified_email,
+            customers.total_spent,
+            customers.last_order_id,
+            customers.first_name,
+            customers.updated_at,
+            customers.note,
+            customers.phone,
+            customers.admin_graphql_api_id,
+            customers.last_name,
+            customers.tags,
+            customers.tax_exempt,
+            customers.id,
+            customers.accepts_marketing,
+            customers.created_at,
+            customers.account_id,
+            customers.shop_id,
+            customers._sdc_received_at,
+            customers._sdc_sequence,
+            customers._sdc_table_version,
+            customers._sdc_batched_at
+           FROM raw_tap_shopify.customers
+        ), trimmed_tags AS (
+         SELECT t.id,
+            array_agg(btrim(t.tag)) AS tags
+           FROM ( SELECT raw_customers_1.id,
+                    row_number() OVER () AS rn,
+                    unnest(string_to_array(raw_customers_1.tags, ', '::text)) AS tag
+                   FROM raw_customers raw_customers_1) t
+          GROUP BY t.id, t.rn
+        )
+ SELECT raw_customers.id AS customer_id,
+    raw_customers.account_id,
+    raw_customers.shop_id,
+    NULLIF(lower(raw_customers.email), ''::text) AS email,
+    raw_customers.verified_email,
+    NULLIF(raw_customers.first_name, ''::text) AS first_name,
+    NULLIF(raw_customers.last_name, ''::text) AS last_name,
+    raw_customers.accepts_marketing,
+    raw_customers.state,
+    raw_customers.tax_exempt,
+    trimmed_tags.tags,
+    raw_customers.default_address__id AS default_address_id,
+    raw_customers.created_at,
+    raw_customers.updated_at
+   FROM (raw_customers
+     LEFT JOIN trimmed_tags ON ((trimmed_tags.id = raw_customers.id)));
+
+
+--
+-- Name: stg_shopify_customer_business_lines; Type: VIEW; Schema: warehouse; Owner: -
+--
+
+CREATE VIEW warehouse.stg_shopify_customer_business_lines AS
+ WITH customers AS (
+         SELECT stg_shopify_customers.customer_id,
+            stg_shopify_customers.account_id,
+            stg_shopify_customers.shop_id,
+            stg_shopify_customers.email,
+            stg_shopify_customers.verified_email,
+            stg_shopify_customers.first_name,
+            stg_shopify_customers.last_name,
+            stg_shopify_customers.accepts_marketing,
+            stg_shopify_customers.state,
+            stg_shopify_customers.tax_exempt,
+            stg_shopify_customers.tags,
+            stg_shopify_customers.default_address_id,
+            stg_shopify_customers.created_at,
+            stg_shopify_customers.updated_at
+           FROM warehouse.stg_shopify_customers
+        ), default_business_lines AS (
+         SELECT numbered.business_line_id,
+            numbered.account_id,
+            numbered.name,
+            numbered.created_at,
+            numbered.updated_at,
+            numbered.row_num
+           FROM ( SELECT base_superpro_business_lines.business_line_id,
+                    base_superpro_business_lines.account_id,
+                    base_superpro_business_lines.name,
+                    base_superpro_business_lines.created_at,
+                    base_superpro_business_lines.updated_at,
+                    row_number() OVER (PARTITION BY base_superpro_business_lines.account_id ORDER BY base_superpro_business_lines.created_at DESC) AS row_num
+                   FROM warehouse.base_superpro_business_lines) numbered
+          WHERE (numbered.row_num = 1)
+        ), joined AS (
+         SELECT customers.customer_id,
+            customers.account_id,
+            customers.shop_id,
+            customers.email,
+            customers.verified_email,
+            customers.first_name,
+            customers.last_name,
+            customers.accepts_marketing,
+            customers.state,
+            customers.tax_exempt,
+            customers.tags,
+            customers.default_address_id,
+            customers.created_at,
+            customers.updated_at,
+            default_business_lines.business_line_id AS default_business_line_id
+           FROM (customers
+             LEFT JOIN default_business_lines USING (account_id))
+        )
+ SELECT joined.customer_id,
+    joined.account_id,
+        CASE joined.account_id
+            WHEN 4 THEN (
+            CASE
+                WHEN ((joined.tags @> ARRAY['wholesale'::text]) OR (joined.tags @> ARRAY['Wholesale'::text])) THEN 12
+                ELSE 11
+            END)::bigint
+            WHEN 7 THEN (
+            CASE joined.shop_id
+                WHEN 111 THEN 14
+                ELSE 15
+            END)::bigint
+            ELSE joined.default_business_line_id
+        END AS business_line_id
+   FROM joined;
+
+
+--
 -- Name: stg_shopify_customer_order_aggregates; Type: TABLE; Schema: warehouse; Owner: -
 --
 
@@ -15453,7 +15519,7 @@ CREATE TABLE warehouse.stg_shopify_customer_order_aggregates (
 CREATE TABLE warehouse.stg_shopify_customer_rfm (
     customer_id bigint,
     account_id bigint,
-    business_line text,
+    business_line_id bigint,
     total_order_count bigint,
     total_spend double precision,
     days_since_last_order double precision,
@@ -20269,6 +20335,27 @@ CREATE INDEX tp_sales_order_id__sdc_sequence_idx ON tap_csv.sales USING btree (o
 
 
 --
+-- Name: dim_shopify_customers__index_on_account_id__business_line_id; Type: INDEX; Schema: warehouse; Owner: -
+--
+
+CREATE INDEX dim_shopify_customers__index_on_account_id__business_line_id ON warehouse.dim_shopify_customers USING btree (account_id, business_line_id);
+
+
+--
+-- Name: dim_shopify_customers__index_on_account_id__customer_id; Type: INDEX; Schema: warehouse; Owner: -
+--
+
+CREATE INDEX dim_shopify_customers__index_on_account_id__customer_id ON warehouse.dim_shopify_customers USING btree (account_id, customer_id);
+
+
+--
+-- Name: dim_shopify_customers__index_on_account_id__total_successful_or; Type: INDEX; Schema: warehouse; Owner: -
+--
+
+CREATE INDEX dim_shopify_customers__index_on_account_id__total_successful_or ON warehouse.dim_shopify_customers USING btree (account_id, total_successful_order_count);
+
+
+--
 -- Name: fct_shopify_customer_pareto__index_on_account_id__year__custome; Type: INDEX; Schema: warehouse; Owner: -
 --
 
@@ -20301,13 +20388,6 @@ CREATE INDEX fct_shopify_orders__index_on_customer_id__created_at ON warehouse.f
 --
 
 CREATE INDEX fct_snowplow_page_views__index_on_account_id__max_tstamp ON warehouse.fct_snowplow_page_views USING btree (account_id, max_tstamp);
-
-
---
--- Name: fct_snowplow_sessions__index_on_account_id__session_start; Type: INDEX; Schema: warehouse; Owner: -
---
-
-CREATE INDEX fct_snowplow_sessions__index_on_account_id__session_start ON warehouse.fct_snowplow_sessions USING btree (account_id, session_start);
 
 
 --

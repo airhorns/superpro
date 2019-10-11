@@ -17,7 +17,7 @@ export interface ConnectionGlyphProps extends BoxProps {
 
 export const ConnectionGlyph = (props: ConnectionGlyphProps) => {
   let image: React.ReactNode;
-  let size = props.size || "xxsmall";
+  const size = props.size || "xxsmall";
 
   switch (props.typename) {
     case "ShopifyShop": {

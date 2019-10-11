@@ -15,8 +15,7 @@ const RFMBreakdownQuery = {
   dimensions: [
     { model: "Customers::RFMThresholdFacts", field: "recency_quintile", id: "recency_quintile" },
     { model: "Customers::RFMThresholdFacts", field: "frequency_quintile", id: "frequency_quintile" },
-    { model: "Customers::RFMThresholdFacts", field: "monetary_quintile", id: "monetary_quintile" },
-    { model: "Customers::RFMThresholdFacts", field: "business_line", id: "business_line" }
+    { model: "Customers::RFMThresholdFacts", field: "monetary_quintile", id: "monetary_quintile" }
   ]
 };
 

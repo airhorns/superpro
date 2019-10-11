@@ -11,6 +11,7 @@ class Sales::CustomerParetoFacts < DataModel::FactTable
   dimension :customer_rank, DataModel::Types::Number
   dimension :customer_id, DataModel::Types::DateTime
   dimension :year, DataModel::Types::String
-  dimension :business_line, DataModel::Types::String
+
   dimension_join :customer, Sales::CustomersDimension
+  dimension_join :business_line, Sales::BusinessLinesDimension
 end

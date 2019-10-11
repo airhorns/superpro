@@ -26,7 +26,7 @@ export default class CompletePasswordResetPage extends React.Component<RouteComp
       await authClient.put("password.json", { user: { ...doc, reset_password_token: params.reset_password_token } });
       this.setState({ message: "", success: true });
     } catch (error) {
-      let message = "There was an error trying to reset your password. Please try again.";
+      const message = "There was an error trying to reset your password. Please try again.";
       this.setState({ message });
     }
   };

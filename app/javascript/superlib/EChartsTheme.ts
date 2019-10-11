@@ -1,5 +1,4 @@
 import echarts, { EChartOption } from "echarts/lib/echarts";
-import { SuperproGrommetTheme } from "superlib";
 
 export const colorPalette = ["#c12e34", "#e6b600", "#0098d9", "#2b821d", "#005eaa", "#339ca8", "#cda819", "#32a487"];
 

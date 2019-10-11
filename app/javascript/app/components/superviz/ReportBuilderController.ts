@@ -50,7 +50,7 @@ export class ReportBuilderController extends SuperFormController<ReportDocument>
       block.query.measures.push(measure);
 
       if (block.type == "viz_block") {
-        let system: VizSystem = {
+        const system: VizSystem = {
           type: "viz_system",
           vizType: "line",
           yId: id

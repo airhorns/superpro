@@ -67,7 +67,7 @@ export const DimensionForm = (props: { block: VizBlock | TableBlock; blockIndex:
     selectedDimension = find(selectedModel.options, { fieldName: props.dimension.field });
   }
 
-  let selectedOperator: OperatorOptionType | undefined = find(operatorOptions, {
+  const selectedOperator: OperatorOptionType | undefined = find(operatorOptions, {
     value: isUndefined(props.dimension.operator) ? null : props.dimension.operator
   });
 

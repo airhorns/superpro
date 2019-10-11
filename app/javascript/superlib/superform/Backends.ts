@@ -88,7 +88,11 @@ export class ObjectBackend<T extends DocType> extends Backend<T> {
     return false;
   }
 
-  undo() {}
+  undo() {
+    throw "Undo/redo not implemented for ObjectBackend";
+  }
 
-  redo() {}
+  redo() {
+    throw "Undo/redo not implemented for ObjectBackend";
+  }
 }

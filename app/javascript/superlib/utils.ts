@@ -15,7 +15,7 @@ export function assert<T>(value: T | undefined | null): T {
 }
 
 export function assertKeys<T extends { [key: string]: any }, K extends keyof T>(object: T, keys: K[]) {
-  for (let key of keys) {
+  for (const key of keys) {
     if (isUndefined(object[key]) || isNull(object[key])) {
       return false;
     }
@@ -39,8 +39,8 @@ export type ISO8601DateString = string;
 export const formatDate = (str: ISO8601DateString) => DateTime.fromISO(str).toLocaleString(DateTime.DATE_FULL);
 
 export const isTouchDevice = memoizeOne(() => {
-  var prefixes = " -webkit- -moz- -o- -ms- ".split(" ");
-  var mq = (query: any) => {
+  const prefixes = " -webkit- -moz- -o- -ms- ".split(" ");
+  const mq = (query: any) => {
     return window.matchMedia(query).matches;
   };
 
@@ -50,7 +50,7 @@ export const isTouchDevice = memoizeOne(() => {
 
   // include the 'heartz' as a way to have a non matching MQ to help terminate the join
   // https://git.io/vznFH
-  var query = ["(", prefixes.join("touch-enabled),("), "heartz", ")"].join("");
+  const query = ["(", prefixes.join("touch-enabled),("), "heartz", ")"].join("");
   return mq(query);
 });
 

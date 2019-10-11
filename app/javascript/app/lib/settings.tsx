@@ -28,7 +28,6 @@ export interface SettingsBag {
   };
 }
 
-// eslint-disable-next-line @typescript-eslint/no-object-literal-type-assertion
 export const SettingsContext = React.createContext<SettingsBag>({} as SettingsBag);
 export const Settings: SettingsBag = (window as any).INJECTED_SETTINGS;
 

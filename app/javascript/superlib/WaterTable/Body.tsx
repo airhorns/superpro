@@ -18,8 +18,8 @@ export class Body<Record extends WaterTableRecord> extends React.Component<BodyP
         {this.props.records.map((record, index) => (
           <StyledDataTableRow key={isUndefined(record.key) ? `index-${index}` : `record-${record.key}`} size={this.props.size}>
             {this.props.columns.map(column => {
-              let content = column.render(record, index);
-              let cellStyle: React.CSSProperties = { position: "relative" };
+              const content = column.render(record, index);
+              const cellStyle: React.CSSProperties = { position: "relative" };
               if (column.cellStyle) {
                 Object.assign(cellStyle, column.cellStyle(record, index));
               }

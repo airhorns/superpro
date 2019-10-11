@@ -13,7 +13,7 @@ export class SuperFormController<T extends DocType> {
   currentBatch: Command<T>[] | null = null;
   backend: Backend<T>;
   errors: SuperFormErrors<T> = {};
-  clock: number = 0;
+  clock = 0;
 
   constructor(initialDoc: T, onChange: SuperFormChangeCallback<T>, backendClass: typeof Backend = AutomergeBackend) {
     // Initialize the backend
@@ -74,7 +74,9 @@ export class SuperFormController<T extends DocType> {
     });
   };
 
-  markTouched(_path: FieldPath) {}
+  markTouched(_path: FieldPath) {
+    return;
+  }
 
   getError(path: FieldPath) {
     return get(this.errors, path);

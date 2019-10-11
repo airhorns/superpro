@@ -44,14 +44,7 @@ export default FullReportPage("Orders Review", {
         ],
         dimensions: [],
         orderings: [{ id: "customer_rank", direction: "asc" }],
-        filters: [
-          { field: { model: "Sales::CustomerParetoFacts", field: "year", id: "year" }, operator: "equals", values: [2019] },
-          {
-            field: { model: "Sales::CustomerParetoFacts", field: "business_line", id: "business_line" },
-            operator: "equals",
-            values: ["Direct to Consumer"]
-          }
-        ]
+        filters: [{ field: { model: "Sales::CustomerParetoFacts", field: "year", id: "year" }, operator: "equals", values: [2019] }]
       },
       viz: {
         type: "viz",

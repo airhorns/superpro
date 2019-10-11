@@ -223,7 +223,7 @@ export class SuperSheet extends React.Component<{}, SheetState> {
 
   unregisterCell(registration: CellRegistration, updateCallback: SheetUpdateCallback) {
     this.updates.off("update", updateCallback);
-    let cellRow = this.cells.get(registration.row);
+    const cellRow = this.cells.get(registration.row);
     if (cellRow) {
       cellRow.delete(registration.column);
     }
