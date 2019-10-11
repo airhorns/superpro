@@ -5,6 +5,7 @@ SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SELECT pg_catalog.set_config('search_path', '', false);
 SET check_function_bodies = false;
+SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
@@ -756,6 +757,39 @@ CREATE TABLE public.ar_internal_metadata (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
+
+
+--
+-- Name: business_lines; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.business_lines (
+    id bigint NOT NULL,
+    account_id bigint NOT NULL,
+    name character varying NOT NULL,
+    creator_id bigint NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: business_lines_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.business_lines_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: business_lines_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.business_lines_id_seq OWNED BY public.business_lines.id;
 
 
 --
@@ -16003,6 +16037,13 @@ ALTER TABLE ONLY public.active_storage_blobs ALTER COLUMN id SET DEFAULT nextval
 
 
 --
+-- Name: business_lines id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.business_lines ALTER COLUMN id SET DEFAULT nextval('public.business_lines_id_seq'::regclass);
+
+
+--
 -- Name: connections id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -16145,6 +16186,14 @@ ALTER TABLE ONLY public.active_storage_blobs
 
 ALTER TABLE ONLY public.ar_internal_metadata
     ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: business_lines business_lines_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.business_lines
+    ADD CONSTRAINT business_lines_pkey PRIMARY KEY (id);
 
 
 --
@@ -20315,6 +20364,14 @@ ALTER TABLE ONLY public.shopify_shops
 
 
 --
+-- Name: business_lines fk_rails_4d3e246214; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.business_lines
+    ADD CONSTRAINT fk_rails_4d3e246214 FOREIGN KEY (creator_id) REFERENCES public.users(id);
+
+
+--
 -- Name: shopify_shops fk_rails_55ea274344; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -20376,6 +20433,14 @@ ALTER TABLE ONLY public.plaid_transactions
 
 ALTER TABLE ONLY public.plaid_transactions
     ADD CONSTRAINT fk_rails_a810b9b840 FOREIGN KEY (plaid_item_id) REFERENCES public.plaid_items(id);
+
+
+--
+-- Name: business_lines fk_rails_a8bb904f63; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.business_lines
+    ADD CONSTRAINT fk_rails_a8bb904f63 FOREIGN KEY (account_id) REFERENCES public.accounts(id);
 
 
 --
@@ -20507,6 +20572,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190925155649'),
 ('20190930180547'),
 ('20191005201916'),
-('20191009141154');
+('20191009141154'),
+('20191011133830'),
+('20191011134556');
 
 

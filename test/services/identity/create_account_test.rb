@@ -17,6 +17,7 @@ class Identity::CreateAccountTest < ActiveSupport::TestCase
 
       assert_equal result.name, "A test account"
       assert_equal @user, result.creator
+      assert_equal 1, result.business_lines.size
       assert_includes @user.reload.permissioned_accounts, result
     end
   end

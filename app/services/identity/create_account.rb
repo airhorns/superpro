@@ -9,6 +9,7 @@ class Identity::CreateAccount
     new_account = Account.new(creator_id: @creator.id)
     new_account.assign_attributes(new_attributes)
     new_account.account_user_permissions.build(user: @creator)
+    new_account.business_lines.build(name: "Direct to Consumer", creator: @creator)
 
     success = new_account.save
 
