@@ -74,8 +74,8 @@ spec:
   #   s3_wal_path: "s3://custom/path/to/bucket"
 
   # run periodic backups with k8s cron jobs
-  # enableLogicalBackup: true
-  # logicalBackupSchedule: "30 00 * * *"
+  enableLogicalBackup: false
+  logicalBackupSchedule: "30 00 * * *"
   maintenanceWindows:
     - 01:00-06:00 #UTC
     - Sat:00:00-04:00
@@ -103,3 +103,74 @@ spec:
             secretKeyRef:
               name: postgresql-infrastructure-roles
               key: pganalyze
+---
+# Manual backup job right now
+# https://github.com/zalando/postgres-operator/issues/688
+# apiVersion: batch/v1beta1
+# kind: CronJob
+# metadata:
+#   name: superpro-production-cluster-backup
+# spec:
+#   concurrencyPolicy: Forbid
+#   failedJobsHistoryLimit: 1
+#   jobTemplate:
+#     spec:
+#       backoffLimit: 0
+#       completions: 1
+#       parallelism: 1
+#       template:
+#         spec:
+#           affinity:
+#             podAffinity:
+#               preferredDuringSchedulingIgnoredDuringExecution:
+#                 - podAffinityTerm:
+#                     labelSelector:
+#                       matchLabels:
+#                         application: spilo-logical-backup
+#                         version: superpro-production-cluster
+#                     topologyKey: kubernetes.io/hostname
+#                   weight: 1
+#           containers:
+#             - env:
+#                 - name: SCOPE
+#                   value: superpro-production-cluster
+#                 - name: POD_NAMESPACE
+#                   valueFrom:
+#                     fieldRef:
+#                       apiVersion: v1
+#                       fieldPath: metadata.namespace
+#                 - name: LOGICAL_BACKUP_S3_BUCKET
+#                   value: superpro-postgres-operator-backups
+#                 - name: LOGICAL_BACKUP_S3_BUCKET_SCOPE_SUFFIX
+#                   value: /dda1bc3e-ef72-11e9-8312-42010a80006a
+#                 - name: PG_VERSION
+#                   value: "12"
+#                 - name: PGPORT
+#                   value: "5432"
+#                 - name: PGUSER
+#                   value: postgres
+#                 - name: PGDATABASE
+#                   value: postgres
+#                 - name: PGSSLMODE
+#                   value: require
+#                 - name: PGPASSWORD
+#                   valueFrom:
+#                     secretKeyRef:
+#                       key: password
+#                       name: postgres.superpro-production-cluster.credentials
+#               image: gcr.io/superpro-production/postgres-backup:v1
+#               command: ["bash", "-c", "sleep 1000000"]
+#               name: logical-backup
+#               ports:
+#                 - containerPort: 8008
+#                   protocol: TCP
+#                 - containerPort: 5432
+#                   protocol: TCP
+#                 - containerPort: 8080
+#                   protocol: TCP
+#           restartPolicy: Never
+#           serviceAccount: zalando-postgres-operator
+#           serviceAccountName: zalando-postgres-operator
+#           terminationGracePeriodSeconds: 300
+#   schedule: 30 00 * * *
+#   successfulJobsHistoryLimit: 3
