@@ -14,4 +14,6 @@ class Sales::CustomerParetoFacts < DataModel::FactTable
 
   dimension_join :customer, Sales::CustomersDimension
   dimension_join :business_line, Sales::BusinessLinesDimension
+
+  global_filter :business_line_id, :business_line_id
 end

@@ -74,4 +74,6 @@ class Traffic::PageViewFacts < DataModel::FactTable
   dimension :shopify_area, DataModel::Types::String
 
   dimension :is_bounce, DataModel::Types::Boolean
+
+  global_filter :date, :min_tstamp
 end

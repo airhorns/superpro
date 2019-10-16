@@ -23,4 +23,8 @@ class Sales::OrderFacts < DataModel::FactTable
   dimension :new_vs_repeat, DataModel::Types::String
 
   dimension_join :customer, Sales::CustomersDimension
+  dimension_join :business_line, Sales::BusinessLinesDimension
+
+  global_filter :date, :created_at
+  global_filter :business_line_id, :business_line_id
 end

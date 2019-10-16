@@ -1,16 +1,27 @@
 import React from "react";
 import { Page } from ".";
-import { VizDocumentCompiler, ReportDocument } from "app/components/superviz";
+import { VizDocumentCompiler, ReportDocument, GlobalFilterController } from "app/components/superviz";
+import { GetWarehouseFilters } from "../superviz/components/filter/GetWarehouseFilters";
 
 export const FullReportPage = (title: string, document: ReportDocument) => {
-  const Component = new VizDocumentCompiler().compile(document);
-
   return class FullReportPage extends Page {
     render() {
       return (
-        <Page.Layout title={title}>
-          <Component />
-        </Page.Layout>
+        <GetWarehouseFilters>
+          {filters => {
+            const compiler = new VizDocumentCompiler(filters, document);
+            const Report = compiler.compileReport();
+            const Filters = compiler.compileFilterControls();
+
+            return (
+              <GlobalFilterController.Provider>
+                <Page.Layout title={title} headerExtra={<Filters />}>
+                  <Report />
+                </Page.Layout>
+              </GlobalFilterController.Provider>
+            );
+          }}
+        </GetWarehouseFilters>
       );
     }
   };

@@ -1,5 +1,5 @@
 import React from "react";
-import { range, groupBy, keyBy, round, isUndefined } from "lodash";
+import { range, groupBy, keyBy, isUndefined } from "lodash";
 import { Box } from "grommet";
 import { DateTime } from "luxon";
 import { scaleLinear } from "d3-scale";

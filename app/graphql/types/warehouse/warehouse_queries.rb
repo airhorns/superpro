@@ -36,6 +36,6 @@ module Types::Warehouse::WarehouseQueries
   end
 
   def warehouse_introspection
-    DataModel::WarehouseIntrospection.new(context[:current_account], SuperproWarehouse).as_json
+    DataModel::WarehouseIntrospection.new(context[:current_account], SuperproWarehouse)
   end
 end

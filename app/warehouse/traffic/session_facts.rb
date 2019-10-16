@@ -31,4 +31,6 @@ class Traffic::SessionFacts < DataModel::FactTable
   dimension :user_bounced, DataModel::Types::Boolean
 
   dimension :session_index, DataModel::Types::Number
+
+  global_filter :date, :session_start
 end

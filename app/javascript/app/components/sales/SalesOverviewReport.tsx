@@ -1,5 +1,4 @@
 import { FullReportPage } from "../common/FullReportPage";
-import { DateTime } from "luxon";
 
 export default FullReportPage("Sales Overview", {
   type: "document",
@@ -10,18 +9,7 @@ export default FullReportPage("Sales Overview", {
       title: "Average Order Value",
       query: {
         measures: [{ model: "Sales::OrderFacts", field: "total_price", operator: "average", id: "total_price" }],
-        dimensions: [{ model: "Sales::OrderFacts", field: "created_at", operator: "date_trunc_day", id: "date" }],
-        filters: [
-          {
-            id: "date",
-            operator: "greater_than",
-            values: [
-              DateTime.local()
-                .minus({ days: 30 })
-                .toISO()
-            ]
-          }
-        ]
+        dimensions: [{ model: "Sales::OrderFacts", field: "created_at", operator: "date_trunc_day", id: "date" }]
       },
       viz: {
         type: "viz",
@@ -43,17 +31,6 @@ export default FullReportPage("Sales Overview", {
         dimensions: [
           { model: "Sales::OrderFacts", field: "created_at", operator: "date_trunc_day", id: "date" },
           { model: "Sales::OrderFacts", field: "new_vs_repeat", id: "new_vs_repeat" }
-        ],
-        filters: [
-          {
-            id: "date",
-            operator: "greater_than",
-            values: [
-              DateTime.local()
-                .minus({ days: 30 })
-                .toISO()
-            ]
-          }
         ]
       },
       viz: {
@@ -77,17 +54,6 @@ export default FullReportPage("Sales Overview", {
         dimensions: [
           { model: "Sales::OrderFacts", field: "created_at", operator: "date_trunc_day", id: "date" },
           { model: "Sales::OrderFacts", field: "new_vs_repeat", id: "new_vs_repeat" }
-        ],
-        filters: [
-          {
-            id: "date",
-            operator: "greater_than",
-            values: [
-              DateTime.local()
-                .minus({ days: 30 })
-                .toISO()
-            ]
-          }
         ]
       },
       viz: {

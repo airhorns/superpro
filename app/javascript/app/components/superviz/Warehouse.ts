@@ -15,7 +15,6 @@ gql`
           requiresOperators
           defaultOperator
         }
-
         dimensionFields {
           fieldName
           fieldLabel
