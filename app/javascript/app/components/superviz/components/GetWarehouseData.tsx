@@ -12,6 +12,7 @@ import {
 import { assert, Alert, SimpleQuery } from "superlib";
 import { WarehouseQuery } from "../WarehouseQuery";
 import { WarehousePivot } from "../pivot";
+import { FormatterFns, formattersForOutput } from "./render/Formatters";
 
 gql`
   query WarehouseQuery($query: JSONScalar!, $pivot: JSONScalar) {
@@ -44,15 +45,18 @@ gql`
   }
 `;
 
+export interface OutputIntrospection extends Exclude<WarehouseQueryResult["outputIntrospection"], null | undefined> {
+  fields: (WarehouseOutputIntrospectionMeasure | WarehouseOutputIntrospectionDimension)[];
+  fieldsById: { [id: string]: WarehouseOutputIntrospectionMeasure | WarehouseOutputIntrospectionDimension };
+  measuresById: { [id: string]: WarehouseOutputIntrospectionMeasure };
+  measuresByPivotGroupId: { [id: string]: WarehouseOutputIntrospectionMeasure[] };
+  pivotedMeasuresById: { [id: string]: WarehouseOutputIntrospectionMeasure };
+  dimensionsById: { [id: string]: WarehouseOutputIntrospectionDimension };
+}
+
 export interface SuccessfulWarehouseQueryResult {
-  outputIntrospection: Exclude<WarehouseQueryResult["outputIntrospection"], null | undefined> & {
-    fields: (WarehouseOutputIntrospectionMeasure | WarehouseOutputIntrospectionDimension)[];
-    fieldsById: { [id: string]: WarehouseOutputIntrospectionMeasure | WarehouseOutputIntrospectionDimension };
-    measuresById: { [id: string]: WarehouseOutputIntrospectionMeasure };
-    measuresByPivotGroupId: { [id: string]: WarehouseOutputIntrospectionMeasure[] };
-    pivotedMeasuresById: { [id: string]: WarehouseOutputIntrospectionMeasure };
-    dimensionsById: { [id: string]: WarehouseOutputIntrospectionDimension };
-  };
+  outputIntrospection: OutputIntrospection;
+  formatters: FormatterFns;
   records: Exclude<WarehouseQueryResult["records"], null | undefined>;
 }
 
@@ -63,7 +67,7 @@ const hydrate = (records: any[], outputIntrospection: SuccessfulWarehouseQueryRe
   return records.map(record => {
     for (const field of outputIntrospection.fields) {
       if (field.dataType == "DateTime") {
-        record[field.id] = DateTime.fromISO(record[field.id]).toJSDate();
+        record = Object.assign({}, record, { [field.id]: DateTime.fromISO(record[field.id]).toJSDate() });
       }
     }
 
@@ -116,7 +120,8 @@ export const GetWarehouseData = (props: {
 
         const result: SuccessfulWarehouseQueryResult = {
           outputIntrospection,
-          records: hydrate(data.warehouseQuery.records, outputIntrospection)
+          records: hydrate(data.warehouseQuery.records, outputIntrospection),
+          formatters: formattersForOutput(outputIntrospection)
         };
 
         return (

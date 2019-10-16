@@ -50,7 +50,7 @@ export const CohortTableRenderer = (props: { result: SuccessfulWarehouseQueryRes
       key: String(month),
       render: (record: CohortRecord) => {
         if (!isUndefined(record[month])) {
-          return round(record[month], 2) + "%";
+          return props.result.formatters[system.yId](record[month]);
         } else {
           return <></>;
         }

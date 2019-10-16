@@ -5,8 +5,8 @@ class Sales::CustomerParetoFacts < DataModel::FactTable
 
   measure :sales, DataModel::Types::Currency, default_operator: false
   measure :customer_rank, DataModel::Types::Number, default_operator: false
-  measure :percent_of_sales, DataModel::Types::Number, default_operator: false
-  measure :cumulative_percent_of_sales, DataModel::Types::Number, default_operator: false
+  measure :percent_of_sales, DataModel::Types::Percentage, default_operator: false
+  measure :cumulative_percent_of_sales, DataModel::Types::Percentage, default_operator: false
 
   dimension :customer_rank, DataModel::Types::Number
   dimension :customer_id, DataModel::Types::DateTime

@@ -44,7 +44,7 @@ import { SuccessfulWarehouseQueryResult } from "../GetWarehouseData";
 import { ReportDocument, VizBlock } from "../..";
 import { assert } from "superlib";
 import { WarehouseDataTypeEnum } from "app/app-graph";
-import { compact, uniq, flatMap } from "lodash";
+import { compact, uniq, flatMap, merge } from "lodash";
 import { theme } from "superlib/EChartsTheme";
 import { pivotGroupId } from "../../pivot";
 
@@ -91,15 +91,24 @@ const yAxesForBlock = (block: VizBlock, result: SuccessfulWarehouseQueryResult):
 
   return yIds.map((yId, index) => {
     const field = assert(result.outputIntrospection.fieldsById[yId] || result.outputIntrospection.pivotedMeasuresById[yId]);
-    const axis: EChartOption.YAxis = {
+    const axis: EChartOption.YAxis = merge({}, theme.yAxis, {
       id: yId,
       name: field.label,
       type: axisTypeForDataType(field.dataType),
       splitLine: {
         show: !multiAxis
       },
-      ...theme.yAxis
-    };
+      axisLabel: {
+        formatter: result.formatters[yId]
+      },
+      axisPointer: {
+        label: {
+          formatter: (obj: any) => {
+            return result.formatters[yId](obj.value);
+          }
+        }
+      }
+    });
 
     if (multiAxis) {
       axis.axisLine = axis.axisLine || {};
@@ -180,6 +189,10 @@ export const EchartsPlotRenderer = (props: { result: SuccessfulWarehouseQueryRes
       axisPointer: {
         type: "cross"
       }
+      // formatter: params => {
+      // This is complicated to even get the data out, see https://www.echartsjs.com/en/option.html#tooltip.formatter
+      // params[0].value[params[0].dimensionNames[params[0].encode.y[0]]];
+      // }
     },
     dataset: {
       dimensions: dimensionsForBlock(props.block, props.result),
