@@ -5,12 +5,7 @@ import Loader from "react-loader-spinner";
 
 export const Spin = withTheme((props: { theme: any; width?: number; height?: number }) => {
   return (
-    <Loader
-      type="MutatingDot"
-      color={(props.theme && props.theme.global.colors.brand) || "black"}
-      width={props.width}
-      height={props.height}
-    />
+    <Loader type="Audio" color={(props.theme && props.theme.global.colors.brand) || "black"} width={props.width} height={props.height} />
   );
 });
 
