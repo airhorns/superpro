@@ -25,7 +25,7 @@ class Traffic::PageViewFacts < DataModel::FactTable
   measure :total_time_in_ms, DataModel::Types::Duration
 
   measure :bounce_pct, DataModel::Types::Percentage, allow_operators: false do
-    table_node[:is_bounce].count * 1.0  / Arel::Nodes::NamedFunction.new("nullif", [table_node[:session_id].count(true), Arel.sql("0")])
+    cast(table_node[:is_bounce].count, :numeric) / nullif(table_node[:session_id].count(true), Arel.sql("0"))
   end
 
   dimension :page_view_id, DataModel::Types::String

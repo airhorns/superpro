@@ -16,7 +16,7 @@ module DataModel
     def cast(node, type)
       case type
       when :numeric
-        return node * Arel.sql("1.0")
+        node * Arel.sql("1.0")
       end
     end
   end

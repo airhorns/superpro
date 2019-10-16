@@ -30,7 +30,7 @@ class DataModel::QueryValidationTest < ActiveSupport::TestCase
       validate(
         measures: [
           { model: "Sales::OrderFacts", field: "total_price", id: "one" },
-          { model: "Sales::OrderFacts", field: "total_price", id: "one" }
+          { model: "Sales::OrderFacts", field: "total_price", id: "one" },
         ],
         dimensions: [],
       )

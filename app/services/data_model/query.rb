@@ -36,11 +36,10 @@ module DataModel
       end
 
       if @specs_by_id.size < (@measures.size + @dimensions.size)
-        id_counts = (@measures.map { |spec| spec[:id] } + @dimensions.map { |spec| spec[:id] }).inject(Hash.new(0)) do |totals, id|
+        id_counts = (@measures.map { |spec| spec[:id] } + @dimensions.map { |spec| spec[:id] }).each_with_object(Hash.new(0)) do |id, totals|
           totals[id] += 1
-          totals
         end
-        duplicate_ids = id_counts.select { |id, count| count > 1 }.keys
+        duplicate_ids = id_counts.select { |_id, count| count > 1 }.keys
 
         raise "Invalid query, duplicate IDs detected. IDs: #{duplicate_ids.join(",")}"
       end

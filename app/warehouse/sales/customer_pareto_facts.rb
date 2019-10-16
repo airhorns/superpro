@@ -3,10 +3,10 @@
 class Sales::CustomerParetoFacts < DataModel::FactTable
   self.table = "warehouse.fct_shopify_customer_pareto"
 
-  measure :sales, DataModel::Types::Currency
-  measure :customer_rank, DataModel::Types::Number
-  measure :percent_of_sales, DataModel::Types::Number
-  measure :cumulative_percent_of_sales, DataModel::Types::Number
+  measure :sales, DataModel::Types::Currency, default_operator: false
+  measure :customer_rank, DataModel::Types::Number, default_operator: false
+  measure :percent_of_sales, DataModel::Types::Number, default_operator: false
+  measure :cumulative_percent_of_sales, DataModel::Types::Number, default_operator: false
 
   dimension :customer_rank, DataModel::Types::Number
   dimension :customer_id, DataModel::Types::DateTime
