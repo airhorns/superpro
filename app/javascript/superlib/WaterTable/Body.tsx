@@ -19,13 +19,13 @@ export class Body<Record extends WaterTableRecord> extends React.Component<BodyP
           <StyledDataTableRow key={isUndefined(record.key) ? `index-${index}` : `record-${record.key}`} size={this.props.size}>
             {this.props.columns.map(column => {
               const content = column.render(record, index);
-              const cellStyle: React.CSSProperties = { position: "relative" };
+              const cellStyle: React.CSSProperties = { position: "relative", padding: "6px 12px" };
               if (column.cellStyle) {
                 Object.assign(cellStyle, column.cellStyle(record, index));
               }
 
               return (
-                <TableCell key={column.key} align={column.align} scope={column.primary ? "row" : undefined} style={cellStyle}>
+                <TableCell plain key={column.key} align={column.align} scope={column.primary ? "row" : undefined} style={cellStyle}>
                   {content}
                 </TableCell>
               );

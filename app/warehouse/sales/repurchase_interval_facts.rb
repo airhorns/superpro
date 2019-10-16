@@ -7,10 +7,16 @@ class Sales::RepurchaseIntervalFacts < DataModel::FactTable
   measure :days_since_previous_order, DataModel::Types::Number
   measure :days_until_next_order, DataModel::Types::Number
   measure :early_repurchase_rate, DataModel::Types::Number, allow_operators: false do
-    Arel.sql("case when #{sql_string(table_node[:order_seq_number].eq(1))} and #{sql_string(table_node[:days_until_next_order].lteq(60))} then 1 end").count * Arel.sql("1.0") / nullif(Arel.sql("*").count, Arel.sql("0"))
+    cast(
+      Arel.sql("case when #{sql_string(table_node[:order_seq_number].eq(1))} and #{sql_string(table_node[:days_until_next_order].lteq(60))} then 1 end").count,
+      :numeric
+    ) / nullif(Arel.sql("*").count, Arel.sql("0"))
   end
   measure :overall_repurchase_rate, DataModel::Types::Number, allow_operators: false do
-    Arel.sql("case when #{sql_string(table_node[:order_seq_number].eq(1))} and #{sql_string(table_node[:days_until_next_order].not_eq(nil))} then 1 end").count * Arel.sql("1.0") / nullif(Arel.sql("*").count, Arel.sql("0"))
+    cast(
+      Arel.sql("case when #{sql_string(table_node[:order_seq_number].eq(1))} and #{sql_string(table_node[:days_until_next_order].not_eq(nil))} then 1 end").count,
+      :numeric
+    ) / nullif(Arel.sql("*").count, Arel.sql("0"))
   end
 
   dimension :order_date, DataModel::Types::DateTime

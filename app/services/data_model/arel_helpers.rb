@@ -12,5 +12,12 @@ module DataModel
     def sql_string(node)
       ActiveRecord::Base.connection.visitor.compile(node)
     end
+
+    def cast(node, type)
+      case type
+      when :numeric
+        return node * Arel.sql("1.0")
+      end
+    end
   end
 end
