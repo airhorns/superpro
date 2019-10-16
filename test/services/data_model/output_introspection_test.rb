@@ -54,6 +54,8 @@ class DataModel::OutputIntrospectionTest < ActiveSupport::TestCase
   end
 
   def pivot_for_spec(query, spec)
-    DataModel::Pivot.new(@account, SuperproWarehouse, query, spec)
+    pivot = DataModel::Pivot.new(@account, SuperproWarehouse, query, spec)
+    pivot.run([])
+    pivot
   end
 end

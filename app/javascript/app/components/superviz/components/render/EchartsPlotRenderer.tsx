@@ -122,7 +122,8 @@ const seriesForBlock = (block: VizBlock, result: SuccessfulWarehouseQueryResult,
     const yAxisIndex = yAxisIndexById[system.yId];
 
     if (system.segmentIds) {
-      return result.outputIntrospection.measuresByPivotGroupId[pivotGroupId(system)].map(measure => {
+      const measures = result.outputIntrospection.measuresByPivotGroupId[pivotGroupId(system)] || [];
+      return measures.map(measure => {
         return {
           type: system.vizType,
           yAxisIndex: yAxisIndex,
@@ -156,7 +157,8 @@ const dimensionsForBlock = (block: VizBlock, result: SuccessfulWarehouseQueryRes
 
   const measures = flatMap(block.viz.systems, system => {
     if (system.segmentIds) {
-      return result.outputIntrospection.measuresByPivotGroupId[pivotGroupId(system)].map(measure => {
+      const measures = result.outputIntrospection.measuresByPivotGroupId[pivotGroupId(system)] || [];
+      return measures.map(measure => {
         return { name: measure.id, type: dimensionTypeForDataType(measure.dataType) };
       });
     } else {

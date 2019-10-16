@@ -4,16 +4,21 @@ module DataModel
   class Pivot
     include SemanticLogger::Loggable
 
-    def initialize(account, warehouse, query, pivot_specification)
+    attr_reader :specification
+
+    def initialize(account, warehouse, query, specification)
       @account = account
       @warehouse = warehouse
       @query = query
-      @pivot_specification = pivot_specification
+      @specification = specification
       @generated_index = 0
       @generated_columns = Hash.new { |hash, key| hash[key] = {} }
+      @run = false
     end
 
     def run(results)
+      @run = true
+
       all_field_values_list = pivot_columns.map { |field| results.map { |result| result[field] }.uniq }
       pivot_column_values_list = all_field_values_list[0].product(*all_field_values_list[1..-1])
 
@@ -45,14 +50,17 @@ module DataModel
     end
 
     def pivot_columns
-      @pivot_columns ||= @pivot_specification[:pivot_field_ids]
+      @pivot_columns ||= @specification[:pivot_field_ids]
     end
 
     def measure_columns
-      @measure_columns ||= @pivot_specification[:measure_ids]
+      @measure_columns ||= @specification[:measure_ids]
     end
 
     def generated_columns
+      if !@run
+        raise "Have to run pivot before being able to know what columns it generates"
+      end
       @generated_columns.values.map(&:values).flatten
     end
 
@@ -64,7 +72,7 @@ module DataModel
         {
           measure_column: measure_column,
           pivot_column_values: pivot_column_values,
-          pivot_group_id: @pivot_specification[:id],
+          pivot_group_id: @specification[:id],
           id: generated_id,
         }
       end
