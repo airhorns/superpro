@@ -4,7 +4,7 @@
 #
 # Table name: google_analytics_credentials
 #
-#  id              :bigint(8)        not null, primary key
+#  id              :bigint           not null, primary key
 #  configured      :boolean          default(FALSE), not null
 #  expires_at      :datetime
 #  ga_account_name :string
@@ -16,11 +16,11 @@
 #  view_name       :string
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
-#  account_id      :bigint(8)        not null
-#  creator_id      :bigint(8)        not null
-#  ga_account_id   :bigint(8)
-#  property_id     :bigint(8)
-#  view_id         :bigint(8)
+#  account_id      :bigint           not null
+#  creator_id      :bigint           not null
+#  ga_account_id   :bigint
+#  property_id     :bigint
+#  view_id         :bigint
 #
 # Foreign Keys
 #

@@ -4,7 +4,7 @@
 #
 # Table name: users
 #
-#  id                     :bigint(8)        not null, primary key
+#  id                     :bigint           not null, primary key
 #  confirmation_sent_at   :datetime
 #  confirmation_token     :string
 #  confirmed_at           :datetime
@@ -14,6 +14,7 @@
 #  encrypted_password     :string           not null
 #  failed_attempts        :integer          default(0), not null
 #  full_name              :string
+#  internal_tags          :string           default([]), not null, is an Array
 #  invitation_accepted_at :datetime
 #  invitation_created_at  :datetime
 #  invitation_limit       :integer
@@ -32,7 +33,7 @@
 #  unlock_token           :string
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
-#  invited_by_id          :bigint(8)
+#  invited_by_id          :bigint
 #
 # Indexes
 #

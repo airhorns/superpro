@@ -4,7 +4,7 @@
 #
 # Table name: singer_global_sync_attempts
 #
-#  id               :bigint(8)        not null, primary key
+#  id               :bigint           not null, primary key
 #  failure_reason   :string
 #  finished_at      :datetime
 #  key              :string           not null

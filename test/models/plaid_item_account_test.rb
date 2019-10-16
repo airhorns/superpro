@@ -4,15 +4,15 @@
 #
 # Table name: plaid_item_accounts
 #
-#  id                       :bigint(8)        not null, primary key
+#  id                       :bigint           not null, primary key
 #  name                     :string           not null
 #  plaid_account_identifier :string           not null
 #  subtype                  :string           not null
 #  type                     :string           not null
 #  created_at               :datetime         not null
 #  updated_at               :datetime         not null
-#  account_id               :bigint(8)        not null
-#  plaid_item_id            :bigint(8)        not null
+#  account_id               :bigint           not null
+#  plaid_item_id            :bigint           not null
 #
 # Foreign Keys
 #

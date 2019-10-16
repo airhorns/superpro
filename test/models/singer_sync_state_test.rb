@@ -4,12 +4,12 @@
 #
 # Table name: singer_sync_states
 #
-#  id            :bigint(8)        not null, primary key
+#  id            :bigint           not null, primary key
 #  state         :jsonb            not null
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
-#  account_id    :bigint(8)        not null
-#  connection_id :bigint(8)        not null
+#  account_id    :bigint           not null
+#  connection_id :bigint           not null
 #
 # Foreign Keys
 #

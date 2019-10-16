@@ -4,7 +4,7 @@
 #
 # Table name: plaid_transactions
 #
-#  id                           :bigint(8)        not null, primary key
+#  id                           :bigint           not null, primary key
 #  amount                       :string           not null
 #  category                     :string           is an Array
 #  date                         :date             not null
@@ -16,9 +16,9 @@
 #  unofficial_currency_code     :string
 #  created_at                   :datetime         not null
 #  updated_at                   :datetime         not null
-#  account_id                   :bigint(8)        not null
+#  account_id                   :bigint           not null
 #  category_id                  :string
-#  plaid_item_id                :bigint(8)        not null
+#  plaid_item_id                :bigint           not null
 #
 # Indexes
 #

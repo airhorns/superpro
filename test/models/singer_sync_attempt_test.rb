@@ -4,7 +4,7 @@
 #
 # Table name: singer_sync_attempts
 #
-#  id               :bigint(8)        not null, primary key
+#  id               :bigint           not null, primary key
 #  failure_reason   :string
 #  finished_at      :datetime
 #  last_progress_at :datetime         default(Tue, 01 Jan 2019 01:01:00 UTC +00:00), not null
@@ -12,8 +12,8 @@
 #  success          :boolean
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
-#  account_id       :bigint(8)        not null
-#  connection_id    :bigint(8)        not null
+#  account_id       :bigint           not null
+#  connection_id    :bigint           not null
 #
 # Indexes
 #

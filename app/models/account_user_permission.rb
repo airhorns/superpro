@@ -4,11 +4,11 @@
 #
 # Table name: account_user_permissions
 #
-#  id         :bigint(8)        not null, primary key
+#  id         :bigint           not null, primary key
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  account_id :bigint(8)        not null
-#  user_id    :bigint(8)        not null
+#  account_id :bigint           not null
+#  user_id    :bigint           not null
 #
 # Foreign Keys
 #

@@ -4,7 +4,7 @@
 #
 # Table name: shopify_shops
 #
-#  id                  :bigint(8)        not null, primary key
+#  id                  :bigint           not null, primary key
 #  access_token        :string
 #  api_key             :string
 #  name                :string           not null
@@ -13,9 +13,9 @@
 #  shopify_domain      :string           not null
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
-#  account_id          :bigint(8)        not null
-#  creator_id          :bigint(8)        not null
-#  shop_id             :bigint(8)        not null
+#  account_id          :bigint           not null
+#  creator_id          :bigint           not null
+#  shop_id             :bigint           not null
 #
 # Indexes
 #

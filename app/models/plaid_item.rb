@@ -4,14 +4,14 @@
 #
 # Table name: plaid_items
 #
-#  id                      :bigint(8)        not null, primary key
+#  id                      :bigint           not null, primary key
 #  access_token            :string           not null
 #  initial_update_complete :boolean          default(FALSE), not null
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
-#  account_id              :bigint(8)        not null
-#  creator_id              :bigint(8)        not null
-#  item_id                 :bigint(8)        not null
+#  account_id              :bigint           not null
+#  creator_id              :bigint           not null
+#  item_id                 :bigint           not null
 #
 # Foreign Keys
 #
