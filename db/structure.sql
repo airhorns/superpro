@@ -14739,9 +14739,9 @@ CREATE TABLE warehouse.dim_shopify_customers (
 CREATE TABLE warehouse.fct_shopify_customer_pareto (
     account_id bigint,
     customer_id bigint,
+    business_line_id bigint,
     year double precision,
     sales double precision,
-    business_line_id bigint,
     percent_of_sales double precision,
     cumulative_percent_of_sales double precision,
     customer_rank bigint
@@ -14934,6 +14934,153 @@ CREATE TABLE warehouse.fct_shopify_rfm_thresholds (
     recency_threshold double precision,
     frequency_threshold bigint
 );
+
+
+--
+-- Name: stg_shopify_refund_items; Type: VIEW; Schema: warehouse; Owner: -
+--
+
+CREATE VIEW warehouse.stg_shopify_refund_items AS
+ SELECT orders__refunds__refund_line_items.id AS refund_line_item_id,
+    orders__refunds__refund_line_items._sdc_source_key_id AS refund_id,
+    orders__refunds__refund_line_items.line_item_id,
+    (orders__refunds__refund_line_items.subtotal * ('-1'::integer)::double precision) AS refund_amount,
+    (orders__refunds__refund_line_items.total_tax * ('-1'::integer)::double precision) AS refund_tax_amount
+   FROM raw_tap_shopify.orders__refunds__refund_line_items;
+
+
+--
+-- Name: stg_shopify_refunds; Type: VIEW; Schema: warehouse; Owner: -
+--
+
+CREATE VIEW warehouse.stg_shopify_refunds AS
+ WITH refunds AS (
+         SELECT orders__refunds.admin_graphql_api_id,
+            orders__refunds.restock,
+            orders__refunds.note,
+            orders__refunds.id,
+            orders__refunds.user_id,
+            orders__refunds.created_at,
+            orders__refunds.processed_at,
+            orders__refunds._sdc_source_key_id,
+            orders__refunds._sdc_sequence,
+            orders__refunds._sdc_level_0_id
+           FROM raw_tap_shopify.orders__refunds
+        ), adjustments AS (
+         SELECT orders__refunds__order_adjustments.order_id,
+            orders__refunds__order_adjustments.tax_amount,
+            orders__refunds__order_adjustments.refund_id,
+            orders__refunds__order_adjustments.amount,
+            orders__refunds__order_adjustments.kind,
+            orders__refunds__order_adjustments.id,
+            orders__refunds__order_adjustments.reason,
+            orders__refunds__order_adjustments._sdc_source_key_id,
+            orders__refunds__order_adjustments._sdc_sequence,
+            orders__refunds__order_adjustments._sdc_level_0_id,
+            orders__refunds__order_adjustments._sdc_level_1_id
+           FROM raw_tap_shopify.orders__refunds__order_adjustments
+        ), item_refunds AS (
+         SELECT stg_shopify_refund_items.refund_id,
+            sum(stg_shopify_refund_items.refund_amount) AS refund_amount,
+            sum(stg_shopify_refund_items.refund_tax_amount) AS refund_tax_amount
+           FROM warehouse.stg_shopify_refund_items
+          GROUP BY stg_shopify_refund_items.refund_id
+        ), joined AS (
+         SELECT adjustments.order_id,
+            adjustments.tax_amount,
+            adjustments.refund_id,
+            adjustments.amount,
+            adjustments.kind,
+            adjustments.id,
+            adjustments.reason,
+            adjustments._sdc_source_key_id,
+            adjustments._sdc_sequence,
+            adjustments._sdc_level_0_id,
+            adjustments._sdc_level_1_id,
+            (refunds.processed_at)::timestamp without time zone AS processed_at
+           FROM (adjustments
+             LEFT JOIN refunds ON ((refunds.id = adjustments.refund_id)))
+        ), adjustments_flattened AS (
+         SELECT DISTINCT joined.refund_id,
+            joined._sdc_source_key_id AS order_id,
+            sum(
+                CASE
+                    WHEN (joined.reason ~~* '%ship%'::text) THEN joined.amount
+                    ELSE (0)::double precision
+                END) OVER (PARTITION BY joined.refund_id ORDER BY joined.processed_at ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS refund_shipping_amount,
+            sum(
+                CASE
+                    WHEN (joined.reason ~~* '%refund discrepancy%'::text) THEN joined.amount
+                    ELSE (0)::double precision
+                END) OVER (PARTITION BY joined.refund_id ORDER BY joined.processed_at ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS adjustment_refund_amount,
+            sum(joined.tax_amount) OVER (PARTITION BY joined.refund_id ORDER BY joined.processed_at ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS refund_tax_amount,
+            joined.processed_at AS refund_processed_at
+           FROM joined
+        ), final AS (
+         SELECT adjustments_flattened.refund_id,
+            adjustments_flattened.order_id,
+            (COALESCE(adjustments_flattened.adjustment_refund_amount, (0)::double precision) + COALESCE(item_refunds.refund_amount, (0)::double precision)) AS refund_amount,
+            (COALESCE(adjustments_flattened.refund_tax_amount, (0)::double precision) + COALESCE(item_refunds.refund_tax_amount, (0)::double precision)) AS refund_tax_amount,
+            COALESCE(adjustments_flattened.refund_shipping_amount, (0)::double precision) AS refund_shipping_amount,
+            adjustments_flattened.refund_processed_at
+           FROM (adjustments_flattened
+             LEFT JOIN item_refunds USING (refund_id))
+        )
+ SELECT final.refund_id,
+    final.order_id,
+    final.refund_amount,
+    final.refund_tax_amount,
+    final.refund_shipping_amount,
+    final.refund_processed_at
+   FROM final;
+
+
+--
+-- Name: fct_shopify_sales_daily_summary; Type: VIEW; Schema: warehouse; Owner: -
+--
+
+CREATE VIEW warehouse.fct_shopify_sales_daily_summary AS
+ WITH orders AS (
+         SELECT (fct_shopify_orders.created_at)::date AS date_day,
+            count(*) AS total_orders,
+            sum(fct_shopify_orders.total_line_items_price) AS total_gross_revenue,
+            sum(fct_shopify_orders.final_discounts) AS total_discounts,
+            sum(fct_shopify_orders.final_shipping_cost) AS total_shipping_cost,
+            sum(fct_shopify_orders.total_tax) AS total_tax
+           FROM warehouse.fct_shopify_orders
+          GROUP BY ((fct_shopify_orders.created_at)::date)
+        ), refunds AS (
+         SELECT (stg_shopify_refunds.refund_processed_at)::date AS date_day,
+            sum(stg_shopify_refunds.refund_amount) AS total_refund_amount,
+            sum(stg_shopify_refunds.refund_tax_amount) AS total_refund_tax_amount,
+            sum(stg_shopify_refunds.refund_shipping_amount) AS total_refund_shipping_amount
+           FROM warehouse.stg_shopify_refunds
+          GROUP BY ((stg_shopify_refunds.refund_processed_at)::date)
+        ), calculated AS (
+         SELECT md5(((concat(COALESCE((orders.date_day)::character varying, ''::character varying)))::character varying)::text) AS id,
+            orders.date_day,
+            orders.total_orders,
+            orders.total_gross_revenue,
+            orders.total_discounts,
+            COALESCE(refunds.total_refund_amount, (0)::double precision) AS total_refund_amount,
+            (COALESCE(refunds.total_refund_shipping_amount, (0)::double precision) + COALESCE(orders.total_shipping_cost, (0)::double precision)) AS total_shipping_costs,
+            (COALESCE(refunds.total_refund_tax_amount, (0)::double precision) + COALESCE(orders.total_tax, (0)::double precision)) AS total_tax,
+            ((COALESCE(orders.total_gross_revenue, (0)::double precision) + COALESCE(orders.total_discounts, (0)::double precision)) + COALESCE(refunds.total_refund_amount, (0)::double precision)) AS total_net_sales,
+            ((((((COALESCE(orders.total_gross_revenue, (0)::double precision) + COALESCE(refunds.total_refund_amount, (0)::double precision)) + COALESCE(orders.total_discounts, (0)::double precision)) + COALESCE(refunds.total_refund_shipping_amount, (0)::double precision)) + COALESCE(orders.total_shipping_cost, (0)::double precision)) + COALESCE(refunds.total_refund_tax_amount, (0)::double precision)) + COALESCE(orders.total_tax, (0)::double precision)) AS total_sales
+           FROM (orders
+             LEFT JOIN refunds USING (date_day))
+        )
+ SELECT calculated.id,
+    calculated.date_day,
+    calculated.total_orders,
+    calculated.total_gross_revenue,
+    calculated.total_discounts,
+    calculated.total_refund_amount,
+    calculated.total_shipping_costs,
+    calculated.total_tax,
+    calculated.total_net_sales,
+    calculated.total_sales
+   FROM calculated;
 
 
 --
@@ -15267,6 +15414,41 @@ CREATE VIEW warehouse.stg_shopify_customers AS
 
 
 --
+-- Name: stg_superpro_accounts; Type: VIEW; Schema: warehouse; Owner: -
+--
+
+CREATE VIEW warehouse.stg_superpro_accounts AS
+ WITH accounts AS (
+         SELECT base_superpro_accounts.account_id,
+            base_superpro_accounts.name,
+            base_superpro_accounts.created_at,
+            base_superpro_accounts.updated_at,
+            base_superpro_accounts.discarded_at
+           FROM warehouse.base_superpro_accounts
+        ), default_business_lines AS (
+         SELECT numbered.business_line_id,
+            numbered.account_id,
+            numbered.name,
+            numbered.row_num
+           FROM ( SELECT base_superpro_business_lines.business_line_id,
+                    base_superpro_business_lines.account_id,
+                    base_superpro_business_lines.name,
+                    row_number() OVER (PARTITION BY base_superpro_business_lines.account_id ORDER BY base_superpro_business_lines.created_at DESC) AS row_num
+                   FROM warehouse.base_superpro_business_lines) numbered
+          WHERE (numbered.row_num = 1)
+        )
+ SELECT accounts.account_id,
+    accounts.name,
+    accounts.created_at,
+    accounts.updated_at,
+    accounts.discarded_at,
+    default_business_lines.business_line_id AS default_business_line_id,
+    default_business_lines.name AS default_business_line_name
+   FROM (accounts
+     LEFT JOIN default_business_lines USING (account_id));
+
+
+--
 -- Name: stg_shopify_customer_business_lines; Type: VIEW; Schema: warehouse; Owner: -
 --
 
@@ -15287,21 +15469,15 @@ CREATE VIEW warehouse.stg_shopify_customer_business_lines AS
             stg_shopify_customers.created_at,
             stg_shopify_customers.updated_at
            FROM warehouse.stg_shopify_customers
-        ), default_business_lines AS (
-         SELECT numbered.business_line_id,
-            numbered.account_id,
-            numbered.name,
-            numbered.created_at,
-            numbered.updated_at,
-            numbered.row_num
-           FROM ( SELECT base_superpro_business_lines.business_line_id,
-                    base_superpro_business_lines.account_id,
-                    base_superpro_business_lines.name,
-                    base_superpro_business_lines.created_at,
-                    base_superpro_business_lines.updated_at,
-                    row_number() OVER (PARTITION BY base_superpro_business_lines.account_id ORDER BY base_superpro_business_lines.created_at DESC) AS row_num
-                   FROM warehouse.base_superpro_business_lines) numbered
-          WHERE (numbered.row_num = 1)
+        ), accounts AS (
+         SELECT stg_superpro_accounts.account_id,
+            stg_superpro_accounts.name,
+            stg_superpro_accounts.created_at,
+            stg_superpro_accounts.updated_at,
+            stg_superpro_accounts.discarded_at,
+            stg_superpro_accounts.default_business_line_id,
+            stg_superpro_accounts.default_business_line_name
+           FROM warehouse.stg_superpro_accounts
         ), joined AS (
          SELECT customers.customer_id,
             customers.account_id,
@@ -15317,9 +15493,9 @@ CREATE VIEW warehouse.stg_shopify_customer_business_lines AS
             customers.default_address_id,
             customers.created_at,
             customers.updated_at,
-            default_business_lines.business_line_id AS default_business_line_id
+            accounts.default_business_line_id
            FROM (customers
-             LEFT JOIN default_business_lines USING (account_id))
+             LEFT JOIN accounts USING (account_id))
         )
  SELECT joined.customer_id,
     joined.account_id,
@@ -15484,105 +15660,6 @@ CREATE VIEW warehouse.stg_shopify_products AS
     products.created_at,
     products.updated_at
    FROM raw_tap_shopify.products;
-
-
---
--- Name: stg_shopify_refund_items; Type: VIEW; Schema: warehouse; Owner: -
---
-
-CREATE VIEW warehouse.stg_shopify_refund_items AS
- SELECT orders__refunds__refund_line_items.id AS refund_line_item_id,
-    orders__refunds__refund_line_items._sdc_source_key_id AS refund_id,
-    orders__refunds__refund_line_items.line_item_id,
-    (orders__refunds__refund_line_items.subtotal * ('-1'::integer)::double precision) AS refund_amount,
-    (orders__refunds__refund_line_items.total_tax * ('-1'::integer)::double precision) AS refund_tax_amount
-   FROM raw_tap_shopify.orders__refunds__refund_line_items;
-
-
---
--- Name: stg_shopify_refunds; Type: VIEW; Schema: warehouse; Owner: -
---
-
-CREATE VIEW warehouse.stg_shopify_refunds AS
- WITH refunds AS (
-         SELECT orders__refunds.admin_graphql_api_id,
-            orders__refunds.restock,
-            orders__refunds.note,
-            orders__refunds.id,
-            orders__refunds.user_id,
-            orders__refunds.created_at,
-            orders__refunds.processed_at,
-            orders__refunds._sdc_source_key_id,
-            orders__refunds._sdc_sequence,
-            orders__refunds._sdc_level_0_id
-           FROM raw_tap_shopify.orders__refunds
-        ), adjustments AS (
-         SELECT orders__refunds__order_adjustments.order_id,
-            orders__refunds__order_adjustments.tax_amount,
-            orders__refunds__order_adjustments.refund_id,
-            orders__refunds__order_adjustments.amount,
-            orders__refunds__order_adjustments.kind,
-            orders__refunds__order_adjustments.id,
-            orders__refunds__order_adjustments.reason,
-            orders__refunds__order_adjustments._sdc_source_key_id,
-            orders__refunds__order_adjustments._sdc_sequence,
-            orders__refunds__order_adjustments._sdc_level_0_id,
-            orders__refunds__order_adjustments._sdc_level_1_id
-           FROM raw_tap_shopify.orders__refunds__order_adjustments
-        ), item_refunds AS (
-         SELECT stg_shopify_refund_items.refund_id,
-            sum(stg_shopify_refund_items.refund_amount) AS refund_amount,
-            sum(stg_shopify_refund_items.refund_tax_amount) AS refund_tax_amount
-           FROM warehouse.stg_shopify_refund_items
-          GROUP BY stg_shopify_refund_items.refund_id
-        ), joined AS (
-         SELECT adjustments.order_id,
-            adjustments.tax_amount,
-            adjustments.refund_id,
-            adjustments.amount,
-            adjustments.kind,
-            adjustments.id,
-            adjustments.reason,
-            adjustments._sdc_source_key_id,
-            adjustments._sdc_sequence,
-            adjustments._sdc_level_0_id,
-            adjustments._sdc_level_1_id,
-            (refunds.processed_at)::timestamp without time zone AS processed_at
-           FROM (adjustments
-             LEFT JOIN refunds ON ((refunds.id = adjustments.refund_id)))
-        ), adjustments_flattened AS (
-         SELECT DISTINCT joined.refund_id,
-            joined._sdc_source_key_id AS order_id,
-            sum(
-                CASE
-                    WHEN (joined.reason ~~* '%ship%'::text) THEN joined.amount
-                    ELSE (0)::double precision
-                END) OVER (PARTITION BY joined.refund_id ORDER BY joined.processed_at ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS refund_shipping_amount,
-            sum(
-                CASE
-                    WHEN (joined.reason ~~* '%refund discrepancy%'::text) THEN joined.amount
-                    ELSE (0)::double precision
-                END) OVER (PARTITION BY joined.refund_id ORDER BY joined.processed_at ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS adjustment_refund_amount,
-            sum(joined.tax_amount) OVER (PARTITION BY joined.refund_id ORDER BY joined.processed_at ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS refund_tax_amount,
-            joined.processed_at AS refund_processed_at
-           FROM joined
-        ), final AS (
-         SELECT adjustments_flattened.refund_id,
-            adjustments_flattened.order_id,
-            (COALESCE(adjustments_flattened.adjustment_refund_amount, (0)::double precision) + COALESCE(item_refunds.refund_amount, (0)::double precision)) AS refund_amount,
-            (COALESCE(adjustments_flattened.refund_tax_amount, (0)::double precision) + COALESCE(item_refunds.refund_tax_amount, (0)::double precision)) AS refund_tax_amount,
-            COALESCE(adjustments_flattened.refund_shipping_amount, (0)::double precision) AS refund_shipping_amount,
-            adjustments_flattened.refund_processed_at
-           FROM (adjustments_flattened
-             LEFT JOIN item_refunds USING (refund_id))
-        )
- SELECT final.refund_id,
-    final.order_id,
-    final.refund_amount,
-    final.refund_tax_amount,
-    final.refund_shipping_amount,
-    final.refund_processed_at
-   FROM final;
 
 
 --
@@ -20282,10 +20359,10 @@ CREATE INDEX dim_business_lines__index_on_account_id__name ON warehouse.dim_busi
 
 
 --
--- Name: fct_shopify_customer_pareto__index_on_account_id__year__custome; Type: INDEX; Schema: warehouse; Owner: -
+-- Name: fct_shopify_customer_pareto__index_on_account_id__business_line; Type: INDEX; Schema: warehouse; Owner: -
 --
 
-CREATE INDEX fct_shopify_customer_pareto__index_on_account_id__year__custome ON warehouse.fct_shopify_customer_pareto USING btree (account_id, year, customer_rank);
+CREATE INDEX fct_shopify_customer_pareto__index_on_account_id__business_line ON warehouse.fct_shopify_customer_pareto USING btree (account_id, business_line_id, year);
 
 
 --

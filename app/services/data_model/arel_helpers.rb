@@ -19,5 +19,15 @@ module DataModel
         node * Arel.sql("1.0")
       end
     end
+
+    # Use an anonymouse ActiveRecord::Base subclass that knows which table it's pointed at to boot up an Arel::Table
+    # for the table in question. This seems weird but works well as it's only using public Rails APIs, and it sets
+    # up all the right casting and schema awareness that Rails usually uses for to_sqling queries.
+    def table_node_for_table(table)
+      klass = Class.new(ApplicationRecord) do
+        self.table_name = table
+      end
+      klass.arel_table
+    end
   end
 end

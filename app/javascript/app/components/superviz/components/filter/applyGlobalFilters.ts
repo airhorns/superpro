@@ -1,6 +1,6 @@
 import { GlobalFilterController } from "./GlobalFilterController";
 import { WarehouseQuery } from "../../WarehouseQuery";
-import { FactTableFilterFields } from "./GetWarehouseFilters";
+import { FactTableFilterContext } from "./GetWarehouseFilters";
 import { assert } from "superlib";
 
 export const modelsReferencedInQuery = (query: WarehouseQuery) => {
@@ -15,7 +15,7 @@ export const modelsReferencedInQuery = (query: WarehouseQuery) => {
 
 export const applyGlobalFilters = (
   query: WarehouseQuery,
-  warehouseFilters: FactTableFilterFields,
+  filtersContext: FactTableFilterContext,
   filterController: GlobalFilterController
 ) => {
   const models = modelsReferencedInQuery(query);
@@ -26,7 +26,7 @@ export const applyGlobalFilters = (
 
   Object.entries(filterController.state.filters).forEach(([id, params]) => {
     models.forEach(model => {
-      const globalFilterFieldsForModel = assert(warehouseFilters[model]);
+      const globalFilterFieldsForModel = assert(filtersContext.modelFilterFields[model]);
       const fieldId = `global-${model}-${id}`;
       const operator = assert(params).operator;
       const values = assert(params).values;

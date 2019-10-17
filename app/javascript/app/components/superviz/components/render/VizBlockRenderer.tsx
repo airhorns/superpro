@@ -17,7 +17,7 @@ export const VizBlockRenderer = (props: { doc: ReportDocument; block: VizBlock }
       }
 
       return (
-        <Box flex={{ grow: 1, shrink: 0 }} style={{ minHeight: "400px" }}>
+        <Box flex={{ grow: 1, shrink: 0 }} style={{ minHeight: "500px" }}>
           {props.block.title && <Heading level="3">{props.block.title}</Heading>}
           {viz}
         </Box>

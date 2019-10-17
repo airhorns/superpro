@@ -1,9 +1,9 @@
-import { WarehouseIntrospection, WarehouseIntrospectionMeasureField, WarehouseIntrospectionDimensionField } from "app/app-graph";
-import { WarehouseIntrospectionFragment } from "app/app-graph";
+import { WarehouseIntrospectionMeasureField, WarehouseIntrospectionDimensionField } from "app/app-graph";
+import { WarehouseIntrospectionForWarehouseFragment } from "app/app-graph";
 import gql from "graphql-tag";
 
 gql`
-  fragment WarehouseIntrospection on AppQuery {
+  fragment WarehouseIntrospectionForWarehouse on AppQuery {
     warehouseIntrospection {
       factTables {
         name
@@ -29,7 +29,7 @@ gql`
   }
 `;
 
-export type WarehouseIntrospection = WarehouseIntrospectionFragment["warehouseIntrospection"];
+export type WarehouseIntrospection = WarehouseIntrospectionForWarehouseFragment["warehouseIntrospection"];
 
 export class Warehouse {
   introspection: WarehouseIntrospection;

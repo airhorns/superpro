@@ -12,7 +12,7 @@ module DataModel
 
     class << self
       def table_node
-        @table_node ||= Arel::Table.new(self.table)
+        @table_node ||= table_node_for_table(self.table)
       end
 
       def measure(name, type, **options, &block)
@@ -31,6 +31,16 @@ module DataModel
         join = DimensionJoin.new(name, dimension, **options)
         prefix = name.to_s.underscore
         nice_prefix = name.to_s.capitalize
+
+        # Hackily add join field as a non-joined dimension field itself
+        self.dimension(
+          join.key_in_fact_table,
+          DataModel::Types::Number,
+          column: join.key_in_fact_table,
+          label: join.key_in_fact_table,
+        )
+
+        # Represent the joined in dimension columns as dimensions on this fact table implemented by the JOIN
         dimension.dimension_fields.each do |_key, dimension_field|
           self.dimension(
             "#{prefix}_#{dimension_field.field_name}",

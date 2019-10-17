@@ -6,15 +6,15 @@ import { ReportDocument, Block, isQueryBlock } from "./schema";
 import { VizDocumentContainer } from "./components/render/VizDocumentContainer";
 import { VizBlockRenderer } from "./components/render/VizBlockRenderer";
 import { TableBlockRenderer } from "./components/render/TableBlockRenderer";
-import { FactTableFilterFields } from "./components/filter/GetWarehouseFilters";
+import { FactTableFilterContext } from "./components/filter/GetWarehouseFilters";
 import { GlobalFilterControls } from "./components/filter/GlobalFilterControls";
 
 export class VizDocumentCompiler {
-  globalFilterFields: FactTableFilterFields;
+  filtersContext: FactTableFilterContext;
   doc: ReportDocument;
 
-  constructor(globalFilterFields: FactTableFilterFields, doc: ReportDocument) {
-    this.globalFilterFields = globalFilterFields;
+  constructor(filtersContext: FactTableFilterContext, doc: ReportDocument) {
+    this.filtersContext = filtersContext;
     this.doc = doc;
   }
 
@@ -25,7 +25,7 @@ export class VizDocumentCompiler {
 
   compileFilterControls(): React.ComponentType<{}> {
     const filters = this.globalFilterSet();
-    return () => <GlobalFilterControls filters={filters} />;
+    return () => <GlobalFilterControls enabledFilters={filters} filtersContext={this.filtersContext} />;
   }
 
   private compileBlock(block: Block, index: number) {
@@ -51,6 +51,6 @@ export class VizDocumentCompiler {
       }
     });
 
-    return uniq(flatMap(Array.from(filterModels), modelName => Object.keys(assert(this.globalFilterFields[modelName]))));
+    return uniq(flatMap(Array.from(filterModels), modelName => Object.keys(assert(this.filtersContext.modelFilterFields[modelName]))));
   }
 }

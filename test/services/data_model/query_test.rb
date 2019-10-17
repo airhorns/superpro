@@ -147,6 +147,16 @@ class DataModel::QueryTest < ActiveSupport::TestCase
     assert_equal [], result
   end
 
+  test "it can filter on fields that aren't projected" do
+    result = run_query(
+      measures: [{ model: "Sales::OrderFacts", field: "total_price", operator: "sum", id: "total_price" }],
+      dimensions: [],
+      filters: [{ field: { id: "global-Sales::OrderFacts-business_line_id", model: "Sales::OrderFacts", field: "business_line_id" }, operator: "equals", values: ["2"] }],
+    )
+
+    assert_equal [{ "total_price" => nil }], result
+  end
+
   def run_query(spec)
     DataModel::Query.new(@account, SuperproWarehouse, spec).run
   end

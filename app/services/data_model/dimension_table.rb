@@ -10,7 +10,7 @@ module DataModel
 
     class << self
       def table_node
-        @table_node ||= Arel::Table.new(self.table)
+        @table_node ||= table_node_for_table(self.table)
       end
 
       def dimension(name, type, **options, &block)

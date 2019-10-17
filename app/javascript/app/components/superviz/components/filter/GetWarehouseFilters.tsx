@@ -18,21 +18,38 @@ gql`
         key
       }
     }
+    currentAccount {
+      id
+      businessLines {
+        id
+        name
+      }
+    }
   }
 `;
 
-export interface FactTableFilterFields {
-  [name: string]: {
-    [id: string]: { id: string; field: string };
+export interface FactTableFilterContext {
+  modelFilterFields: {
+    [name: string]: {
+      [id: string]: { id: string; field: string };
+    };
+  };
+  businessLines: {
+    [id: string]: {
+      id: string;
+      name: string;
+    };
   };
 }
 
-export const GetWarehouseFilters = (props: { children: (result: FactTableFilterFields) => React.ReactNode }) => (
-  <SimpleQuery component={GetWarehouseGlobalFilterOptionsComponent} require={["warehouseIntrospection"]}>
+export const GetWarehouseFilters = (props: { children: (result: FactTableFilterContext) => React.ReactNode }) => (
+  <SimpleQuery component={GetWarehouseGlobalFilterOptionsComponent} require={["warehouseIntrospection", "currentAccount"]}>
     {result => {
       const nameIndex = keyBy(result.warehouseIntrospection.factTables, "name");
-      const fieldIndex = mapValues(nameIndex, factTable => keyBy(factTable.globalFilterFields, "id"));
-      return props.children(fieldIndex);
+      return props.children({
+        modelFilterFields: mapValues(nameIndex, factTable => keyBy(factTable.globalFilterFields, "id")),
+        businessLines: keyBy(result.currentAccount.businessLines, "id")
+      });
     }}
   </SimpleQuery>
 );

@@ -7,7 +7,7 @@ import { Warehouse } from "../superviz/Warehouse";
 
 gql`
   query ReportBuilderPage {
-    ...WarehouseIntrospection
+    ...WarehouseIntrospectionForWarehouse
   }
 `;
 

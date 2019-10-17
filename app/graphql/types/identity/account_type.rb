@@ -10,10 +10,16 @@ class Types::Identity::AccountType < Types::BaseObject
   field :discarded_at, GraphQL::Types::ISO8601DateTime, null: true
   field :discarded, Boolean, null: false, method: :discarded?
 
+  field :business_lines, [Types::Identity::BusinessLineType], null: false
+
   field :app_url, String, null: false
 
   def creator
     RecordLoader.for(User).load(object.creator_id)
+  end
+
+  def business_lines
+    AssociationLoader.for(Account, :business_lines).load(object)
   end
 
   def app_url
