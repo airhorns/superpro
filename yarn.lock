@@ -1526,10 +1526,10 @@
   resolved "https://registry.yarnpkg.com/@types/debounce/-/debounce-1.2.0.tgz#9ee99259f41018c640b3929e1bb32c3dcecdb192"
   integrity sha512-bWG5wapaWgbss9E238T0R6bfo5Fh3OkeoSt245CM7JJwVwpw6MEBCbIxLq5z8KzsE3uJhzcIuQkyiZmzV3M/Dw==
 
-"@types/dinero.js@^1.4.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@types/dinero.js/-/dinero.js-1.6.0.tgz#33775655068ebcaa618b7021da1802d2fc2590e0"
-  integrity sha512-42K5SBbnnEy0PHfycVwCWX91eeY3a5eig9bWv6ur+xc8i23/zMR5g2BUVGAphhK7yoZpkGboq2T/BtcFWiMdXA==
+"@types/dinero.js@^1.6.1":
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/@types/dinero.js/-/dinero.js-1.6.1.tgz#47dae88088ec3cc5418d93a83a889377a43dcc3e"
+  integrity sha512-a04+sW8hFpiS4i++/YJufT/kzapgTNDXSRIuvUlesSTuAPsA0crca62a7edVNHFcpUl9D+Y+xKfe6yO5jqTGZw==
 
 "@types/echarts@^4.1.15":
   version "4.1.15"
