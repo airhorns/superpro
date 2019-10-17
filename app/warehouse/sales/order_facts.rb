@@ -19,6 +19,10 @@ class Sales::OrderFacts < DataModel::FactTable
   dimension :cancelled, DataModel::Types::Boolean
   dimension :customer_id, DataModel::Types::String
   dimension :order_id, DataModel::Types::String
+  dimension :landing_page_utm_medium, DataModel::Types::String
+  dimension :landing_page_utm_source, DataModel::Types::String
+  dimension :landing_page_utm_campaign, DataModel::Types::String
+  dimension :landing_page_utm_content, DataModel::Types::String
 
   dimension :new_vs_repeat, DataModel::Types::String
 

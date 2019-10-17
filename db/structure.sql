@@ -80,6 +80,63 @@ CREATE SCHEMA warehouse;
 
 
 --
+-- Name: que_validate_tags(jsonb); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.que_validate_tags(tags_array jsonb) RETURNS boolean
+    LANGUAGE sql
+    AS $$
+  SELECT bool_and(
+    jsonb_typeof(value) = 'string'
+    AND
+    char_length(value::text) <= 100
+  )
+  FROM jsonb_array_elements(tags_array)
+$$;
+
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: que_jobs; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.que_jobs (
+    priority smallint DEFAULT 100 NOT NULL,
+    run_at timestamp with time zone DEFAULT now() NOT NULL,
+    id bigint NOT NULL,
+    job_class text NOT NULL,
+    error_count integer DEFAULT 0 NOT NULL,
+    last_error_message text,
+    queue text DEFAULT 'default'::text NOT NULL,
+    last_error_backtrace text,
+    finished_at timestamp with time zone,
+    expired_at timestamp with time zone,
+    args jsonb DEFAULT '[]'::jsonb NOT NULL,
+    data jsonb DEFAULT '{}'::jsonb NOT NULL,
+    CONSTRAINT error_length CHECK (((char_length(last_error_message) <= 500) AND (char_length(last_error_backtrace) <= 10000))),
+    CONSTRAINT job_class_length CHECK ((char_length(
+CASE job_class
+    WHEN 'ActiveJob::QueueAdapters::QueAdapter::JobWrapper'::text THEN ((args -> 0) ->> 'job_class'::text)
+    ELSE job_class
+END) <= 200)),
+    CONSTRAINT queue_length CHECK ((char_length(queue) <= 100)),
+    CONSTRAINT valid_args CHECK ((jsonb_typeof(args) = 'array'::text)),
+    CONSTRAINT valid_data CHECK (((jsonb_typeof(data) = 'object'::text) AND ((NOT (data ? 'tags'::text)) OR ((jsonb_typeof((data -> 'tags'::text)) = 'array'::text) AND (jsonb_array_length((data -> 'tags'::text)) <= 5) AND public.que_validate_tags((data -> 'tags'::text))))))
+)
+WITH (fillfactor='90');
+
+
+--
+-- Name: TABLE que_jobs; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON TABLE public.que_jobs IS '4';
+
+
+--
 -- Name: calculate_earth_surface_distance(double precision, double precision, double precision, double precision, character varying); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -212,63 +269,6 @@ BEGIN
   RETURN COALESCE(v,s);
 END;
 $$;
-
-
---
--- Name: que_validate_tags(jsonb); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION public.que_validate_tags(tags_array jsonb) RETURNS boolean
-    LANGUAGE sql
-    AS $$
-  SELECT bool_and(
-    jsonb_typeof(value) = 'string'
-    AND
-    char_length(value::text) <= 100
-  )
-  FROM jsonb_array_elements(tags_array)
-$$;
-
-
-SET default_tablespace = '';
-
-SET default_with_oids = false;
-
---
--- Name: que_jobs; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.que_jobs (
-    priority smallint DEFAULT 100 NOT NULL,
-    run_at timestamp with time zone DEFAULT now() NOT NULL,
-    id bigint NOT NULL,
-    job_class text NOT NULL,
-    error_count integer DEFAULT 0 NOT NULL,
-    last_error_message text,
-    queue text DEFAULT 'default'::text NOT NULL,
-    last_error_backtrace text,
-    finished_at timestamp with time zone,
-    expired_at timestamp with time zone,
-    args jsonb DEFAULT '[]'::jsonb NOT NULL,
-    data jsonb DEFAULT '{}'::jsonb NOT NULL,
-    CONSTRAINT error_length CHECK (((char_length(last_error_message) <= 500) AND (char_length(last_error_backtrace) <= 10000))),
-    CONSTRAINT job_class_length CHECK ((char_length(
-CASE job_class
-    WHEN 'ActiveJob::QueueAdapters::QueAdapter::JobWrapper'::text THEN ((args -> 0) ->> 'job_class'::text)
-    ELSE job_class
-END) <= 200)),
-    CONSTRAINT queue_length CHECK ((char_length(queue) <= 100)),
-    CONSTRAINT valid_args CHECK ((jsonb_typeof(args) = 'array'::text)),
-    CONSTRAINT valid_data CHECK (((jsonb_typeof(data) = 'object'::text) AND ((NOT (data ? 'tags'::text)) OR ((jsonb_typeof((data -> 'tags'::text)) = 'array'::text) AND (jsonb_array_length((data -> 'tags'::text)) <= 5) AND public.que_validate_tags((data -> 'tags'::text))))))
-)
-WITH (fillfactor='90');
-
-
---
--- Name: TABLE que_jobs; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON TABLE public.que_jobs IS '4';
 
 
 --
@@ -1419,7 +1419,7 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 CREATE TABLE raw_science.stg_shopify_customer_predicted_clv (
     predicted_clv double precision,
     customer_id bigint,
-    business_line text,
+    business_line_id bigint,
     months_into_future bigint,
     account_id bigint
 );
@@ -14713,6 +14713,12 @@ CREATE TABLE warehouse.dim_shopify_customers (
     previous_3_month_spend double precision,
     previous_6_month_spend double precision,
     previous_12_month_spend double precision,
+    future_3_month_predicted_spend double precision,
+    future_3_month_predicted_spend_quintile integer,
+    future_12_month_predicted_spend double precision,
+    future_12_month_predicted_spend_quintile integer,
+    future_24_month_predicted_spend double precision,
+    future_24_month_predicted_spend_quintile integer,
     most_recent_order_id bigint,
     most_recent_order_number bigint,
     most_recent_order_at timestamp with time zone,
@@ -14729,38 +14735,6 @@ CREATE TABLE warehouse.dim_shopify_customers (
     rfm_value_label text,
     rfm_desirability_score integer,
     business_line_id bigint
-);
-
-
---
--- Name: fct_shopify_customer_pareto; Type: TABLE; Schema: warehouse; Owner: -
---
-
-CREATE TABLE warehouse.fct_shopify_customer_pareto (
-    account_id bigint,
-    customer_id bigint,
-    business_line_id bigint,
-    year double precision,
-    sales double precision,
-    percent_of_sales double precision,
-    cumulative_percent_of_sales double precision,
-    customer_rank bigint
-);
-
-
---
--- Name: fct_shopify_customer_retention; Type: TABLE; Schema: warehouse; Owner: -
---
-
-CREATE TABLE warehouse.fct_shopify_customer_retention (
-    total_customers bigint,
-    total_active_customers bigint,
-    total_orders numeric,
-    total_spend double precision,
-    months_since_genesis integer,
-    genesis_month timestamp with time zone,
-    account_id bigint,
-    pct_active_customers numeric
 );
 
 
@@ -14854,70 +14828,335 @@ CREATE TABLE warehouse.fct_shopify_orders (
     business_line_id bigint,
     order_seq_number bigint,
     new_vs_repeat text,
-    cancelled boolean
+    cancelled boolean,
+    landing_page_utm_medium text,
+    landing_page_utm_source text,
+    landing_page_utm_campaign text,
+    landing_page_utm_content text
 );
 
 
 --
--- Name: fct_shopify_repurchase_intervals; Type: VIEW; Schema: warehouse; Owner: -
+-- Name: fct_customer_acquisitions; Type: VIEW; Schema: warehouse; Owner: -
 --
 
-CREATE VIEW warehouse.fct_shopify_repurchase_intervals AS
- WITH successful_orders AS (
-         SELECT fct_shopify_orders.customer_id,
+CREATE VIEW warehouse.fct_customer_acquisitions AS
+ WITH shopify_orders AS (
+         SELECT fct_shopify_orders.order_id,
             fct_shopify_orders.account_id,
-            fct_shopify_orders.order_id,
-            fct_shopify_orders.order_seq_number,
+            fct_shopify_orders.shop_id,
+            fct_shopify_orders.app_id,
+            fct_shopify_orders.order_name,
+            fct_shopify_orders.user_id,
+            fct_shopify_orders.customer_id,
+            fct_shopify_orders.checkout_id,
+            fct_shopify_orders.checkout_token,
+            fct_shopify_orders.cart_token,
+            fct_shopify_orders.token,
+            fct_shopify_orders.email,
+            fct_shopify_orders.contact_email,
+            fct_shopify_orders.buyer_accepts_marketing,
+            fct_shopify_orders.confirmed,
+            fct_shopify_orders.internal_number,
+            fct_shopify_orders.order_number,
+            fct_shopify_orders.currency,
+            fct_shopify_orders.presentment_currency,
+            fct_shopify_orders.financial_status,
+            fct_shopify_orders.fulfillment_status,
+            fct_shopify_orders.gateway,
+            fct_shopify_orders.processing_method,
+            fct_shopify_orders.total_tip_received,
+            fct_shopify_orders.total_weight,
+            fct_shopify_orders.total_discounts_base,
+            fct_shopify_orders.subtotal_price,
+            fct_shopify_orders.total_line_items_price,
             fct_shopify_orders.total_price,
-            fct_shopify_orders.created_at AS order_date
+            fct_shopify_orders.total_price_usd,
+            fct_shopify_orders.total_tax,
+            fct_shopify_orders.total_shipping_cost_base,
+            fct_shopify_orders.shipping_currency_code,
+            fct_shopify_orders.tags,
+            fct_shopify_orders.taxes_included,
+            fct_shopify_orders.order_status_url,
+            fct_shopify_orders.location_id,
+            fct_shopify_orders.shipping_city,
+            fct_shopify_orders.shipping_province,
+            fct_shopify_orders.shipping_province_code,
+            fct_shopify_orders.shipping_country,
+            fct_shopify_orders.shipping_country_code,
+            fct_shopify_orders.shipping_zip_code,
+            fct_shopify_orders.shipping_address_address1,
+            fct_shopify_orders.shipping_address_address2,
+            fct_shopify_orders.shipping_company,
+            fct_shopify_orders.shipping_first_name,
+            fct_shopify_orders.shipping_last_name,
+            fct_shopify_orders.shipping_latitude,
+            fct_shopify_orders.shipping_longitude,
+            fct_shopify_orders.shipping_name,
+            fct_shopify_orders.shipping_phone,
+            fct_shopify_orders.billing_city,
+            fct_shopify_orders.billing_province,
+            fct_shopify_orders.billing_province_code,
+            fct_shopify_orders.billing_country,
+            fct_shopify_orders.billing_country_code,
+            fct_shopify_orders.billing_zip_code,
+            fct_shopify_orders.billing_address_address1,
+            fct_shopify_orders.billing_address_address2,
+            fct_shopify_orders.billing_company,
+            fct_shopify_orders.billing_first_name,
+            fct_shopify_orders.billing_last_name,
+            fct_shopify_orders.billing_latitude,
+            fct_shopify_orders.billing_longitude,
+            fct_shopify_orders.billing_name,
+            fct_shopify_orders.billing_phone,
+            fct_shopify_orders.referring_site,
+            fct_shopify_orders.browser_ip,
+            fct_shopify_orders.landing_site,
+            fct_shopify_orders.source_name,
+            fct_shopify_orders.created_at,
+            fct_shopify_orders.processed_at,
+            fct_shopify_orders.closed_at,
+            fct_shopify_orders.cancelled_at,
+            fct_shopify_orders.cancel_reason,
+            fct_shopify_orders.updated_at,
+            fct_shopify_orders.discount_code,
+            fct_shopify_orders.discount_type,
+            fct_shopify_orders.shipping_discount,
+            fct_shopify_orders.final_discounts,
+            fct_shopify_orders.final_shipping_cost,
+            fct_shopify_orders.business_line_id,
+            fct_shopify_orders.order_seq_number,
+            fct_shopify_orders.new_vs_repeat,
+            fct_shopify_orders.cancelled,
+            fct_shopify_orders.landing_page_utm_medium,
+            fct_shopify_orders.landing_page_utm_source,
+            fct_shopify_orders.landing_page_utm_campaign,
+            fct_shopify_orders.landing_page_utm_content
            FROM warehouse.fct_shopify_orders
-          WHERE (fct_shopify_orders.cancelled_at IS NULL)
-        ), orders AS (
-         SELECT successful_orders.customer_id,
-            successful_orders.account_id,
-            successful_orders.order_id,
-            successful_orders.order_seq_number,
-            successful_orders.total_price,
-            successful_orders.order_date,
-            lag(successful_orders.order_date) OVER (PARTITION BY successful_orders.customer_id ORDER BY successful_orders.order_date) AS previous_order_date,
-            lead(successful_orders.order_date) OVER (PARTITION BY successful_orders.customer_id ORDER BY successful_orders.order_date) AS next_order_date
-           FROM successful_orders
-        ), buckets AS (
-         SELECT orders.customer_id,
-            orders.account_id,
-            orders.order_id,
-            orders.order_seq_number,
-            orders.total_price,
-            orders.order_date,
-            orders.previous_order_date,
-            orders.next_order_date,
-            date_part('day'::text, (orders.order_date - orders.previous_order_date)) AS days_since_previous_order,
-            width_bucket(date_part('day'::text, (orders.order_date - orders.previous_order_date)), (0)::double precision, (600)::double precision, 30) AS days_since_previous_order_bucket,
-            date_part('day'::text, (orders.next_order_date - orders.order_date)) AS days_until_next_order,
-            width_bucket(date_part('day'::text, (orders.next_order_date - orders.order_date)), (0)::double precision, (600)::double precision, 30) AS days_until_next_order_bucket
-           FROM orders
+        ), dim_shopify_customers AS (
+         SELECT dim_shopify_customers_1.customer_id,
+            dim_shopify_customers_1.account_id,
+            dim_shopify_customers_1.shop_id,
+            dim_shopify_customers_1.email,
+            dim_shopify_customers_1.verified_email,
+            dim_shopify_customers_1.first_name,
+            dim_shopify_customers_1.last_name,
+            dim_shopify_customers_1.accepts_marketing,
+            dim_shopify_customers_1.state,
+            dim_shopify_customers_1.tax_exempt,
+            dim_shopify_customers_1.tags,
+            dim_shopify_customers_1.default_address_id,
+            dim_shopify_customers_1.created_at,
+            dim_shopify_customers_1.updated_at,
+            dim_shopify_customers_1.total_order_count,
+            dim_shopify_customers_1.total_successful_order_count,
+            dim_shopify_customers_1.total_cancelled_order_count,
+            dim_shopify_customers_1.total_spend,
+            dim_shopify_customers_1.previous_1_month_spend,
+            dim_shopify_customers_1.previous_3_month_spend,
+            dim_shopify_customers_1.previous_6_month_spend,
+            dim_shopify_customers_1.previous_12_month_spend,
+            dim_shopify_customers_1.future_3_month_predicted_spend,
+            dim_shopify_customers_1.future_3_month_predicted_spend_quintile,
+            dim_shopify_customers_1.future_12_month_predicted_spend,
+            dim_shopify_customers_1.future_12_month_predicted_spend_quintile,
+            dim_shopify_customers_1.future_24_month_predicted_spend,
+            dim_shopify_customers_1.future_24_month_predicted_spend_quintile,
+            dim_shopify_customers_1.most_recent_order_id,
+            dim_shopify_customers_1.most_recent_order_number,
+            dim_shopify_customers_1.most_recent_order_at,
+            dim_shopify_customers_1.most_recent_order_total_price,
+            dim_shopify_customers_1.first_order_id,
+            dim_shopify_customers_1.first_order_number,
+            dim_shopify_customers_1.first_order_at,
+            dim_shopify_customers_1.first_order_total_price,
+            dim_shopify_customers_1.rfm_recency_quintile,
+            dim_shopify_customers_1.rfm_frequency_quintile,
+            dim_shopify_customers_1.rfm_monetary_quintile,
+            dim_shopify_customers_1.rfm_score,
+            dim_shopify_customers_1.rfm_label,
+            dim_shopify_customers_1.rfm_value_label,
+            dim_shopify_customers_1.rfm_desirability_score,
+            dim_shopify_customers_1.business_line_id
+           FROM warehouse.dim_shopify_customers dim_shopify_customers_1
+        ), second_orders AS (
+         SELECT fct_shopify_orders.order_id,
+            fct_shopify_orders.account_id,
+            fct_shopify_orders.shop_id,
+            fct_shopify_orders.app_id,
+            fct_shopify_orders.order_name,
+            fct_shopify_orders.user_id,
+            fct_shopify_orders.customer_id,
+            fct_shopify_orders.checkout_id,
+            fct_shopify_orders.checkout_token,
+            fct_shopify_orders.cart_token,
+            fct_shopify_orders.token,
+            fct_shopify_orders.email,
+            fct_shopify_orders.contact_email,
+            fct_shopify_orders.buyer_accepts_marketing,
+            fct_shopify_orders.confirmed,
+            fct_shopify_orders.internal_number,
+            fct_shopify_orders.order_number,
+            fct_shopify_orders.currency,
+            fct_shopify_orders.presentment_currency,
+            fct_shopify_orders.financial_status,
+            fct_shopify_orders.fulfillment_status,
+            fct_shopify_orders.gateway,
+            fct_shopify_orders.processing_method,
+            fct_shopify_orders.total_tip_received,
+            fct_shopify_orders.total_weight,
+            fct_shopify_orders.total_discounts_base,
+            fct_shopify_orders.subtotal_price,
+            fct_shopify_orders.total_line_items_price,
+            fct_shopify_orders.total_price,
+            fct_shopify_orders.total_price_usd,
+            fct_shopify_orders.total_tax,
+            fct_shopify_orders.total_shipping_cost_base,
+            fct_shopify_orders.shipping_currency_code,
+            fct_shopify_orders.tags,
+            fct_shopify_orders.taxes_included,
+            fct_shopify_orders.order_status_url,
+            fct_shopify_orders.location_id,
+            fct_shopify_orders.shipping_city,
+            fct_shopify_orders.shipping_province,
+            fct_shopify_orders.shipping_province_code,
+            fct_shopify_orders.shipping_country,
+            fct_shopify_orders.shipping_country_code,
+            fct_shopify_orders.shipping_zip_code,
+            fct_shopify_orders.shipping_address_address1,
+            fct_shopify_orders.shipping_address_address2,
+            fct_shopify_orders.shipping_company,
+            fct_shopify_orders.shipping_first_name,
+            fct_shopify_orders.shipping_last_name,
+            fct_shopify_orders.shipping_latitude,
+            fct_shopify_orders.shipping_longitude,
+            fct_shopify_orders.shipping_name,
+            fct_shopify_orders.shipping_phone,
+            fct_shopify_orders.billing_city,
+            fct_shopify_orders.billing_province,
+            fct_shopify_orders.billing_province_code,
+            fct_shopify_orders.billing_country,
+            fct_shopify_orders.billing_country_code,
+            fct_shopify_orders.billing_zip_code,
+            fct_shopify_orders.billing_address_address1,
+            fct_shopify_orders.billing_address_address2,
+            fct_shopify_orders.billing_company,
+            fct_shopify_orders.billing_first_name,
+            fct_shopify_orders.billing_last_name,
+            fct_shopify_orders.billing_latitude,
+            fct_shopify_orders.billing_longitude,
+            fct_shopify_orders.billing_name,
+            fct_shopify_orders.billing_phone,
+            fct_shopify_orders.referring_site,
+            fct_shopify_orders.browser_ip,
+            fct_shopify_orders.landing_site,
+            fct_shopify_orders.source_name,
+            fct_shopify_orders.created_at,
+            fct_shopify_orders.processed_at,
+            fct_shopify_orders.closed_at,
+            fct_shopify_orders.cancelled_at,
+            fct_shopify_orders.cancel_reason,
+            fct_shopify_orders.updated_at,
+            fct_shopify_orders.discount_code,
+            fct_shopify_orders.discount_type,
+            fct_shopify_orders.shipping_discount,
+            fct_shopify_orders.final_discounts,
+            fct_shopify_orders.final_shipping_cost,
+            fct_shopify_orders.business_line_id,
+            fct_shopify_orders.order_seq_number,
+            fct_shopify_orders.new_vs_repeat,
+            fct_shopify_orders.cancelled,
+            fct_shopify_orders.landing_page_utm_medium,
+            fct_shopify_orders.landing_page_utm_source,
+            fct_shopify_orders.landing_page_utm_campaign,
+            fct_shopify_orders.landing_page_utm_content
+           FROM warehouse.fct_shopify_orders
+          WHERE (fct_shopify_orders.order_seq_number = 2)
         )
- SELECT buckets.customer_id,
-    buckets.account_id,
-    buckets.order_id,
-    buckets.order_seq_number,
-    buckets.total_price,
-    buckets.order_date,
-    buckets.previous_order_date,
-    buckets.next_order_date,
-    buckets.days_since_previous_order,
-    buckets.days_since_previous_order_bucket,
-    buckets.days_until_next_order,
-    buckets.days_until_next_order_bucket,
-        CASE
-            WHEN (buckets.days_since_previous_order_bucket < 30) THEN concat(lpad(((buckets.days_since_previous_order_bucket)::character varying)::text, 2, '0'::text), ': ', ((buckets.days_since_previous_order_bucket - 1) * 20), ' - ', ((buckets.days_since_previous_order_bucket * 20) - 1), ' days')
-            ELSE '30: 580+ days'::text
-        END AS days_since_previous_order_bucket_label,
-        CASE
-            WHEN (buckets.days_until_next_order_bucket < 30) THEN concat(lpad(((buckets.days_until_next_order_bucket)::character varying)::text, 2, '0'::text), ': ', ((buckets.days_until_next_order_bucket - 1) * 20), ' - ', ((buckets.days_until_next_order_bucket * 20) - 1), ' days')
-            ELSE '30: 580+ days'::text
-        END AS days_until_next_order_bucket_label
-   FROM buckets;
+ SELECT shopify_orders.account_id,
+    shopify_orders.customer_id,
+    shopify_orders.business_line_id,
+    shopify_orders.created_at AS acquired_at,
+    shopify_orders.landing_page_utm_source,
+    shopify_orders.landing_page_utm_medium,
+    shopify_orders.landing_page_utm_campaign,
+    shopify_orders.landing_page_utm_content,
+    shopify_orders.total_price AS first_order_total_price,
+    dim_shopify_customers.total_order_count,
+    dim_shopify_customers.total_successful_order_count,
+    dim_shopify_customers.total_cancelled_order_count,
+    dim_shopify_customers.total_spend,
+    dim_shopify_customers.previous_1_month_spend,
+    dim_shopify_customers.previous_3_month_spend,
+    dim_shopify_customers.previous_6_month_spend,
+    dim_shopify_customers.previous_12_month_spend,
+    dim_shopify_customers.future_3_month_predicted_spend,
+    dim_shopify_customers.future_3_month_predicted_spend_quintile,
+    dim_shopify_customers.future_12_month_predicted_spend,
+    dim_shopify_customers.future_12_month_predicted_spend_quintile,
+    dim_shopify_customers.future_24_month_predicted_spend,
+    dim_shopify_customers.future_24_month_predicted_spend_quintile,
+    date_part('day'::text, (second_orders.created_at - shopify_orders.created_at)) AS days_until_next_order,
+    (date_part('day'::text, (second_orders.created_at - shopify_orders.created_at)) < (60)::double precision) AS early_repurchaser
+   FROM ((shopify_orders
+     JOIN dim_shopify_customers USING (customer_id))
+     LEFT JOIN second_orders USING (customer_id))
+  WHERE ((shopify_orders.new_vs_repeat = 'new'::text) AND (shopify_orders.cancelled = false));
+
+
+--
+-- Name: fct_shopify_customer_pareto; Type: TABLE; Schema: warehouse; Owner: -
+--
+
+CREATE TABLE warehouse.fct_shopify_customer_pareto (
+    account_id bigint,
+    customer_id bigint,
+    business_line_id bigint,
+    year double precision,
+    sales double precision,
+    percent_of_sales double precision,
+    cumulative_percent_of_sales double precision,
+    customer_rank bigint
+);
+
+
+--
+-- Name: fct_shopify_customer_retention; Type: TABLE; Schema: warehouse; Owner: -
+--
+
+CREATE TABLE warehouse.fct_shopify_customer_retention (
+    total_customers bigint,
+    total_active_customers bigint,
+    total_orders numeric,
+    total_spend double precision,
+    months_since_genesis integer,
+    genesis_month timestamp with time zone,
+    account_id bigint,
+    pct_active_customers numeric
+);
+
+
+--
+-- Name: fct_shopify_repurchase_intervals; Type: TABLE; Schema: warehouse; Owner: -
+--
+
+CREATE TABLE warehouse.fct_shopify_repurchase_intervals (
+    customer_id bigint,
+    account_id bigint,
+    business_line_id bigint,
+    order_id bigint,
+    order_seq_number bigint,
+    total_price double precision,
+    order_date timestamp with time zone,
+    previous_order_date timestamp with time zone,
+    next_order_date timestamp with time zone,
+    days_since_previous_order double precision,
+    days_since_previous_order_bucket integer,
+    days_until_next_order double precision,
+    days_until_next_order_bucket integer,
+    days_since_previous_order_bucket_label text,
+    days_until_next_order_bucket_label text
+);
 
 
 --
@@ -20359,6 +20598,27 @@ CREATE INDEX dim_business_lines__index_on_account_id__name ON warehouse.dim_busi
 
 
 --
+-- Name: dim_shopify_customers__index_on_account_id__business_line_id; Type: INDEX; Schema: warehouse; Owner: -
+--
+
+CREATE INDEX dim_shopify_customers__index_on_account_id__business_line_id ON warehouse.dim_shopify_customers USING btree (account_id, business_line_id);
+
+
+--
+-- Name: dim_shopify_customers__index_on_account_id__customer_id; Type: INDEX; Schema: warehouse; Owner: -
+--
+
+CREATE INDEX dim_shopify_customers__index_on_account_id__customer_id ON warehouse.dim_shopify_customers USING btree (account_id, customer_id);
+
+
+--
+-- Name: dim_shopify_customers__index_on_account_id__total_successful_or; Type: INDEX; Schema: warehouse; Owner: -
+--
+
+CREATE INDEX dim_shopify_customers__index_on_account_id__total_successful_or ON warehouse.dim_shopify_customers USING btree (account_id, total_successful_order_count);
+
+
+--
 -- Name: fct_shopify_customer_pareto__index_on_account_id__business_line; Type: INDEX; Schema: warehouse; Owner: -
 --
 
@@ -20377,6 +20637,13 @@ CREATE INDEX fct_shopify_orders__index_on_account_id__customer_id__created_a ON 
 --
 
 CREATE INDEX fct_shopify_orders__index_on_cancelled_at__customer_id__created ON warehouse.fct_shopify_orders USING btree (cancelled_at, customer_id, created_at);
+
+
+--
+-- Name: fct_shopify_repurchase_intervals__index_on_account_id__order_da; Type: INDEX; Schema: warehouse; Owner: -
+--
+
+CREATE INDEX fct_shopify_repurchase_intervals__index_on_account_id__order_da ON warehouse.fct_shopify_repurchase_intervals USING btree (account_id, order_date, business_line_id, customer_id);
 
 
 --

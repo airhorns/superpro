@@ -22,6 +22,13 @@ class Sales::CustomersDimension < DataModel::DimensionTable
   dimension :previous_6_month_spend, DataModel::Types::Currency
   dimension :previous_12_month_spend, DataModel::Types::Currency
 
+  dimension :future_3_month_predicted_spend, DataModel::Types::Currency
+  dimension :future_3_month_predicted_spend_quintile, DataModel::Types::Number
+  dimension :future_12_month_predicted_spend, DataModel::Types::Currency
+  dimension :future_12_month_predicted_spend_quintile, DataModel::Types::Number
+  dimension :future_24_month_predicted_spend, DataModel::Types::Currency
+  dimension :future_24_month_predicted_spend_quintile, DataModel::Types::Number
+
   dimension :rfm_score, DataModel::Types::String
   dimension :rfm_label, DataModel::Types::String
   dimension :rfm_value_label, DataModel::Types::String

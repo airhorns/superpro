@@ -10,6 +10,7 @@ class SuperproWarehouse < DataModel::Warehouse
 
   register_fact_table Traffic::SessionFacts
   register_fact_table Traffic::PageViewFacts
+  register_fact_table Traffic::CustomerAcquisitionFacts
 
   register_fact_table Customers::RFMThresholdFacts
 

@@ -10,6 +10,7 @@ import { ToastContainer, FlagsProvider } from "../superlib";
 import { AppSidebar } from "./components/chrome/AppSidebar";
 import { NotFoundPage } from "./components/chrome/NotFoundPage";
 import { PageLoadSpin } from "../superlib";
+import MarketingActivityCustomerQualityReport from "./components/traffic/MarketingActivityCustomerQualityReport";
 
 const HomePage = React.lazy(() => import("./components/home/HomePage"));
 const Launchpad = React.lazy(() => import("./components/home/Launchpad"));
@@ -86,6 +87,11 @@ export const App = () => {
                                 <Route path="/traffic" exact component={TrafficOverviewReport} />
                                 <Route path="/traffic/overview" exact component={TrafficOverviewReport} />
                                 <Route path="/traffic/slow_landing_pages" exact component={SlowLandingPagesReport} />
+                                <Route
+                                  path="/traffic/marketing_activity_customer_quality"
+                                  exact
+                                  component={MarketingActivityCustomerQualityReport}
+                                />
                                 <Route path="/customers/rfm_breakdown" exact component={RFMBreakdownReport} />
                                 <Route path="/report_builder" exact component={ReporrtBuilderPage} />
                                 <Route path="/settings" exact component={AccountSettingsPage} />
