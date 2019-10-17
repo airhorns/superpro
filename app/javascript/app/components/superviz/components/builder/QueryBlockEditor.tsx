@@ -41,14 +41,14 @@ export const QueryBlockEditor = (props: { block: VizBlock | TableBlock; index: n
 
   return (
     <Box>
-      <Row gap="small">
+      <Row gap="small" wrap>
         <Heading level="3">Show me:</Heading>
         {props.block.query.measures.map(measure => (
           <MeasureForm key={measure.id} block={props.block} blockIndex={props.index} measure={measure} />
         ))}
         <AddMeasureButton block={props.block} blockIndex={props.index} />
       </Row>
-      <Row gap="small">
+      <Row gap="small" wrap>
         <Heading level="3">Split by:</Heading>
         {props.block.query.dimensions.map(dimension => (
           <DimensionForm key={dimension.id} block={props.block} blockIndex={props.index} dimension={dimension} />

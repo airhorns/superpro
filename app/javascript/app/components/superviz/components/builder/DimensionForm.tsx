@@ -6,6 +6,7 @@ import { VizBlock, TableBlock } from "../../schema";
 import { ReportBuilderContext } from "./ReportBuilder";
 import { Dimension } from "../../WarehouseQuery";
 import { find, isUndefined } from "lodash";
+import { TrashButton } from "app/components/common";
 
 interface DimensionOptionType {
   value: string;
@@ -110,6 +111,11 @@ export const DimensionForm = (props: { block: VizBlock | TableBlock; blockIndex:
             }
             controller.setDimensionOperator(props.blockIndex, props.dimension.id, option.value);
           }
+        }}
+      />
+      <TrashButton
+        onClick={() => {
+          controller.removeDimensionField(props.blockIndex, props.dimension.id);
         }}
       />
     </Row>

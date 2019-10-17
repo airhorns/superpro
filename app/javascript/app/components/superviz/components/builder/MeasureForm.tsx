@@ -6,6 +6,7 @@ import { VizBlock, TableBlock } from "../../schema";
 import { ReportBuilderContext } from "./ReportBuilder";
 import { Measure } from "../../WarehouseQuery";
 import { find } from "lodash";
+import { TrashButton } from "app/components/common";
 
 interface MeasureOptionType {
   value: string;
@@ -40,7 +41,7 @@ export const MeasureForm = (props: { block: VizBlock | TableBlock; blockIndex: n
   }
 
   return (
-    <Row>
+    <Row gap="small">
       <ReactSelect
         theme={SuperproReactSelectTheme}
         value={selectedOption}
@@ -60,6 +61,11 @@ export const MeasureForm = (props: { block: VizBlock | TableBlock; blockIndex: n
             }
             controller.setMeasureField(props.blockIndex, props.measure.id, option.modelName, option.fieldName);
           }
+        }}
+      />
+      <TrashButton
+        onClick={() => {
+          controller.removeMeasureField(props.blockIndex, props.measure.id);
         }}
       />
     </Row>
