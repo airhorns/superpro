@@ -1,5 +1,8 @@
 app/javascript/server/generated
-app/javascript/edit/app-graph.tsx
+app/javascript/app/app-graph.tsx
+app/javascript/app/app-graph-introspection.ts
+app/javascript/app/components/superviz/WarehouseQuery.d.ts
 app/javascript/auth/auth-graph.tsx
+app/javascript/auth/auth-graph-introspection.ts
 node_modules
 public

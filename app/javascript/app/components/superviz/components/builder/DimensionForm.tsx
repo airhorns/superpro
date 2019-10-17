@@ -45,20 +45,24 @@ const operatorOptions: OperatorOptionType[] = [
 
 export const DimensionForm = (props: { block: VizBlock | TableBlock; blockIndex: number; dimension: Dimension }) => {
   const controller = React.useContext(ReportBuilderContext);
+  const measuredFactTables = controller.factTablesQueriedForBlockIndex(props.blockIndex);
+
   const dimensionOptionGroups = React.useMemo(
     () =>
-      controller.warehouse.factTables.map(table => ({
-        label: table.name,
-        model: table.name,
-        options: table.dimensionFields.map(field => ({
-          modelName: table.name,
-          fieldName: field.fieldName,
-          value: `${table.name}::${field.fieldName}`,
-          labelInSelect: field.fieldLabel,
-          labelWhenSelected: `${table.name} ${field.fieldLabel}`
-        }))
-      })),
-    [controller]
+      controller.warehouse.factTables
+        .filter(table => measuredFactTables.includes(table.name))
+        .map(table => ({
+          label: table.name,
+          model: table.name,
+          options: table.dimensionFields.map(field => ({
+            modelName: table.name,
+            fieldName: field.fieldName,
+            value: `${table.name}::${field.fieldName}`,
+            labelInSelect: field.fieldLabel,
+            labelWhenSelected: `${table.name} ${field.fieldLabel}`
+          }))
+        })),
+    [controller, measuredFactTables]
   );
 
   const selectedModel = find(dimensionOptionGroups, { model: props.dimension.model });

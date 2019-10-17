@@ -8,6 +8,7 @@ import { MarkdownBlockEditor } from "./MarkdownBlockEditor";
 import { QueryBlockEditor } from "./QueryBlockEditor";
 import { AddNewReportBlockButton } from "./AddNewReportBlockButton";
 import { Warehouse } from "../../Warehouse";
+import { GlobalFilterController } from "../..";
 export const ReportBuilderContext = React.createContext<ReportBuilderController>({} as any);
 
 export interface ReportBuilderProps {
@@ -32,6 +33,7 @@ export class ReportBuilder extends React.Component<ReportBuilderProps, { doc: Re
       initialDoc,
       (newDoc, _oldDoc, controller) => {
         this.setState({ doc: controller.doc, errors: controller.errors }, () => {
+          console.debug("New report builder state", JSON.parse(JSON.stringify(controller.doc)));
           this.props.onChange && this.props.onChange(this.controller.doc, this.controller);
         });
       },
@@ -44,18 +46,20 @@ export class ReportBuilder extends React.Component<ReportBuilderProps, { doc: Re
   render() {
     return (
       <ReportBuilderContext.Provider value={this.controller}>
-        <Box fill>
-          {this.controller.doc.blocks.map((block, index) => {
-            if (block.type == "markdown_block") {
-              return <MarkdownBlockEditor key={index} block={block} index={index} />;
-            } else if (block.type == "viz_block" || block.type == "table_block") {
-              return <QueryBlockEditor key={index} block={block} index={index} />;
-            } else {
-              throw `Unknown viz document block type ${(block as any).type}`;
-            }
-          })}
-        </Box>
-        <AddNewReportBlockButton />
+        <GlobalFilterController.Provider>
+          <Box fill>
+            {this.controller.doc.blocks.map((block, index) => {
+              if (block.type == "markdown_block") {
+                return <MarkdownBlockEditor key={index} block={block} index={index} />;
+              } else if (block.type == "viz_block" || block.type == "table_block") {
+                return <QueryBlockEditor key={index} block={block} index={index} />;
+              } else {
+                throw `Unknown viz document block type ${(block as any).type}`;
+              }
+            })}
+          </Box>
+          <AddNewReportBlockButton />
+        </GlobalFilterController.Provider>
       </ReportBuilderContext.Provider>
     );
   }

@@ -80,7 +80,7 @@ export class Warehouse {
   }
 
   dimension(model: string, field: string) {
-    const fields = this.measuresIndex[model];
+    const fields = this.dimensionsIndex[model];
     if (fields) {
       return fields[field];
     }

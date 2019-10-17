@@ -24,6 +24,15 @@ export class ReportBuilderController extends SuperFormController<ReportDocument>
     }
   }
 
+  factTablesQueriedForBlockIndex(blockIndex: number) {
+    const block = assert(this.doc.blocks[blockIndex]);
+    if (!isQueryBlock(block)) {
+      throw "Can't change the measures of a block that doesn't make a query";
+    }
+
+    return block.query.measures.map(measure => measure.model);
+  }
+
   appendBlock<T extends Block>(type: T["type"], attrs?: T) {
     let block: T;
     if (attrs) {
@@ -49,19 +58,7 @@ export class ReportBuilderController extends SuperFormController<ReportDocument>
       }
       block.query.measures.push(measure);
 
-      if (block.type == "viz_block") {
-        const system: VizSystem = {
-          type: "viz_system",
-          vizType: "line",
-          yId: id
-        };
-
-        if (block.query.dimensions.length > 0) {
-          system.xId = block.query.dimensions[0].id;
-        }
-
-        block.viz.systems.push(system);
-      }
+      this.convergeViz(doc, blockIndex);
     });
   }
 
@@ -75,13 +72,7 @@ export class ReportBuilderController extends SuperFormController<ReportDocument>
       const dimension: Dimension = { id, model, field, operator };
       block.query.dimensions.push(dimension);
 
-      if (block.type == "viz_block") {
-        block.viz.systems.forEach(system => {
-          if (isUndefined(system.xId)) {
-            system.xId = id;
-          }
-        });
-      }
+      this.convergeViz(doc, blockIndex);
     });
   }
 
@@ -95,6 +86,7 @@ export class ReportBuilderController extends SuperFormController<ReportDocument>
       const measure = assert(find(block.query.measures, { id: measureId }));
       measure.model = model;
       measure.field = field;
+      this.convergeViz(doc, blockIndex);
     });
   }
 
@@ -108,6 +100,7 @@ export class ReportBuilderController extends SuperFormController<ReportDocument>
       const dimension = assert(find(block.query.dimensions, { id: dimensionId }));
       dimension.model = model;
       dimension.field = field;
+      this.convergeViz(doc, blockIndex);
     });
   }
 
@@ -124,6 +117,51 @@ export class ReportBuilderController extends SuperFormController<ReportDocument>
       } else {
         delete dimension.operator;
       }
+      this.convergeViz(doc, blockIndex);
     });
+  }
+
+  private convergeViz(doc: ReportDocument, blockIndex: number) {
+    const block = assert(doc.blocks[blockIndex]);
+    if (block.type !== "viz_block") {
+      return;
+    }
+
+    block.viz = {
+      type: "viz",
+      systems: []
+    };
+
+    const preferredXAxisDimension =
+      find(
+        block.query.dimensions,
+        dimension => assert(this.warehouse.dimension(dimension.model, dimension.field)).dataType == "DateTime"
+      ) || block.query.dimensions[0];
+
+    const segmentIds = block.query.dimensions
+      .filter(dimension => dimension.id != preferredXAxisDimension.id)
+      .map(dimension => dimension.id);
+
+    block.query.measures.forEach(measure => {
+      const system: VizSystem = {
+        type: "viz_system",
+        vizType: "line",
+        yId: measure.id
+      };
+
+      if (segmentIds.length > 0) {
+        system.segmentIds = segmentIds;
+      }
+
+      if (preferredXAxisDimension) {
+        system.xId = preferredXAxisDimension.id;
+      }
+
+      block.viz.systems.push(system);
+    });
+
+    // if (preferredXAxisDimension) {
+    //   block.viz.globalXId = preferredXAxisDimension.id;
+    // }
   }
 }

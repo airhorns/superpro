@@ -30,7 +30,7 @@ module DataModel
       def dimension_join(name, dimension, **options)
         join = DimensionJoin.new(name, dimension, **options)
         prefix = name.to_s.underscore
-        nice_prefix = name.to_s.capitalize
+        nice_prefix = name.to_s.titleize
 
         # Hackily add join field as a non-joined dimension field itself
         self.dimension(
