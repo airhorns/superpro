@@ -62,6 +62,7 @@ module DataModel
         child_class.dimension_fields = ActiveSupport::HashWithIndifferentAccess.new
         child_class.all_fields = ActiveSupport::HashWithIndifferentAccess.new
         child_class.global_filter_fields = ActiveSupport::HashWithIndifferentAccess.new
+
         child_class.measure :count, DataModel::Types::Number, sql: Arel.sql("1").count, allow_operators: false
       end
     end

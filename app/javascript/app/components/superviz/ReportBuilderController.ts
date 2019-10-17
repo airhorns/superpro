@@ -2,7 +2,7 @@ import { SuperFormController, SuperFormChangeCallback } from "superlib/superform
 import { ReportDocument, Block, isQueryBlock, VizSystem } from "./schema";
 import shortid from "shortid";
 import { assert } from "superlib";
-import { find, remove, findIndex } from "lodash";
+import { find, findIndex } from "lodash";
 import { Warehouse } from "./Warehouse";
 import { Measure, Dimension } from "./WarehouseQuery";
 

@@ -4,7 +4,11 @@ export default FullReportPage("Marketing Activity Customer Quality", {
   type: "document",
   id: "marketing_activity_customer_quality",
   blocks: [
-    { type: "markdown_block", markdown: "This report describes what kind of customers different marketing activities are aquiring." },
+    {
+      type: "markdown_block",
+      markdown:
+        "This report describes what kind of customers different marketing activities are acquiring. Note that this report is currently based on last click UTM parameter data for customers who converted during that session."
+    },
     {
       type: "table_block",
       query: {
@@ -34,7 +38,8 @@ export default FullReportPage("Marketing Activity Customer Quality", {
         dimensions: [
           { model: "Traffic::CustomerAcquisitionFacts", field: "landing_page_utm_source", id: "utm_source" },
           { model: "Traffic::CustomerAcquisitionFacts", field: "landing_page_utm_medium", id: "utm_medium" }
-        ]
+        ],
+        orderings: [{ id: "customer_equity", direction: "desc" }]
       }
     }
   ]

@@ -696,7 +696,7 @@ export type WarehouseIntrospectionFactTable = {
 export type WarehouseIntrospectionGlobalFilterField = {
    __typename: 'WarehouseIntrospectionGlobalFilterField',
   field: Scalars['String'],
-  id: Scalars['String'],
+  filterId: Scalars['String'],
 };
 
 export type WarehouseIntrospectionMeasureField = {
@@ -1110,7 +1110,7 @@ export type GetWarehouseGlobalFilterOptionsQuery = (
       & Pick<WarehouseIntrospectionFactTable, 'name'>
       & { globalFilterFields: Array<(
         { __typename: 'WarehouseIntrospectionGlobalFilterField' }
-        & Pick<WarehouseIntrospectionGlobalFilterField, 'id' | 'field'>
+        & Pick<WarehouseIntrospectionGlobalFilterField, 'filterId' | 'field'>
       )> }
     )>, operators: Array<(
       { __typename: 'WarehouseIntrospectionOperator' }
@@ -2025,7 +2025,7 @@ export const GetWarehouseGlobalFilterOptionsDocument = gql`
     factTables {
       name
       globalFilterFields {
-        id
+        filterId
         field
       }
     }

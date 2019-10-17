@@ -10,7 +10,7 @@ gql`
       factTables {
         name
         globalFilterFields {
-          id
+          filterId
           field
         }
       }
@@ -31,7 +31,7 @@ gql`
 export interface FactTableFilterContext {
   modelFilterFields: {
     [name: string]: {
-      [id: string]: { id: string; field: string };
+      [id: string]: { filterId: string; field: string };
     };
   };
   businessLines: {
@@ -47,7 +47,7 @@ export const GetWarehouseFilters = (props: { children: (result: FactTableFilterC
     {result => {
       const nameIndex = keyBy(result.warehouseIntrospection.factTables, "name");
       return props.children({
-        modelFilterFields: mapValues(nameIndex, factTable => keyBy(factTable.globalFilterFields, "id")),
+        modelFilterFields: mapValues(nameIndex, factTable => keyBy(factTable.globalFilterFields, "filterId")),
         businessLines: keyBy(result.currentAccount.businessLines, "id")
       });
     }}

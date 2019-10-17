@@ -31,7 +31,7 @@ module DataModel
           end,
           global_filter_fields: fact_table.global_filter_fields.map do |id, field|
             {
-              id: id,
+              filter_id: id,
               field: field,
             }
           end,
