@@ -1,36 +1,35 @@
 // THIS IS A GENERATED FILE! You shouldn't edit it manually. Regenerate it using yarn `generate-graphql`.
 
+export interface IntrospectionResultData {
+  __schema: {
+    types: {
+      kind: string;
+      name: string;
+      possibleTypes: {
+        name: string;
+      }[];
+    }[];
+  };
+}
 
-      export interface IntrospectionResultData {
-        __schema: {
-          types: {
-            kind: string;
-            name: string;
-            possibleTypes: {
-              name: string;
-            }[];
-          }[];
-        };
-      }
-
-      const result: IntrospectionResultData = {
-  "__schema": {
-    "types": [
+const result: IntrospectionResultData = {
+  __schema: {
+    types: [
       {
-        "kind": "UNION",
-        "name": "ConnectionIntegrationUnion",
-        "possibleTypes": [
+        kind: "UNION",
+        name: "ConnectionIntegrationUnion",
+        possibleTypes: [
           {
-            "name": "PlaidItem"
+            name: "PlaidItem"
           },
           {
-            "name": "ShopifyShop"
+            name: "ShopifyShop"
           },
           {
-            "name": "GoogleAnalyticsCredential"
+            name: "GoogleAnalyticsCredential"
           },
           {
-            "name": "FacebookAdAccount"
+            name: "FacebookAdAccount"
           }
         ]
       }
@@ -38,5 +37,4 @@
   }
 };
 
-      export default result;
-    
+export default result;
