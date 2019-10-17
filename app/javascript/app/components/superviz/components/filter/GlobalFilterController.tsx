@@ -5,7 +5,7 @@ import { Filter } from "../../WarehouseQuery";
 
 const StorageContext = React.createContext<GlobalFilterController>(null as any);
 
-export type GlobalFilterID = "start_date" | "end_date" | "business_line_id";
+export type GlobalFilterID = "start_date" | "end_date" | "duration_key" | "business_line_id";
 
 export interface GlobalFilterSet {
   filters: {
@@ -36,6 +36,12 @@ export class GlobalFilterController {
     if (parsed.filters) {
       this.state.filters = JSON.parse(parsed.filters as string) as GlobalFilterSet["filters"];
     }
+  }
+
+  removeFilter(id: GlobalFilterID) {
+    this.dispatch(() => {
+      delete this.state.filters[id];
+    });
   }
 
   setFilter(id: GlobalFilterID, operator: Filter["operator"], values: Filter["values"]) {

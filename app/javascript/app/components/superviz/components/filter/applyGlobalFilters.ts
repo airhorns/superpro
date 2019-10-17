@@ -2,6 +2,7 @@ import { GlobalFilterController } from "./GlobalFilterController";
 import { WarehouseQuery } from "../../WarehouseQuery";
 import { FactTableFilterContext } from "./GetWarehouseFilters";
 import { assert } from "superlib";
+import { DateTime, Duration } from "luxon";
 
 export const modelsReferencedInQuery = (query: WarehouseQuery) => {
   const models = new Set<string>();
@@ -32,6 +33,24 @@ export const applyGlobalFilters = (
       const values = assert(params).values;
 
       switch (id) {
+        case "duration_key": {
+          if (globalFilterFieldsForModel["date"]) {
+            assert(query.filters).push({
+              field: {
+                id: fieldId,
+                model,
+                field: globalFilterFieldsForModel["date"].field
+              },
+              operator,
+              values: [
+                DateTime.local()
+                  .plus(Duration.fromISO(assert(values)[0] as string))
+                  .toISO()
+              ]
+            });
+          }
+          break;
+        }
         case "end_date":
         case "start_date": {
           if (globalFilterFieldsForModel["date"]) {
