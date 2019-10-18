@@ -76,12 +76,16 @@ const xAxesForBlock = (block: VizBlock, result: SuccessfulWarehouseQueryResult):
 
   return xIds.map(xId => {
     const field = assert(result.outputIntrospection.fieldsById[xId]);
-    return {
+    const axisType = axisTypeForDataType(field.dataType);
+
+    return merge({}, theme.xAxis, {
       id: xId,
       name: field.label,
-      type: axisTypeForDataType(field.dataType),
-      ...theme.xAxis
-    };
+      type: axisType,
+      axisLabel: {
+        interval: axisType == "category" ? 0 : undefined
+      }
+    });
   });
 };
 

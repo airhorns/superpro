@@ -8,6 +8,7 @@ import { ReportBuilderContext } from "./ReportBuilder";
 import { Add } from "app/components/common/SuperproIcons";
 import { MeasureForm } from "./MeasureForm";
 import { DimensionForm } from "./DimensionForm";
+import { VizTypeSelector } from "./VizTypeSelector";
 
 export const AddMeasureButton = (props: { block: VizBlock | TableBlock; blockIndex: number }) => {
   const controller = React.useContext(ReportBuilderContext);
@@ -57,6 +58,10 @@ export const QueryBlockEditor = (props: { block: VizBlock | TableBlock; index: n
       </Row>
       <Row gap="small">
         <Heading level="3">Filtering out:</Heading>
+      </Row>
+      <Row gap="small">
+        <Heading level="3">Show as:</Heading>
+        <VizTypeSelector block={props.block} blockIndex={props.index} />
       </Row>
 
       <Box margin={{ top: "medium" }} height="500px">

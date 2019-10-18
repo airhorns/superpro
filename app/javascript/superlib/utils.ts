@@ -1,4 +1,4 @@
-import { get, set, isUndefined, isNull, isFunction, isArray, toPath, cloneDeep } from "lodash";
+import { get, set, isUndefined, isNull, isFunction, isArray, toPath, cloneDeep, cloneDeepWith, isArrayLike } from "lodash";
 import memoizeOne from "memoize-one";
 import queryString from "query-string";
 import { DateTime } from "luxon";
@@ -192,4 +192,15 @@ export const replaceLocationWithNewParams = (
   const string = queryString.stringify(params);
   const newLocation = string.length > 0 ? `${location.pathname}?${string}` : location.pathname;
   history.replace(newLocation);
+};
+
+// automerge proxy friendly version of cloneDeep
+export const automergeFriendlyCloneDeep = (obj: any) => {
+  return cloneDeepWith(obj, item => {
+    if (isArrayLike(item)) {
+      return item.map(cloneDeep);
+    } else {
+      return undefined;
+    }
+  });
 };

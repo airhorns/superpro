@@ -1,17 +1,19 @@
 import { SuperFormController, SuperFormChangeCallback } from "superlib/superform";
-import { ReportDocument, Block, isQueryBlock, VizSystem } from "./schema";
+import { ReportDocument, Block, isQueryBlock, VizSystem, TableBlock, VizType } from "./schema";
 import shortid from "shortid";
-import { assert } from "superlib";
+import { assert, automergeFriendlyCloneDeep } from "superlib";
 import { find, findIndex } from "lodash";
 import { Warehouse } from "./Warehouse";
 import { Measure, Dimension } from "./WarehouseQuery";
 
 export class ReportBuilderController extends SuperFormController<ReportDocument> {
   warehouse: Warehouse;
+  measureVizTypes: { [id: string]: VizType };
 
   constructor(initialDoc: ReportDocument, onChange: SuperFormChangeCallback<ReportDocument>, warehouse: Warehouse) {
     super(initialDoc, onChange);
     this.warehouse = warehouse;
+    this.measureVizTypes = {};
   }
 
   defaultBlockForType<T extends Block>(type: T["type"]): T {
@@ -119,6 +121,38 @@ export class ReportBuilderController extends SuperFormController<ReportDocument>
     });
   }
 
+  setBlockVizType(blockIndex: number, vizType: VizType | "table") {
+    this.dispatch((doc: ReportDocument) => {
+      let block = this.getQueryBlock(doc, blockIndex);
+
+      if (vizType == "table") {
+        const newBlock: TableBlock = {
+          type: "table_block",
+          query: automergeFriendlyCloneDeep(block.query)
+        };
+        doc.blocks[blockIndex] = newBlock;
+      } else {
+        if (block.type != "viz_block") {
+          block = {
+            type: "viz_block",
+            query: automergeFriendlyCloneDeep(block.query),
+            viz: {
+              type: "viz",
+              systems: []
+            }
+          };
+
+          doc.blocks[blockIndex] = block;
+        }
+
+        block.query.measures.forEach(measure => {
+          this.measureVizTypes[measure.id] = vizType;
+        });
+        this.convergeViz(doc, blockIndex);
+      }
+    });
+  }
+
   private getQueryBlock(doc: ReportDocument, blockIndex: number) {
     const block = assert(doc.blocks[blockIndex]);
     if (!isQueryBlock(block)) {
@@ -151,7 +185,7 @@ export class ReportBuilderController extends SuperFormController<ReportDocument>
     block.query.measures.forEach(measure => {
       const system: VizSystem = {
         type: "viz_system",
-        vizType: "line",
+        vizType: this.measureVizTypes[measure.id] || "line",
         yId: measure.id
       };
 
