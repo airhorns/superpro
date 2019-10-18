@@ -45,6 +45,8 @@ export const formattersForOutput = (output: OutputIntrospection): FormatterFns =
             return duration.toFormat("d 'days,' h 'hours'");
           } else if (duration.hours > 0) {
             return duration.toFormat("h 'hours,' m 'minutes,' s 'seconds'");
+          } else if (duration.minutes > 0) {
+            return duration.toFormat("m 'minutes,' s 'seconds'");
           } else {
             return String(round(duration.shiftTo("seconds").seconds, 3)) + " secs";
           }
