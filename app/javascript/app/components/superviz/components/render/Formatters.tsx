@@ -35,7 +35,20 @@ export const formattersForOutput = (output: OutputIntrospection): FormatterFns =
         break;
       }
       case WarehouseDataTypeEnum.Duration: {
-        formatters[id] = value => Duration.fromObject({ seconds: value }).toISO();
+        formatters[id] = value => {
+          const duration = Duration.fromObject({ seconds: value });
+          if (duration.years > 0) {
+            return duration.toFormat("Y 'years,' M 'months,' d 'days'");
+          } else if (duration.months > 0) {
+            return duration.toFormat("M 'months,' d 'days'");
+          } else if (duration.days > 0) {
+            return duration.toFormat("d 'days,' h 'hours'");
+          } else if (duration.hours > 0) {
+            return duration.toFormat("h 'hours,' m 'minutes,' s 'seconds'");
+          } else {
+            return String(round(duration.shiftTo("seconds").seconds, 3)) + " secs";
+          }
+        };
         break;
       }
       case WarehouseDataTypeEnum.Number: {
