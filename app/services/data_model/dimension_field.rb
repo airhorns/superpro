@@ -8,7 +8,7 @@ class DataModel::DimensionField
     @column_name = column || field_name
     @field_label = label || field_name.to_s.titleize
     @data_type = data_type
-    @custom_sql_node = sql
+    @custom_sql_node = sql || block_given? && yield
     @join = join
   end
 

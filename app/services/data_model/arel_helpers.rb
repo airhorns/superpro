@@ -5,6 +5,10 @@ module DataModel
       named_function("nullif", [expression, condition])
     end
 
+    def concat(*expressions)
+      named_function("concat", expressions)
+    end
+
     def named_function(function_name, expressions)
       Arel::Nodes::NamedFunction.new(function_name, expressions)
     end

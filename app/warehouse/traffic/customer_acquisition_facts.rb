@@ -30,6 +30,10 @@ class Traffic::CustomerAcquisitionFacts < DataModel::FactTable
   dimension :landing_page_utm_campaign, DataModel::Types::String
   dimension :landing_page_utm_content, DataModel::Types::String
 
+  dimension :landing_page_identifier, DataModel::Types::String do
+    concat(table_node[:landing_page_utm_source], Arel.sql("' '"), table_node[:landing_page_utm_medium])
+  end
+
   dimension_join :customer, Sales::CustomersDimension
   dimension_join :business_line, Sales::BusinessLinesDimension
 

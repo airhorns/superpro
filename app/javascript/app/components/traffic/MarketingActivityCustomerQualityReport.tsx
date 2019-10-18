@@ -7,7 +7,46 @@ export default FullReportPage("Marketing Activity Customer Quality", {
     {
       type: "markdown_block",
       markdown:
-        "This report describes what kind of customers different marketing activities are acquiring. Note that this report is currently based on last click UTM parameter data for customers who converted during that session."
+        "This report describes what kind of customers different marketing activities are acquiring. Note: this report is based on last click attribution using UTM parameter data collected via the Shopify landing page."
+    },
+    {
+      type: "viz_block",
+      title: "Average Revenue Driven and Average 24 Month Revenue Predicted by Campaign",
+      query: {
+        measures: [
+          {
+            model: "Traffic::CustomerAcquisitionFacts",
+            field: "total_spend",
+            operator: "average",
+            id: "average_total_spend"
+          },
+          {
+            model: "Traffic::CustomerAcquisitionFacts",
+            field: "future_24_month_predicted_spend",
+            operator: "average",
+            id: "average_future_24_month_predicted_spend"
+          }
+        ],
+        dimensions: [{ model: "Traffic::CustomerAcquisitionFacts", field: "landing_page_identifier", id: "identifier" }],
+        orderings: [{ id: "average_future_24_month_predicted_spend", direction: "desc" }]
+      },
+      viz: {
+        type: "viz",
+        systems: [
+          {
+            type: "viz_system",
+            vizType: "bar",
+            xId: "identifier",
+            yId: "average_total_spend"
+          },
+          {
+            type: "viz_system",
+            vizType: "bar",
+            xId: "identifier",
+            yId: "average_future_24_month_predicted_spend"
+          }
+        ]
+      }
     },
     {
       type: "table_block",

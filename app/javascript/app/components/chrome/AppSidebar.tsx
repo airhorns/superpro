@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "styled-components";
 import { ResponsiveContext, Layer, Box, Button, Text, DropButton, Heading } from "grommet";
 import { FormClose, Menu, Launch } from "grommet-icons";
 import { withRouter, RouteComponentProps } from "react-router-dom";
@@ -30,6 +31,12 @@ gql`
 interface AppSidebarState {
   openForSmall: boolean;
 }
+
+export const StyledAppSidebarContainer = styled(Box)`
+  @media print {
+    display: none;
+  }
+`;
 
 export const AppSidebar = withRouter(
   class InnerSidebar extends React.Component<RouteComponentProps & { embeddedInPageHeader: boolean }, AppSidebarState> {
@@ -140,14 +147,14 @@ export const AppSidebar = withRouter(
 
         return (
           <>
-            <Box>
+            <StyledAppSidebarContainer>
               <Button
                 icon={<Menu />}
                 onClick={() => {
                   this.setState({ openForSmall: true });
                 }}
               />
-            </Box>
+            </StyledAppSidebarContainer>
             {this.state.openForSmall && (
               <Layer full={true}>
                 <Button icon={<FormClose />} onClick={this.close} style={{ position: "fixed", top: 0, right: 0 }} />
@@ -162,9 +169,9 @@ export const AppSidebar = withRouter(
         }
 
         return (
-          <Box fill="vertical" width="small" flex={false} background="light-2" className="AppSidebar-container">
+          <StyledAppSidebarContainer fill="vertical" width="small" flex={false} background="light-2" className="AppSidebar-container">
             {this.renderMenu()}
-          </Box>
+          </StyledAppSidebarContainer>
         );
       }
     }
