@@ -35,9 +35,14 @@ spec:
   postgresql:
     version: "12"
     parameters:
+      # Let big analytics queries buffer lots to disk and keep lots in memory
       temp_file_limit: "64GB"
       work_mem: "128MB"
+      # Collect query io timing for pganalyze
       track_io_timing: "on"
+      # tune disk access costs for the optimizer for SSDs where random seeking is just as fast as sequential seeking
+      random_page_cost: "1"
+      seq_page_cost: "1"
   resources:
     requests:
       cpu: "15"

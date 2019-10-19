@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 Trestle.admin(:infrastructure, path: "infrastructure") do
   menu do
     item :infrastructure, icon: "fa fa-flag"
