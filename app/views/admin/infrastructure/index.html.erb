@@ -1,0 +1,11 @@
+<% content_for(:title, 'Infrastructure') %>
+<%= render layout: "layout" do %>
+<div class="main-content-area">
+  <div class="main-content-container">
+    <div class="main-content">
+      <%= button_to "Run Global Connection Sync Job", run_periodic_global_sync_path, method: :post %>
+      <%= button_to "Run All Connection Sync Job", run_periodic_connection_sync_path, method: :post %>
+    </div>
+  </div>
+</div>
+<% end %>
