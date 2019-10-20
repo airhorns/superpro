@@ -1,623 +1,1767 @@
 {
+  "additionalProperties": true,
   "description": "Schema for a Snowplow event which has been successfully enriched and landed in kafka",
-  "self": {
-    "vendor": "com.snowplow.superpro",
-    "name": "snowplow_enriched_event",
-    "format": "jsonschema",
-    "version": "1-0-0"
-  },
-  "type": ["object", "null"],
-  "properties": {
-    "app_id": {
-      "type": ["string", "null"]
-    },
-    "platform": {
-      "type": ["string", "null"]
-    },
-    "etl_tstamp": {
-      "type": ["string", "null"],
-      "format": "date-time"
-    },
-    "collector_tstamp": {
-      "type": ["string", "null"],
-      "format": "date-time"
-    },
-    "derived_tstamp": {
-      "type": ["string", "null"],
-      "format": "date-time"
-    },
-    "true_tstamp": {
-      "type": ["string", "null"],
-      "format": "date-time"
-    },
-    "event": {
-      "type": ["string", "null"]
-    },
-    "event_id": {
-      "type": ["string"]
-    },
-    "event_vendor": {
-      "type": ["string", "null"]
-    },
-    "event_name": {
-      "type": ["string", "null"]
-    },
-    "event_format": {
-      "type": ["string", "null"]
-    },
-    "event_version": {
-      "type": ["string", "null"]
-    },
-    "event_fingerprint": {
-      "type": ["string", "null"]
-    },
-    "txn_id": {
-      "type": ["integer", "null"]
-    },
-    "name_tracker": {
-      "type": ["string", "null"]
-    },
-    "v_tracker": {
-      "type": ["string", "null"]
-    },
-    "v_collector": {
-      "type": ["string", "null"]
-    },
-    "v_etl": {
-      "type": ["string", "null"]
-    },
-    "user_id": {
-      "type": ["string", "null"]
-    },
-    "user_ipaddress": {
-      "type": ["string", "null"]
-    },
-    "user_fingerprint": {
-      "type": ["string", "null"]
-    },
-    "domain_userid": {
-      "type": ["string", "null"]
-    },
-    "domain_sessionidx": {
-      "type": ["integer", "null"]
-    },
-    "domain_sessionid": {
-      "type": ["string", "null"]
-    },
-    "network_userid": {
-      "type": ["string", "null"]
-    },
-    "geo_country": {
-      "type": ["string", "null"]
-    },
-    "geo_region": {
-      "type": ["string", "null"]
-    },
-    "geo_city": {
-      "type": ["string", "null"]
-    },
-    "geo_zipcode": {
-      "type": ["string", "null"]
-    },
-    "geo_latitude": {
-      "type": ["number", "null"]
-    },
-    "geo_longitude": {
-      "type": ["number", "null"]
-    },
-    "geo_region_name": {
-      "type": ["string", "null"]
-    },
-    "geo_location": {
-      "type": ["string", "null"],
-      "pattern": "-?[0-9]+(?:\\.[0-9+])?,-?[0-9]+(?:\\.[0-9+])?"
-    },
-    "ip_isp": {
-      "type": ["string", "null"]
-    },
-    "ip_organization": {
-      "type": ["string", "null"]
-    },
-    "ip_domain": {
-      "type": ["string", "null"]
-    },
-    "ip_netspeed": {
-      "type": ["string", "null"]
-    },
-    "page_url": {
-      "type": ["string", "null"]
-    },
-    "page_title": {
-      "type": ["string", "null"]
-    },
-    "page_referrer": {
-      "type": ["string", "null"]
-    },
-    "page_urlscheme": {
-      "type": ["string", "null"]
-    },
-    "page_urlhost": {
-      "type": ["string", "null"]
-    },
-    "page_urlport": {
-      "type": ["integer", "null"]
-    },
-    "page_urlpath": {
-      "type": ["string", "null"]
-    },
-    "page_urlquery": {
-      "type": ["string", "null"]
-    },
-    "page_urlfragment": {
-      "type": ["string", "null"]
-    },
-    "refr_urlscheme": {
-      "type": ["string", "null"]
-    },
-    "refr_urlhost": {
-      "type": ["string", "null"]
-    },
-    "refr_urlport": {
-      "type": ["integer", "null"]
-    },
-    "refr_urlpath": {
-      "type": ["string", "null"]
-    },
-    "refr_urlquery": {
-      "type": ["string", "null"]
-    },
-    "refr_urlfragment": {
-      "type": ["string", "null"]
-    },
-    "refr_medium": {
-      "type": ["string", "null"]
-    },
-    "refr_source": {
-      "type": ["string", "null"]
-    },
-    "refr_term": {
-      "type": ["string", "null"]
-    },
-    "mkt_medium": {
-      "type": ["string", "null"]
-    },
-    "mkt_source": {
-      "type": ["string", "null"]
-    },
-    "mkt_term": {
-      "type": ["string", "null"]
-    },
-    "mkt_content": {
-      "type": ["string", "null"]
-    },
-    "mkt_campaign": {
-      "type": ["string", "null"]
-    },
-    "se_category": {
-      "type": ["string", "null"]
-    },
-    "se_action": {
-      "type": ["string", "null"]
-    },
-    "se_label": {
-      "type": ["string", "null"]
-    },
-    "se_property": {
-      "type": ["string", "null"]
-    },
-    "se_value": {
-      "type": ["string", "null"]
-    },
-    "tr_orderid": {
-      "type": ["string", "null"]
-    },
-    "tr_affiliation": {
-      "type": ["string", "null"]
-    },
-    "tr_total": {
-      "type": ["number", "null"]
-    },
-    "tr_tax": {
-      "type": ["number", "null"]
-    },
-    "tr_shipping": {
-      "type": ["number", "null"]
-    },
-    "tr_city": {
-      "type": ["string", "null"]
-    },
-    "tr_state": {
-      "type": ["string", "null"]
-    },
-    "tr_country": {
-      "type": ["string", "null"]
-    },
-    "ti_orderid": {
-      "type": ["string", "null"]
-    },
-    "ti_sku": {
-      "type": ["string", "null"]
-    },
-    "ti_name": {
-      "type": ["string", "null"]
-    },
-    "ti_category": {
-      "type": ["string", "null"]
-    },
-    "ti_price": {
-      "type": ["number", "null"]
-    },
-    "ti_quantity": {
-      "type": ["integer", "null"]
-    },
-    "pp_xoffset_min": {
-      "type": ["integer", "null"]
-    },
-    "pp_xoffset_max": {
-      "type": ["integer", "null"]
-    },
-    "pp_yoffset_min": {
-      "type": ["integer", "null"]
-    },
-    "pp_yoffset_max": {
-      "type": ["integer", "null"]
-    },
-    "useragent": {
-      "type": ["string", "null"]
-    },
-    "br_name": {
-      "type": ["string", "null"]
-    },
-    "br_family": {
-      "type": ["string", "null"]
-    },
-    "br_version": {
-      "type": ["string", "null"]
-    },
-    "br_type": {
-      "type": ["string", "null"]
-    },
-    "br_renderengine": {
-      "type": ["string", "null"]
-    },
-    "br_lang": {
-      "type": ["string", "null"]
-    },
-    "br_features_pdf": {
-      "type": ["boolean", "null"]
-    },
-    "br_features_flash": {
-      "type": ["boolean", "null"]
-    },
-    "br_features_java": {
-      "type": ["boolean", "null"]
-    },
-    "br_features_director": {
-      "type": ["boolean", "null"]
-    },
-    "br_features_quicktime": {
-      "type": ["boolean", "null"]
-    },
-    "br_features_realplayer": {
-      "type": ["boolean", "null"]
-    },
-    "br_features_windowsmedia": {
-      "type": ["boolean", "null"]
-    },
-    "br_features_gears": {
-      "type": ["boolean", "null"]
-    },
-    "br_features_silverlight": {
-      "type": ["boolean", "null"]
-    },
-    "br_cookies": {
-      "type": ["boolean", "null"]
-    },
-    "br_colordepth": {
-      "type": ["string", "null"]
-    },
-    "br_viewwidth": {
-      "type": ["integer", "null"]
-    },
-    "br_viewheight": {
-      "type": ["integer", "null"]
-    },
-    "os_name": {
-      "type": ["string", "null"]
-    },
-    "os_family": {
-      "type": ["string", "null"]
-    },
-    "os_manufacturer": {
-      "type": ["string", "null"]
-    },
-    "os_timezone": {
-      "type": ["string", "null"]
-    },
-    "dvce_type": {
-      "type": ["string", "null"]
-    },
-    "dvce_ismobile": {
-      "type": ["boolean", "null"]
-    },
-    "dvce_screenwidth": {
-      "type": ["integer", "null"]
-    },
-    "dvce_screenheight": {
-      "type": ["integer", "null"]
-    },
-    "dvce_created_tstamp": {
-      "type": ["string", "null"],
-      "format": "date-time"
-    },
-    "doc_charset": {
-      "type": ["string", "null"]
-    },
-    "doc_width": {
-      "type": ["integer", "null"]
-    },
-    "doc_height": {
-      "type": ["integer", "null"]
-    },
-    "tr_currency": {
-      "type": ["string", "null"]
-    },
-    "tr_total_base": {
-      "type": ["number", "null"]
-    },
-    "tr_tax_base": {
-      "type": ["number", "null"]
-    },
-    "tr_shipping_base": {
-      "type": ["number", "null"]
-    },
-    "ti_currency": {
-      "type": ["string", "null"]
-    },
-    "ti_price_base": {
-      "type": ["number", "null"]
-    },
-    "base_currency": {
-      "type": ["string", "null"]
-    },
-    "geo_timezone": {
-      "type": ["string", "null"]
-    },
-    "mkt_clickid": {
-      "type": ["string", "null"]
-    },
-    "mkt_network": {
-      "type": ["string", "null"]
-    },
-    "etl_tags": {
-      "type": ["string", "null"]
-    },
-    "dvce_sent_tstamp": {
-      "type": ["string", "null"],
-      "format": "date-time"
-    },
-    "refr_domain_userid": {
-      "type": ["string", "null"]
-    },
-    "refr_dvce_tstamp": {
-      "type": ["string", "null"],
-      "format": "date-time"
-    },
-    "session_id": {
-      "type": ["string", "null"]
-    },
-    "contexts_com_google_analytics_cookies_1": {
-      "type": ["array", "null"],
-      "items": {
-        "type": ["object", "null"],
-        "properties": {
-          "_ga": {
-            "type": ["string", "null"]
-          }
-        }
-      }
-    },
-    "contexts_com_superpro_shopify_page_meta_1": {
-      "type": ["array", "null"],
-      "items": {
-        "type": ["object", "null"],
-        "properties": {
-          "selectedVariantId": {
-            "type": ["string", "null"]
-          },
-          "currency": {
-            "type": ["string", "null"]
-          },
-          "product": {
-            "type": ["object", "null"],
-            "properties": {
-              "id": {
-                "type": ["number", "null"]
-              },
-              "type": {
-                "type": ["string", "null"]
-              },
-              "vendor": {
-                "type": ["string", "null"]
-              },
-              "variants": {
-                "type": ["array", "null"],
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": ["number", "null"]
-                    },
-                    "price": {
-                      "type": ["number", "null"]
-                    },
-                    "name": {
-                      "type": ["string", "null"]
-                    },
-                    "public_title": {
-                      "type": ["string", "null"]
-                    },
-                    "sku": {
-                      "type": ["string", "null"]
-                    }
-                  },
-                  "additionalProperties": true
-                }
-              }
-            },
-            "additionalProperties": true
-          },
-          "page": {
-            "type": ["object", "null"],
-            "properties": {
-              "pageType": {
-                "type": ["string", "null"]
-              },
-              "resourceId": {
-                "type": ["number", "null"]
-              },
-              "resourceType": {
-                "type": ["string", "null"]
-              }
-            },
-            "additionalProperties": true
-          }
-        },
-        "additionalProperties": true
-      }
-    },
-    "contexts_com_snowplowanalytics_snowplow_web_page_1": {
-      "type": ["array", "null"],
-      "items": {
-        "type": ["object", "null"],
-        "properties": {
-          "id": {
-            "type": ["string", "null"]
-          }
-        }
-      }
-    },
-    "contexts_com_snowplowanalytics_snowplow_ua_parser_context_1": {
-      "type": ["array", "null"],
-      "items": {
-        "type": ["object", "null"],
-        "properties": {
-          "useragentFamily": {
-            "type": ["string", "null"]
-          },
-          "useragentMajor": {
-            "type": ["string", "null"]
-          },
-          "useragentMinor": {
-            "type": ["string", "null"]
-          },
-          "useragentPatch": {
-            "type": ["string", "null"]
-          },
-          "useragentVersion": {
-            "type": ["string", "null"]
-          },
-          "osFamily": {
-            "type": ["string", "null"]
-          },
-          "osMajor": {
-            "type": ["string", "null"]
-          },
-          "osMinor": {
-            "type": ["string", "null"]
-          },
-          "osPatch": {
-            "type": ["string", "null"]
-          },
-          "osPatchMinor": {
-            "type": ["string", "null"]
-          },
-          "osVersion": {
-            "type": ["string", "null"]
-          },
-          "deviceFamily": {
-            "type": ["string", "null"]
-          }
-        }
-      }
-    },
-    "contexts_org_w3_performance_timing_1": {
-      "type": ["array", "null"],
-      "items": {
-        "type": ["object", "null"],
-        "properties": {
-          "navigationStart": {
-            "type": ["number", "null"]
-          },
-          "unloadEventStart": {
-            "type": ["number", "null"]
-          },
-          "unloadEventEnd": {
-            "type": ["number", "null"]
-          },
-          "redirectStart": {
-            "type": ["number", "null"]
-          },
-          "redirectEnd": {
-            "type": ["number", "null"]
-          },
-          "fetchStart": {
-            "type": ["number", "null"]
-          },
-          "domainLookupStart": {
-            "type": ["number", "null"]
-          },
-          "domainLookupEnd": {
-            "type": ["number", "null"]
-          },
-          "connectStart": {
-            "type": ["number", "null"]
-          },
-          "connectEnd": {
-            "type": ["number", "null"]
-          },
-          "secureConnectionStart": {
-            "type": ["number", "null"]
-          },
-          "requestStart": {
-            "type": ["number", "null"]
-          },
-          "responseStart": {
-            "type": ["number", "null"]
-          },
-          "responseEnd": {
-            "type": ["number", "null"]
-          },
-          "domLoading": {
-            "type": ["number", "null"]
-          },
-          "domInteractive": {
-            "type": ["number", "null"]
-          },
-          "domContentLoadedEventStart": {
-            "type": ["number", "null"]
-          },
-          "domContentLoadedEventEnd": {
-            "type": ["number", "null"]
-          },
-          "domComplete": {
-            "type": ["number", "null"]
-          },
-          "loadEventStart": {
-            "type": ["number", "null"]
-          },
-          "loadEventEnd": {
-            "type": ["number", "null"]
-          }
-        }
-      }
-    }
-  },
   "patternProperties": {
     "^contexts_.*": {
-      "type": ["array", "null"]
+      "type": [
+        "array",
+        "null"
+      ]
     },
     "^unstruct_event_.*": {}
   },
-  "additionalProperties": true
+  "properties": {
+    "app_id": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "base_currency": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "br_colordepth": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "br_cookies": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "br_family": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "br_features_director": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "br_features_flash": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "br_features_gears": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "br_features_java": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "br_features_pdf": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "br_features_quicktime": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "br_features_realplayer": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "br_features_silverlight": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "br_features_windowsmedia": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "br_lang": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "br_name": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "br_renderengine": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "br_type": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "br_version": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "br_viewheight": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "br_viewwidth": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "collector_tstamp": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "contexts_com_google_analytics_cookies_1": {
+      "description": "unstructured event context for iglu:com.google.analytics/cookies/jsonschema/1-0-0",
+      "items": {
+        "properties": {
+          "__utma": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "__utmb": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "__utmc": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "__utmv": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "__utmz": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "_ga": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "type": [
+          "object",
+          "null"
+        ]
+      },
+      "type": [
+        "array",
+        "null"
+      ]
+    },
+    "contexts_com_shopify_trekkie_added_product_1": {
+      "description": "unstructured event context for iglu:com.shopify.trekkie/added_product/jsonschema/1-0-0",
+      "items": {
+        "properties": {
+          "brand": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "category": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "coupon": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "currency": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "name": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "price": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "productId": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "quantity": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "sku": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "variant": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "variantId": {
+            "type": [
+              "number",
+              "null"
+            ]
+          }
+        },
+        "type": [
+          "object",
+          "null"
+        ]
+      },
+      "type": [
+        "array",
+        "null"
+      ]
+    },
+    "contexts_com_shopify_trekkie_completed_order_1": {
+      "description": "unstructured event context for iglu:com.shopify.trekkie/completed_order/jsonschema/1-0-0",
+      "items": {
+        "properties": {
+          "coupon": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "currency": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "emailSHA256": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "orderId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "revenue": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "shipping": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "tax": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "total": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "type": [
+          "object",
+          "null"
+        ]
+      },
+      "type": [
+        "array",
+        "null"
+      ]
+    },
+    "contexts_com_shopify_trekkie_default_attributes_1": {
+      "description": "unstructured event context for iglu:com.shopify.trekkie/default_attributes/jsonschema/1-0-0",
+      "items": {
+        "properties": {
+          "appName": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "contentLanguage": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "firstSeen": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "isMerchantRequest": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "microSessionCount": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "microSessionId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "shopId": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "themeCityHash": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "themeId": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "uniqToken": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "visitToken": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "type": [
+          "object",
+          "null"
+        ]
+      },
+      "type": [
+        "array",
+        "null"
+      ]
+    },
+    "contexts_com_shopify_trekkie_page_meta_1": {
+      "description": "unstructured event context for iglu:com.shopify.trekkie/page_meta/jsonschema/1-0-0",
+      "items": {
+        "properties": {
+          "currency": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "page": {
+            "additionalProperties": true,
+            "properties": {
+              "pageType": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "resourceId": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "resourceType": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "type": [
+              "object",
+              "null"
+            ]
+          },
+          "product": {
+            "additionalProperties": true,
+            "properties": {
+              "id": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "type": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "variants": {
+                "items": {
+                  "additionalProperties": true,
+                  "properties": {
+                    "id": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "name": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "price": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "public_title": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "sku": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "type": "object"
+                },
+                "type": [
+                  "array",
+                  "null"
+                ]
+              },
+              "vendor": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "type": [
+              "object",
+              "null"
+            ]
+          },
+          "selectedVariantId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "type": [
+          "object",
+          "null"
+        ]
+      },
+      "type": [
+        "array",
+        "null"
+      ]
+    },
+    "contexts_com_shopify_trekkie_performed_search_1": {
+      "description": "unstructured event context for iglu:com.shopify.trekkie/performed_search/jsonschema/1-0-0",
+      "items": {
+        "properties": {
+          "query": {
+            "string": [
+              "number",
+              "null"
+            ]
+          }
+        },
+        "type": [
+          "object",
+          "null"
+        ]
+      },
+      "type": [
+        "array",
+        "null"
+      ]
+    },
+    "contexts_com_shopify_trekkie_unknown_event_1": {
+      "description": "unstructured event context for iglu:com.shopify.trekkie/unknown_event/jsonschema/1-0-0",
+      "items": {
+        "properties": {
+          "eventName": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "eventProperties": {
+            "additionalProperties": true,
+            "type": [
+              "object",
+              "null"
+            ]
+          }
+        },
+        "type": [
+          "object",
+          "null"
+        ]
+      },
+      "type": [
+        "array",
+        "null"
+      ]
+    },
+    "contexts_com_shopify_trekkie_viewed_product_1": {
+      "description": "unstructured event context for iglu:com.shopify.trekkie/viewed_product/jsonschema/1-0-0",
+      "items": {
+        "properties": {
+          "brand": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "category": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "coupon": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "currency": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "name": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "price": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "productId": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "quantity": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "sku": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "variant": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "variantId": {
+            "type": [
+              "number",
+              "null"
+            ]
+          }
+        },
+        "type": [
+          "object",
+          "null"
+        ]
+      },
+      "type": [
+        "array",
+        "null"
+      ]
+    },
+    "contexts_com_shopify_trekkie_viewed_product_category_1": {
+      "description": "unstructured event context for iglu:com.shopify.trekkie/viewed_product_category/jsonschema/1-0-0",
+      "items": {
+        "properties": {
+          "category": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "currency": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "nonInteraction": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          }
+        },
+        "type": [
+          "object",
+          "null"
+        ]
+      },
+      "type": [
+        "array",
+        "null"
+      ]
+    },
+    "contexts_com_shopify_trekkie_viewed_product_variant_1": {
+      "description": "unstructured event context for iglu:com.shopify.trekkie/viewed_product_variant/jsonschema/1-0-0",
+      "items": {
+        "properties": {
+          "brand": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "category": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "coupon": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "currency": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "name": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "price": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "productId": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "quantity": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "sku": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "variant": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "variantId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "type": [
+          "object",
+          "null"
+        ]
+      },
+      "type": [
+        "array",
+        "null"
+      ]
+    },
+    "contexts_com_snowplowanalytics_snowplow_ua_parser_context_1": {
+      "description": "unstructured event context for iglu:com.snowplowanalytics.snowplow/ua_parser_context/jsonschema/1-0-0",
+      "items": {
+        "properties": {
+          "deviceFamily": {
+            "type": "string"
+          },
+          "osFamily": {
+            "type": "string"
+          },
+          "osMajor": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "osMinor": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "osPatch": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "osPatchMinor": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "osVersion": {
+            "type": "string"
+          },
+          "useragentFamily": {
+            "type": "string"
+          },
+          "useragentMajor": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "useragentMinor": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "useragentPatch": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "useragentVersion": {
+            "type": "string"
+          }
+        },
+        "type": [
+          "object",
+          "null"
+        ]
+      },
+      "type": [
+        "array",
+        "null"
+      ]
+    },
+    "contexts_com_snowplowanalytics_snowplow_web_page_1": {
+      "description": "unstructured event context for iglu:com.snowplowanalytics.snowplow/web_page/jsonschema/1-0-0",
+      "items": {
+        "properties": {
+          "id": {
+            "pattern": "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$",
+            "type": "string"
+          }
+        },
+        "type": [
+          "object",
+          "null"
+        ]
+      },
+      "type": [
+        "array",
+        "null"
+      ]
+    },
+    "contexts_com_superpro_shopify_associate_cart_1": {
+      "description": "unstructured event context for iglu:com.superpro.shopify/associate_cart/jsonschema/1-0-0",
+      "items": {
+        "properties": {
+          "cart_token": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "type": [
+          "object",
+          "null"
+        ]
+      },
+      "type": [
+        "array",
+        "null"
+      ]
+    },
+    "contexts_org_w3_performancetiming_1": {
+      "description": "unstructured event context for iglu:org.w3/PerformanceTiming/jsonschema/1-0-0",
+      "items": {
+        "properties": {
+          "chromeFirstPaint": {
+            "maximum": 9223372036854775807,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "connectEnd": {
+            "maximum": 9223372036854775807,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "connectStart": {
+            "maximum": 9223372036854775807,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "domComplete": {
+            "maximum": 9223372036854775807,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "domContentLoadedEventEnd": {
+            "maximum": 9223372036854775807,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "domContentLoadedEventStart": {
+            "maximum": 9223372036854775807,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "domInteractive": {
+            "maximum": 9223372036854775807,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "domLoading": {
+            "maximum": 9223372036854775807,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "domainLookupEnd": {
+            "maximum": 9223372036854775807,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "domainLookupStart": {
+            "maximum": 9223372036854775807,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "fetchStart": {
+            "maximum": 9223372036854775807,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "loadEventEnd": {
+            "maximum": 9223372036854775807,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "loadEventStart": {
+            "maximum": 9223372036854775807,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "msFirstPaint": {
+            "maximum": 9223372036854775807,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "navigationStart": {
+            "maximum": 9223372036854775807,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "proxyEnd": {
+            "maximum": 9223372036854775807,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "proxyStart": {
+            "maximum": 9223372036854775807,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "redirectEnd": {
+            "maximum": 9223372036854775807,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "redirectStart": {
+            "maximum": 9223372036854775807,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "requestEnd": {
+            "maximum": 9223372036854775807,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "requestStart": {
+            "maximum": 9223372036854775807,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "responseEnd": {
+            "maximum": 9223372036854775807,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "responseStart": {
+            "maximum": 9223372036854775807,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "secureConnectionStart": {
+            "maximum": 9223372036854775807,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "unloadEventEnd": {
+            "maximum": 9223372036854775807,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "unloadEventStart": {
+            "maximum": 9223372036854775807,
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "type": [
+          "object",
+          "null"
+        ]
+      },
+      "type": [
+        "array",
+        "null"
+      ]
+    },
+    "derived_tstamp": {
+      "format": "date-time",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "doc_charset": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "doc_height": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "doc_width": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "domain_sessionid": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "domain_sessionidx": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "domain_userid": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "dvce_created_tstamp": {
+      "format": "date-time",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "dvce_ismobile": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "dvce_screenheight": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "dvce_screenwidth": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "dvce_sent_tstamp": {
+      "format": "date-time",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "dvce_type": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "etl_tags": {
+      "maxLength": 500,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "etl_tstamp": {
+      "format": "date-time",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "event": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "event_fingerprint": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "event_format": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "event_id": {
+      "maxLength": 255,
+      "type": "string"
+    },
+    "event_name": {
+      "maxLength": 1000,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "event_vendor": {
+      "maxLength": 1000,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "event_version": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "geo_city": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "geo_country": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "geo_latitude": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "geo_longitude": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "geo_region": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "geo_region_name": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "geo_timezone": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "geo_zipcode": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "ip_domain": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "ip_isp": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "ip_netspeed": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "ip_organization": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "mkt_campaign": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "mkt_clickid": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "mkt_content": {
+      "maxLength": 500,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "mkt_medium": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "mkt_network": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "mkt_source": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "mkt_term": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "name_tracker": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "network_userid": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "os_family": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "os_manufacturer": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "os_name": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "os_timezone": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "page_referrer": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "page_title": {
+      "maxLength": 2000,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "page_url": {
+      "maxLength": 4096,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "page_urlfragment": {
+      "maxLength": 3000,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "page_urlhost": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "page_urlpath": {
+      "maxLength": 3000,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "page_urlport": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "page_urlquery": {
+      "maxLength": 6000,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "page_urlscheme": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "platform": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "pp_xoffset_max": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "pp_xoffset_min": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "pp_yoffset_max": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "pp_yoffset_min": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "refr_domain_userid": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "refr_dvce_tstamp": {
+      "format": "date-time",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "refr_medium": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "refr_source": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "refr_term": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "refr_urlfragment": {
+      "maxLength": 3000,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "refr_urlhost": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "refr_urlpath": {
+      "maxLength": 6000,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "refr_urlport": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "refr_urlquery": {
+      "maxLength": 6000,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "refr_urlscheme": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "se_action": {
+      "maxLength": 1000,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "se_category": {
+      "maxLength": 1000,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "se_label": {
+      "maxLength": 1000,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "se_property": {
+      "maxLength": 1000,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "se_value": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "ti_category": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "ti_currency": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "ti_name": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "ti_orderid": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "ti_price": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "ti_price_base": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "ti_quantity": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "ti_sku": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "tr_affiliation": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "tr_city": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "tr_country": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "tr_currency": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "tr_orderid": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "tr_shipping": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "tr_shipping_base": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "tr_state": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "tr_tax": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "tr_tax_base": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "tr_total": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "tr_total_base": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "true_tstamp": {
+      "format": "date-time",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "txn_id": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "user_fingerprint": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "user_id": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "user_ipaddress": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "useragent": {
+      "maxLength": 1000,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "v_collector": {
+      "maxLength": 255,
+      "type": "string"
+    },
+    "v_etl": {
+      "maxLength": 255,
+      "type": "string"
+    },
+    "v_tracker": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "self": {
+    "format": "jsonschema",
+    "name": "snowplow_enriched_event",
+    "vendor": "com.snowplow.superpro",
+    "version": "1-0-0"
+  },
+  "type": "object"
 }
