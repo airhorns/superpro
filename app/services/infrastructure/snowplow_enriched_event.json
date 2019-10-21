@@ -905,7 +905,7 @@
         "null"
       ]
     },
-    "contexts_org_w3_performancetiming_1": {
+    "contexts_org_w3_performance_timing_1": {
       "description": "unstructured event context for iglu:org.w3/PerformanceTiming/jsonschema/1-0-0",
       "items": {
         "properties": {
