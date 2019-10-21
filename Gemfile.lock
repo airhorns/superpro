@@ -6,18 +6,6 @@ GIT
     que (1.0.0.beta3)
 
 GIT
-  remote: https://github.com/hlascelles/que-scheduler.git
-  revision: 2bc8e3c977a3651564c3c42956eef83b554fa825
-  branch: que-1.0-compatibility
-  specs:
-    que-scheduler (3.2.5)
-      activesupport (>= 4.0)
-      backports (~> 3.10)
-      fugit (~> 1.1, >= 1.1.8)
-      hashie (~> 3)
-      que (> 0.10)
-
-GIT
   remote: https://github.com/mokhan/flipper.git
   revision: 09358caf7abb135550e6b4378b98c41efff0f8ce
   branch: rails-6
@@ -432,6 +420,12 @@ GEM
     public_suffix (4.0.1)
     puma (4.2.1)
       nio4r (~> 2.0)
+    que-scheduler (3.2.7)
+      activesupport (>= 4.0)
+      backports (~> 3.10)
+      fugit (~> 1.1, >= 1.1.8)
+      hashie (~> 3)
+      que (>= 0.12, <= 1.0.0.beta3)
     que-web (0.8.0)
       erubis
       que (~> 1.0.0.beta3)
@@ -688,7 +682,7 @@ DEPENDENCIES
   puma (~> 4.2)
   que!
   que-locks!
-  que-scheduler!
+  que-scheduler
   que-web
   rack-cors
   rails (= 6.0.0)
