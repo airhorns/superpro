@@ -24,7 +24,7 @@ class Traffic::CustomerAcquisitionFacts < DataModel::FactTable
     Arel.sql("case when #{sql_string(table_node[:early_repurchaser].eq(true))} then 1 end").count
   end
 
-  measure :early_repurchase_rate, DataModel::Types::Number, allow_operators: false do
+  measure :early_repurchase_rate, DataModel::Types::Percentage, allow_operators: false do
     cast(
       Arel.sql("case when #{sql_string(table_node[:early_repurchaser].eq(true))} then 1 end").count,
       :numeric
@@ -35,7 +35,7 @@ class Traffic::CustomerAcquisitionFacts < DataModel::FactTable
     Arel.sql("case when #{sql_string(table_node[:total_successful_order_count].gt(1))} then 1 end").count
   end
 
-  measure :overall_repurchase_rate, DataModel::Types::Number, allow_operators: false do
+  measure :overall_repurchase_rate, DataModel::Types::Percentage, allow_operators: false do
     cast(
       Arel.sql("case when #{sql_string(table_node[:total_successful_order_count].gt(1))} then 1 end").count,
       :numeric
