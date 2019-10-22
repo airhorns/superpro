@@ -81,7 +81,7 @@ export const PageLayout = (props: PageLayoutProps) => {
   }, [props.title, props.documentTitle]);
 
   const printing = useDetectPrint();
-
+  const scrolly = printing ? false : props.scrolly;
   return (
     <Box fill className="PageLayout-container">
       <Helmet>
@@ -110,11 +110,11 @@ export const PageLayout = (props: PageLayoutProps) => {
         <Row>{props.headerExtra}</Row>
       </Row>
       <Box
-        flex={{ grow: 1, shrink: 0 }}
+        flex={scrolly}
         pad={props.padded ? "medium" : undefined}
         className="PageLayout-content"
-        fill={!props.scrolly}
-        overflow={{ vertical: props.scrolly && !printing ? "auto" : undefined }}
+        fill={!scrolly}
+        overflow={{ vertical: scrolly ? "auto" : undefined }}
       >
         {props.children}
       </Box>

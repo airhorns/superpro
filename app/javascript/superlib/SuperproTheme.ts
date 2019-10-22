@@ -37,6 +37,11 @@ export const SuperproGrommetTheme = merge({}, generate(24), {
       3: HeadingAutoWidths,
       4: HeadingAutoWidths
     }
+  },
+  paragraph: {
+    medium: {
+      maxWidth: "auto"
+    }
   }
 });
 

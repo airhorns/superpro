@@ -80,63 +80,6 @@ CREATE SCHEMA warehouse;
 
 
 --
--- Name: que_validate_tags(jsonb); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION public.que_validate_tags(tags_array jsonb) RETURNS boolean
-    LANGUAGE sql
-    AS $$
-  SELECT bool_and(
-    jsonb_typeof(value) = 'string'
-    AND
-    char_length(value::text) <= 100
-  )
-  FROM jsonb_array_elements(tags_array)
-$$;
-
-
-SET default_tablespace = '';
-
-SET default_with_oids = false;
-
---
--- Name: que_jobs; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.que_jobs (
-    priority smallint DEFAULT 100 NOT NULL,
-    run_at timestamp with time zone DEFAULT now() NOT NULL,
-    id bigint NOT NULL,
-    job_class text NOT NULL,
-    error_count integer DEFAULT 0 NOT NULL,
-    last_error_message text,
-    queue text DEFAULT 'default'::text NOT NULL,
-    last_error_backtrace text,
-    finished_at timestamp with time zone,
-    expired_at timestamp with time zone,
-    args jsonb DEFAULT '[]'::jsonb NOT NULL,
-    data jsonb DEFAULT '{}'::jsonb NOT NULL,
-    CONSTRAINT error_length CHECK (((char_length(last_error_message) <= 500) AND (char_length(last_error_backtrace) <= 10000))),
-    CONSTRAINT job_class_length CHECK ((char_length(
-CASE job_class
-    WHEN 'ActiveJob::QueueAdapters::QueAdapter::JobWrapper'::text THEN ((args -> 0) ->> 'job_class'::text)
-    ELSE job_class
-END) <= 200)),
-    CONSTRAINT queue_length CHECK ((char_length(queue) <= 100)),
-    CONSTRAINT valid_args CHECK ((jsonb_typeof(args) = 'array'::text)),
-    CONSTRAINT valid_data CHECK (((jsonb_typeof(data) = 'object'::text) AND ((NOT (data ? 'tags'::text)) OR ((jsonb_typeof((data -> 'tags'::text)) = 'array'::text) AND (jsonb_array_length((data -> 'tags'::text)) <= 5) AND public.que_validate_tags((data -> 'tags'::text))))))
-)
-WITH (fillfactor='90');
-
-
---
--- Name: TABLE que_jobs; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON TABLE public.que_jobs IS '4';
-
-
---
 -- Name: calculate_earth_surface_distance(double precision, double precision, double precision, double precision, character varying); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -269,6 +212,63 @@ BEGIN
   RETURN COALESCE(v,s);
 END;
 $$;
+
+
+--
+-- Name: que_validate_tags(jsonb); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.que_validate_tags(tags_array jsonb) RETURNS boolean
+    LANGUAGE sql
+    AS $$
+  SELECT bool_and(
+    jsonb_typeof(value) = 'string'
+    AND
+    char_length(value::text) <= 100
+  )
+  FROM jsonb_array_elements(tags_array)
+$$;
+
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: que_jobs; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.que_jobs (
+    priority smallint DEFAULT 100 NOT NULL,
+    run_at timestamp with time zone DEFAULT now() NOT NULL,
+    id bigint NOT NULL,
+    job_class text NOT NULL,
+    error_count integer DEFAULT 0 NOT NULL,
+    last_error_message text,
+    queue text DEFAULT 'default'::text NOT NULL,
+    last_error_backtrace text,
+    finished_at timestamp with time zone,
+    expired_at timestamp with time zone,
+    args jsonb DEFAULT '[]'::jsonb NOT NULL,
+    data jsonb DEFAULT '{}'::jsonb NOT NULL,
+    CONSTRAINT error_length CHECK (((char_length(last_error_message) <= 500) AND (char_length(last_error_backtrace) <= 10000))),
+    CONSTRAINT job_class_length CHECK ((char_length(
+CASE job_class
+    WHEN 'ActiveJob::QueueAdapters::QueAdapter::JobWrapper'::text THEN ((args -> 0) ->> 'job_class'::text)
+    ELSE job_class
+END) <= 200)),
+    CONSTRAINT queue_length CHECK ((char_length(queue) <= 100)),
+    CONSTRAINT valid_args CHECK ((jsonb_typeof(args) = 'array'::text)),
+    CONSTRAINT valid_data CHECK (((jsonb_typeof(data) = 'object'::text) AND ((NOT (data ? 'tags'::text)) OR ((jsonb_typeof((data -> 'tags'::text)) = 'array'::text) AND (jsonb_array_length((data -> 'tags'::text)) <= 5) AND public.que_validate_tags((data -> 'tags'::text))))))
+)
+WITH (fillfactor='90');
+
+
+--
+-- Name: TABLE que_jobs; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON TABLE public.que_jobs IS '4';
 
 
 --
@@ -11437,135 +11437,133 @@ COMMENT ON TABLE raw_tap_google_analytics.weekly_active_users IS '{"path": ["wee
 
 CREATE TABLE raw_tap_kafka.snowplow_production_enriched (
     app_id text,
-    platform text,
-    etl_tstamp timestamp with time zone,
-    collector_tstamp timestamp with time zone,
+    base_currency text,
+    br_colordepth text,
+    br_cookies boolean,
+    br_family text,
+    br_features_director boolean,
+    br_features_flash boolean,
+    br_features_gears boolean,
+    br_features_java boolean,
+    br_features_pdf boolean,
+    br_features_quicktime boolean,
+    br_features_realplayer boolean,
+    br_features_silverlight boolean,
+    br_features_windowsmedia boolean,
+    br_lang text,
+    br_name text,
+    br_renderengine text,
+    br_type text,
+    br_version text,
+    br_viewheight bigint,
+    br_viewwidth bigint,
+    collector_tstamp timestamp with time zone NOT NULL,
     derived_tstamp timestamp with time zone,
-    true_tstamp timestamp with time zone,
-    event text,
-    event_id text NOT NULL,
-    event_vendor text,
-    event_name text,
-    event_format text,
-    event_version text,
-    event_fingerprint text,
-    txn_id bigint,
-    name_tracker text,
-    v_tracker text,
-    v_collector text,
-    v_etl text,
-    user_id text,
-    user_ipaddress text,
-    user_fingerprint text,
-    domain_userid text,
-    domain_sessionidx bigint,
+    doc_charset text,
+    doc_height bigint,
+    doc_width bigint,
     domain_sessionid text,
-    network_userid text,
-    geo_country text,
-    geo_region text,
+    domain_sessionidx bigint,
+    domain_userid text,
+    dvce_created_tstamp timestamp with time zone,
+    dvce_ismobile boolean,
+    dvce_screenheight bigint,
+    dvce_screenwidth bigint,
+    dvce_sent_tstamp timestamp with time zone,
+    dvce_type text,
+    etl_tags text,
+    etl_tstamp timestamp with time zone,
+    event text,
+    event_fingerprint text,
+    event_format text,
+    event_id text NOT NULL,
+    event_name text,
+    event_vendor text,
+    event_version text,
     geo_city text,
-    geo_zipcode text,
+    geo_country text,
     geo_latitude double precision,
     geo_longitude double precision,
+    geo_region text,
     geo_region_name text,
-    geo_location text,
-    ip_isp text,
-    ip_organization text,
+    geo_timezone text,
+    geo_zipcode text,
     ip_domain text,
+    ip_isp text,
     ip_netspeed text,
-    page_url text,
-    page_title text,
+    ip_organization text,
+    mkt_campaign text,
+    mkt_clickid text,
+    mkt_content text,
+    mkt_medium text,
+    mkt_network text,
+    mkt_source text,
+    mkt_term text,
+    name_tracker text,
+    network_userid text,
+    os_family text,
+    os_manufacturer text,
+    os_name text,
+    os_timezone text,
     page_referrer text,
-    page_urlscheme text,
-    page_urlhost text,
-    page_urlport bigint,
-    page_urlpath text,
-    page_urlquery text,
+    page_title text,
+    page_url text,
     page_urlfragment text,
-    refr_urlscheme text,
-    refr_urlhost text,
-    refr_urlport bigint,
-    refr_urlpath text,
-    refr_urlquery text,
-    refr_urlfragment text,
+    page_urlhost text,
+    page_urlpath text,
+    page_urlport bigint,
+    page_urlquery text,
+    page_urlscheme text,
+    platform text,
+    pp_xoffset_max bigint,
+    pp_xoffset_min bigint,
+    pp_yoffset_max bigint,
+    pp_yoffset_min bigint,
+    refr_domain_userid text,
+    refr_dvce_tstamp timestamp with time zone,
     refr_medium text,
     refr_source text,
     refr_term text,
-    mkt_medium text,
-    mkt_source text,
-    mkt_term text,
-    mkt_content text,
-    mkt_campaign text,
-    se_category text,
+    refr_urlfragment text,
+    refr_urlhost text,
+    refr_urlpath text,
+    refr_urlport bigint,
+    refr_urlquery text,
+    refr_urlscheme text,
     se_action text,
+    se_category text,
     se_label text,
     se_property text,
-    se_value text,
-    tr_orderid text,
-    tr_affiliation text,
-    tr_total double precision,
-    tr_tax double precision,
-    tr_shipping double precision,
-    tr_city text,
-    tr_state text,
-    tr_country text,
-    ti_orderid text,
-    ti_sku text,
-    ti_name text,
+    se_value double precision,
     ti_category text,
-    ti_price double precision,
-    ti_quantity bigint,
-    pp_xoffset_min bigint,
-    pp_xoffset_max bigint,
-    pp_yoffset_min bigint,
-    pp_yoffset_max bigint,
-    useragent text,
-    br_name text,
-    br_family text,
-    br_version text,
-    br_type text,
-    br_renderengine text,
-    br_lang text,
-    br_features_pdf boolean,
-    br_features_flash boolean,
-    br_features_java boolean,
-    br_features_director boolean,
-    br_features_quicktime boolean,
-    br_features_realplayer boolean,
-    br_features_windowsmedia boolean,
-    br_features_gears boolean,
-    br_features_silverlight boolean,
-    br_cookies boolean,
-    br_colordepth text,
-    br_viewwidth bigint,
-    br_viewheight bigint,
-    os_name text,
-    os_family text,
-    os_manufacturer text,
-    os_timezone text,
-    dvce_type text,
-    dvce_ismobile boolean,
-    dvce_screenwidth bigint,
-    dvce_screenheight bigint,
-    dvce_created_tstamp timestamp with time zone,
-    doc_charset text,
-    doc_width bigint,
-    doc_height bigint,
-    tr_currency text,
-    tr_total_base double precision,
-    tr_tax_base double precision,
-    tr_shipping_base double precision,
     ti_currency text,
+    ti_name text,
+    ti_orderid text,
+    ti_price double precision,
     ti_price_base double precision,
-    base_currency text,
-    geo_timezone text,
-    mkt_clickid text,
-    mkt_network text,
-    etl_tags text,
-    dvce_sent_tstamp timestamp with time zone,
-    refr_domain_userid text,
-    refr_dvce_tstamp timestamp with time zone,
-    session_id text,
+    ti_quantity bigint,
+    ti_sku text,
+    tr_affiliation text,
+    tr_city text,
+    tr_country text,
+    tr_currency text,
+    tr_orderid text,
+    tr_shipping double precision,
+    tr_shipping_base double precision,
+    tr_state text,
+    tr_tax double precision,
+    tr_tax_base double precision,
+    tr_total double precision,
+    tr_total_base double precision,
+    true_tstamp timestamp with time zone,
+    txn_id bigint,
+    user_fingerprint text,
+    user_id text,
+    user_ipaddress text,
+    useragent text,
+    v_collector text NOT NULL,
+    v_etl text NOT NULL,
+    v_tracker text,
     _sdc_received_at timestamp with time zone,
     _sdc_sequence bigint,
     _sdc_table_version bigint,
@@ -11578,7 +11576,7 @@ CREATE TABLE raw_tap_kafka.snowplow_production_enriched (
 -- Name: TABLE snowplow_production_enriched; Type: COMMENT; Schema: raw_tap_kafka; Owner: -
 --
 
-COMMENT ON TABLE raw_tap_kafka.snowplow_production_enriched IS '{"path": ["snowplow-production-enriched"], "version": null, "schema_version": 2, "key_properties": ["_sdc_primary_key"], "mappings": {"app_id": {"type": ["string", "null"], "from": ["app_id"]}, "platform": {"type": ["string", "null"], "from": ["platform"]}, "etl_tstamp": {"type": ["string", "null"], "from": ["etl_tstamp"], "format": "date-time"}, "collector_tstamp": {"type": ["string", "null"], "from": ["collector_tstamp"], "format": "date-time"}, "derived_tstamp": {"type": ["string", "null"], "from": ["derived_tstamp"], "format": "date-time"}, "true_tstamp": {"type": ["string", "null"], "from": ["true_tstamp"], "format": "date-time"}, "event": {"type": ["string", "null"], "from": ["event"]}, "event_id": {"type": ["string"], "from": ["event_id"]}, "event_vendor": {"type": ["string", "null"], "from": ["event_vendor"]}, "event_name": {"type": ["string", "null"], "from": ["event_name"]}, "event_format": {"type": ["string", "null"], "from": ["event_format"]}, "event_version": {"type": ["string", "null"], "from": ["event_version"]}, "event_fingerprint": {"type": ["string", "null"], "from": ["event_fingerprint"]}, "txn_id": {"type": ["integer", "null"], "from": ["txn_id"]}, "name_tracker": {"type": ["string", "null"], "from": ["name_tracker"]}, "v_tracker": {"type": ["string", "null"], "from": ["v_tracker"]}, "v_collector": {"type": ["string", "null"], "from": ["v_collector"]}, "v_etl": {"type": ["string", "null"], "from": ["v_etl"]}, "user_id": {"type": ["string", "null"], "from": ["user_id"]}, "user_ipaddress": {"type": ["string", "null"], "from": ["user_ipaddress"]}, "user_fingerprint": {"type": ["string", "null"], "from": ["user_fingerprint"]}, "domain_userid": {"type": ["string", "null"], "from": ["domain_userid"]}, "domain_sessionidx": {"type": ["integer", "null"], "from": ["domain_sessionidx"]}, "domain_sessionid": {"type": ["string", "null"], "from": ["domain_sessionid"]}, "network_userid": {"type": ["string", "null"], "from": ["network_userid"]}, "geo_country": {"type": ["string", "null"], "from": ["geo_country"]}, "geo_region": {"type": ["string", "null"], "from": ["geo_region"]}, "geo_city": {"type": ["string", "null"], "from": ["geo_city"]}, "geo_zipcode": {"type": ["string", "null"], "from": ["geo_zipcode"]}, "geo_latitude": {"type": ["number", "null"], "from": ["geo_latitude"]}, "geo_longitude": {"type": ["number", "null"], "from": ["geo_longitude"]}, "geo_region_name": {"type": ["string", "null"], "from": ["geo_region_name"]}, "geo_location": {"type": ["string", "null"], "from": ["geo_location"]}, "ip_isp": {"type": ["string", "null"], "from": ["ip_isp"]}, "ip_organization": {"type": ["string", "null"], "from": ["ip_organization"]}, "ip_domain": {"type": ["string", "null"], "from": ["ip_domain"]}, "ip_netspeed": {"type": ["string", "null"], "from": ["ip_netspeed"]}, "page_url": {"type": ["string", "null"], "from": ["page_url"]}, "page_title": {"type": ["string", "null"], "from": ["page_title"]}, "page_referrer": {"type": ["string", "null"], "from": ["page_referrer"]}, "page_urlscheme": {"type": ["string", "null"], "from": ["page_urlscheme"]}, "page_urlhost": {"type": ["string", "null"], "from": ["page_urlhost"]}, "page_urlport": {"type": ["integer", "null"], "from": ["page_urlport"]}, "page_urlpath": {"type": ["string", "null"], "from": ["page_urlpath"]}, "page_urlquery": {"type": ["string", "null"], "from": ["page_urlquery"]}, "page_urlfragment": {"type": ["string", "null"], "from": ["page_urlfragment"]}, "refr_urlscheme": {"type": ["string", "null"], "from": ["refr_urlscheme"]}, "refr_urlhost": {"type": ["string", "null"], "from": ["refr_urlhost"]}, "refr_urlport": {"type": ["integer", "null"], "from": ["refr_urlport"]}, "refr_urlpath": {"type": ["string", "null"], "from": ["refr_urlpath"]}, "refr_urlquery": {"type": ["string", "null"], "from": ["refr_urlquery"]}, "refr_urlfragment": {"type": ["string", "null"], "from": ["refr_urlfragment"]}, "refr_medium": {"type": ["string", "null"], "from": ["refr_medium"]}, "refr_source": {"type": ["string", "null"], "from": ["refr_source"]}, "refr_term": {"type": ["string", "null"], "from": ["refr_term"]}, "mkt_medium": {"type": ["string", "null"], "from": ["mkt_medium"]}, "mkt_source": {"type": ["string", "null"], "from": ["mkt_source"]}, "mkt_term": {"type": ["string", "null"], "from": ["mkt_term"]}, "mkt_content": {"type": ["string", "null"], "from": ["mkt_content"]}, "mkt_campaign": {"type": ["string", "null"], "from": ["mkt_campaign"]}, "se_category": {"type": ["string", "null"], "from": ["se_category"]}, "se_action": {"type": ["string", "null"], "from": ["se_action"]}, "se_label": {"type": ["string", "null"], "from": ["se_label"]}, "se_property": {"type": ["string", "null"], "from": ["se_property"]}, "se_value": {"type": ["string", "null"], "from": ["se_value"]}, "tr_orderid": {"type": ["string", "null"], "from": ["tr_orderid"]}, "tr_affiliation": {"type": ["string", "null"], "from": ["tr_affiliation"]}, "tr_total": {"type": ["number", "null"], "from": ["tr_total"]}, "tr_tax": {"type": ["number", "null"], "from": ["tr_tax"]}, "tr_shipping": {"type": ["number", "null"], "from": ["tr_shipping"]}, "tr_city": {"type": ["string", "null"], "from": ["tr_city"]}, "tr_state": {"type": ["string", "null"], "from": ["tr_state"]}, "tr_country": {"type": ["string", "null"], "from": ["tr_country"]}, "ti_orderid": {"type": ["string", "null"], "from": ["ti_orderid"]}, "ti_sku": {"type": ["string", "null"], "from": ["ti_sku"]}, "ti_name": {"type": ["string", "null"], "from": ["ti_name"]}, "ti_category": {"type": ["string", "null"], "from": ["ti_category"]}, "ti_price": {"type": ["number", "null"], "from": ["ti_price"]}, "ti_quantity": {"type": ["integer", "null"], "from": ["ti_quantity"]}, "pp_xoffset_min": {"type": ["integer", "null"], "from": ["pp_xoffset_min"]}, "pp_xoffset_max": {"type": ["integer", "null"], "from": ["pp_xoffset_max"]}, "pp_yoffset_min": {"type": ["integer", "null"], "from": ["pp_yoffset_min"]}, "pp_yoffset_max": {"type": ["integer", "null"], "from": ["pp_yoffset_max"]}, "useragent": {"type": ["string", "null"], "from": ["useragent"]}, "br_name": {"type": ["string", "null"], "from": ["br_name"]}, "br_family": {"type": ["string", "null"], "from": ["br_family"]}, "br_version": {"type": ["string", "null"], "from": ["br_version"]}, "br_type": {"type": ["string", "null"], "from": ["br_type"]}, "br_renderengine": {"type": ["string", "null"], "from": ["br_renderengine"]}, "br_lang": {"type": ["string", "null"], "from": ["br_lang"]}, "br_features_pdf": {"type": ["boolean", "null"], "from": ["br_features_pdf"]}, "br_features_flash": {"type": ["boolean", "null"], "from": ["br_features_flash"]}, "br_features_java": {"type": ["boolean", "null"], "from": ["br_features_java"]}, "br_features_director": {"type": ["boolean", "null"], "from": ["br_features_director"]}, "br_features_quicktime": {"type": ["boolean", "null"], "from": ["br_features_quicktime"]}, "br_features_realplayer": {"type": ["boolean", "null"], "from": ["br_features_realplayer"]}, "br_features_windowsmedia": {"type": ["boolean", "null"], "from": ["br_features_windowsmedia"]}, "br_features_gears": {"type": ["boolean", "null"], "from": ["br_features_gears"]}, "br_features_silverlight": {"type": ["boolean", "null"], "from": ["br_features_silverlight"]}, "br_cookies": {"type": ["boolean", "null"], "from": ["br_cookies"]}, "br_colordepth": {"type": ["string", "null"], "from": ["br_colordepth"]}, "br_viewwidth": {"type": ["integer", "null"], "from": ["br_viewwidth"]}, "br_viewheight": {"type": ["integer", "null"], "from": ["br_viewheight"]}, "os_name": {"type": ["string", "null"], "from": ["os_name"]}, "os_family": {"type": ["string", "null"], "from": ["os_family"]}, "os_manufacturer": {"type": ["string", "null"], "from": ["os_manufacturer"]}, "os_timezone": {"type": ["string", "null"], "from": ["os_timezone"]}, "dvce_type": {"type": ["string", "null"], "from": ["dvce_type"]}, "dvce_ismobile": {"type": ["boolean", "null"], "from": ["dvce_ismobile"]}, "dvce_screenwidth": {"type": ["integer", "null"], "from": ["dvce_screenwidth"]}, "dvce_screenheight": {"type": ["integer", "null"], "from": ["dvce_screenheight"]}, "dvce_created_tstamp": {"type": ["string", "null"], "from": ["dvce_created_tstamp"], "format": "date-time"}, "doc_charset": {"type": ["string", "null"], "from": ["doc_charset"]}, "doc_width": {"type": ["integer", "null"], "from": ["doc_width"]}, "doc_height": {"type": ["integer", "null"], "from": ["doc_height"]}, "tr_currency": {"type": ["string", "null"], "from": ["tr_currency"]}, "tr_total_base": {"type": ["number", "null"], "from": ["tr_total_base"]}, "tr_tax_base": {"type": ["number", "null"], "from": ["tr_tax_base"]}, "tr_shipping_base": {"type": ["number", "null"], "from": ["tr_shipping_base"]}, "ti_currency": {"type": ["string", "null"], "from": ["ti_currency"]}, "ti_price_base": {"type": ["number", "null"], "from": ["ti_price_base"]}, "base_currency": {"type": ["string", "null"], "from": ["base_currency"]}, "geo_timezone": {"type": ["string", "null"], "from": ["geo_timezone"]}, "mkt_clickid": {"type": ["string", "null"], "from": ["mkt_clickid"]}, "mkt_network": {"type": ["string", "null"], "from": ["mkt_network"]}, "etl_tags": {"type": ["string", "null"], "from": ["etl_tags"]}, "dvce_sent_tstamp": {"type": ["string", "null"], "from": ["dvce_sent_tstamp"], "format": "date-time"}, "refr_domain_userid": {"type": ["string", "null"], "from": ["refr_domain_userid"]}, "refr_dvce_tstamp": {"type": ["string", "null"], "from": ["refr_dvce_tstamp"], "format": "date-time"}, "session_id": {"type": ["string", "null"], "from": ["session_id"]}, "_sdc_received_at": {"type": ["string", "null"], "from": ["_sdc_received_at"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_table_version": {"type": ["integer", "null"], "from": ["_sdc_table_version"]}, "_sdc_batched_at": {"type": ["string", "null"], "from": ["_sdc_batched_at"], "format": "date-time"}, "_sdc_primary_key": {"type": ["string"], "from": ["_sdc_primary_key"]}}}';
+COMMENT ON TABLE raw_tap_kafka.snowplow_production_enriched IS '{"path": ["snowplow-production-enriched"], "version": null, "schema_version": 2, "key_properties": ["_sdc_primary_key"], "mappings": {"app_id": {"type": ["string", "null"], "from": ["app_id"]}, "base_currency": {"type": ["string", "null"], "from": ["base_currency"]}, "br_colordepth": {"type": ["string", "null"], "from": ["br_colordepth"]}, "br_cookies": {"type": ["boolean", "null"], "from": ["br_cookies"]}, "br_family": {"type": ["string", "null"], "from": ["br_family"]}, "br_features_director": {"type": ["boolean", "null"], "from": ["br_features_director"]}, "br_features_flash": {"type": ["boolean", "null"], "from": ["br_features_flash"]}, "br_features_gears": {"type": ["boolean", "null"], "from": ["br_features_gears"]}, "br_features_java": {"type": ["boolean", "null"], "from": ["br_features_java"]}, "br_features_pdf": {"type": ["boolean", "null"], "from": ["br_features_pdf"]}, "br_features_quicktime": {"type": ["boolean", "null"], "from": ["br_features_quicktime"]}, "br_features_realplayer": {"type": ["boolean", "null"], "from": ["br_features_realplayer"]}, "br_features_silverlight": {"type": ["boolean", "null"], "from": ["br_features_silverlight"]}, "br_features_windowsmedia": {"type": ["boolean", "null"], "from": ["br_features_windowsmedia"]}, "br_lang": {"type": ["string", "null"], "from": ["br_lang"]}, "br_name": {"type": ["string", "null"], "from": ["br_name"]}, "br_renderengine": {"type": ["string", "null"], "from": ["br_renderengine"]}, "br_type": {"type": ["string", "null"], "from": ["br_type"]}, "br_version": {"type": ["string", "null"], "from": ["br_version"]}, "br_viewheight": {"type": ["integer", "null"], "from": ["br_viewheight"]}, "br_viewwidth": {"type": ["integer", "null"], "from": ["br_viewwidth"]}, "collector_tstamp": {"type": ["string"], "from": ["collector_tstamp"], "format": "date-time"}, "derived_tstamp": {"type": ["string", "null"], "from": ["derived_tstamp"], "format": "date-time"}, "doc_charset": {"type": ["string", "null"], "from": ["doc_charset"]}, "doc_height": {"type": ["integer", "null"], "from": ["doc_height"]}, "doc_width": {"type": ["integer", "null"], "from": ["doc_width"]}, "domain_sessionid": {"type": ["string", "null"], "from": ["domain_sessionid"]}, "domain_sessionidx": {"type": ["integer", "null"], "from": ["domain_sessionidx"]}, "domain_userid": {"type": ["string", "null"], "from": ["domain_userid"]}, "dvce_created_tstamp": {"type": ["string", "null"], "from": ["dvce_created_tstamp"], "format": "date-time"}, "dvce_ismobile": {"type": ["boolean", "null"], "from": ["dvce_ismobile"]}, "dvce_screenheight": {"type": ["integer", "null"], "from": ["dvce_screenheight"]}, "dvce_screenwidth": {"type": ["integer", "null"], "from": ["dvce_screenwidth"]}, "dvce_sent_tstamp": {"type": ["string", "null"], "from": ["dvce_sent_tstamp"], "format": "date-time"}, "dvce_type": {"type": ["string", "null"], "from": ["dvce_type"]}, "etl_tags": {"type": ["string", "null"], "from": ["etl_tags"]}, "etl_tstamp": {"type": ["string", "null"], "from": ["etl_tstamp"], "format": "date-time"}, "event": {"type": ["string", "null"], "from": ["event"]}, "event_fingerprint": {"type": ["string", "null"], "from": ["event_fingerprint"]}, "event_format": {"type": ["string", "null"], "from": ["event_format"]}, "event_id": {"type": ["string"], "from": ["event_id"]}, "event_name": {"type": ["string", "null"], "from": ["event_name"]}, "event_vendor": {"type": ["string", "null"], "from": ["event_vendor"]}, "event_version": {"type": ["string", "null"], "from": ["event_version"]}, "geo_city": {"type": ["string", "null"], "from": ["geo_city"]}, "geo_country": {"type": ["string", "null"], "from": ["geo_country"]}, "geo_latitude": {"type": ["number", "null"], "from": ["geo_latitude"]}, "geo_longitude": {"type": ["number", "null"], "from": ["geo_longitude"]}, "geo_region": {"type": ["string", "null"], "from": ["geo_region"]}, "geo_region_name": {"type": ["string", "null"], "from": ["geo_region_name"]}, "geo_timezone": {"type": ["string", "null"], "from": ["geo_timezone"]}, "geo_zipcode": {"type": ["string", "null"], "from": ["geo_zipcode"]}, "ip_domain": {"type": ["string", "null"], "from": ["ip_domain"]}, "ip_isp": {"type": ["string", "null"], "from": ["ip_isp"]}, "ip_netspeed": {"type": ["string", "null"], "from": ["ip_netspeed"]}, "ip_organization": {"type": ["string", "null"], "from": ["ip_organization"]}, "mkt_campaign": {"type": ["string", "null"], "from": ["mkt_campaign"]}, "mkt_clickid": {"type": ["string", "null"], "from": ["mkt_clickid"]}, "mkt_content": {"type": ["string", "null"], "from": ["mkt_content"]}, "mkt_medium": {"type": ["string", "null"], "from": ["mkt_medium"]}, "mkt_network": {"type": ["string", "null"], "from": ["mkt_network"]}, "mkt_source": {"type": ["string", "null"], "from": ["mkt_source"]}, "mkt_term": {"type": ["string", "null"], "from": ["mkt_term"]}, "name_tracker": {"type": ["string", "null"], "from": ["name_tracker"]}, "network_userid": {"type": ["string", "null"], "from": ["network_userid"]}, "os_family": {"type": ["string", "null"], "from": ["os_family"]}, "os_manufacturer": {"type": ["string", "null"], "from": ["os_manufacturer"]}, "os_name": {"type": ["string", "null"], "from": ["os_name"]}, "os_timezone": {"type": ["string", "null"], "from": ["os_timezone"]}, "page_referrer": {"type": ["string", "null"], "from": ["page_referrer"]}, "page_title": {"type": ["string", "null"], "from": ["page_title"]}, "page_url": {"type": ["string", "null"], "from": ["page_url"]}, "page_urlfragment": {"type": ["string", "null"], "from": ["page_urlfragment"]}, "page_urlhost": {"type": ["string", "null"], "from": ["page_urlhost"]}, "page_urlpath": {"type": ["string", "null"], "from": ["page_urlpath"]}, "page_urlport": {"type": ["integer", "null"], "from": ["page_urlport"]}, "page_urlquery": {"type": ["string", "null"], "from": ["page_urlquery"]}, "page_urlscheme": {"type": ["string", "null"], "from": ["page_urlscheme"]}, "platform": {"type": ["string", "null"], "from": ["platform"]}, "pp_xoffset_max": {"type": ["integer", "null"], "from": ["pp_xoffset_max"]}, "pp_xoffset_min": {"type": ["integer", "null"], "from": ["pp_xoffset_min"]}, "pp_yoffset_max": {"type": ["integer", "null"], "from": ["pp_yoffset_max"]}, "pp_yoffset_min": {"type": ["integer", "null"], "from": ["pp_yoffset_min"]}, "refr_domain_userid": {"type": ["string", "null"], "from": ["refr_domain_userid"]}, "refr_dvce_tstamp": {"type": ["string", "null"], "from": ["refr_dvce_tstamp"], "format": "date-time"}, "refr_medium": {"type": ["string", "null"], "from": ["refr_medium"]}, "refr_source": {"type": ["string", "null"], "from": ["refr_source"]}, "refr_term": {"type": ["string", "null"], "from": ["refr_term"]}, "refr_urlfragment": {"type": ["string", "null"], "from": ["refr_urlfragment"]}, "refr_urlhost": {"type": ["string", "null"], "from": ["refr_urlhost"]}, "refr_urlpath": {"type": ["string", "null"], "from": ["refr_urlpath"]}, "refr_urlport": {"type": ["integer", "null"], "from": ["refr_urlport"]}, "refr_urlquery": {"type": ["string", "null"], "from": ["refr_urlquery"]}, "refr_urlscheme": {"type": ["string", "null"], "from": ["refr_urlscheme"]}, "se_action": {"type": ["string", "null"], "from": ["se_action"]}, "se_category": {"type": ["string", "null"], "from": ["se_category"]}, "se_label": {"type": ["string", "null"], "from": ["se_label"]}, "se_property": {"type": ["string", "null"], "from": ["se_property"]}, "se_value": {"type": ["number", "null"], "from": ["se_value"]}, "ti_category": {"type": ["string", "null"], "from": ["ti_category"]}, "ti_currency": {"type": ["string", "null"], "from": ["ti_currency"]}, "ti_name": {"type": ["string", "null"], "from": ["ti_name"]}, "ti_orderid": {"type": ["string", "null"], "from": ["ti_orderid"]}, "ti_price": {"type": ["number", "null"], "from": ["ti_price"]}, "ti_price_base": {"type": ["number", "null"], "from": ["ti_price_base"]}, "ti_quantity": {"type": ["integer", "null"], "from": ["ti_quantity"]}, "ti_sku": {"type": ["string", "null"], "from": ["ti_sku"]}, "tr_affiliation": {"type": ["string", "null"], "from": ["tr_affiliation"]}, "tr_city": {"type": ["string", "null"], "from": ["tr_city"]}, "tr_country": {"type": ["string", "null"], "from": ["tr_country"]}, "tr_currency": {"type": ["string", "null"], "from": ["tr_currency"]}, "tr_orderid": {"type": ["string", "null"], "from": ["tr_orderid"]}, "tr_shipping": {"type": ["number", "null"], "from": ["tr_shipping"]}, "tr_shipping_base": {"type": ["number", "null"], "from": ["tr_shipping_base"]}, "tr_state": {"type": ["string", "null"], "from": ["tr_state"]}, "tr_tax": {"type": ["number", "null"], "from": ["tr_tax"]}, "tr_tax_base": {"type": ["number", "null"], "from": ["tr_tax_base"]}, "tr_total": {"type": ["number", "null"], "from": ["tr_total"]}, "tr_total_base": {"type": ["number", "null"], "from": ["tr_total_base"]}, "true_tstamp": {"type": ["string", "null"], "from": ["true_tstamp"], "format": "date-time"}, "txn_id": {"type": ["integer", "null"], "from": ["txn_id"]}, "user_fingerprint": {"type": ["string", "null"], "from": ["user_fingerprint"]}, "user_id": {"type": ["string", "null"], "from": ["user_id"]}, "user_ipaddress": {"type": ["string", "null"], "from": ["user_ipaddress"]}, "useragent": {"type": ["string", "null"], "from": ["useragent"]}, "v_collector": {"type": ["string"], "from": ["v_collector"]}, "v_etl": {"type": ["string"], "from": ["v_etl"]}, "v_tracker": {"type": ["string", "null"], "from": ["v_tracker"]}, "_sdc_received_at": {"type": ["string", "null"], "from": ["_sdc_received_at"], "format": "date-time"}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_table_version": {"type": ["integer", "null"], "from": ["_sdc_table_version"]}, "_sdc_batched_at": {"type": ["string", "null"], "from": ["_sdc_batched_at"], "format": "date-time"}, "_sdc_primary_key": {"type": ["string"], "from": ["_sdc_primary_key"]}}}';
 
 
 --
@@ -11586,6 +11584,11 @@ COMMENT ON TABLE raw_tap_kafka.snowplow_production_enriched IS '{"path": ["snowp
 --
 
 CREATE TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_google_analytics_coo (
+    __utma text,
+    __utmb text,
+    __utmc text,
+    __utmv text,
+    __utmz text,
     _ga text,
     _sdc_source_key__sdc_primary_key text NOT NULL,
     _sdc_sequence bigint,
@@ -11597,71 +11600,106 @@ CREATE TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_google_ana
 -- Name: TABLE snowplow_production_enriched__contexts_com_google_analytics_coo; Type: COMMENT; Schema: raw_tap_kafka; Owner: -
 --
 
-COMMENT ON TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_google_analytics_coo IS '{"path": ["snowplow-production-enriched", "contexts_com_google_analytics_cookies_1"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key__sdc_primary_key"], "mappings": {"_ga": {"type": ["string", "null"], "from": ["_ga"]}, "_sdc_source_key__sdc_primary_key": {"type": ["string"], "from": ["_sdc_source_key__sdc_primary_key"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+COMMENT ON TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_google_analytics_coo IS '{"path": ["snowplow-production-enriched", "contexts_com_google_analytics_cookies_1"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key__sdc_primary_key"], "mappings": {"__utma": {"type": ["string", "null"], "from": ["__utma"]}, "__utmb": {"type": ["string", "null"], "from": ["__utmb"]}, "__utmc": {"type": ["string", "null"], "from": ["__utmc"]}, "__utmv": {"type": ["string", "null"], "from": ["__utmv"]}, "__utmz": {"type": ["string", "null"], "from": ["__utmz"]}, "_ga": {"type": ["string", "null"], "from": ["_ga"]}, "_sdc_source_key__sdc_primary_key": {"type": ["string"], "from": ["_sdc_source_key__sdc_primary_key"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
 
 
 --
--- Name: snowplow_production_enriched__contexts_com_snowplowanalytics__1; Type: TABLE; Schema: raw_tap_kafka; Owner: -
+-- Name: snowplow_production_enriched__contexts_com_shopify_trekkie_adde; Type: TABLE; Schema: raw_tap_kafka; Owner: -
 --
 
-CREATE TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_snowplowanalytics__1 (
-    useragentfamily text,
-    useragentmajor text,
-    useragentminor text,
-    useragentpatch text,
-    useragentversion text,
-    osfamily text,
-    osmajor text,
-    osminor text,
-    ospatch text,
-    ospatchminor text,
-    osversion text,
-    devicefamily text,
-    _sdc_source_key__sdc_primary_key text NOT NULL,
-    _sdc_sequence bigint,
-    _sdc_level_0_id bigint NOT NULL
-);
-
-
---
--- Name: TABLE snowplow_production_enriched__contexts_com_snowplowanalytics__1; Type: COMMENT; Schema: raw_tap_kafka; Owner: -
---
-
-COMMENT ON TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_snowplowanalytics__1 IS '{"path": ["snowplow-production-enriched", "contexts_com_snowplowanalytics_snowplow_ua_parser_context_1"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key__sdc_primary_key"], "mappings": {"useragentfamily": {"type": ["string", "null"], "from": ["useragentFamily"]}, "useragentmajor": {"type": ["string", "null"], "from": ["useragentMajor"]}, "useragentminor": {"type": ["string", "null"], "from": ["useragentMinor"]}, "useragentpatch": {"type": ["string", "null"], "from": ["useragentPatch"]}, "useragentversion": {"type": ["string", "null"], "from": ["useragentVersion"]}, "osfamily": {"type": ["string", "null"], "from": ["osFamily"]}, "osmajor": {"type": ["string", "null"], "from": ["osMajor"]}, "osminor": {"type": ["string", "null"], "from": ["osMinor"]}, "ospatch": {"type": ["string", "null"], "from": ["osPatch"]}, "ospatchminor": {"type": ["string", "null"], "from": ["osPatchMinor"]}, "osversion": {"type": ["string", "null"], "from": ["osVersion"]}, "devicefamily": {"type": ["string", "null"], "from": ["deviceFamily"]}, "_sdc_source_key__sdc_primary_key": {"type": ["string"], "from": ["_sdc_source_key__sdc_primary_key"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
-
-
---
--- Name: snowplow_production_enriched__contexts_com_snowplowanalytics_sn; Type: TABLE; Schema: raw_tap_kafka; Owner: -
---
-
-CREATE TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_snowplowanalytics_sn (
-    id text,
-    _sdc_source_key__sdc_primary_key text NOT NULL,
-    _sdc_sequence bigint,
-    _sdc_level_0_id bigint NOT NULL
-);
-
-
---
--- Name: TABLE snowplow_production_enriched__contexts_com_snowplowanalytics_sn; Type: COMMENT; Schema: raw_tap_kafka; Owner: -
---
-
-COMMENT ON TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_snowplowanalytics_sn IS '{"path": ["snowplow-production-enriched", "contexts_com_snowplowanalytics_snowplow_web_page_1"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key__sdc_primary_key"], "mappings": {"id": {"type": ["string", "null"], "from": ["id"]}, "_sdc_source_key__sdc_primary_key": {"type": ["string"], "from": ["_sdc_source_key__sdc_primary_key"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
-
-
---
--- Name: snowplow_production_enriched__contexts_com_superpro_shopify___1; Type: TABLE; Schema: raw_tap_kafka; Owner: -
---
-
-CREATE TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_superpro_shopify___1 (
-    selectedvariantid text,
+CREATE TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_shopify_trekkie_adde (
+    brand text,
+    category text,
+    coupon text,
     currency text,
-    product__id double precision,
-    product__type text,
-    product__vendor text,
+    name text,
+    price double precision,
+    productid double precision,
+    quantity text,
+    sku text,
+    variant text,
+    variantid double precision,
+    _sdc_source_key__sdc_primary_key text NOT NULL,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE snowplow_production_enriched__contexts_com_shopify_trekkie_adde; Type: COMMENT; Schema: raw_tap_kafka; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_shopify_trekkie_adde IS '{"path": ["snowplow-production-enriched", "contexts_com_shopify_trekkie_added_product_1"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key__sdc_primary_key"], "mappings": {"brand": {"type": ["string", "null"], "from": ["brand"]}, "category": {"type": ["string", "null"], "from": ["category"]}, "coupon": {"type": ["string", "null"], "from": ["coupon"]}, "currency": {"type": ["string", "null"], "from": ["currency"]}, "name": {"type": ["string", "null"], "from": ["name"]}, "price": {"type": ["number", "null"], "from": ["price"]}, "productid": {"type": ["number", "null"], "from": ["productId"]}, "quantity": {"type": ["string", "null"], "from": ["quantity"]}, "sku": {"type": ["string", "null"], "from": ["sku"]}, "variant": {"type": ["string", "null"], "from": ["variant"]}, "variantid": {"type": ["number", "null"], "from": ["variantId"]}, "_sdc_source_key__sdc_primary_key": {"type": ["string"], "from": ["_sdc_source_key__sdc_primary_key"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: snowplow_production_enriched__contexts_com_shopify_trekkie_comp; Type: TABLE; Schema: raw_tap_kafka; Owner: -
+--
+
+CREATE TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_shopify_trekkie_comp (
+    coupon text,
+    currency text,
+    emailsha256 text,
+    orderid text,
+    revenue text,
+    shipping text,
+    tax text,
+    total text,
+    _sdc_source_key__sdc_primary_key text NOT NULL,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE snowplow_production_enriched__contexts_com_shopify_trekkie_comp; Type: COMMENT; Schema: raw_tap_kafka; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_shopify_trekkie_comp IS '{"path": ["snowplow-production-enriched", "contexts_com_shopify_trekkie_completed_order_1"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key__sdc_primary_key"], "mappings": {"coupon": {"type": ["string", "null"], "from": ["coupon"]}, "currency": {"type": ["string", "null"], "from": ["currency"]}, "emailsha256": {"type": ["string", "null"], "from": ["emailSHA256"]}, "orderid": {"type": ["string", "null"], "from": ["orderId"]}, "revenue": {"type": ["string", "null"], "from": ["revenue"]}, "shipping": {"type": ["string", "null"], "from": ["shipping"]}, "tax": {"type": ["string", "null"], "from": ["tax"]}, "total": {"type": ["string", "null"], "from": ["total"]}, "_sdc_source_key__sdc_primary_key": {"type": ["string"], "from": ["_sdc_source_key__sdc_primary_key"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: snowplow_production_enriched__contexts_com_shopify_trekkie_defa; Type: TABLE; Schema: raw_tap_kafka; Owner: -
+--
+
+CREATE TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_shopify_trekkie_defa (
+    appname text,
+    contentlanguage text,
+    firstseen text,
+    ismerchantrequest boolean,
+    microsessioncount double precision,
+    microsessionid text,
+    shopid double precision,
+    themecityhash text,
+    themeid double precision,
+    uniqtoken text,
+    visittoken text,
+    _sdc_source_key__sdc_primary_key text NOT NULL,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE snowplow_production_enriched__contexts_com_shopify_trekkie_defa; Type: COMMENT; Schema: raw_tap_kafka; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_shopify_trekkie_defa IS '{"path": ["snowplow-production-enriched", "contexts_com_shopify_trekkie_default_attributes_1"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key__sdc_primary_key"], "mappings": {"appname": {"type": ["string", "null"], "from": ["appName"]}, "contentlanguage": {"type": ["string", "null"], "from": ["contentLanguage"]}, "firstseen": {"type": ["string", "null"], "from": ["firstSeen"]}, "ismerchantrequest": {"type": ["boolean", "null"], "from": ["isMerchantRequest"]}, "microsessioncount": {"type": ["number", "null"], "from": ["microSessionCount"]}, "microsessionid": {"type": ["string", "null"], "from": ["microSessionId"]}, "shopid": {"type": ["number", "null"], "from": ["shopId"]}, "themecityhash": {"type": ["string", "null"], "from": ["themeCityHash"]}, "themeid": {"type": ["number", "null"], "from": ["themeId"]}, "uniqtoken": {"type": ["string", "null"], "from": ["uniqToken"]}, "visittoken": {"type": ["string", "null"], "from": ["visitToken"]}, "_sdc_source_key__sdc_primary_key": {"type": ["string"], "from": ["_sdc_source_key__sdc_primary_key"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: snowplow_production_enriched__contexts_com_shopify_trekkie_p__1; Type: TABLE; Schema: raw_tap_kafka; Owner: -
+--
+
+CREATE TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_shopify_trekkie_p__1 (
+    currency text,
     page__pagetype text,
     page__resourceid double precision,
     page__resourcetype text,
+    product__id double precision,
+    product__type text,
+    product__vendor text,
+    selectedvariantid text,
     _sdc_source_key__sdc_primary_key text NOT NULL,
     _sdc_sequence bigint,
     _sdc_level_0_id bigint NOT NULL
@@ -11669,20 +11707,20 @@ CREATE TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_superpro_s
 
 
 --
--- Name: TABLE snowplow_production_enriched__contexts_com_superpro_shopify___1; Type: COMMENT; Schema: raw_tap_kafka; Owner: -
+-- Name: TABLE snowplow_production_enriched__contexts_com_shopify_trekkie_p__1; Type: COMMENT; Schema: raw_tap_kafka; Owner: -
 --
 
-COMMENT ON TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_superpro_shopify___1 IS '{"path": ["snowplow-production-enriched", "contexts_com_superpro_shopify_page_meta_1"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key__sdc_primary_key"], "mappings": {"selectedvariantid": {"type": ["string", "null"], "from": ["selectedVariantId"]}, "currency": {"type": ["string", "null"], "from": ["currency"]}, "product__id": {"type": ["number", "null"], "from": ["product", "id"]}, "product__type": {"type": ["string", "null"], "from": ["product", "type"]}, "product__vendor": {"type": ["string", "null"], "from": ["product", "vendor"]}, "page__pagetype": {"type": ["string", "null"], "from": ["page", "pageType"]}, "page__resourceid": {"type": ["number", "null"], "from": ["page", "resourceId"]}, "page__resourcetype": {"type": ["string", "null"], "from": ["page", "resourceType"]}, "_sdc_source_key__sdc_primary_key": {"type": ["string"], "from": ["_sdc_source_key__sdc_primary_key"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+COMMENT ON TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_shopify_trekkie_p__1 IS '{"path": ["snowplow-production-enriched", "contexts_com_shopify_trekkie_page_meta_1"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key__sdc_primary_key"], "mappings": {"currency": {"type": ["string", "null"], "from": ["currency"]}, "page__pagetype": {"type": ["string", "null"], "from": ["page", "pageType"]}, "page__resourceid": {"type": ["number", "null"], "from": ["page", "resourceId"]}, "page__resourcetype": {"type": ["string", "null"], "from": ["page", "resourceType"]}, "product__id": {"type": ["number", "null"], "from": ["product", "id"]}, "product__type": {"type": ["string", "null"], "from": ["product", "type"]}, "product__vendor": {"type": ["string", "null"], "from": ["product", "vendor"]}, "selectedvariantid": {"type": ["string", "null"], "from": ["selectedVariantId"]}, "_sdc_source_key__sdc_primary_key": {"type": ["string"], "from": ["_sdc_source_key__sdc_primary_key"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
 
 
 --
--- Name: snowplow_production_enriched__contexts_com_superpro_shopify_pag; Type: TABLE; Schema: raw_tap_kafka; Owner: -
+-- Name: snowplow_production_enriched__contexts_com_shopify_trekkie_page; Type: TABLE; Schema: raw_tap_kafka; Owner: -
 --
 
-CREATE TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_superpro_shopify_pag (
+CREATE TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_shopify_trekkie_page (
     id double precision,
-    price double precision,
     name text,
+    price double precision,
     public_title text,
     sku text,
     _sdc_source_key__sdc_primary_key text NOT NULL,
@@ -11693,10 +11731,194 @@ CREATE TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_superpro_s
 
 
 --
--- Name: TABLE snowplow_production_enriched__contexts_com_superpro_shopify_pag; Type: COMMENT; Schema: raw_tap_kafka; Owner: -
+-- Name: TABLE snowplow_production_enriched__contexts_com_shopify_trekkie_page; Type: COMMENT; Schema: raw_tap_kafka; Owner: -
 --
 
-COMMENT ON TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_superpro_shopify_pag IS '{"path": ["snowplow-production-enriched", "contexts_com_superpro_shopify_page_meta_1", "product", "variants"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key__sdc_primary_key"], "mappings": {"id": {"type": ["number", "null"], "from": ["id"]}, "price": {"type": ["number", "null"], "from": ["price"]}, "name": {"type": ["string", "null"], "from": ["name"]}, "public_title": {"type": ["string", "null"], "from": ["public_title"]}, "sku": {"type": ["string", "null"], "from": ["sku"]}, "_sdc_source_key__sdc_primary_key": {"type": ["string"], "from": ["_sdc_source_key__sdc_primary_key"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+COMMENT ON TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_shopify_trekkie_page IS '{"path": ["snowplow-production-enriched", "contexts_com_shopify_trekkie_page_meta_1", "product", "variants"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key__sdc_primary_key"], "mappings": {"id": {"type": ["number", "null"], "from": ["id"]}, "name": {"type": ["string", "null"], "from": ["name"]}, "price": {"type": ["number", "null"], "from": ["price"]}, "public_title": {"type": ["string", "null"], "from": ["public_title"]}, "sku": {"type": ["string", "null"], "from": ["sku"]}, "_sdc_source_key__sdc_primary_key": {"type": ["string"], "from": ["_sdc_source_key__sdc_primary_key"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "_sdc_level_1_id": {"type": ["integer"], "from": ["_sdc_level_1_id"]}}}';
+
+
+--
+-- Name: snowplow_production_enriched__contexts_com_shopify_trekkie_perf; Type: TABLE; Schema: raw_tap_kafka; Owner: -
+--
+
+CREATE TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_shopify_trekkie_perf (
+    _sdc_source_key__sdc_primary_key text NOT NULL,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE snowplow_production_enriched__contexts_com_shopify_trekkie_perf; Type: COMMENT; Schema: raw_tap_kafka; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_shopify_trekkie_perf IS '{"path": ["snowplow-production-enriched", "contexts_com_shopify_trekkie_performed_search_1"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key__sdc_primary_key"], "mappings": {"_sdc_source_key__sdc_primary_key": {"type": ["string"], "from": ["_sdc_source_key__sdc_primary_key"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: snowplow_production_enriched__contexts_com_shopify_trekkie_unkn; Type: TABLE; Schema: raw_tap_kafka; Owner: -
+--
+
+CREATE TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_shopify_trekkie_unkn (
+    eventname text,
+    _sdc_source_key__sdc_primary_key text NOT NULL,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE snowplow_production_enriched__contexts_com_shopify_trekkie_unkn; Type: COMMENT; Schema: raw_tap_kafka; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_shopify_trekkie_unkn IS '{"path": ["snowplow-production-enriched", "contexts_com_shopify_trekkie_unknown_event_1"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key__sdc_primary_key"], "mappings": {"eventname": {"type": ["string", "null"], "from": ["eventName"]}, "_sdc_source_key__sdc_primary_key": {"type": ["string"], "from": ["_sdc_source_key__sdc_primary_key"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: snowplow_production_enriched__contexts_com_shopify_trekkie_v__1; Type: TABLE; Schema: raw_tap_kafka; Owner: -
+--
+
+CREATE TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_shopify_trekkie_v__1 (
+    category text,
+    currency text,
+    noninteraction boolean,
+    _sdc_source_key__sdc_primary_key text NOT NULL,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE snowplow_production_enriched__contexts_com_shopify_trekkie_v__1; Type: COMMENT; Schema: raw_tap_kafka; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_shopify_trekkie_v__1 IS '{"path": ["snowplow-production-enriched", "contexts_com_shopify_trekkie_viewed_product_category_1"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key__sdc_primary_key"], "mappings": {"category": {"type": ["string", "null"], "from": ["category"]}, "currency": {"type": ["string", "null"], "from": ["currency"]}, "noninteraction": {"type": ["boolean", "null"], "from": ["nonInteraction"]}, "_sdc_source_key__sdc_primary_key": {"type": ["string"], "from": ["_sdc_source_key__sdc_primary_key"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: snowplow_production_enriched__contexts_com_shopify_trekkie_v__2; Type: TABLE; Schema: raw_tap_kafka; Owner: -
+--
+
+CREATE TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_shopify_trekkie_v__2 (
+    brand text,
+    category text,
+    coupon text,
+    currency text,
+    name text,
+    price double precision,
+    productid double precision,
+    quantity text,
+    sku text,
+    variant text,
+    variantid text,
+    _sdc_source_key__sdc_primary_key text NOT NULL,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE snowplow_production_enriched__contexts_com_shopify_trekkie_v__2; Type: COMMENT; Schema: raw_tap_kafka; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_shopify_trekkie_v__2 IS '{"path": ["snowplow-production-enriched", "contexts_com_shopify_trekkie_viewed_product_variant_1"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key__sdc_primary_key"], "mappings": {"brand": {"type": ["string", "null"], "from": ["brand"]}, "category": {"type": ["string", "null"], "from": ["category"]}, "coupon": {"type": ["string", "null"], "from": ["coupon"]}, "currency": {"type": ["string", "null"], "from": ["currency"]}, "name": {"type": ["string", "null"], "from": ["name"]}, "price": {"type": ["number", "null"], "from": ["price"]}, "productid": {"type": ["number", "null"], "from": ["productId"]}, "quantity": {"type": ["string", "null"], "from": ["quantity"]}, "sku": {"type": ["string", "null"], "from": ["sku"]}, "variant": {"type": ["string", "null"], "from": ["variant"]}, "variantid": {"type": ["string", "null"], "from": ["variantId"]}, "_sdc_source_key__sdc_primary_key": {"type": ["string"], "from": ["_sdc_source_key__sdc_primary_key"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: snowplow_production_enriched__contexts_com_shopify_trekkie_view; Type: TABLE; Schema: raw_tap_kafka; Owner: -
+--
+
+CREATE TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_shopify_trekkie_view (
+    brand text,
+    category text,
+    coupon text,
+    currency text,
+    name text,
+    price double precision,
+    productid double precision,
+    quantity text,
+    sku text,
+    variant text,
+    variantid double precision,
+    _sdc_source_key__sdc_primary_key text NOT NULL,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE snowplow_production_enriched__contexts_com_shopify_trekkie_view; Type: COMMENT; Schema: raw_tap_kafka; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_shopify_trekkie_view IS '{"path": ["snowplow-production-enriched", "contexts_com_shopify_trekkie_viewed_product_1"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key__sdc_primary_key"], "mappings": {"brand": {"type": ["string", "null"], "from": ["brand"]}, "category": {"type": ["string", "null"], "from": ["category"]}, "coupon": {"type": ["string", "null"], "from": ["coupon"]}, "currency": {"type": ["string", "null"], "from": ["currency"]}, "name": {"type": ["string", "null"], "from": ["name"]}, "price": {"type": ["number", "null"], "from": ["price"]}, "productid": {"type": ["number", "null"], "from": ["productId"]}, "quantity": {"type": ["string", "null"], "from": ["quantity"]}, "sku": {"type": ["string", "null"], "from": ["sku"]}, "variant": {"type": ["string", "null"], "from": ["variant"]}, "variantid": {"type": ["number", "null"], "from": ["variantId"]}, "_sdc_source_key__sdc_primary_key": {"type": ["string"], "from": ["_sdc_source_key__sdc_primary_key"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: snowplow_production_enriched__contexts_com_snowplowanalytics__1; Type: TABLE; Schema: raw_tap_kafka; Owner: -
+--
+
+CREATE TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_snowplowanalytics__1 (
+    id text NOT NULL,
+    _sdc_source_key__sdc_primary_key text NOT NULL,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE snowplow_production_enriched__contexts_com_snowplowanalytics__1; Type: COMMENT; Schema: raw_tap_kafka; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_snowplowanalytics__1 IS '{"path": ["snowplow-production-enriched", "contexts_com_snowplowanalytics_snowplow_web_page_1"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key__sdc_primary_key"], "mappings": {"id": {"type": ["string"], "from": ["id"]}, "_sdc_source_key__sdc_primary_key": {"type": ["string"], "from": ["_sdc_source_key__sdc_primary_key"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: snowplow_production_enriched__contexts_com_snowplowanalytics_sn; Type: TABLE; Schema: raw_tap_kafka; Owner: -
+--
+
+CREATE TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_snowplowanalytics_sn (
+    devicefamily text NOT NULL,
+    osfamily text NOT NULL,
+    osmajor text,
+    osminor text,
+    ospatch text,
+    ospatchminor text,
+    osversion text NOT NULL,
+    useragentfamily text NOT NULL,
+    useragentmajor text,
+    useragentminor text,
+    useragentpatch text,
+    useragentversion text NOT NULL,
+    _sdc_source_key__sdc_primary_key text NOT NULL,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE snowplow_production_enriched__contexts_com_snowplowanalytics_sn; Type: COMMENT; Schema: raw_tap_kafka; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_snowplowanalytics_sn IS '{"path": ["snowplow-production-enriched", "contexts_com_snowplowanalytics_snowplow_ua_parser_context_1"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key__sdc_primary_key"], "mappings": {"devicefamily": {"type": ["string"], "from": ["deviceFamily"]}, "osfamily": {"type": ["string"], "from": ["osFamily"]}, "osmajor": {"type": ["string", "null"], "from": ["osMajor"]}, "osminor": {"type": ["string", "null"], "from": ["osMinor"]}, "ospatch": {"type": ["string", "null"], "from": ["osPatch"]}, "ospatchminor": {"type": ["string", "null"], "from": ["osPatchMinor"]}, "osversion": {"type": ["string"], "from": ["osVersion"]}, "useragentfamily": {"type": ["string"], "from": ["useragentFamily"]}, "useragentmajor": {"type": ["string", "null"], "from": ["useragentMajor"]}, "useragentminor": {"type": ["string", "null"], "from": ["useragentMinor"]}, "useragentpatch": {"type": ["string", "null"], "from": ["useragentPatch"]}, "useragentversion": {"type": ["string"], "from": ["useragentVersion"]}, "_sdc_source_key__sdc_primary_key": {"type": ["string"], "from": ["_sdc_source_key__sdc_primary_key"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+
+
+--
+-- Name: snowplow_production_enriched__contexts_com_superpro_shopify_ass; Type: TABLE; Schema: raw_tap_kafka; Owner: -
+--
+
+CREATE TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_superpro_shopify_ass (
+    cart_token text,
+    _sdc_source_key__sdc_primary_key text NOT NULL,
+    _sdc_sequence bigint,
+    _sdc_level_0_id bigint NOT NULL
+);
+
+
+--
+-- Name: TABLE snowplow_production_enriched__contexts_com_superpro_shopify_ass; Type: COMMENT; Schema: raw_tap_kafka; Owner: -
+--
+
+COMMENT ON TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_superpro_shopify_ass IS '{"path": ["snowplow-production-enriched", "contexts_com_superpro_shopify_associate_cart_1"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key__sdc_primary_key"], "mappings": {"cart_token": {"type": ["string", "null"], "from": ["cart_token"]}, "_sdc_source_key__sdc_primary_key": {"type": ["string"], "from": ["_sdc_source_key__sdc_primary_key"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
 
 
 --
@@ -11704,27 +11926,32 @@ COMMENT ON TABLE raw_tap_kafka.snowplow_production_enriched__contexts_com_superp
 --
 
 CREATE TABLE raw_tap_kafka.snowplow_production_enriched__contexts_org_w3_performance_timin (
-    navigationstart double precision,
-    unloadeventstart double precision,
-    unloadeventend double precision,
-    redirectstart double precision,
-    redirectend double precision,
-    fetchstart double precision,
-    domainlookupstart double precision,
-    domainlookupend double precision,
-    connectstart double precision,
-    connectend double precision,
-    secureconnectionstart double precision,
-    requeststart double precision,
-    responsestart double precision,
-    responseend double precision,
-    domloading double precision,
-    dominteractive double precision,
-    domcontentloadedeventstart double precision,
-    domcontentloadedeventend double precision,
-    domcomplete double precision,
-    loadeventstart double precision,
-    loadeventend double precision,
+    chromefirstpaint bigint,
+    connectend bigint,
+    connectstart bigint,
+    domcomplete bigint,
+    domcontentloadedeventend bigint,
+    domcontentloadedeventstart bigint,
+    dominteractive bigint,
+    domloading bigint,
+    domainlookupend bigint,
+    domainlookupstart bigint,
+    fetchstart bigint,
+    loadeventend bigint,
+    loadeventstart bigint,
+    msfirstpaint bigint,
+    navigationstart bigint,
+    proxyend bigint,
+    proxystart bigint,
+    redirectend bigint,
+    redirectstart bigint,
+    requestend bigint,
+    requeststart bigint,
+    responseend bigint,
+    responsestart bigint,
+    secureconnectionstart bigint,
+    unloadeventend bigint,
+    unloadeventstart bigint,
     _sdc_source_key__sdc_primary_key text NOT NULL,
     _sdc_sequence bigint,
     _sdc_level_0_id bigint NOT NULL
@@ -11735,7 +11962,7 @@ CREATE TABLE raw_tap_kafka.snowplow_production_enriched__contexts_org_w3_perform
 -- Name: TABLE snowplow_production_enriched__contexts_org_w3_performance_timin; Type: COMMENT; Schema: raw_tap_kafka; Owner: -
 --
 
-COMMENT ON TABLE raw_tap_kafka.snowplow_production_enriched__contexts_org_w3_performance_timin IS '{"path": ["snowplow-production-enriched", "contexts_org_w3_performance_timing_1"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key__sdc_primary_key"], "mappings": {"navigationstart": {"type": ["number", "null"], "from": ["navigationStart"]}, "unloadeventstart": {"type": ["number", "null"], "from": ["unloadEventStart"]}, "unloadeventend": {"type": ["number", "null"], "from": ["unloadEventEnd"]}, "redirectstart": {"type": ["number", "null"], "from": ["redirectStart"]}, "redirectend": {"type": ["number", "null"], "from": ["redirectEnd"]}, "fetchstart": {"type": ["number", "null"], "from": ["fetchStart"]}, "domainlookupstart": {"type": ["number", "null"], "from": ["domainLookupStart"]}, "domainlookupend": {"type": ["number", "null"], "from": ["domainLookupEnd"]}, "connectstart": {"type": ["number", "null"], "from": ["connectStart"]}, "connectend": {"type": ["number", "null"], "from": ["connectEnd"]}, "secureconnectionstart": {"type": ["number", "null"], "from": ["secureConnectionStart"]}, "requeststart": {"type": ["number", "null"], "from": ["requestStart"]}, "responsestart": {"type": ["number", "null"], "from": ["responseStart"]}, "responseend": {"type": ["number", "null"], "from": ["responseEnd"]}, "domloading": {"type": ["number", "null"], "from": ["domLoading"]}, "dominteractive": {"type": ["number", "null"], "from": ["domInteractive"]}, "domcontentloadedeventstart": {"type": ["number", "null"], "from": ["domContentLoadedEventStart"]}, "domcontentloadedeventend": {"type": ["number", "null"], "from": ["domContentLoadedEventEnd"]}, "domcomplete": {"type": ["number", "null"], "from": ["domComplete"]}, "loadeventstart": {"type": ["number", "null"], "from": ["loadEventStart"]}, "loadeventend": {"type": ["number", "null"], "from": ["loadEventEnd"]}, "_sdc_source_key__sdc_primary_key": {"type": ["string"], "from": ["_sdc_source_key__sdc_primary_key"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}}}';
+COMMENT ON TABLE raw_tap_kafka.snowplow_production_enriched__contexts_org_w3_performance_timin IS '{"path": ["snowplow-production-enriched", "contexts_org_w3_performance_timing_1"], "version": null, "schema_version": 2, "key_properties": ["_sdc_source_key__sdc_primary_key"], "mappings": {"_sdc_source_key__sdc_primary_key": {"type": ["string"], "from": ["_sdc_source_key__sdc_primary_key"]}, "_sdc_sequence": {"type": ["integer", "null"], "from": ["_sdc_sequence"]}, "_sdc_level_0_id": {"type": ["integer"], "from": ["_sdc_level_0_id"]}, "chromefirstpaint": {"type": ["integer", "null"], "from": ["chromeFirstPaint"]}, "connectend": {"type": ["integer", "null"], "from": ["connectEnd"]}, "connectstart": {"type": ["integer", "null"], "from": ["connectStart"]}, "domcomplete": {"type": ["integer", "null"], "from": ["domComplete"]}, "domcontentloadedeventend": {"type": ["integer", "null"], "from": ["domContentLoadedEventEnd"]}, "domcontentloadedeventstart": {"type": ["integer", "null"], "from": ["domContentLoadedEventStart"]}, "dominteractive": {"type": ["integer", "null"], "from": ["domInteractive"]}, "domloading": {"type": ["integer", "null"], "from": ["domLoading"]}, "domainlookupend": {"type": ["integer", "null"], "from": ["domainLookupEnd"]}, "domainlookupstart": {"type": ["integer", "null"], "from": ["domainLookupStart"]}, "fetchstart": {"type": ["integer", "null"], "from": ["fetchStart"]}, "loadeventend": {"type": ["integer", "null"], "from": ["loadEventEnd"]}, "loadeventstart": {"type": ["integer", "null"], "from": ["loadEventStart"]}, "msfirstpaint": {"type": ["integer", "null"], "from": ["msFirstPaint"]}, "navigationstart": {"type": ["integer", "null"], "from": ["navigationStart"]}, "proxyend": {"type": ["integer", "null"], "from": ["proxyEnd"]}, "proxystart": {"type": ["integer", "null"], "from": ["proxyStart"]}, "redirectend": {"type": ["integer", "null"], "from": ["redirectEnd"]}, "redirectstart": {"type": ["integer", "null"], "from": ["redirectStart"]}, "requestend": {"type": ["integer", "null"], "from": ["requestEnd"]}, "requeststart": {"type": ["integer", "null"], "from": ["requestStart"]}, "responseend": {"type": ["integer", "null"], "from": ["responseEnd"]}, "responsestart": {"type": ["integer", "null"], "from": ["responseStart"]}, "secureconnectionstart": {"type": ["integer", "null"], "from": ["secureConnectionStart"]}, "unloadeventend": {"type": ["integer", "null"], "from": ["unloadEventEnd"]}, "unloadeventstart": {"type": ["integer", "null"], "from": ["unloadEventStart"]}}}';
 
 
 --
@@ -14104,135 +14331,133 @@ CREATE VIEW warehouse.base_shopify_orders AS
 CREATE VIEW warehouse.base_snowplow_web_events AS
  WITH source AS (
          SELECT snowplow_production_enriched.app_id,
-            snowplow_production_enriched.platform,
-            snowplow_production_enriched.etl_tstamp,
+            snowplow_production_enriched.base_currency,
+            snowplow_production_enriched.br_colordepth,
+            snowplow_production_enriched.br_cookies,
+            snowplow_production_enriched.br_family,
+            snowplow_production_enriched.br_features_director,
+            snowplow_production_enriched.br_features_flash,
+            snowplow_production_enriched.br_features_gears,
+            snowplow_production_enriched.br_features_java,
+            snowplow_production_enriched.br_features_pdf,
+            snowplow_production_enriched.br_features_quicktime,
+            snowplow_production_enriched.br_features_realplayer,
+            snowplow_production_enriched.br_features_silverlight,
+            snowplow_production_enriched.br_features_windowsmedia,
+            snowplow_production_enriched.br_lang,
+            snowplow_production_enriched.br_name,
+            snowplow_production_enriched.br_renderengine,
+            snowplow_production_enriched.br_type,
+            snowplow_production_enriched.br_version,
+            snowplow_production_enriched.br_viewheight,
+            snowplow_production_enriched.br_viewwidth,
             snowplow_production_enriched.collector_tstamp,
             snowplow_production_enriched.derived_tstamp,
-            snowplow_production_enriched.true_tstamp,
-            snowplow_production_enriched.event,
-            snowplow_production_enriched.event_id,
-            snowplow_production_enriched.event_vendor,
-            snowplow_production_enriched.event_name,
-            snowplow_production_enriched.event_format,
-            snowplow_production_enriched.event_version,
-            snowplow_production_enriched.event_fingerprint,
-            snowplow_production_enriched.txn_id,
-            snowplow_production_enriched.name_tracker,
-            snowplow_production_enriched.v_tracker,
-            snowplow_production_enriched.v_collector,
-            snowplow_production_enriched.v_etl,
-            snowplow_production_enriched.user_id,
-            snowplow_production_enriched.user_ipaddress,
-            snowplow_production_enriched.user_fingerprint,
-            snowplow_production_enriched.domain_userid,
-            snowplow_production_enriched.domain_sessionidx,
+            snowplow_production_enriched.doc_charset,
+            snowplow_production_enriched.doc_height,
+            snowplow_production_enriched.doc_width,
             snowplow_production_enriched.domain_sessionid,
-            snowplow_production_enriched.network_userid,
-            snowplow_production_enriched.geo_country,
-            snowplow_production_enriched.geo_region,
+            snowplow_production_enriched.domain_sessionidx,
+            snowplow_production_enriched.domain_userid,
+            snowplow_production_enriched.dvce_created_tstamp,
+            snowplow_production_enriched.dvce_ismobile,
+            snowplow_production_enriched.dvce_screenheight,
+            snowplow_production_enriched.dvce_screenwidth,
+            snowplow_production_enriched.dvce_sent_tstamp,
+            snowplow_production_enriched.dvce_type,
+            snowplow_production_enriched.etl_tags,
+            snowplow_production_enriched.etl_tstamp,
+            snowplow_production_enriched.event,
+            snowplow_production_enriched.event_fingerprint,
+            snowplow_production_enriched.event_format,
+            snowplow_production_enriched.event_id,
+            snowplow_production_enriched.event_name,
+            snowplow_production_enriched.event_vendor,
+            snowplow_production_enriched.event_version,
             snowplow_production_enriched.geo_city,
-            snowplow_production_enriched.geo_zipcode,
+            snowplow_production_enriched.geo_country,
             snowplow_production_enriched.geo_latitude,
             snowplow_production_enriched.geo_longitude,
+            snowplow_production_enriched.geo_region,
             snowplow_production_enriched.geo_region_name,
-            snowplow_production_enriched.geo_location,
-            snowplow_production_enriched.ip_isp,
-            snowplow_production_enriched.ip_organization,
+            snowplow_production_enriched.geo_timezone,
+            snowplow_production_enriched.geo_zipcode,
             snowplow_production_enriched.ip_domain,
+            snowplow_production_enriched.ip_isp,
             snowplow_production_enriched.ip_netspeed,
-            snowplow_production_enriched.page_url,
-            snowplow_production_enriched.page_title,
+            snowplow_production_enriched.ip_organization,
+            snowplow_production_enriched.mkt_campaign,
+            snowplow_production_enriched.mkt_clickid,
+            snowplow_production_enriched.mkt_content,
+            snowplow_production_enriched.mkt_medium,
+            snowplow_production_enriched.mkt_network,
+            snowplow_production_enriched.mkt_source,
+            snowplow_production_enriched.mkt_term,
+            snowplow_production_enriched.name_tracker,
+            snowplow_production_enriched.network_userid,
+            snowplow_production_enriched.os_family,
+            snowplow_production_enriched.os_manufacturer,
+            snowplow_production_enriched.os_name,
+            snowplow_production_enriched.os_timezone,
             snowplow_production_enriched.page_referrer,
-            snowplow_production_enriched.page_urlscheme,
-            snowplow_production_enriched.page_urlhost,
-            snowplow_production_enriched.page_urlport,
-            snowplow_production_enriched.page_urlpath,
-            snowplow_production_enriched.page_urlquery,
+            snowplow_production_enriched.page_title,
+            snowplow_production_enriched.page_url,
             snowplow_production_enriched.page_urlfragment,
-            snowplow_production_enriched.refr_urlscheme,
-            snowplow_production_enriched.refr_urlhost,
-            snowplow_production_enriched.refr_urlport,
-            snowplow_production_enriched.refr_urlpath,
-            snowplow_production_enriched.refr_urlquery,
-            snowplow_production_enriched.refr_urlfragment,
+            snowplow_production_enriched.page_urlhost,
+            snowplow_production_enriched.page_urlpath,
+            snowplow_production_enriched.page_urlport,
+            snowplow_production_enriched.page_urlquery,
+            snowplow_production_enriched.page_urlscheme,
+            snowplow_production_enriched.platform,
+            snowplow_production_enriched.pp_xoffset_max,
+            snowplow_production_enriched.pp_xoffset_min,
+            snowplow_production_enriched.pp_yoffset_max,
+            snowplow_production_enriched.pp_yoffset_min,
+            snowplow_production_enriched.refr_domain_userid,
+            snowplow_production_enriched.refr_dvce_tstamp,
             snowplow_production_enriched.refr_medium,
             snowplow_production_enriched.refr_source,
             snowplow_production_enriched.refr_term,
-            snowplow_production_enriched.mkt_medium,
-            snowplow_production_enriched.mkt_source,
-            snowplow_production_enriched.mkt_term,
-            snowplow_production_enriched.mkt_content,
-            snowplow_production_enriched.mkt_campaign,
-            snowplow_production_enriched.se_category,
+            snowplow_production_enriched.refr_urlfragment,
+            snowplow_production_enriched.refr_urlhost,
+            snowplow_production_enriched.refr_urlpath,
+            snowplow_production_enriched.refr_urlport,
+            snowplow_production_enriched.refr_urlquery,
+            snowplow_production_enriched.refr_urlscheme,
             snowplow_production_enriched.se_action,
+            snowplow_production_enriched.se_category,
             snowplow_production_enriched.se_label,
             snowplow_production_enriched.se_property,
             snowplow_production_enriched.se_value,
-            snowplow_production_enriched.tr_orderid,
-            snowplow_production_enriched.tr_affiliation,
-            snowplow_production_enriched.tr_total,
-            snowplow_production_enriched.tr_tax,
-            snowplow_production_enriched.tr_shipping,
-            snowplow_production_enriched.tr_city,
-            snowplow_production_enriched.tr_state,
-            snowplow_production_enriched.tr_country,
-            snowplow_production_enriched.ti_orderid,
-            snowplow_production_enriched.ti_sku,
-            snowplow_production_enriched.ti_name,
             snowplow_production_enriched.ti_category,
-            snowplow_production_enriched.ti_price,
-            snowplow_production_enriched.ti_quantity,
-            snowplow_production_enriched.pp_xoffset_min,
-            snowplow_production_enriched.pp_xoffset_max,
-            snowplow_production_enriched.pp_yoffset_min,
-            snowplow_production_enriched.pp_yoffset_max,
-            snowplow_production_enriched.useragent,
-            snowplow_production_enriched.br_name,
-            snowplow_production_enriched.br_family,
-            snowplow_production_enriched.br_version,
-            snowplow_production_enriched.br_type,
-            snowplow_production_enriched.br_renderengine,
-            snowplow_production_enriched.br_lang,
-            snowplow_production_enriched.br_features_pdf,
-            snowplow_production_enriched.br_features_flash,
-            snowplow_production_enriched.br_features_java,
-            snowplow_production_enriched.br_features_director,
-            snowplow_production_enriched.br_features_quicktime,
-            snowplow_production_enriched.br_features_realplayer,
-            snowplow_production_enriched.br_features_windowsmedia,
-            snowplow_production_enriched.br_features_gears,
-            snowplow_production_enriched.br_features_silverlight,
-            snowplow_production_enriched.br_cookies,
-            snowplow_production_enriched.br_colordepth,
-            snowplow_production_enriched.br_viewwidth,
-            snowplow_production_enriched.br_viewheight,
-            snowplow_production_enriched.os_name,
-            snowplow_production_enriched.os_family,
-            snowplow_production_enriched.os_manufacturer,
-            snowplow_production_enriched.os_timezone,
-            snowplow_production_enriched.dvce_type,
-            snowplow_production_enriched.dvce_ismobile,
-            snowplow_production_enriched.dvce_screenwidth,
-            snowplow_production_enriched.dvce_screenheight,
-            snowplow_production_enriched.dvce_created_tstamp,
-            snowplow_production_enriched.doc_charset,
-            snowplow_production_enriched.doc_width,
-            snowplow_production_enriched.doc_height,
-            snowplow_production_enriched.tr_currency,
-            snowplow_production_enriched.tr_total_base,
-            snowplow_production_enriched.tr_tax_base,
-            snowplow_production_enriched.tr_shipping_base,
             snowplow_production_enriched.ti_currency,
+            snowplow_production_enriched.ti_name,
+            snowplow_production_enriched.ti_orderid,
+            snowplow_production_enriched.ti_price,
             snowplow_production_enriched.ti_price_base,
-            snowplow_production_enriched.base_currency,
-            snowplow_production_enriched.geo_timezone,
-            snowplow_production_enriched.mkt_clickid,
-            snowplow_production_enriched.mkt_network,
-            snowplow_production_enriched.etl_tags,
-            snowplow_production_enriched.dvce_sent_tstamp,
-            snowplow_production_enriched.refr_domain_userid,
-            snowplow_production_enriched.refr_dvce_tstamp,
-            snowplow_production_enriched.session_id,
+            snowplow_production_enriched.ti_quantity,
+            snowplow_production_enriched.ti_sku,
+            snowplow_production_enriched.tr_affiliation,
+            snowplow_production_enriched.tr_city,
+            snowplow_production_enriched.tr_country,
+            snowplow_production_enriched.tr_currency,
+            snowplow_production_enriched.tr_orderid,
+            snowplow_production_enriched.tr_shipping,
+            snowplow_production_enriched.tr_shipping_base,
+            snowplow_production_enriched.tr_state,
+            snowplow_production_enriched.tr_tax,
+            snowplow_production_enriched.tr_tax_base,
+            snowplow_production_enriched.tr_total,
+            snowplow_production_enriched.tr_total_base,
+            snowplow_production_enriched.true_tstamp,
+            snowplow_production_enriched.txn_id,
+            snowplow_production_enriched.user_fingerprint,
+            snowplow_production_enriched.user_id,
+            snowplow_production_enriched.user_ipaddress,
+            snowplow_production_enriched.useragent,
+            snowplow_production_enriched.v_collector,
+            snowplow_production_enriched.v_etl,
+            snowplow_production_enriched.v_tracker,
             snowplow_production_enriched._sdc_received_at,
             snowplow_production_enriched._sdc_sequence,
             snowplow_production_enriched._sdc_table_version,
@@ -14241,135 +14466,133 @@ CREATE VIEW warehouse.base_snowplow_web_events AS
            FROM raw_tap_kafka.snowplow_production_enriched
         ), filtered AS (
          SELECT source.app_id,
-            source.platform,
-            source.etl_tstamp,
+            source.base_currency,
+            source.br_colordepth,
+            source.br_cookies,
+            source.br_family,
+            source.br_features_director,
+            source.br_features_flash,
+            source.br_features_gears,
+            source.br_features_java,
+            source.br_features_pdf,
+            source.br_features_quicktime,
+            source.br_features_realplayer,
+            source.br_features_silverlight,
+            source.br_features_windowsmedia,
+            source.br_lang,
+            source.br_name,
+            source.br_renderengine,
+            source.br_type,
+            source.br_version,
+            source.br_viewheight,
+            source.br_viewwidth,
             source.collector_tstamp,
             source.derived_tstamp,
-            source.true_tstamp,
-            source.event,
-            source.event_id,
-            source.event_vendor,
-            source.event_name,
-            source.event_format,
-            source.event_version,
-            source.event_fingerprint,
-            source.txn_id,
-            source.name_tracker,
-            source.v_tracker,
-            source.v_collector,
-            source.v_etl,
-            source.user_id,
-            source.user_ipaddress,
-            source.user_fingerprint,
-            source.domain_userid,
-            source.domain_sessionidx,
+            source.doc_charset,
+            source.doc_height,
+            source.doc_width,
             source.domain_sessionid,
-            source.network_userid,
-            source.geo_country,
-            source.geo_region,
+            source.domain_sessionidx,
+            source.domain_userid,
+            source.dvce_created_tstamp,
+            source.dvce_ismobile,
+            source.dvce_screenheight,
+            source.dvce_screenwidth,
+            source.dvce_sent_tstamp,
+            source.dvce_type,
+            source.etl_tags,
+            source.etl_tstamp,
+            source.event,
+            source.event_fingerprint,
+            source.event_format,
+            source.event_id,
+            source.event_name,
+            source.event_vendor,
+            source.event_version,
             source.geo_city,
-            source.geo_zipcode,
+            source.geo_country,
             source.geo_latitude,
             source.geo_longitude,
+            source.geo_region,
             source.geo_region_name,
-            source.geo_location,
-            source.ip_isp,
-            source.ip_organization,
+            source.geo_timezone,
+            source.geo_zipcode,
             source.ip_domain,
+            source.ip_isp,
             source.ip_netspeed,
-            source.page_url,
-            source.page_title,
+            source.ip_organization,
+            source.mkt_campaign,
+            source.mkt_clickid,
+            source.mkt_content,
+            source.mkt_medium,
+            source.mkt_network,
+            source.mkt_source,
+            source.mkt_term,
+            source.name_tracker,
+            source.network_userid,
+            source.os_family,
+            source.os_manufacturer,
+            source.os_name,
+            source.os_timezone,
             source.page_referrer,
-            source.page_urlscheme,
-            source.page_urlhost,
-            source.page_urlport,
-            source.page_urlpath,
-            source.page_urlquery,
+            source.page_title,
+            source.page_url,
             source.page_urlfragment,
-            source.refr_urlscheme,
-            source.refr_urlhost,
-            source.refr_urlport,
-            source.refr_urlpath,
-            source.refr_urlquery,
-            source.refr_urlfragment,
+            source.page_urlhost,
+            source.page_urlpath,
+            source.page_urlport,
+            source.page_urlquery,
+            source.page_urlscheme,
+            source.platform,
+            source.pp_xoffset_max,
+            source.pp_xoffset_min,
+            source.pp_yoffset_max,
+            source.pp_yoffset_min,
+            source.refr_domain_userid,
+            source.refr_dvce_tstamp,
             source.refr_medium,
             source.refr_source,
             source.refr_term,
-            source.mkt_medium,
-            source.mkt_source,
-            source.mkt_term,
-            source.mkt_content,
-            source.mkt_campaign,
-            source.se_category,
+            source.refr_urlfragment,
+            source.refr_urlhost,
+            source.refr_urlpath,
+            source.refr_urlport,
+            source.refr_urlquery,
+            source.refr_urlscheme,
             source.se_action,
+            source.se_category,
             source.se_label,
             source.se_property,
             source.se_value,
-            source.tr_orderid,
-            source.tr_affiliation,
-            source.tr_total,
-            source.tr_tax,
-            source.tr_shipping,
-            source.tr_city,
-            source.tr_state,
-            source.tr_country,
-            source.ti_orderid,
-            source.ti_sku,
-            source.ti_name,
             source.ti_category,
-            source.ti_price,
-            source.ti_quantity,
-            source.pp_xoffset_min,
-            source.pp_xoffset_max,
-            source.pp_yoffset_min,
-            source.pp_yoffset_max,
-            source.useragent,
-            source.br_name,
-            source.br_family,
-            source.br_version,
-            source.br_type,
-            source.br_renderengine,
-            source.br_lang,
-            source.br_features_pdf,
-            source.br_features_flash,
-            source.br_features_java,
-            source.br_features_director,
-            source.br_features_quicktime,
-            source.br_features_realplayer,
-            source.br_features_windowsmedia,
-            source.br_features_gears,
-            source.br_features_silverlight,
-            source.br_cookies,
-            source.br_colordepth,
-            source.br_viewwidth,
-            source.br_viewheight,
-            source.os_name,
-            source.os_family,
-            source.os_manufacturer,
-            source.os_timezone,
-            source.dvce_type,
-            source.dvce_ismobile,
-            source.dvce_screenwidth,
-            source.dvce_screenheight,
-            source.dvce_created_tstamp,
-            source.doc_charset,
-            source.doc_width,
-            source.doc_height,
-            source.tr_currency,
-            source.tr_total_base,
-            source.tr_tax_base,
-            source.tr_shipping_base,
             source.ti_currency,
+            source.ti_name,
+            source.ti_orderid,
+            source.ti_price,
             source.ti_price_base,
-            source.base_currency,
-            source.geo_timezone,
-            source.mkt_clickid,
-            source.mkt_network,
-            source.etl_tags,
-            source.dvce_sent_tstamp,
-            source.refr_domain_userid,
-            source.refr_dvce_tstamp,
-            source.session_id,
+            source.ti_quantity,
+            source.ti_sku,
+            source.tr_affiliation,
+            source.tr_city,
+            source.tr_country,
+            source.tr_currency,
+            source.tr_orderid,
+            source.tr_shipping,
+            source.tr_shipping_base,
+            source.tr_state,
+            source.tr_tax,
+            source.tr_tax_base,
+            source.tr_total,
+            source.tr_total_base,
+            source.true_tstamp,
+            source.txn_id,
+            source.user_fingerprint,
+            source.user_id,
+            source.user_ipaddress,
+            source.useragent,
+            source.v_collector,
+            source.v_etl,
+            source.v_tracker,
             source._sdc_received_at,
             source._sdc_sequence,
             source._sdc_table_version,
@@ -14379,135 +14602,133 @@ CREATE VIEW warehouse.base_snowplow_web_events AS
           WHERE (true AND (source.domain_sessionid IS NOT NULL) AND (source.domain_sessionidx IS NOT NULL) AND (source.domain_userid IS NOT NULL))
         )
  SELECT filtered.app_id,
-    filtered.platform,
-    filtered.etl_tstamp,
+    filtered.base_currency,
+    filtered.br_colordepth,
+    filtered.br_cookies,
+    filtered.br_family,
+    filtered.br_features_director,
+    filtered.br_features_flash,
+    filtered.br_features_gears,
+    filtered.br_features_java,
+    filtered.br_features_pdf,
+    filtered.br_features_quicktime,
+    filtered.br_features_realplayer,
+    filtered.br_features_silverlight,
+    filtered.br_features_windowsmedia,
+    filtered.br_lang,
+    filtered.br_name,
+    filtered.br_renderengine,
+    filtered.br_type,
+    filtered.br_version,
+    filtered.br_viewheight,
+    filtered.br_viewwidth,
     filtered.collector_tstamp,
     filtered.derived_tstamp,
-    filtered.true_tstamp,
-    filtered.event,
-    filtered.event_id,
-    filtered.event_vendor,
-    filtered.event_name,
-    filtered.event_format,
-    filtered.event_version,
-    filtered.event_fingerprint,
-    filtered.txn_id,
-    filtered.name_tracker,
-    filtered.v_tracker,
-    filtered.v_collector,
-    filtered.v_etl,
-    filtered.user_id,
-    filtered.user_ipaddress,
-    filtered.user_fingerprint,
-    filtered.domain_userid,
-    filtered.domain_sessionidx,
+    filtered.doc_charset,
+    filtered.doc_height,
+    filtered.doc_width,
     filtered.domain_sessionid,
-    filtered.network_userid,
-    filtered.geo_country,
-    filtered.geo_region,
+    filtered.domain_sessionidx,
+    filtered.domain_userid,
+    filtered.dvce_created_tstamp,
+    filtered.dvce_ismobile,
+    filtered.dvce_screenheight,
+    filtered.dvce_screenwidth,
+    filtered.dvce_sent_tstamp,
+    filtered.dvce_type,
+    filtered.etl_tags,
+    filtered.etl_tstamp,
+    filtered.event,
+    filtered.event_fingerprint,
+    filtered.event_format,
+    filtered.event_id,
+    filtered.event_name,
+    filtered.event_vendor,
+    filtered.event_version,
     filtered.geo_city,
-    filtered.geo_zipcode,
+    filtered.geo_country,
     filtered.geo_latitude,
     filtered.geo_longitude,
+    filtered.geo_region,
     filtered.geo_region_name,
-    filtered.geo_location,
-    filtered.ip_isp,
-    filtered.ip_organization,
+    filtered.geo_timezone,
+    filtered.geo_zipcode,
     filtered.ip_domain,
+    filtered.ip_isp,
     filtered.ip_netspeed,
-    filtered.page_url,
-    filtered.page_title,
+    filtered.ip_organization,
+    filtered.mkt_campaign,
+    filtered.mkt_clickid,
+    filtered.mkt_content,
+    filtered.mkt_medium,
+    filtered.mkt_network,
+    filtered.mkt_source,
+    filtered.mkt_term,
+    filtered.name_tracker,
+    filtered.network_userid,
+    filtered.os_family,
+    filtered.os_manufacturer,
+    filtered.os_name,
+    filtered.os_timezone,
     filtered.page_referrer,
-    filtered.page_urlscheme,
-    filtered.page_urlhost,
-    filtered.page_urlport,
-    filtered.page_urlpath,
-    filtered.page_urlquery,
+    filtered.page_title,
+    filtered.page_url,
     filtered.page_urlfragment,
-    filtered.refr_urlscheme,
-    filtered.refr_urlhost,
-    filtered.refr_urlport,
-    filtered.refr_urlpath,
-    filtered.refr_urlquery,
-    filtered.refr_urlfragment,
+    filtered.page_urlhost,
+    filtered.page_urlpath,
+    filtered.page_urlport,
+    filtered.page_urlquery,
+    filtered.page_urlscheme,
+    filtered.platform,
+    filtered.pp_xoffset_max,
+    filtered.pp_xoffset_min,
+    filtered.pp_yoffset_max,
+    filtered.pp_yoffset_min,
+    filtered.refr_domain_userid,
+    filtered.refr_dvce_tstamp,
     filtered.refr_medium,
     filtered.refr_source,
     filtered.refr_term,
-    filtered.mkt_medium,
-    filtered.mkt_source,
-    filtered.mkt_term,
-    filtered.mkt_content,
-    filtered.mkt_campaign,
-    filtered.se_category,
+    filtered.refr_urlfragment,
+    filtered.refr_urlhost,
+    filtered.refr_urlpath,
+    filtered.refr_urlport,
+    filtered.refr_urlquery,
+    filtered.refr_urlscheme,
     filtered.se_action,
+    filtered.se_category,
     filtered.se_label,
     filtered.se_property,
     filtered.se_value,
-    filtered.tr_orderid,
-    filtered.tr_affiliation,
-    filtered.tr_total,
-    filtered.tr_tax,
-    filtered.tr_shipping,
-    filtered.tr_city,
-    filtered.tr_state,
-    filtered.tr_country,
-    filtered.ti_orderid,
-    filtered.ti_sku,
-    filtered.ti_name,
     filtered.ti_category,
-    filtered.ti_price,
-    filtered.ti_quantity,
-    filtered.pp_xoffset_min,
-    filtered.pp_xoffset_max,
-    filtered.pp_yoffset_min,
-    filtered.pp_yoffset_max,
-    filtered.useragent,
-    filtered.br_name,
-    filtered.br_family,
-    filtered.br_version,
-    filtered.br_type,
-    filtered.br_renderengine,
-    filtered.br_lang,
-    filtered.br_features_pdf,
-    filtered.br_features_flash,
-    filtered.br_features_java,
-    filtered.br_features_director,
-    filtered.br_features_quicktime,
-    filtered.br_features_realplayer,
-    filtered.br_features_windowsmedia,
-    filtered.br_features_gears,
-    filtered.br_features_silverlight,
-    filtered.br_cookies,
-    filtered.br_colordepth,
-    filtered.br_viewwidth,
-    filtered.br_viewheight,
-    filtered.os_name,
-    filtered.os_family,
-    filtered.os_manufacturer,
-    filtered.os_timezone,
-    filtered.dvce_type,
-    filtered.dvce_ismobile,
-    filtered.dvce_screenwidth,
-    filtered.dvce_screenheight,
-    filtered.dvce_created_tstamp,
-    filtered.doc_charset,
-    filtered.doc_width,
-    filtered.doc_height,
-    filtered.tr_currency,
-    filtered.tr_total_base,
-    filtered.tr_tax_base,
-    filtered.tr_shipping_base,
     filtered.ti_currency,
+    filtered.ti_name,
+    filtered.ti_orderid,
+    filtered.ti_price,
     filtered.ti_price_base,
-    filtered.base_currency,
-    filtered.geo_timezone,
-    filtered.mkt_clickid,
-    filtered.mkt_network,
-    filtered.etl_tags,
-    filtered.dvce_sent_tstamp,
-    filtered.refr_domain_userid,
-    filtered.refr_dvce_tstamp,
-    filtered.session_id,
+    filtered.ti_quantity,
+    filtered.ti_sku,
+    filtered.tr_affiliation,
+    filtered.tr_city,
+    filtered.tr_country,
+    filtered.tr_currency,
+    filtered.tr_orderid,
+    filtered.tr_shipping,
+    filtered.tr_shipping_base,
+    filtered.tr_state,
+    filtered.tr_tax,
+    filtered.tr_tax_base,
+    filtered.tr_total,
+    filtered.tr_total_base,
+    filtered.true_tstamp,
+    filtered.txn_id,
+    filtered.user_fingerprint,
+    filtered.user_id,
+    filtered.user_ipaddress,
+    filtered.useragent,
+    filtered.v_collector,
+    filtered.v_etl,
+    filtered.v_tracker,
     filtered._sdc_received_at,
     filtered._sdc_sequence,
     filtered._sdc_table_version,
@@ -14521,12 +14742,12 @@ CREATE VIEW warehouse.base_snowplow_web_events AS
 --
 
 CREATE VIEW warehouse.base_snowplow_web_page_context AS
- SELECT snowplow_production_enriched__contexts_com_snowplowanalytics_sn.id,
-    snowplow_production_enriched__contexts_com_snowplowanalytics_sn._sdc_source_key__sdc_primary_key,
-    snowplow_production_enriched__contexts_com_snowplowanalytics_sn._sdc_sequence,
-    snowplow_production_enriched__contexts_com_snowplowanalytics_sn._sdc_level_0_id,
-    snowplow_production_enriched__contexts_com_snowplowanalytics_sn.id AS page_view_id
-   FROM raw_tap_kafka.snowplow_production_enriched__contexts_com_snowplowanalytics_sn;
+ SELECT snowplow_production_enriched__contexts_com_snowplowanalytics__1.id,
+    snowplow_production_enriched__contexts_com_snowplowanalytics__1._sdc_source_key__sdc_primary_key,
+    snowplow_production_enriched__contexts_com_snowplowanalytics__1._sdc_sequence,
+    snowplow_production_enriched__contexts_com_snowplowanalytics__1._sdc_level_0_id,
+    snowplow_production_enriched__contexts_com_snowplowanalytics__1.id AS page_view_id
+   FROM raw_tap_kafka.snowplow_production_enriched__contexts_com_snowplowanalytics__1;
 
 
 --
@@ -14566,22 +14787,22 @@ CREATE VIEW warehouse.base_snowplow_web_performance_timing_context AS
 --
 
 CREATE VIEW warehouse.base_snowplow_web_ua_parser_context AS
- SELECT snowplow_production_enriched__contexts_com_snowplowanalytics__1._sdc_sequence,
-    snowplow_production_enriched__contexts_com_snowplowanalytics__1._sdc_source_key__sdc_primary_key,
-    snowplow_production_enriched__contexts_com_snowplowanalytics__1._sdc_level_0_id,
-    snowplow_production_enriched__contexts_com_snowplowanalytics__1.useragentfamily AS useragent_family,
-    snowplow_production_enriched__contexts_com_snowplowanalytics__1.useragentmajor AS useragent_major,
-    snowplow_production_enriched__contexts_com_snowplowanalytics__1.useragentminor AS useragent_minor,
-    snowplow_production_enriched__contexts_com_snowplowanalytics__1.useragentpatch AS useragent_patch,
-    snowplow_production_enriched__contexts_com_snowplowanalytics__1.useragentversion AS useragent_version,
-    snowplow_production_enriched__contexts_com_snowplowanalytics__1.osfamily AS os_family,
-    snowplow_production_enriched__contexts_com_snowplowanalytics__1.osmajor AS os_major,
-    snowplow_production_enriched__contexts_com_snowplowanalytics__1.osminor AS os_minor,
-    snowplow_production_enriched__contexts_com_snowplowanalytics__1.ospatch AS os_patch,
-    snowplow_production_enriched__contexts_com_snowplowanalytics__1.ospatchminor AS os_patch_minor,
-    snowplow_production_enriched__contexts_com_snowplowanalytics__1.osversion AS os_version,
-    snowplow_production_enriched__contexts_com_snowplowanalytics__1.devicefamily AS device_family
-   FROM raw_tap_kafka.snowplow_production_enriched__contexts_com_snowplowanalytics__1;
+ SELECT snowplow_production_enriched__contexts_com_snowplowanalytics_sn._sdc_sequence,
+    snowplow_production_enriched__contexts_com_snowplowanalytics_sn._sdc_source_key__sdc_primary_key,
+    snowplow_production_enriched__contexts_com_snowplowanalytics_sn._sdc_level_0_id,
+    snowplow_production_enriched__contexts_com_snowplowanalytics_sn.useragentfamily AS useragent_family,
+    snowplow_production_enriched__contexts_com_snowplowanalytics_sn.useragentmajor AS useragent_major,
+    snowplow_production_enriched__contexts_com_snowplowanalytics_sn.useragentminor AS useragent_minor,
+    snowplow_production_enriched__contexts_com_snowplowanalytics_sn.useragentpatch AS useragent_patch,
+    snowplow_production_enriched__contexts_com_snowplowanalytics_sn.useragentversion AS useragent_version,
+    snowplow_production_enriched__contexts_com_snowplowanalytics_sn.osfamily AS os_family,
+    snowplow_production_enriched__contexts_com_snowplowanalytics_sn.osmajor AS os_major,
+    snowplow_production_enriched__contexts_com_snowplowanalytics_sn.osminor AS os_minor,
+    snowplow_production_enriched__contexts_com_snowplowanalytics_sn.ospatch AS os_patch,
+    snowplow_production_enriched__contexts_com_snowplowanalytics_sn.ospatchminor AS os_patch_minor,
+    snowplow_production_enriched__contexts_com_snowplowanalytics_sn.osversion AS os_version,
+    snowplow_production_enriched__contexts_com_snowplowanalytics_sn.devicefamily AS device_family
+   FROM raw_tap_kafka.snowplow_production_enriched__contexts_com_snowplowanalytics_sn;
 
 
 --
@@ -14739,6 +14960,74 @@ CREATE TABLE warehouse.dim_shopify_customers (
 
 
 --
+-- Name: fct_customer_acquisitions; Type: TABLE; Schema: warehouse; Owner: -
+--
+
+CREATE TABLE warehouse.fct_customer_acquisitions (
+    account_id bigint,
+    customer_id bigint,
+    business_line_id bigint,
+    acquired_at timestamp with time zone,
+    landing_page_utm_source text,
+    landing_page_utm_medium text,
+    landing_page_utm_campaign text,
+    landing_page_utm_content text,
+    first_order_total_price double precision,
+    total_order_count bigint,
+    total_successful_order_count bigint,
+    total_cancelled_order_count bigint,
+    total_spend double precision,
+    previous_1_month_spend double precision,
+    previous_3_month_spend double precision,
+    previous_6_month_spend double precision,
+    previous_12_month_spend double precision,
+    future_3_month_predicted_spend double precision,
+    future_3_month_predicted_spend_quintile integer,
+    future_3_month_predicted_spend_bucket_label text,
+    future_12_month_predicted_spend double precision,
+    future_12_month_predicted_spend_quintile integer,
+    future_12_month_predicted_spend_bucket_label text,
+    future_24_month_predicted_spend double precision,
+    future_24_month_predicted_spend_quintile integer,
+    future_24_month_predicted_spend_bucket_label text,
+    days_until_next_order double precision,
+    early_repurchaser boolean
+);
+
+
+--
+-- Name: fct_shopify_customer_pareto; Type: TABLE; Schema: warehouse; Owner: -
+--
+
+CREATE TABLE warehouse.fct_shopify_customer_pareto (
+    account_id bigint,
+    customer_id bigint,
+    business_line_id bigint,
+    year double precision,
+    sales double precision,
+    percent_of_sales double precision,
+    cumulative_percent_of_sales double precision,
+    customer_rank bigint
+);
+
+
+--
+-- Name: fct_shopify_customer_retention; Type: TABLE; Schema: warehouse; Owner: -
+--
+
+CREATE TABLE warehouse.fct_shopify_customer_retention (
+    total_customers bigint,
+    total_active_customers bigint,
+    total_orders numeric,
+    total_spend double precision,
+    months_since_genesis integer,
+    genesis_month timestamp with time zone,
+    account_id bigint,
+    pct_active_customers numeric
+);
+
+
+--
 -- Name: fct_shopify_orders; Type: TABLE; Schema: warehouse; Owner: -
 --
 
@@ -14833,306 +15122,6 @@ CREATE TABLE warehouse.fct_shopify_orders (
     landing_page_utm_source text,
     landing_page_utm_campaign text,
     landing_page_utm_content text
-);
-
-
---
--- Name: fct_customer_acquisitions; Type: VIEW; Schema: warehouse; Owner: -
---
-
-CREATE VIEW warehouse.fct_customer_acquisitions AS
- WITH shopify_orders AS (
-         SELECT fct_shopify_orders.order_id,
-            fct_shopify_orders.account_id,
-            fct_shopify_orders.shop_id,
-            fct_shopify_orders.app_id,
-            fct_shopify_orders.order_name,
-            fct_shopify_orders.user_id,
-            fct_shopify_orders.customer_id,
-            fct_shopify_orders.checkout_id,
-            fct_shopify_orders.checkout_token,
-            fct_shopify_orders.cart_token,
-            fct_shopify_orders.token,
-            fct_shopify_orders.email,
-            fct_shopify_orders.contact_email,
-            fct_shopify_orders.buyer_accepts_marketing,
-            fct_shopify_orders.confirmed,
-            fct_shopify_orders.internal_number,
-            fct_shopify_orders.order_number,
-            fct_shopify_orders.currency,
-            fct_shopify_orders.presentment_currency,
-            fct_shopify_orders.financial_status,
-            fct_shopify_orders.fulfillment_status,
-            fct_shopify_orders.gateway,
-            fct_shopify_orders.processing_method,
-            fct_shopify_orders.total_tip_received,
-            fct_shopify_orders.total_weight,
-            fct_shopify_orders.total_discounts_base,
-            fct_shopify_orders.subtotal_price,
-            fct_shopify_orders.total_line_items_price,
-            fct_shopify_orders.total_price,
-            fct_shopify_orders.total_price_usd,
-            fct_shopify_orders.total_tax,
-            fct_shopify_orders.total_shipping_cost_base,
-            fct_shopify_orders.shipping_currency_code,
-            fct_shopify_orders.tags,
-            fct_shopify_orders.taxes_included,
-            fct_shopify_orders.order_status_url,
-            fct_shopify_orders.location_id,
-            fct_shopify_orders.shipping_city,
-            fct_shopify_orders.shipping_province,
-            fct_shopify_orders.shipping_province_code,
-            fct_shopify_orders.shipping_country,
-            fct_shopify_orders.shipping_country_code,
-            fct_shopify_orders.shipping_zip_code,
-            fct_shopify_orders.shipping_address_address1,
-            fct_shopify_orders.shipping_address_address2,
-            fct_shopify_orders.shipping_company,
-            fct_shopify_orders.shipping_first_name,
-            fct_shopify_orders.shipping_last_name,
-            fct_shopify_orders.shipping_latitude,
-            fct_shopify_orders.shipping_longitude,
-            fct_shopify_orders.shipping_name,
-            fct_shopify_orders.shipping_phone,
-            fct_shopify_orders.billing_city,
-            fct_shopify_orders.billing_province,
-            fct_shopify_orders.billing_province_code,
-            fct_shopify_orders.billing_country,
-            fct_shopify_orders.billing_country_code,
-            fct_shopify_orders.billing_zip_code,
-            fct_shopify_orders.billing_address_address1,
-            fct_shopify_orders.billing_address_address2,
-            fct_shopify_orders.billing_company,
-            fct_shopify_orders.billing_first_name,
-            fct_shopify_orders.billing_last_name,
-            fct_shopify_orders.billing_latitude,
-            fct_shopify_orders.billing_longitude,
-            fct_shopify_orders.billing_name,
-            fct_shopify_orders.billing_phone,
-            fct_shopify_orders.referring_site,
-            fct_shopify_orders.browser_ip,
-            fct_shopify_orders.landing_site,
-            fct_shopify_orders.source_name,
-            fct_shopify_orders.created_at,
-            fct_shopify_orders.processed_at,
-            fct_shopify_orders.closed_at,
-            fct_shopify_orders.cancelled_at,
-            fct_shopify_orders.cancel_reason,
-            fct_shopify_orders.updated_at,
-            fct_shopify_orders.discount_code,
-            fct_shopify_orders.discount_type,
-            fct_shopify_orders.shipping_discount,
-            fct_shopify_orders.final_discounts,
-            fct_shopify_orders.final_shipping_cost,
-            fct_shopify_orders.business_line_id,
-            fct_shopify_orders.order_seq_number,
-            fct_shopify_orders.new_vs_repeat,
-            fct_shopify_orders.cancelled,
-            fct_shopify_orders.landing_page_utm_medium,
-            fct_shopify_orders.landing_page_utm_source,
-            fct_shopify_orders.landing_page_utm_campaign,
-            fct_shopify_orders.landing_page_utm_content
-           FROM warehouse.fct_shopify_orders
-        ), dim_shopify_customers AS (
-         SELECT dim_shopify_customers_1.customer_id,
-            dim_shopify_customers_1.account_id,
-            dim_shopify_customers_1.shop_id,
-            dim_shopify_customers_1.email,
-            dim_shopify_customers_1.verified_email,
-            dim_shopify_customers_1.first_name,
-            dim_shopify_customers_1.last_name,
-            dim_shopify_customers_1.accepts_marketing,
-            dim_shopify_customers_1.state,
-            dim_shopify_customers_1.tax_exempt,
-            dim_shopify_customers_1.tags,
-            dim_shopify_customers_1.default_address_id,
-            dim_shopify_customers_1.created_at,
-            dim_shopify_customers_1.updated_at,
-            dim_shopify_customers_1.total_order_count,
-            dim_shopify_customers_1.total_successful_order_count,
-            dim_shopify_customers_1.total_cancelled_order_count,
-            dim_shopify_customers_1.total_spend,
-            dim_shopify_customers_1.previous_1_month_spend,
-            dim_shopify_customers_1.previous_3_month_spend,
-            dim_shopify_customers_1.previous_6_month_spend,
-            dim_shopify_customers_1.previous_12_month_spend,
-            dim_shopify_customers_1.future_3_month_predicted_spend,
-            dim_shopify_customers_1.future_3_month_predicted_spend_quintile,
-            dim_shopify_customers_1.future_12_month_predicted_spend,
-            dim_shopify_customers_1.future_12_month_predicted_spend_quintile,
-            dim_shopify_customers_1.future_24_month_predicted_spend,
-            dim_shopify_customers_1.future_24_month_predicted_spend_quintile,
-            dim_shopify_customers_1.most_recent_order_id,
-            dim_shopify_customers_1.most_recent_order_number,
-            dim_shopify_customers_1.most_recent_order_at,
-            dim_shopify_customers_1.most_recent_order_total_price,
-            dim_shopify_customers_1.first_order_id,
-            dim_shopify_customers_1.first_order_number,
-            dim_shopify_customers_1.first_order_at,
-            dim_shopify_customers_1.first_order_total_price,
-            dim_shopify_customers_1.rfm_recency_quintile,
-            dim_shopify_customers_1.rfm_frequency_quintile,
-            dim_shopify_customers_1.rfm_monetary_quintile,
-            dim_shopify_customers_1.rfm_score,
-            dim_shopify_customers_1.rfm_label,
-            dim_shopify_customers_1.rfm_value_label,
-            dim_shopify_customers_1.rfm_desirability_score,
-            dim_shopify_customers_1.business_line_id
-           FROM warehouse.dim_shopify_customers dim_shopify_customers_1
-        ), second_orders AS (
-         SELECT fct_shopify_orders.order_id,
-            fct_shopify_orders.account_id,
-            fct_shopify_orders.shop_id,
-            fct_shopify_orders.app_id,
-            fct_shopify_orders.order_name,
-            fct_shopify_orders.user_id,
-            fct_shopify_orders.customer_id,
-            fct_shopify_orders.checkout_id,
-            fct_shopify_orders.checkout_token,
-            fct_shopify_orders.cart_token,
-            fct_shopify_orders.token,
-            fct_shopify_orders.email,
-            fct_shopify_orders.contact_email,
-            fct_shopify_orders.buyer_accepts_marketing,
-            fct_shopify_orders.confirmed,
-            fct_shopify_orders.internal_number,
-            fct_shopify_orders.order_number,
-            fct_shopify_orders.currency,
-            fct_shopify_orders.presentment_currency,
-            fct_shopify_orders.financial_status,
-            fct_shopify_orders.fulfillment_status,
-            fct_shopify_orders.gateway,
-            fct_shopify_orders.processing_method,
-            fct_shopify_orders.total_tip_received,
-            fct_shopify_orders.total_weight,
-            fct_shopify_orders.total_discounts_base,
-            fct_shopify_orders.subtotal_price,
-            fct_shopify_orders.total_line_items_price,
-            fct_shopify_orders.total_price,
-            fct_shopify_orders.total_price_usd,
-            fct_shopify_orders.total_tax,
-            fct_shopify_orders.total_shipping_cost_base,
-            fct_shopify_orders.shipping_currency_code,
-            fct_shopify_orders.tags,
-            fct_shopify_orders.taxes_included,
-            fct_shopify_orders.order_status_url,
-            fct_shopify_orders.location_id,
-            fct_shopify_orders.shipping_city,
-            fct_shopify_orders.shipping_province,
-            fct_shopify_orders.shipping_province_code,
-            fct_shopify_orders.shipping_country,
-            fct_shopify_orders.shipping_country_code,
-            fct_shopify_orders.shipping_zip_code,
-            fct_shopify_orders.shipping_address_address1,
-            fct_shopify_orders.shipping_address_address2,
-            fct_shopify_orders.shipping_company,
-            fct_shopify_orders.shipping_first_name,
-            fct_shopify_orders.shipping_last_name,
-            fct_shopify_orders.shipping_latitude,
-            fct_shopify_orders.shipping_longitude,
-            fct_shopify_orders.shipping_name,
-            fct_shopify_orders.shipping_phone,
-            fct_shopify_orders.billing_city,
-            fct_shopify_orders.billing_province,
-            fct_shopify_orders.billing_province_code,
-            fct_shopify_orders.billing_country,
-            fct_shopify_orders.billing_country_code,
-            fct_shopify_orders.billing_zip_code,
-            fct_shopify_orders.billing_address_address1,
-            fct_shopify_orders.billing_address_address2,
-            fct_shopify_orders.billing_company,
-            fct_shopify_orders.billing_first_name,
-            fct_shopify_orders.billing_last_name,
-            fct_shopify_orders.billing_latitude,
-            fct_shopify_orders.billing_longitude,
-            fct_shopify_orders.billing_name,
-            fct_shopify_orders.billing_phone,
-            fct_shopify_orders.referring_site,
-            fct_shopify_orders.browser_ip,
-            fct_shopify_orders.landing_site,
-            fct_shopify_orders.source_name,
-            fct_shopify_orders.created_at,
-            fct_shopify_orders.processed_at,
-            fct_shopify_orders.closed_at,
-            fct_shopify_orders.cancelled_at,
-            fct_shopify_orders.cancel_reason,
-            fct_shopify_orders.updated_at,
-            fct_shopify_orders.discount_code,
-            fct_shopify_orders.discount_type,
-            fct_shopify_orders.shipping_discount,
-            fct_shopify_orders.final_discounts,
-            fct_shopify_orders.final_shipping_cost,
-            fct_shopify_orders.business_line_id,
-            fct_shopify_orders.order_seq_number,
-            fct_shopify_orders.new_vs_repeat,
-            fct_shopify_orders.cancelled,
-            fct_shopify_orders.landing_page_utm_medium,
-            fct_shopify_orders.landing_page_utm_source,
-            fct_shopify_orders.landing_page_utm_campaign,
-            fct_shopify_orders.landing_page_utm_content
-           FROM warehouse.fct_shopify_orders
-          WHERE (fct_shopify_orders.order_seq_number = 2)
-        )
- SELECT shopify_orders.account_id,
-    shopify_orders.customer_id,
-    shopify_orders.business_line_id,
-    shopify_orders.created_at AS acquired_at,
-    shopify_orders.landing_page_utm_source,
-    shopify_orders.landing_page_utm_medium,
-    shopify_orders.landing_page_utm_campaign,
-    shopify_orders.landing_page_utm_content,
-    shopify_orders.total_price AS first_order_total_price,
-    dim_shopify_customers.total_order_count,
-    dim_shopify_customers.total_successful_order_count,
-    dim_shopify_customers.total_cancelled_order_count,
-    dim_shopify_customers.total_spend,
-    dim_shopify_customers.previous_1_month_spend,
-    dim_shopify_customers.previous_3_month_spend,
-    dim_shopify_customers.previous_6_month_spend,
-    dim_shopify_customers.previous_12_month_spend,
-    dim_shopify_customers.future_3_month_predicted_spend,
-    dim_shopify_customers.future_3_month_predicted_spend_quintile,
-    dim_shopify_customers.future_12_month_predicted_spend,
-    dim_shopify_customers.future_12_month_predicted_spend_quintile,
-    dim_shopify_customers.future_24_month_predicted_spend,
-    dim_shopify_customers.future_24_month_predicted_spend_quintile,
-    date_part('day'::text, (second_orders.created_at - shopify_orders.created_at)) AS days_until_next_order,
-    (date_part('day'::text, (second_orders.created_at - shopify_orders.created_at)) < (60)::double precision) AS early_repurchaser
-   FROM ((shopify_orders
-     JOIN dim_shopify_customers USING (customer_id))
-     LEFT JOIN second_orders USING (customer_id))
-  WHERE ((shopify_orders.new_vs_repeat = 'new'::text) AND (shopify_orders.cancelled = false));
-
-
---
--- Name: fct_shopify_customer_pareto; Type: TABLE; Schema: warehouse; Owner: -
---
-
-CREATE TABLE warehouse.fct_shopify_customer_pareto (
-    account_id bigint,
-    customer_id bigint,
-    business_line_id bigint,
-    year double precision,
-    sales double precision,
-    percent_of_sales double precision,
-    cumulative_percent_of_sales double precision,
-    customer_rank bigint
-);
-
-
---
--- Name: fct_shopify_customer_retention; Type: TABLE; Schema: warehouse; Owner: -
---
-
-CREATE TABLE warehouse.fct_shopify_customer_retention (
-    total_customers bigint,
-    total_active_customers bigint,
-    total_orders numeric,
-    total_spend double precision,
-    months_since_genesis integer,
-    genesis_month timestamp with time zone,
-    account_id bigint,
-    pct_active_customers numeric
 );
 
 
@@ -16294,18 +16283,18 @@ CREATE TABLE warehouse.stg_snowplow_web_events_time (
 
 CREATE TABLE warehouse.stg_snowplow_web_performance_timing_context (
     page_view_id text,
-    redirect_time_in_ms double precision,
-    unload_time_in_ms double precision,
-    app_cache_time_in_ms double precision,
-    dns_time_in_ms double precision,
-    tcp_time_in_ms double precision,
-    request_time_in_ms double precision,
-    response_time_in_ms double precision,
-    processing_time_in_ms double precision,
-    dom_loading_to_interactive_time_in_ms double precision,
-    dom_interactive_to_complete_time_in_ms double precision,
-    onload_time_in_ms double precision,
-    total_time_in_ms double precision
+    redirect_time_in_ms bigint,
+    unload_time_in_ms bigint,
+    app_cache_time_in_ms bigint,
+    dns_time_in_ms bigint,
+    tcp_time_in_ms bigint,
+    request_time_in_ms bigint,
+    response_time_in_ms bigint,
+    processing_time_in_ms bigint,
+    dom_loading_to_interactive_time_in_ms bigint,
+    dom_interactive_to_complete_time_in_ms bigint,
+    onload_time_in_ms bigint,
+    total_time_in_ms bigint
 );
 
 
@@ -20073,6 +20062,20 @@ CREATE INDEX tp_weekly_active_users_ga_date__sdc_sequence_idx ON raw_tap_google_
 
 
 --
+-- Name: tp_07bfb69934f151bd44f1604467c51b5639d32fb4; Type: INDEX; Schema: raw_tap_kafka; Owner: -
+--
+
+CREATE INDEX tp_07bfb69934f151bd44f1604467c51b5639d32fb4 ON raw_tap_kafka.snowplow_production_enriched__contexts_com_shopify_trekkie_v__1 USING btree (_sdc_source_key__sdc_primary_key, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_083846fbf5ccd296782ab09709adee36337fd4eb; Type: INDEX; Schema: raw_tap_kafka; Owner: -
+--
+
+CREATE INDEX tp_083846fbf5ccd296782ab09709adee36337fd4eb ON raw_tap_kafka.snowplow_production_enriched__contexts_com_shopify_trekkie_v__2 USING btree (_sdc_source_key__sdc_primary_key, _sdc_sequence, _sdc_level_0_id);
+
+
+--
 -- Name: tp_1b9996ac3d9bfa38a194b7f90058d6267acc74be; Type: INDEX; Schema: raw_tap_kafka; Owner: -
 --
 
@@ -20087,6 +20090,13 @@ CREATE INDEX tp_3d8ca016746ce7e1275030b1d188eb7e6d800968 ON raw_tap_kafka.snowpl
 
 
 --
+-- Name: tp_3f3f3976324e8dafa07a3e188309d73eee24504b; Type: INDEX; Schema: raw_tap_kafka; Owner: -
+--
+
+CREATE INDEX tp_3f3f3976324e8dafa07a3e188309d73eee24504b ON raw_tap_kafka.snowplow_production_enriched__contexts_com_superpro_shopify_ass USING btree (_sdc_source_key__sdc_primary_key, _sdc_sequence, _sdc_level_0_id);
+
+
+--
 -- Name: tp_599bbd259081e52e887f982c90b4ff45f11cff32; Type: INDEX; Schema: raw_tap_kafka; Owner: -
 --
 
@@ -20094,10 +20104,10 @@ CREATE INDEX tp_599bbd259081e52e887f982c90b4ff45f11cff32 ON raw_tap_kafka.snowpl
 
 
 --
--- Name: tp_6c96f3ad952ad90ff9006ba7f0f1c559875d3531; Type: INDEX; Schema: raw_tap_kafka; Owner: -
+-- Name: tp_6f746dd0a7d801f85bc972a78277edf31da3c95b; Type: INDEX; Schema: raw_tap_kafka; Owner: -
 --
 
-CREATE INDEX tp_6c96f3ad952ad90ff9006ba7f0f1c559875d3531 ON raw_tap_kafka.snowplow_production_enriched__contexts_com_superpro_shopify___1 USING btree (_sdc_source_key__sdc_primary_key, _sdc_sequence, _sdc_level_0_id);
+CREATE INDEX tp_6f746dd0a7d801f85bc972a78277edf31da3c95b ON raw_tap_kafka.snowplow_production_enriched__contexts_com_shopify_trekkie_unkn USING btree (_sdc_source_key__sdc_primary_key, _sdc_sequence, _sdc_level_0_id);
 
 
 --
@@ -20108,10 +20118,10 @@ CREATE INDEX tp_7b5fa05192875198b44852b01f3b063feddbf07b ON raw_tap_kafka.snowpl
 
 
 --
--- Name: tp_807c2623971cf20a17f2b19f6ca84346a4cc1730; Type: INDEX; Schema: raw_tap_kafka; Owner: -
+-- Name: tp_81f8ef03b5863fdbadd9340aa8ecd226f3df691d; Type: INDEX; Schema: raw_tap_kafka; Owner: -
 --
 
-CREATE INDEX tp_807c2623971cf20a17f2b19f6ca84346a4cc1730 ON raw_tap_kafka.snowplow_production_enriched__contexts_com_superpro_shopify_pag USING btree (_sdc_source_key__sdc_primary_key, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+CREATE INDEX tp_81f8ef03b5863fdbadd9340aa8ecd226f3df691d ON raw_tap_kafka.snowplow_production_enriched__contexts_com_shopify_trekkie_defa USING btree (_sdc_source_key__sdc_primary_key, _sdc_sequence, _sdc_level_0_id);
 
 
 --
@@ -20122,6 +20132,13 @@ CREATE INDEX tp_8706dd1d3912158bd94702756eadcdc8bc8a2857 ON raw_tap_kafka.snowpl
 
 
 --
+-- Name: tp_94776335c1f2353bcefafe88673458665c706e56; Type: INDEX; Schema: raw_tap_kafka; Owner: -
+--
+
+CREATE INDEX tp_94776335c1f2353bcefafe88673458665c706e56 ON raw_tap_kafka.snowplow_production_enriched__contexts_com_shopify_trekkie_p__1 USING btree (_sdc_source_key__sdc_primary_key, _sdc_sequence, _sdc_level_0_id);
+
+
+--
 -- Name: tp_94af6d94a5f7badcf685e70950c3fbc565914d17; Type: INDEX; Schema: raw_tap_kafka; Owner: -
 --
 
@@ -20129,10 +20146,45 @@ CREATE INDEX tp_94af6d94a5f7badcf685e70950c3fbc565914d17 ON raw_tap_kafka.snowpl
 
 
 --
+-- Name: tp_96a65ed99f624df603fce35adad383aa3b124dbb; Type: INDEX; Schema: raw_tap_kafka; Owner: -
+--
+
+CREATE INDEX tp_96a65ed99f624df603fce35adad383aa3b124dbb ON raw_tap_kafka.snowplow_production_enriched__contexts_com_shopify_trekkie_page USING btree (_sdc_source_key__sdc_primary_key, _sdc_sequence, _sdc_level_0_id, _sdc_level_1_id);
+
+
+--
+-- Name: tp_a17421da1533c76ce653c6999b232056fc861a27; Type: INDEX; Schema: raw_tap_kafka; Owner: -
+--
+
+CREATE INDEX tp_a17421da1533c76ce653c6999b232056fc861a27 ON raw_tap_kafka.snowplow_production_enriched__contexts_com_shopify_trekkie_view USING btree (_sdc_source_key__sdc_primary_key, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_b6d23b870e9ac9f467bdf5337d3645607af82b86; Type: INDEX; Schema: raw_tap_kafka; Owner: -
+--
+
+CREATE INDEX tp_b6d23b870e9ac9f467bdf5337d3645607af82b86 ON raw_tap_kafka.snowplow_production_enriched__contexts_com_shopify_trekkie_perf USING btree (_sdc_source_key__sdc_primary_key, _sdc_sequence, _sdc_level_0_id);
+
+
+--
 -- Name: tp_c5053d20eb12c8f09f21a55c8c980cb1f1befc98; Type: INDEX; Schema: raw_tap_kafka; Owner: -
 --
 
 CREATE INDEX tp_c5053d20eb12c8f09f21a55c8c980cb1f1befc98 ON raw_tap_kafka.snowplow_production_enriched__contexts_org_w3_performance_timin USING btree (_sdc_source_key__sdc_primary_key, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_e7edc5223d67ec9344518d0f595f36deee031f26; Type: INDEX; Schema: raw_tap_kafka; Owner: -
+--
+
+CREATE INDEX tp_e7edc5223d67ec9344518d0f595f36deee031f26 ON raw_tap_kafka.snowplow_production_enriched__contexts_com_shopify_trekkie_adde USING btree (_sdc_source_key__sdc_primary_key, _sdc_sequence, _sdc_level_0_id);
+
+
+--
+-- Name: tp_ff5ae1980ee59a67b555c95119ed5f52445504ab; Type: INDEX; Schema: raw_tap_kafka; Owner: -
+--
+
+CREATE INDEX tp_ff5ae1980ee59a67b555c95119ed5f52445504ab ON raw_tap_kafka.snowplow_production_enriched__contexts_com_shopify_trekkie_comp USING btree (_sdc_source_key__sdc_primary_key, _sdc_sequence, _sdc_level_0_id);
 
 
 --
@@ -20661,13 +20713,6 @@ CREATE INDEX fct_snowplow_page_views__index_on_account_id__max_tstamp ON warehou
 
 
 --
--- Name: fct_snowplow_sessions__index_on_account_id__session_start; Type: INDEX; Schema: warehouse; Owner: -
---
-
-CREATE INDEX fct_snowplow_sessions__index_on_account_id__session_start ON warehouse.fct_snowplow_sessions USING btree (account_id, session_start);
-
-
---
 -- Name: stg_shopify_customer_order_aggregates__index_on_account_id__cus; Type: INDEX; Schema: warehouse; Owner: -
 --
 
@@ -20700,20 +20745,6 @@ CREATE INDEX stg_snowplow_web_events_scroll_depth__index_on_page_view_id ON ware
 --
 
 CREATE INDEX stg_snowplow_web_events_time__index_on_page_view_id ON warehouse.stg_snowplow_web_events_time USING btree (page_view_id);
-
-
---
--- Name: stg_snowplow_web_performance_timing_context__index_on_page_view; Type: INDEX; Schema: warehouse; Owner: -
---
-
-CREATE INDEX stg_snowplow_web_performance_timing_context__index_on_page_view ON warehouse.stg_snowplow_web_performance_timing_context USING btree (page_view_id);
-
-
---
--- Name: stg_snowplow_web_ua_parser_context__index_on_page_view_id; Type: INDEX; Schema: warehouse; Owner: -
---
-
-CREATE INDEX stg_snowplow_web_ua_parser_context__index_on_page_view_id ON warehouse.stg_snowplow_web_ua_parser_context USING btree (page_view_id);
 
 
 --

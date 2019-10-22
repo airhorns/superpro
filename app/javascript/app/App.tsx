@@ -44,7 +44,7 @@ export const App = () => {
       <FlagsProvider flags={Settings.flags}>
         <ApolloProvider client={SuperproClient}>
           <ApolloHooksProvider client={SuperproClient}>
-            <Grommet theme={SuperproGrommetTheme} style={{ width: "100vw", height: "100vh", overflow: printing ? "auto" : "hidden" }}>
+            <Grommet theme={SuperproGrommetTheme} style={{ width: "100vw", height: "100vh", overflow: "hidden" }}>
               <SuperproGlobalStyle />
               <Router basename={Settings.baseUrl}>
                 <ToastContainer>
