@@ -7,6 +7,7 @@ ruby '2.6.2'
 # Core web app
 gem 'devise', '~> 4.7.1'
 gem 'devise_invitable'
+gem 'devise-jwt'
 gem 'discard'
 gem 'graphiql-rails'
 gem 'graphql'
@@ -53,7 +54,6 @@ gem 'flipper-ui'
 gem "google-cloud-storage", require: false
 gem "health_check"
 gem 'hiredis'
-gem 'jwt'
 gem 'json-schema'
 gem "lru_redux"
 gem "marginalia"

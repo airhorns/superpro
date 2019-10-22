@@ -14,7 +14,7 @@ export const StyledVizBoxContainer = styled(Box)`
 `;
 
 export const VizBlockRenderer = (props: { doc: ReportDocument; block: VizBlock }) => (
-  <Box flex={{ grow: 1, shrink: 0 }} style={{ minHeight: "500px" }}>
+  <Box flex={{ grow: 1, shrink: 0 }} style={{ minHeight: "532px" }}>
     {props.block.title && <Heading level="3">{props.block.title}</Heading>}
     <GetWarehouseData query={props.block.query} pivot={pivotForViz(props.block)}>
       {result => {

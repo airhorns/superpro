@@ -25,6 +25,7 @@ export interface VizBlock {
   title?: string;
   query: WarehouseQuery;
   viz: Viz;
+  size?: "small" | "medium" | "large" | "xlarge";
 }
 
 export interface Viz {

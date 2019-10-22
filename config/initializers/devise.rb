@@ -339,4 +339,13 @@ Devise.setup do |config|
   # ActiveSupport.on_load(:devise_failure_app) do
   #   include Turbolinks::Controller
   # end
+
+  # devise-jwt setup https://github.com/waiting-for-dev/devise-jwt
+  config.jwt do |jwt|
+    jwt.secret = if Rails.env.production?
+                   ENV.fetch("APP_JWT_SECRET")
+                 else
+                   "secret-in-development"
+                 end
+  end
 end

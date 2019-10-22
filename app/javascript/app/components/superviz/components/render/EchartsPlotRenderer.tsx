@@ -207,6 +207,24 @@ const dimensionsForBlock = (block: VizBlock, result: SuccessfulWarehouseQueryRes
   return dimensions.concat(measures);
 };
 
+export const heightForBlock = (block: VizBlock) => {
+  switch (block.size) {
+    case "medium":
+    case undefined: {
+      return "500px";
+    }
+    case "large": {
+      return "900px";
+    }
+    case "xlarge": {
+      return "1200px";
+    }
+    case "small": {
+      return "300px";
+    }
+  }
+};
+
 export const EchartsPlotRenderer = (props: { result: SuccessfulWarehouseQueryResult; doc: ReportDocument; block: VizBlock }) => {
   const yAxes = yAxesForBlock(props.block, props.result);
 
@@ -241,7 +259,7 @@ export const EchartsPlotRenderer = (props: { result: SuccessfulWarehouseQueryRes
       option={option}
       notMerge={true}
       lazyUpdate={true}
-      style={{ minHeight: "500px", display: "flex", flex: "1 0" }}
+      style={{ minHeight: heightForBlock(props.block), display: "flex", flex: "1 0" }}
       theme="superpro"
       // onChartReady={this.onChartReadyCallback}
       // onEvents={EventsDict}

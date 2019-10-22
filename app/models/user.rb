@@ -50,7 +50,7 @@
 class User < ApplicationRecord
   include MutationClientId
 
-  devise :invitable, :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable, :confirmable, :lockable, :timeoutable, :trackable
+  devise :invitable, :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable, :confirmable, :lockable, :timeoutable, :trackable, :jwt_authenticatable, jwt_revocation_strategy: Devise::JWT::RevocationStrategies::Null
 
   # Creations
   has_many :created_accounts, foreign_key: :creator_id, inverse_of: :creator, class_name: "Account", dependent: :restrict_with_exception

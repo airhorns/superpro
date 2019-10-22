@@ -50,6 +50,7 @@ _Note_: For all the numbers on this report, we're measuring how customers behave
     {
       type: "viz_block",
       title: "Average Predicted 3 Month Value by Source / Medium Of Customer's First Order",
+      size: "large",
       query: {
         measures: [
           {
@@ -82,6 +83,7 @@ _Note_: For all the numbers on this report, we're measuring how customers behave
     {
       type: "viz_block",
       title: "Repurchase Rates by Source / Medium Of Customer's First Order",
+      size: "large",
       query: {
         measures: [
           {
