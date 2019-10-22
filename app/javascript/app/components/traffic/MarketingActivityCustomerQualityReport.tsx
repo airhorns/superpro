@@ -107,14 +107,14 @@ _Note_: For all the numbers on this report, we're measuring how customers behave
           {
             type: "viz_system",
             vizType: "bar",
-            xId: "identifier",
-            yId: "early_repurchase_rate"
+            xId: "early_repurchase_rate",
+            yId: "identifier"
           },
           {
             type: "viz_system",
             vizType: "bar",
-            xId: "identifier",
-            yId: "overall_repurchase_rate"
+            xId: "overall_repurchase_rate",
+            yId: "identifier"
           }
         ]
       }

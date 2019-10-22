@@ -70,6 +70,50 @@ const dimensionTypeForDataType = (dataType: WarehouseDataTypeEnum): EChartOption
 
 const MAX_XAXIS_LABEL_LENGTH = 45;
 
+const axisLabelFormatDetails = (
+  axisType: EChartOption.BasicComponents.CartesianAxis.Type,
+  id: string,
+  orientation: "horizontal" | "vertical",
+  result: SuccessfulWarehouseQueryResult
+) => {
+  let nameGap = 15;
+  if (orientation == "horizontal") {
+    nameGap = 48;
+  }
+  let labelRotation = 0;
+
+  if (axisType == "category") {
+    let longestLabelLength = Math.max(
+      ...result.records.map(record => {
+        const val = record[id];
+        if (!isUndefined(val)) {
+          return String(val).length;
+        } else {
+          return 0;
+        }
+      }),
+      3
+    );
+
+    longestLabelLength = clamp(longestLabelLength, 0, MAX_XAXIS_LABEL_LENGTH);
+
+    if (longestLabelLength > 3) {
+      labelRotation = 90;
+      nameGap = longestLabelLength * 11; // hack, roughly 11px per letter of a label
+    } else {
+    }
+  }
+
+  return {
+    nameGap: nameGap,
+    axisLabel: {
+      interval: axisType == "category" ? 0 : undefined,
+      rotate: labelRotation,
+      formatter: (value: any) => truncate(result.formatters[id](value), { length: MAX_XAXIS_LABEL_LENGTH })
+    }
+  };
+};
+
 const xAxesForBlock = (block: VizBlock, result: SuccessfulWarehouseQueryResult): EChartOption.XAxis[] => {
   const xIds = uniq(compact(block.viz.systems.map(system => system.xId)));
   if (xIds.length == 0) {
@@ -79,41 +123,12 @@ const xAxesForBlock = (block: VizBlock, result: SuccessfulWarehouseQueryResult):
   return xIds.map(xId => {
     const field = assert(result.outputIntrospection.fieldsById[xId]);
     const axisType = axisTypeForDataType(field.dataType);
-    let nameGap = 48;
-    let labelRotation = 0;
-
-    if (axisType == "category") {
-      let longestLabelLength = Math.max(
-        ...result.records.map(record => {
-          const val = record[xId];
-          if (!isUndefined(val)) {
-            return String(val).length;
-          } else {
-            return 0;
-          }
-        }),
-        3
-      );
-
-      longestLabelLength = clamp(longestLabelLength, 0, MAX_XAXIS_LABEL_LENGTH);
-
-      if (longestLabelLength > 3) {
-        labelRotation = 90;
-        nameGap = longestLabelLength * 11; // hack, roughly 11px per letter of a label
-      } else {
-      }
-    }
 
     return merge({}, theme.xAxis, {
       id: xId,
       name: field.label,
       type: axisType,
-      nameGap: nameGap,
-      axisLabel: {
-        interval: axisType == "category" ? 0 : undefined,
-        rotate: labelRotation,
-        formatter: (value: any) => truncate(String(value), { length: MAX_XAXIS_LABEL_LENGTH })
-      }
+      ...axisLabelFormatDetails(axisType, xId, "horizontal", result)
     });
   });
 };
@@ -124,15 +139,14 @@ const yAxesForBlock = (block: VizBlock, result: SuccessfulWarehouseQueryResult):
 
   return yIds.map((yId, index) => {
     const field = assert(result.outputIntrospection.fieldsById[yId] || result.outputIntrospection.pivotedMeasuresById[yId]);
+    const axisType = axisTypeForDataType(field.dataType);
+
     const axis: EChartOption.YAxis = merge({}, theme.yAxis, {
       id: yId,
       name: field.label,
-      type: axisTypeForDataType(field.dataType),
+      type: axisType,
       splitLine: {
         show: !multiAxis
-      },
-      axisLabel: {
-        formatter: result.formatters[yId]
       },
       axisPointer: {
         label: {
@@ -140,7 +154,8 @@ const yAxesForBlock = (block: VizBlock, result: SuccessfulWarehouseQueryResult):
             return result.formatters[yId](obj.value);
           }
         }
-      }
+      },
+      ...axisLabelFormatDetails(axisType, yId, "vertical", result)
     });
 
     if (multiAxis) {
