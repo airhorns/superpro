@@ -80,6 +80,7 @@ const axisLabelFormatDetails = (
   if (orientation == "horizontal") {
     nameGap = 48;
   }
+
   let labelRotation = 0;
 
   if (axisType == "category") {
@@ -98,7 +99,9 @@ const axisLabelFormatDetails = (
     longestLabelLength = clamp(longestLabelLength, 0, MAX_XAXIS_LABEL_LENGTH);
 
     if (longestLabelLength > 3) {
-      labelRotation = 90;
+      if (orientation == "horizontal") {
+        labelRotation = 90;
+      }
       nameGap = longestLabelLength * 11; // hack, roughly 11px per letter of a label
     } else {
     }
