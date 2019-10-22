@@ -44,7 +44,7 @@ import { SuccessfulWarehouseQueryResult } from "../GetWarehouseData";
 import { ReportDocument, VizBlock } from "../..";
 import { assert } from "superlib";
 import { WarehouseDataTypeEnum } from "app/app-graph";
-import { compact, uniq, flatMap, merge } from "lodash";
+import { compact, uniq, flatMap, merge, isUndefined } from "lodash";
 import { theme } from "superlib/EChartsTheme";
 import { pivotGroupId } from "../../pivot";
 
@@ -77,13 +77,37 @@ const xAxesForBlock = (block: VizBlock, result: SuccessfulWarehouseQueryResult):
   return xIds.map(xId => {
     const field = assert(result.outputIntrospection.fieldsById[xId]);
     const axisType = axisTypeForDataType(field.dataType);
+    let nameGap = 48;
+    let labelRotation = 0;
+
+    if (axisType == "category") {
+      const longestLabelLength = Math.max(
+        ...result.records.map(record => {
+          const val = record[xId];
+          if (!isUndefined(val)) {
+            return String(val).length;
+          } else {
+            return 0;
+          }
+        }),
+        3
+      );
+
+      if (longestLabelLength > 3) {
+        labelRotation = 90;
+        nameGap = longestLabelLength * 11.5; // hack, roughly 10px per letter of a label
+      } else {
+      }
+    }
 
     return merge({}, theme.xAxis, {
       id: xId,
       name: field.label,
       type: axisType,
+      nameGap: nameGap,
       axisLabel: {
-        interval: axisType == "category" ? 0 : undefined
+        interval: axisType == "category" ? 0 : undefined,
+        rotate: labelRotation
       }
     });
   });
@@ -117,7 +141,7 @@ const yAxesForBlock = (block: VizBlock, result: SuccessfulWarehouseQueryResult):
     if (multiAxis) {
       axis.axisLine = axis.axisLine || {};
       axis.axisLine.lineStyle = {
-        color: multiAxis ? theme.color[index] : undefined
+        color: theme.color[index]
       };
     }
 
@@ -188,6 +212,9 @@ export const EchartsPlotRenderer = (props: { result: SuccessfulWarehouseQueryRes
 
   const option: EChartOption = {
     legend: {},
+    grid: {
+      containLabel: true
+    },
     tooltip: {
       trigger: "axis",
       axisPointer: {

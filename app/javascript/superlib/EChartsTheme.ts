@@ -1,6 +1,11 @@
 import echarts, { EChartOption } from "echarts/lib/echarts";
 
-export const colorPalette = ["#c12e34", "#e6b600", "#0098d9", "#2b821d", "#005eaa", "#339ca8", "#cda819", "#32a487"];
+// export const colorPalette = ["#3288bd", "#f46d43", "#fee08b", "#5e4fa2", "#9e0142", "#66c2a5", "#d53e4f", "#abdda4", "#e6f598", "#fdae61"];
+export const colorPalette = ["#6a3d9a", "#ff7f00", "#e31a1c", "#33a02c", "#1f78b4", "#cab2d6", "#fdbf6f", "#fb9a99", "#b2df8a", "#a6cee3"];
+export const controlColor = colorPalette[0];
+export const negativeColor = "#c12e34";
+export const positiveColor = "#0F8554";
+export const textColor = "#333";
 
 interface EChartTheme {
   [key: string]: any;
@@ -36,17 +41,17 @@ export const theme: EChartTheme = {
   dataZoom: {
     dataBackgroundColor: "#dedede",
     fillerColor: "rgba(154,217,247,0.2)",
-    handleColor: "#005eaa"
+    handleColor: controlColor
   },
 
   timeline: {
     lineStyle: {
-      color: "#005eaa"
+      color: controlColor
     },
     controlStyle: {
       normal: {
-        color: "#005eaa",
-        borderColor: "#005eaa"
+        color: controlColor,
+        borderColor: controlColor
       }
     }
   },
@@ -54,12 +59,12 @@ export const theme: EChartTheme = {
   candlestick: {
     itemStyle: {
       normal: {
-        color: "#c12e34",
-        color0: "#2b821d",
+        color: negativeColor,
+        color0: positiveColor,
         lineStyle: {
           width: 1,
-          color: "#c12e34",
-          color0: "#2b821d"
+          color: negativeColor,
+          color0: positiveColor
         }
       }
     }
@@ -73,12 +78,12 @@ export const theme: EChartTheme = {
     label: {
       normal: {
         textStyle: {
-          color: "#c12e34"
+          color: negativeColor
         }
       },
       emphasis: {
         textStyle: {
-          color: "#c12e34"
+          color: negativeColor
         }
       }
     },
@@ -97,7 +102,7 @@ export const theme: EChartTheme = {
     axisLine: {
       show: true,
       lineStyle: {
-        color: [[0.2, "#2b821d"], [0.8, "#005eaa"], [1, "#c12e34"]],
+        color: [[0.2, positiveColor], [0.8, controlColor], [1, negativeColor]],
         width: 5
       }
     },
@@ -126,7 +131,7 @@ export const theme: EChartTheme = {
     },
     title: {
       textStyle: {
-        color: "#333"
+        color: textColor
       }
     },
     detail: {
@@ -141,12 +146,18 @@ export const theme: EChartTheme = {
     nameLocation: "center",
     axisLabel: {
       fontSize: 18
+    },
+    nameTextStyle: {
+      color: textColor
     }
   },
 
   yAxis: {
     axisLabel: {
       fontSize: 18
+    },
+    nameTextStyle: {
+      color: textColor
     }
   },
 
