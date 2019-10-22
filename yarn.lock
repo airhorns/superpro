@@ -12578,6 +12578,11 @@ use-bus@^2.1.0:
   resolved "https://registry.yarnpkg.com/use-bus/-/use-bus-2.2.0.tgz#feff39d3fbb7dd402c611003ac0ce0dcbe959485"
   integrity sha512-HjOhmdEiSyrRpiEolMgfmK9+eyFGILCjGq4tCyiMP9f60ZCtDuZccs8aFDW2kx5t/r9g0oOmLAAVvwuG+u0jEg==
 
+use-detect-print@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/use-detect-print/-/use-detect-print-0.0.2.tgz#0482f2d63c03c04887ce4b1163be1ce1cf738393"
+  integrity sha512-J0fu46/PNDuuP0qyXkabwi9nJtPPZmOOr6p6KLyEGHOA1fWqREMliS4Bcj7znp9zVrDdq67vpzX55PGJamK+2Q==
+
 use-force-update@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/use-force-update/-/use-force-update-1.0.5.tgz#9b7192f73f6cb90d592b225858c1562719d7c184"

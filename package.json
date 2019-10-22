@@ -133,6 +133,7 @@
     "typescript": "^3.5.1",
     "url-join": "^4.0.1",
     "use-bus": "^2.1.0",
+    "use-detect-print": "^0.0.2",
     "use-react-router": "^1.0.7"
   },
   "devDependencies": {

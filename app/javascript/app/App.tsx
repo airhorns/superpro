@@ -5,11 +5,13 @@ import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-d
 import { getClient } from "./lib/apollo";
 import { SuperproGrommetTheme, SentryErrorBoundary, SuperproGlobalStyle, SegmentIdentify, HotkeysContainer, Flag } from "../superlib";
 import { Grommet, Box } from "grommet";
+import useDetectPrint from "use-detect-print";
 import { Settings } from "./lib/settings";
 import { ToastContainer, FlagsProvider } from "../superlib";
 import { AppSidebar } from "./components/chrome/AppSidebar";
 import { NotFoundPage } from "./components/chrome/NotFoundPage";
 import { PageLoadSpin } from "../superlib";
+
 import MarketingActivityCustomerQualityReport from "./components/traffic/MarketingActivityCustomerQualityReport";
 
 const HomePage = React.lazy(() => import("./components/home/HomePage"));
@@ -35,12 +37,14 @@ const ReporrtBuilderPage = React.lazy(() => import("./components/report_builder/
 export const SuperproClient = getClient();
 
 export const App = () => {
+  const printing = useDetectPrint();
+
   const app = (
     <SegmentIdentify>
       <FlagsProvider flags={Settings.flags}>
         <ApolloProvider client={SuperproClient}>
           <ApolloHooksProvider client={SuperproClient}>
-            <Grommet theme={SuperproGrommetTheme} style={{ width: "100vw", height: "100vh", overflow: "hidden" }}>
+            <Grommet theme={SuperproGrommetTheme} style={{ width: "100vw", height: "100vh", overflow: printing ? "auto" : "hidden" }}>
               <SuperproGlobalStyle />
               <Router basename={Settings.baseUrl}>
                 <ToastContainer>

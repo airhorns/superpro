@@ -3,6 +3,7 @@ import { Box, Heading, Text } from "grommet";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { Row } from "superlib";
+import useDetectPrint from "use-detect-print";
 import { AppSidebar } from "../chrome/AppSidebar";
 
 const StaticBreadcrumbs = {
@@ -24,6 +25,7 @@ interface Route {
 
 export interface PageLayoutProps {
   title: React.ReactNode;
+  children?: React.ReactNode;
   documentTitle?: string;
   padded?: boolean;
   scrolly?: boolean;
@@ -35,93 +37,92 @@ function isCustomCrumb(crumb: Breadcrumb): crumb is BreadcrumbDescriptor {
   return crumb.hasOwnProperty("text");
 }
 
-export class PageLayout extends React.Component<PageLayoutProps> {
-  static defaultProps = {
-    padded: true,
-    scrolly: true
-  };
+const PageLayoutBreadcrumbs = (props: PageLayoutProps) => {
+  if (!props.breadcrumbs) {
+    return null;
+  }
 
-  renderBreadcrumbs() {
-    if (!this.props.breadcrumbs) {
-      return;
+  const routes = props.breadcrumbs.map(crumb => {
+    let text: React.ReactNode;
+    let path: string | null;
+    if (isCustomCrumb(crumb)) {
+      text = crumb.text;
+      path = crumb.path;
+    } else {
+      text = StaticBreadcrumbs[crumb].text;
+      path = StaticBreadcrumbs[crumb].path;
     }
 
-    const routes = this.props.breadcrumbs.map(crumb => {
-      let text: React.ReactNode;
-      let path: string | null;
-      if (isCustomCrumb(crumb)) {
-        text = crumb.text;
-        path = crumb.path;
-      } else {
-        text = StaticBreadcrumbs[crumb].text;
-        path = StaticBreadcrumbs[crumb].path;
-      }
+    return {
+      path: path,
+      text: text,
+      breadcrumbName: path || text
+    };
+  });
 
-      return {
-        path: path,
-        text: text,
-        breadcrumbName: path || text
-      };
-    });
+  routes.unshift({ path: "/", text: "Home", breadcrumbName: "fixed-home" });
+  const lastIndex = routes.length - 1;
 
-    routes.unshift({ path: "/", text: "Home", breadcrumbName: "fixed-home" });
-    const lastIndex = routes.length - 1;
-
-    return (
-      <Row margin={{ top: "xsmall", left: "small" }}>
-        {routes.map((route, index) => (
-          <Row key={index}>
-            <Text size="small">{route.path ? <Link to={route.path}>{route.text}</Link> : route.text}</Text>
-            <Box pad={{ horizontal: "xsmall" }}>{index == lastIndex ? null : <Text size="small">/</Text>}</Box>
-          </Row>
-        ))}
-      </Row>
-    );
-  }
-
-  componentDidMount() {
-    analytics.page(this.props.documentTitle || (this.props.title as string));
-  }
-
-  render() {
-    const breadcrumbs = this.renderBreadcrumbs();
-    return (
-      <Box fill className="PageLayout-container">
-        <Helmet>
-          <title>{this.props.documentTitle || this.props.title} - Superpro</title>
-        </Helmet>
-        {breadcrumbs}
-        <Row
-          tag="header"
-          background="white"
-          align="center"
-          justify="between"
-          pad={{ horizontal: "small", bottom: "small", top: breadcrumbs ? undefined : "small" }}
-          responsive={false}
-          style={{ position: "relative" }}
-          border={{ color: "light-2", side: "bottom" }}
-          className="PageLayout-header"
-          flex={false}
-        >
-          <Row>
-            <AppSidebar embeddedInPageHeader={true} />
-            <Heading level={"3"} margin="xsmall">
-              {this.props.title}
-            </Heading>
-          </Row>
-
-          <Row>{this.props.headerExtra}</Row>
+  return (
+    <Row margin={{ top: "xsmall", left: "small" }}>
+      {routes.map((route, index) => (
+        <Row key={index}>
+          <Text size="small">{route.path ? <Link to={route.path}>{route.text}</Link> : route.text}</Text>
+          <Box pad={{ horizontal: "xsmall" }}>{index == lastIndex ? null : <Text size="small">/</Text>}</Box>
         </Row>
-        <Box
-          flex
-          pad={this.props.padded ? "medium" : undefined}
-          className="PageLayout-content"
-          overflow={{ vertical: this.props.scrolly ? "auto" : undefined }}
-          fill={!this.props.scrolly}
-        >
-          {this.props.children}
-        </Box>
+      ))}
+    </Row>
+  );
+};
+
+export const PageLayout = (props: PageLayoutProps) => {
+  React.useEffect(() => {
+    analytics.page(props.documentTitle || (props.title as string));
+  }, [props.title, props.documentTitle]);
+
+  const printing = useDetectPrint();
+
+  return (
+    <Box fill className="PageLayout-container">
+      <Helmet>
+        <title>{props.documentTitle || props.title} - Superpro</title>
+      </Helmet>
+      <PageLayoutBreadcrumbs {...props} />
+      <Row
+        tag="header"
+        background="white"
+        align="center"
+        justify="between"
+        pad={{ horizontal: "small", bottom: "small", top: props.breadcrumbs ? undefined : "small" }}
+        responsive={false}
+        style={{ position: "relative" }}
+        border={{ color: "light-2", side: "bottom" }}
+        className="PageLayout-header"
+        flex={false}
+      >
+        <Row>
+          <AppSidebar embeddedInPageHeader={true} />
+          <Heading level={"3"} margin="xsmall">
+            {props.title}
+          </Heading>
+        </Row>
+
+        <Row>{props.headerExtra}</Row>
+      </Row>
+      <Box
+        flex={{ grow: 1, shrink: 0 }}
+        pad={props.padded ? "medium" : undefined}
+        className="PageLayout-content"
+        fill={!props.scrolly}
+        overflow={{ vertical: props.scrolly && !printing ? "auto" : undefined }}
+      >
+        {props.children}
       </Box>
-    );
-  }
-}
+    </Box>
+  );
+};
+
+PageLayout.defaultProps = {
+  padded: true,
+  scrolly: true
+};
