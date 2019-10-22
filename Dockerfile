@@ -31,7 +31,7 @@ RUN yarn
 COPY . /app/
 
 # Run webpacker to build the assets that can then be copied into the final image
-RUN NODE_ENV=production RAILS_ENV=production SECRET_KEY_BASE=valueneededtobootapp REDIS_URL=redis://valueneededtobootapp:1234 bin/rake --trace assets:precompile
+RUN NODE_ENV=production RAILS_ENV=production SECRET_KEY_BASE=valueneededtobootapp APP_JWT_SECRET=valueneededtobootapp REDIS_URL=redis://valueneededtobootapp:1234 bin/rake --trace assets:precompile
 
 # Start a fresh container and copy only the produced webpacker assets in, leaving the node binaries and yarn packages behind
 FROM ruby_environment

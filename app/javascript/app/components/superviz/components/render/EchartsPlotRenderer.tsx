@@ -44,7 +44,7 @@ import { SuccessfulWarehouseQueryResult } from "../GetWarehouseData";
 import { ReportDocument, VizBlock } from "../..";
 import { assert } from "superlib";
 import { WarehouseDataTypeEnum } from "app/app-graph";
-import { compact, uniq, flatMap, merge, isUndefined } from "lodash";
+import { compact, uniq, flatMap, merge, isUndefined, clamp, truncate } from "lodash";
 import { theme } from "superlib/EChartsTheme";
 import { pivotGroupId } from "../../pivot";
 
@@ -68,6 +68,8 @@ const dimensionTypeForDataType = (dataType: WarehouseDataTypeEnum): EChartOption
   }
 };
 
+const MAX_XAXIS_LABEL_LENGTH = 45;
+
 const xAxesForBlock = (block: VizBlock, result: SuccessfulWarehouseQueryResult): EChartOption.XAxis[] => {
   const xIds = uniq(compact(block.viz.systems.map(system => system.xId)));
   if (xIds.length == 0) {
@@ -81,7 +83,7 @@ const xAxesForBlock = (block: VizBlock, result: SuccessfulWarehouseQueryResult):
     let labelRotation = 0;
 
     if (axisType == "category") {
-      const longestLabelLength = Math.max(
+      let longestLabelLength = Math.max(
         ...result.records.map(record => {
           const val = record[xId];
           if (!isUndefined(val)) {
@@ -93,9 +95,11 @@ const xAxesForBlock = (block: VizBlock, result: SuccessfulWarehouseQueryResult):
         3
       );
 
+      longestLabelLength = clamp(longestLabelLength, 0, MAX_XAXIS_LABEL_LENGTH);
+
       if (longestLabelLength > 3) {
         labelRotation = 90;
-        nameGap = longestLabelLength * 11.5; // hack, roughly 10px per letter of a label
+        nameGap = longestLabelLength * 11; // hack, roughly 11px per letter of a label
       } else {
       }
     }
@@ -107,7 +111,8 @@ const xAxesForBlock = (block: VizBlock, result: SuccessfulWarehouseQueryResult):
       nameGap: nameGap,
       axisLabel: {
         interval: axisType == "category" ? 0 : undefined,
-        rotate: labelRotation
+        rotate: labelRotation,
+        formatter: (value: any) => truncate(String(value), { length: MAX_XAXIS_LABEL_LENGTH })
       }
     });
   });
@@ -259,10 +264,8 @@ export const EchartsPlotRenderer = (props: { result: SuccessfulWarehouseQueryRes
       option={option}
       notMerge={true}
       lazyUpdate={true}
-      style={{ minHeight: heightForBlock(props.block), display: "flex", flex: "1 0" }}
+      style={{ height: heightForBlock(props.block), width: "100%" }}
       theme="superpro"
-      // onChartReady={this.onChartReadyCallback}
-      // onEvents={EventsDict}
       opts={{ renderer: "svg" }}
     />
   );

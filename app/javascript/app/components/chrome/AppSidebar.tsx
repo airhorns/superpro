@@ -10,6 +10,7 @@ import { signOut } from "../../lib/auth";
 import { Settings } from "../../lib/settings";
 import { Invite, Settings as SettingsIcon, Sales, Traffic, Customers } from "../common/SuperproIcons";
 import { NavigationSectionButton, NavigationSubItemButton } from "./Navigation";
+import { Alert, Spin } from "superlib";
 
 gql`
   query SiderInfo {
@@ -58,8 +59,19 @@ export const AppSidebar = withRouter(
       return (
         <SiderInfoComponent>
           {({ loading, error, data }) => {
-            if (error) return <Box>Error: {error && error.message}</Box>;
-            if (!data) return <Box>No data</Box>;
+            if (error) {
+              console.error(error);
+              return <Alert type="error" message="There was an error loading data for Superpro. Please refresh to try again" />;
+            }
+
+            if (!data) {
+              return (
+                <Box fill justify="center">
+                  <Spin />
+                </Box>
+              );
+            }
+
             return (
               <>
                 <Box pad="small" align="center" flex={false}>
