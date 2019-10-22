@@ -35,6 +35,16 @@ class DataModel::QueryCompilerTest < ActiveSupport::TestCase
     assert_matches_snapshot sql
   end
 
+  test "it can compile a simple query with a limit" do
+    sql = compile(
+      measures: [{ model: "Sales::OrderFacts", field: "total_price", operator: "sum", id: "total_price" }, { model: "Sales::OrderFacts", field: "total_weight", operator: "average", id: "total_weight" }],
+      dimensions: [{ model: "Sales::OrderFacts", field: "cancelled", id: "cancelled_status" }],
+      limit: 10,
+    )
+
+    assert_matches_snapshot sql
+  end
+
   test "it can compile a query with sql measures against the orders fact table" do
     sql = compile(
       measures: [{ model: "Sales::OrderFacts", field: "order_count", id: "order_count" }],

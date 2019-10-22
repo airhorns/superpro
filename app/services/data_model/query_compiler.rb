@@ -80,7 +80,7 @@ module DataModel
       joins.uniq.each { |join| manager.from(join) }
       wheres.each { |filter| manager.where(filter) }
       havings.each { |filter| manager.having(filter) }
-      manager.take(5000)
+      manager.take(@query_specification.fetch(:limit, 5000))
 
       manager
     end

@@ -25,6 +25,10 @@ export interface WarehouseQuery {
    * A list of model fields and values to filter the query by
    */
   filters?: Filter[];
+  /**
+   * The max number of rows to return
+   */
+  limit?: number | null;
 }
 export interface Measure {
   /**

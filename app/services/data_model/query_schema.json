@@ -29,6 +29,10 @@
       "type": "array",
       "items": { "$ref": "#/definitions/filter" },
       "minItems": 0
+    },
+    "limit": {
+      "description": "The max number of rows to return",
+      "type": ["number", "null"]
     }
   },
   "required": ["measures", "dimensions"],

@@ -73,6 +73,16 @@ class DataModel::QueryTest < ActiveSupport::TestCase
     assert_equal [{ "total_price" => nil }], result
   end
 
+  test "it can execute a query with a limit" do
+    result = run_query(
+      measures: [{ model: "Sales::OrderFacts", field: "total_price", operator: "sum", id: "total_price" }, { model: "Sales::OrderFacts", field: "total_weight", operator: "sum", id: "total_weight" }],
+      dimensions: [{ model: "Sales::OrderFacts", field: "cancelled", id: "cancelled" }],
+      limit: 10,
+    )
+
+    assert_equal [], result
+  end
+
   test "it can execute a query with a filter on an id field" do
     result = run_query(
       measures: [{ model: "Sales::OrderFacts", field: "total_price", id: "total_price" }],

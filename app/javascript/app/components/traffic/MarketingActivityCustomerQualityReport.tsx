@@ -60,7 +60,8 @@ _Note_: For all the numbers on this report, we're measuring how customers behave
           }
         ],
         dimensions: [{ model: "Traffic::CustomerAcquisitionFacts", field: "landing_page_identifier", id: "identifier" }],
-        orderings: [{ id: "average_future_3_month_revenue", direction: "desc" }]
+        orderings: [{ id: "average_future_3_month_revenue", direction: "desc" }],
+        limit: 25
       },
       viz: {
         type: "viz",
@@ -95,7 +96,8 @@ _Note_: For all the numbers on this report, we're measuring how customers behave
           }
         ],
         dimensions: [{ model: "Traffic::CustomerAcquisitionFacts", field: "landing_page_identifier", id: "identifier" }],
-        orderings: [{ id: "early_repurchase_rate", direction: "desc" }]
+        orderings: [{ id: "early_repurchase_rate", direction: "desc" }],
+        limit: 25
       },
       viz: {
         type: "viz",
