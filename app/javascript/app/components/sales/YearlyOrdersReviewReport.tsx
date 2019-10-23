@@ -7,7 +7,7 @@ export default FullReportPage("Orders Review", {
     {
       type: "markdown_block",
       markdown:
-        "This report breaks down the long term health of the business based on sales data from Shopify. Below is a lifetime summary and annual summary of core KPIs"
+        "This report breaks down the long term health of the business based on sales data from Shopify. Below is a lifetime summary and annual summary of core KPIs."
     },
     {
       type: "table_block",
@@ -36,6 +36,10 @@ export default FullReportPage("Orders Review", {
         ],
         dimensions: [{ model: "Sales::OrderFacts", field: "created_at", operator: "date_trunc_year", id: "date" }]
       }
+    },
+    {
+      type: "markdown_block",
+      markdown: "A placeholder."
     },
     {
       type: "viz_block",
