@@ -75,7 +75,7 @@ export default FullReportPage("Orders Review", {
     },
     {
       type: "markdown_block",
-      markdown: `The above graph describes the variety and distribution of high value customers of the business. For a business making most of its revenue from a small group of high value customers, the sales fall off very fast from left to right, and the cumulative sales percentage ramps up very quickly. For a business with many more customers, the cumulative percentage ramps up much slower. The healthiest businesses have a diverse set of customers with a thick center portion of many good value customers, some high value customers, and a long tail of low value customers.`
+      markdown: `The above graph describes the variety and distribution of the top 5000 highest value customers of the business. For a business making most of its revenue from a small group of high value customers, the sales fall off very fast from left to right, and the cumulative sales percentage ramps up very quickly. For a business with many more customers of a lower average value, the cumulative percentage ramps up much slower. The healthiest businesses have a diverse set of customers with a thick center portion of many good value customers, some high value customers, and a long tail of low value customers. with the culumative percentage of sales ramping upwards with a relatively even slope.`
     }
   ]
 });
