@@ -56,7 +56,7 @@
     "@types/segment-analytics": "^0.0.32",
     "@types/shortid": "^0.0.29",
     "@types/slate": "^0.47.2",
-    "@types/slate-react": "^0.22.1",
+    "@types/slate-react": "^0.22.6",
     "@types/styled-components": "^4.1.14",
     "@types/url-join": "^4.0.0",
     "activestorage": "^5.2.3",
