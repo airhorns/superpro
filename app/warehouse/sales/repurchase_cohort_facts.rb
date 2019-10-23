@@ -10,4 +10,6 @@ class Sales::RepurchaseCohortFacts < DataModel::FactTable
   measure :pct_active_customers, DataModel::Types::Percentage, default_operator: false
   measure :months_since_genesis, DataModel::Types::Number, default_operator: false
   measure :genesis_month, DataModel::Types::DateTime, default_operator: false
+
+  global_filter :date, :genesis_month
 end

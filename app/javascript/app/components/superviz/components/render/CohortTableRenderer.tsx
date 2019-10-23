@@ -1,5 +1,5 @@
 import React from "react";
-import { range, groupBy, keyBy, isUndefined } from "lodash";
+import { range, groupBy, keyBy, isUndefined, compact } from "lodash";
 import { Box } from "grommet";
 import { DateTime } from "luxon";
 import { scaleLinear } from "d3-scale";
@@ -8,6 +8,7 @@ import { WaterTable, WaterTableColumnSpec } from "superlib/WaterTable";
 import { SuccessfulWarehouseQueryResult } from "../GetWarehouseData";
 import { ReportDocument, VizBlock, VizSystem } from "../../schema";
 import { assert } from "superlib";
+import { WarehouseDataTypeEnum } from "app/app-graph";
 
 interface CohortRecord {
   key: string;
@@ -15,9 +16,24 @@ interface CohortRecord {
 }
 
 const cohortRange = range(0, 12);
-const colorScale = scaleLinear()
-  .domain([0, 10])
-  .range([0, 0.8]);
+
+const colorScaleForField = (system: VizSystem, result: SuccessfulWarehouseQueryResult) => {
+  const field = assert(result.outputIntrospection.measuresById[system.yId]);
+  const cohortId = assert(system.xId);
+
+  const values = compact(
+    result.records.map(record => {
+      if (record[cohortId] != 0) {
+        return record[system.yId];
+      }
+    })
+  );
+  const domain = [Math.min(...values) || 0, Math.max(...values) || 1];
+
+  return scaleLinear()
+    .domain(domain)
+    .range([0, 0.8]);
+};
 
 const cohortPivot = (result: SuccessfulWarehouseQueryResult, system: VizSystem) => {
   return Object.entries(groupBy(result.records, record => record[system.extra.cohortId].toISOString())).map(([cohortId, recordGroup]) => {
@@ -39,6 +55,7 @@ const cohortPivot = (result: SuccessfulWarehouseQueryResult, system: VizSystem) 
 
 export const CohortTableRenderer = (props: { result: SuccessfulWarehouseQueryResult; doc: ReportDocument; block: VizBlock }) => {
   const system = assert(props.block.viz.systems[0]);
+  const colorScale = colorScaleForField(system, props.result);
   const columns: WaterTableColumnSpec<CohortRecord>[] = [
     {
       key: "cohort_title",

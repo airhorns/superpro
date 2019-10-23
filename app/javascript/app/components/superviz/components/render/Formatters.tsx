@@ -58,7 +58,7 @@ export const formattersForOutput = (output: OutputIntrospection): FormatterFns =
         break;
       }
       case WarehouseDataTypeEnum.Percentage: {
-        formatters[id] = value => `${round(value, 2)} %`;
+        formatters[id] = value => `${round(value * 100, 2)} %`;
         break;
       }
       case WarehouseDataTypeEnum.String: {

@@ -4,7 +4,11 @@ export default FullReportPage("Orders Review", {
   type: "document",
   id: "orders_review",
   blocks: [
-    { type: "markdown_block", markdown: "This report breaks down the long term health of the business based on sales data." },
+    {
+      type: "markdown_block",
+      markdown:
+        "This report breaks down the long term health of the business based on sales data from Shopify. Below is a lifetime summary and annual summary of core KPIs"
+    },
     {
       type: "table_block",
       title: "Lifetime Summary",
@@ -35,7 +39,7 @@ export default FullReportPage("Orders Review", {
     },
     {
       type: "viz_block",
-      title: "Pareto Analysis",
+      title: "Customer Concentration - Pareto Analysis",
       query: {
         measures: [
           { model: "Sales::CustomerParetoFacts", field: "sales", id: "sales" },
@@ -66,25 +70,8 @@ export default FullReportPage("Orders Review", {
       }
     },
     {
-      type: "viz_block",
-      title: "Order Repurchase Intervals",
-      query: {
-        measures: [{ model: "Sales::RepurchaseIntervalFacts", field: "count", id: "count" }],
-        dimensions: [
-          { model: "Sales::RepurchaseIntervalFacts", field: "days_since_previous_order_bucket_label", id: "days_since_previous_order" }
-        ]
-      },
-      viz: {
-        type: "viz",
-        systems: [
-          {
-            type: "viz_system",
-            vizType: "bar",
-            xId: "days_since_previous_order",
-            yId: "count"
-          }
-        ]
-      }
+      type: "markdown_block",
+      markdown: `The above graph describes the variety and distribution of high value customers of the business. For a business making most of its revenue from a small group of high value customers, the sales fall off very fast from left to right, and the cumulative sales percentage ramps up very quickly. For a business with many more customers, the cumulative percentage ramps up much slower. The healthiest businesses have a diverse set of customers with a thick center portion of many good value customers, some high value customers, and a long tail of low value customers.`
     }
   ]
 });
