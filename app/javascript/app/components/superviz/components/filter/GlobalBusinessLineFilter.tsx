@@ -33,6 +33,13 @@ export const GlobalBusinessLineFilter = (props: { filtersContext: FactTableFilte
               }}
             />
           ))}
+          <Button
+            plain
+            label="All Business Lines"
+            onClick={() => {
+              controller.removeFilter("business_line_id");
+            }}
+          />
         </Box>
       }
     />

@@ -42,7 +42,8 @@ export const StyledGrommetContainer = styled(Grommet)`
 
   @media print {
     height: auto;
-    overflow: auto;
+    width: 100%;
+    overflow: visible;
   }
 `;
 

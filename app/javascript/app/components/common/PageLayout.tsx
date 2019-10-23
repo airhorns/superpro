@@ -76,15 +76,12 @@ const PageLayoutBreadcrumbs = (props: PageLayoutProps) => {
   );
 };
 
-export const PageLayoutContainer = styled.div`
-  width: 100%;
+export const PageLayoutContainer = styled(Box)`
   height: 100%;
-  display: flex;
-  flex-direction: column;
+  width: 100%;
 
   @media print {
     height: auto;
-    width: auto;
     display: block;
   }
 `;
@@ -92,7 +89,6 @@ export const PageLayoutContainer = styled.div`
 export const PageLayoutContent = styled.div`
   flex: 1 1;
   width: 100%;
-  height: 100%;
   overflow: auto;
   display: flex;
   flex-direction: column;

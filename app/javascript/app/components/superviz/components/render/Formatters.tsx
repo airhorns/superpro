@@ -1,8 +1,9 @@
 import Dinero from "dinero.js";
 import { DateTime, Duration } from "luxon";
-import { isString, round } from "lodash";
+import { isString, round, isNumber } from "lodash";
 import { OutputIntrospection } from "../GetWarehouseData";
 import { WarehouseDataTypeEnum, WarehouseIntrospectionMeasureField, WarehouseIntrospectionDimensionField } from "app/app-graph";
+import { isDate } from "util";
 
 export type FormatterFns = {
   [id: string]: (value: any) => string;
@@ -29,7 +30,14 @@ export const formattersForOutput = (output: OutputIntrospection): FormatterFns =
       }
       case WarehouseDataTypeEnum.DateTime: {
         formatters[id] = value => {
-          const dt = isString(value) ? DateTime.fromISO(value) : DateTime.fromJSDate(value);
+          let dt: DateTime;
+          if (isNumber(value)) {
+            dt = DateTime.fromMillis(value);
+          } else if (isDate(value)) {
+            dt = DateTime.fromJSDate(value);
+          } else {
+            dt = DateTime.fromISO(value);
+          }
           return dt.toLocaleString();
         };
         break;

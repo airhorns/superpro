@@ -1,6 +1,5 @@
 import React from "react";
 import { range, groupBy, keyBy, isUndefined, compact } from "lodash";
-import { Box } from "grommet";
 import { DateTime } from "luxon";
 import { scaleLinear } from "d3-scale";
 import { interpolateOranges } from "d3-scale-chromatic";
@@ -8,7 +7,6 @@ import { WaterTable, WaterTableColumnSpec } from "superlib/WaterTable";
 import { SuccessfulWarehouseQueryResult } from "../GetWarehouseData";
 import { ReportDocument, VizBlock, VizSystem } from "../../schema";
 import { assert } from "superlib";
-import { WarehouseDataTypeEnum } from "app/app-graph";
 
 interface CohortRecord {
   key: string;
@@ -18,7 +16,6 @@ interface CohortRecord {
 const cohortRange = range(0, 12);
 
 const colorScaleForField = (system: VizSystem, result: SuccessfulWarehouseQueryResult) => {
-  const field = assert(result.outputIntrospection.measuresById[system.yId]);
   const cohortId = assert(system.xId);
 
   const values = compact(
@@ -84,9 +81,5 @@ export const CohortTableRenderer = (props: { result: SuccessfulWarehouseQueryRes
     }))
   ];
 
-  return (
-    <Box>
-      <WaterTable columns={columns} records={cohortPivot(props.result, system)} />
-    </Box>
-  );
+  return <WaterTable columns={columns} records={cohortPivot(props.result, system)} />;
 };
