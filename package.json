@@ -96,7 +96,7 @@
     "pluralize": "^8.0.0",
     "polished": "^3.4.0",
     "query-string": "^6.6.0",
-    "react": "^16.7.0",
+    "react": "^16.11.0",
     "react-beautiful-dnd": "^11.0.3",
     "react-display-name": "^0.2.4",
     "react-dom": "^16.7.0",
