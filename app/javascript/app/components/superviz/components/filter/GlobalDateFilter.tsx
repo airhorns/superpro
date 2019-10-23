@@ -10,6 +10,7 @@ const KeyedTimeRanges = [
   { duration: Duration.fromObject({ days: -30 }).toISO(), label: "Last 30 Days" },
   { duration: Duration.fromObject({ months: -3 }).toISO(), label: "Last 3 Months" },
   { duration: Duration.fromObject({ years: -1 }).toISO(), label: "Last Year" },
+  { duration: Duration.fromObject({ years: -2 }).toISO(), label: "Last 2 Years" },
   { duration: undefined, label: "All time" }
 ];
 
