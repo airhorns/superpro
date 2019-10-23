@@ -2,12 +2,14 @@
   {
     "id": "total_price",
     "data_type": "DataModel::Types::Currency",
+    "operator": "sum",
     "label": "Sum of Total Price",
     "sortable": false
   },
   {
     "id": "total_weight",
     "data_type": "DataModel::Types::Weight",
+    "operator": "average",
     "label": "Average Total Weight",
     "sortable": false
   }
