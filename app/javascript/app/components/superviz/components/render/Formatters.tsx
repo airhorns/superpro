@@ -2,7 +2,7 @@ import Dinero from "dinero.js";
 import { DateTime, Duration } from "luxon";
 import { round, isNumber } from "lodash";
 import { OutputIntrospection } from "../GetWarehouseData";
-import { WarehouseDataTypeEnum, WarehouseIntrospectionMeasureField, WarehouseIntrospectionDimensionField } from "app/app-graph";
+import { WarehouseDataTypeEnum, WarehouseOutputIntrospectionMeasure, WarehouseOutputIntrospectionDimension } from "app/app-graph";
 import { isDate } from "util";
 
 export type FormatterFns = {
@@ -12,7 +12,7 @@ export type FormatterFns = {
 export const formattersForOutput = (output: OutputIntrospection): FormatterFns => {
   const formatters: FormatterFns = {};
   const measureEntries = Object.entries(output.measuresById).concat(Object.entries(output.pivotedMeasuresById));
-  const allSpecs: [string, WarehouseIntrospectionMeasureField | WarehouseIntrospectionDimensionField][] = measureEntries.concat(
+  const allSpecs: [string, WarehouseOutputIntrospectionMeasure | WarehouseOutputIntrospectionDimension][] = measureEntries.concat(
     Object.entries(output.dimensionsById) as any
   ) as any;
 
@@ -38,7 +38,36 @@ export const formattersForOutput = (output: OutputIntrospection): FormatterFns =
           } else {
             dt = DateTime.fromISO(value);
           }
-          return dt.toLocaleString();
+
+          switch (spec.operator) {
+            case "date_trunc_year":
+            case "date_trunc_month":
+            case "date_trunc_week":
+            case "date_trunc_day": {
+              // when these dates are truncated, the local offset can move the date past the boundary that really matters
+              // truncated dates like 2016-01-01T00:00:00.000+00:00 when presented in local time are in 2015, which looks dumb
+              // strip the zone and then return the format that makes sense for the operator at hand
+              const shifted = dt.setZone("utc");
+              switch (spec.operator) {
+                case "date_trunc_year": {
+                  return shifted.toFormat("yyyy");
+                }
+                case "date_trunc_month": {
+                  return shifted.toFormat("LLLL yyyy");
+                }
+                case "date_trunc_week": {
+                  return shifted.toFormat("'Week of' DD");
+                }
+                default: {
+                  return shifted.toLocaleString();
+                }
+              }
+            }
+
+            default: {
+              return dt.toLocaleString();
+            }
+          }
         };
         break;
       }

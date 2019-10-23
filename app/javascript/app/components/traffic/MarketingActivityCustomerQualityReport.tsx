@@ -78,7 +78,7 @@ _Note_: For all the numbers on this report, we're measuring how customers behave
     },
     {
       type: "markdown_block",
-      markdown: `The above report shows which campaigns are driving customers that have the highest predicted value over the next 3 months. The graph includes the top 25 campaigns by average 3 month value.`
+      markdown: `The above report shows which campaigns are driving customers that have the highest predicted value over the next 3 months. The graph includes the top 25 campaigns.`
     },
     {
       type: "viz_block",

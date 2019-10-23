@@ -4,6 +4,7 @@ class Types::Warehouse::WarehouseOutputIntrospectionMeasureType < Types::BaseObj
   field :id, String, null: false
   field :pivot_group_id, String, null: true
   field :data_type, Types::Warehouse::WarehouseDataTypeEnum, null: false
+  field :operator, String, null: true
   field :label, String, null: false
   field :sortable, Boolean, null: false
 end

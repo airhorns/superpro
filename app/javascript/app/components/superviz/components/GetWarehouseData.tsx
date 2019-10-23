@@ -26,6 +26,7 @@ gql`
         measures {
           id
           dataType
+          operator
           label
           sortable
           pivotGroupId
@@ -33,6 +34,7 @@ gql`
         pivotedMeasures {
           id
           dataType
+          operator
           label
           sortable
           pivotGroupId
@@ -40,6 +42,7 @@ gql`
         dimensions {
           id
           dataType
+          operator
           label
           sortable
         }

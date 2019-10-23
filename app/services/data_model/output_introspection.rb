@@ -20,6 +20,7 @@ module DataModel
           {
             id: generated_column[:id],
             data_type: base_introspection[:data_type],
+            operator: base_introspection[:operator],
             label: human_pivot_label(generated_column),
             sortable: false,
             pivot_group_id: generated_column[:pivot_group_id],
@@ -56,6 +57,7 @@ module DataModel
       {
         id: spec[:id],
         data_type: operator.present? ? operator.output_type(field) : field.data_type,
+        operator: operator.try(:key),
         label: human_label(spec, field),
         sortable: false,
       }
