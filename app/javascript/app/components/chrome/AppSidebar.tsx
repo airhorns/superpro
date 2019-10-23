@@ -10,7 +10,7 @@ import { signOut } from "../../lib/auth";
 import { Settings } from "../../lib/settings";
 import { Invite, Settings as SettingsIcon, Sales, Traffic, Customers } from "../common/SuperproIcons";
 import { NavigationSectionButton, NavigationSubItemButton } from "./Navigation";
-import { Alert, Spin } from "superlib";
+import { Alert } from "superlib";
 
 gql`
   query SiderInfo {
@@ -73,18 +73,18 @@ export const AppSidebar = withRouter(
                 <Box pad="small" align="center" flex={false}>
                   {this.renderLogo()}
                 </Box>
-                <Box background="accent-2" align="center" flex={false}>
-                  <Text size="xsmall" color="white">
-                    ALPHA
-                  </Text>
-                </Box>
                 {Settings.devMode && (
-                  <Box background="accent-3" align="center" flex={false}>
+                  <Box background="accent-2" align="center" flex={false}>
                     <Text size="xsmall" color="white">
                       DEV ENV
                     </Text>
                   </Box>
                 )}
+                <Box background="accent-2" align="center" flex={false}>
+                  <Text size="xsmall" color="white">
+                    ALPHA
+                  </Text>
+                </Box>
                 {data.currentUser && data.currentUser.accounts.length > 0 && (
                   <Box background="accent-4" align="center" flex={false}>
                     <Text size="xsmall" color="white">
@@ -177,7 +177,13 @@ export const AppSidebar = withRouter(
         }
 
         return (
-          <StyledAppSidebarContainer fill="vertical" width="small" flex={false} background="light-2" className="AppSidebar-container">
+          <StyledAppSidebarContainer
+            fill="vertical"
+            width="small"
+            flex={false}
+            background={Settings.devMode ? "accent-2" : "light-2"}
+            className="AppSidebar-container"
+          >
             {this.renderMenu()}
           </StyledAppSidebarContainer>
         );
