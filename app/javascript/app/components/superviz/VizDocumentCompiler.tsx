@@ -1,9 +1,9 @@
 import React from "react";
-import { Markdown } from "grommet";
 import { uniq, flatMap } from "lodash";
 import { assert } from "superlib";
 import { ReportDocument, Block, isQueryBlock } from "./schema";
 import { VizDocumentContainer } from "./components/render/VizDocumentContainer";
+import { MarkdownBlockRenderer } from "./components/render/MarkdownBlockRenderer";
 import { VizBlockRenderer } from "./components/render/VizBlockRenderer";
 import { TableBlockRenderer } from "./components/render/TableBlockRenderer";
 import { FactTableFilterContext } from "./components/filter/GetWarehouseFilters";
@@ -30,7 +30,7 @@ export class VizDocumentCompiler {
 
   private compileBlock(block: Block, index: number) {
     if (block.type == "markdown_block") {
-      return <Markdown key={index}>{block.markdown}</Markdown>;
+      return <MarkdownBlockRenderer key={index} block={block} />;
     } else if (block.type == "viz_block") {
       return <VizBlockRenderer key={index} doc={this.doc} block={block} />;
     } else if (block.type == "table_block") {

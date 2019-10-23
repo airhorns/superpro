@@ -1,10 +1,16 @@
 import React from "react";
 import { Box } from "grommet";
+import styled from "styled-components";
+
+export const StyledDocumentContainer = styled(Box)`
+  width: 100%;
+  height: 100%;
+
+  @media print {
+    height: auto;
+  }
+`;
 
 export const VizDocumentContainer = (props: { children: React.ReactNode }) => {
-  return (
-    <Box fill gap="large">
-      {props.children}
-    </Box>
-  );
+  return <StyledDocumentContainer gap="large">{props.children}</StyledDocumentContainer>;
 };

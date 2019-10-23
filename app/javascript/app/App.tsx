@@ -4,8 +4,7 @@ import { ApolloProvider as ApolloHooksProvider } from "@apollo/react-hooks";
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import { getClient } from "./lib/apollo";
 import { SuperproGrommetTheme, SentryErrorBoundary, SuperproGlobalStyle, SegmentIdentify, HotkeysContainer, Flag } from "../superlib";
-import { Grommet, Box } from "grommet";
-import useDetectPrint from "use-detect-print";
+import { Grommet } from "grommet";
 import { Settings } from "./lib/settings";
 import { ToastContainer, FlagsProvider } from "../superlib";
 import { AppSidebar } from "./components/chrome/AppSidebar";
@@ -13,6 +12,7 @@ import { NotFoundPage } from "./components/chrome/NotFoundPage";
 import { PageLoadSpin } from "../superlib";
 
 import MarketingActivityCustomerQualityReport from "./components/traffic/MarketingActivityCustomerQualityReport";
+import styled from "styled-components";
 
 const HomePage = React.lazy(() => import("./components/home/HomePage"));
 const Launchpad = React.lazy(() => import("./components/home/Launchpad"));
@@ -35,22 +35,42 @@ const RFMBreakdownReport = React.lazy(() => import("./components/customers/RFMBr
 const ReporrtBuilderPage = React.lazy(() => import("./components/report_builder/ReportBuilderPage"));
 
 export const SuperproClient = getClient();
+export const StyledGrommetContainer = styled(Grommet)`
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+
+  @media print {
+    height: auto;
+    overflow: auto;
+  }
+`;
+
+export const StyledSuperproLayout = styled.div`
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+
+  @media print {
+    height: auto;
+    display: block;
+  }
+`;
 
 export const App = () => {
-  const printing = useDetectPrint();
-
   const app = (
     <SegmentIdentify>
       <FlagsProvider flags={Settings.flags}>
         <ApolloProvider client={SuperproClient}>
           <ApolloHooksProvider client={SuperproClient}>
-            <Grommet theme={SuperproGrommetTheme} style={{ width: "100vw", height: "100vh", overflow: "hidden" }}>
+            <StyledGrommetContainer theme={SuperproGrommetTheme}>
               <SuperproGlobalStyle />
               <Router basename={Settings.baseUrl}>
                 <ToastContainer>
                   <HotkeysContainer>
                     <React.Suspense fallback={<PageLoadSpin />}>
-                      <Box fill direction="row-responsive" id="Superpro-Layout">
+                      <StyledSuperproLayout id="Superpro-Layout">
                         <Switch>
                           <Route path="/s">
                             <Switch>
@@ -107,12 +127,12 @@ export const App = () => {
                             </Flag>
                           </Route>
                         </Switch>
-                      </Box>
+                      </StyledSuperproLayout>
                     </React.Suspense>
                   </HotkeysContainer>
                 </ToastContainer>
               </Router>
-            </Grommet>
+            </StyledGrommetContainer>
           </ApolloHooksProvider>
         </ApolloProvider>
       </FlagsProvider>

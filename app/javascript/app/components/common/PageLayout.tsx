@@ -1,10 +1,11 @@
 import React from "react";
 import { Box, Heading, Text } from "grommet";
+import { edgeStyle } from "grommet/utils/styles";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
-import { Row } from "superlib";
-import useDetectPrint from "use-detect-print";
+import { Row, SuperproGrommetTheme } from "superlib";
 import { AppSidebar } from "../chrome/AppSidebar";
+import styled from "styled-components";
 
 const StaticBreadcrumbs = {
   home: { text: "Home", path: "/" },
@@ -75,15 +76,42 @@ const PageLayoutBreadcrumbs = (props: PageLayoutProps) => {
   );
 };
 
+export const PageLayoutContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  @media print {
+    height: auto;
+    width: auto;
+    display: block;
+  }
+`;
+
+export const PageLayoutContent = styled.div`
+  flex: 1 1;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  ${edgeStyle("padding", "medium", false, SuperproGrommetTheme.box.responsiveBreakpoint, SuperproGrommetTheme)}
+
+  @media print {
+    height: auto;
+    display: block;
+    overflow: visible;
+  }
+`;
+
 export const PageLayout = (props: PageLayoutProps) => {
   React.useEffect(() => {
     analytics.page(props.documentTitle || (props.title as string));
   }, [props.title, props.documentTitle]);
 
-  const printing = useDetectPrint();
-  const scrolly = printing ? false : props.scrolly;
   return (
-    <Box fill className="PageLayout-container">
+    <PageLayoutContainer className="PageLayout-container">
       <Helmet>
         <title>{props.documentTitle || props.title} - Superpro</title>
       </Helmet>
@@ -109,16 +137,8 @@ export const PageLayout = (props: PageLayoutProps) => {
 
         <Row>{props.headerExtra}</Row>
       </Row>
-      <Box
-        flex={scrolly}
-        pad={props.padded ? "medium" : undefined}
-        className="PageLayout-content"
-        fill={!scrolly}
-        overflow={{ vertical: scrolly ? "auto" : undefined }}
-      >
-        {props.children}
-      </Box>
-    </Box>
+      <PageLayoutContent className="PageLayout-content">{props.children}</PageLayoutContent>
+    </PageLayoutContainer>
   );
 };
 

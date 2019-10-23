@@ -65,11 +65,7 @@ export const AppSidebar = withRouter(
             }
 
             if (!data) {
-              return (
-                <Box fill justify="center">
-                  <Spin />
-                </Box>
-              );
+              return null;
             }
 
             return (
