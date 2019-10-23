@@ -16,6 +16,7 @@ import { FormatterFns, formattersForOutput } from "./render/Formatters";
 import { GetWarehouseFilters } from "./filter/GetWarehouseFilters";
 import { GlobalFilterController } from "./filter/GlobalFilterController";
 import { applyGlobalFilters } from "./filter/applyGlobalFilters";
+import { isUndefined } from "util";
 
 gql`
   query WarehouseQuery($query: JSONScalar!, $pivot: JSONScalar) {
@@ -68,9 +69,14 @@ export const VizQueryContext = React.createContext<SuccessfulWarehouseQueryResul
 // Parse any incoming rich datatypes into a rich object for downstream consumption
 const hydrate = (records: any[], outputIntrospection: SuccessfulWarehouseQueryResult["outputIntrospection"]) => {
   return records.map(record => {
+    record = Object.assign({}, record);
     for (const field of outputIntrospection.fields) {
-      if (field.dataType == "DateTime") {
-        record = Object.assign({}, record, { [field.id]: DateTime.fromISO(record[field.id]).toJSDate() });
+      if (!isUndefined(record[field.id])) {
+        if (field.dataType == "DateTime") {
+          record[field.id] = DateTime.fromISO(record[field.id]).toJSDate();
+        } else if (field.dataType == "Percentage") {
+          record[field.id] = parseFloat(record[field.id]);
+        }
       }
     }
 

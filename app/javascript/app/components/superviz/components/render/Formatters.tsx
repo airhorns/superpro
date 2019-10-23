@@ -1,6 +1,6 @@
 import Dinero from "dinero.js";
 import { DateTime, Duration } from "luxon";
-import { isString, round, isNumber } from "lodash";
+import { round, isNumber } from "lodash";
 import { OutputIntrospection } from "../GetWarehouseData";
 import { WarehouseDataTypeEnum, WarehouseIntrospectionMeasureField, WarehouseIntrospectionDimensionField } from "app/app-graph";
 import { isDate } from "util";

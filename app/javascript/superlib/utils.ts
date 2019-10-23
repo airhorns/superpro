@@ -1,4 +1,4 @@
-import { get, set, isUndefined, isNull, isFunction, isArray, toPath, cloneDeep, cloneDeepWith, isArrayLike } from "lodash";
+import { get, set, isUndefined, isNull, isFunction, isArray, toPath, cloneDeep, cloneDeepWith, isArrayLike, mean } from "lodash";
 import memoizeOne from "memoize-one";
 import queryString from "query-string";
 import { DateTime } from "luxon";
@@ -203,4 +203,38 @@ export const automergeFriendlyCloneDeep = (obj: any) => {
       return undefined;
     }
   });
+};
+
+// Outlier removal http://bl.ocks.org/phil-pedruco/6917114
+// Borrowed from Jason Davies science library https://github.com/jasondavies/science.js/blob/master/science.v1.js
+export const variance = (x: number[]) => {
+  const n = x.length;
+  if (n < 1) return NaN;
+  if (n === 1) return 0;
+  const _mean = mean(x);
+  let i = -1,
+    s = 0;
+  while (++i < n) {
+    const v = x[i] - _mean;
+    s += v * v;
+  }
+  return s / (n - 1);
+};
+
+//A test for outliers http://en.wikipedia.org/wiki/Chauvenet%27s_criterion
+const dMax = 3;
+export const chauvenet = (x: number[]) => {
+  const _mean = mean(x);
+  const stdv = Math.sqrt(variance(x));
+  let counter = 0;
+  const temp = [];
+
+  for (let i = 0; i < x.length; i++) {
+    if (dMax > Math.abs(x[i] - _mean) / stdv) {
+      temp[counter] = x[i];
+      counter = counter + 1;
+    }
+  }
+
+  return temp;
 };

@@ -2,11 +2,12 @@ import React from "react";
 import { range, groupBy, keyBy, isUndefined, compact } from "lodash";
 import { DateTime } from "luxon";
 import { scaleLinear } from "d3-scale";
+import { extent } from "d3-array";
 import { interpolateOranges } from "d3-scale-chromatic";
 import { WaterTable, WaterTableColumnSpec } from "superlib/WaterTable";
 import { SuccessfulWarehouseQueryResult } from "../GetWarehouseData";
 import { ReportDocument, VizBlock, VizSystem } from "../../schema";
-import { assert } from "superlib";
+import { assert, chauvenet } from "superlib";
 
 interface CohortRecord {
   key: string;
@@ -17,18 +18,19 @@ const cohortRange = range(0, 12);
 
 const colorScaleForField = (system: VizSystem, result: SuccessfulWarehouseQueryResult) => {
   const cohortId = assert(system.xId);
-
-  const values = compact(
+  const rawValues = compact(
     result.records.map(record => {
       if (record[cohortId] != 0) {
         return record[system.yId];
       }
     })
   );
-  const domain = [Math.min(...values) || 0, Math.max(...values) || 1];
+
+  const values = chauvenet(rawValues);
+  const domain = extent(values);
 
   return scaleLinear()
-    .domain(domain)
+    .domain([domain[0] || 0, domain[1] || 1])
     .range([0, 0.8]);
 };
 
