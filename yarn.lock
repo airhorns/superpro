@@ -1536,10 +1536,10 @@
   resolved "https://registry.yarnpkg.com/@types/dinero.js/-/dinero.js-1.6.1.tgz#47dae88088ec3cc5418d93a83a889377a43dcc3e"
   integrity sha512-a04+sW8hFpiS4i++/YJufT/kzapgTNDXSRIuvUlesSTuAPsA0crca62a7edVNHFcpUl9D+Y+xKfe6yO5jqTGZw==
 
-"@types/echarts@^4.1.15":
-  version "4.1.15"
-  resolved "https://registry.yarnpkg.com/@types/echarts/-/echarts-4.1.15.tgz#00ec3a3af3c486b6b1b13edc26a4676d4e6cc668"
-  integrity sha512-WzkfgZ4TxfFiLEQBCkf+VDdssU8Nxu6qgzpca/0c3M89mf0JM0F8tMcRzoi+h6+5wfLxsRzydbTL3ORJnksn4A==
+"@types/echarts@^4.4.0":
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/@types/echarts/-/echarts-4.4.0.tgz#6d4f924a0fac519c1fbfd937662ffa407420b8f6"
+  integrity sha512-dgqgldrXxQUe/F83x6TAePAErKOzg5rYg0g/SNryF+GjMIBz+DgejFlIbGXN5/KMypQE2SCPACff2Tuy1gx5gw==
   dependencies:
     "@types/zrender" "*"
 
