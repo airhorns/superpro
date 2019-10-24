@@ -8,7 +8,7 @@ export default FullReportPage("Repurchase Rates", {
       type: "markdown_block",
       markdown: `This report describes the behavior of customers who return to purchase more than once. Below are two charts showing the Early Repurchase Rate and the Overall Repurchase Rate over time. Early Repurchases are defined as customers who make another purchase less than 60 days after the previous one, and the Overall Repurchase Rate counts any repeat purchase after any amount of time. Both graphs show the repurchase rates for the time of the *first* purchase, counting how many customers at that time went on to repurchase in the time window.
 
-__Note__: Both repurchase rates tend to trail down to 0 for the most recent time range. This is because not that much time has gone by since recent purchases, which means there are likely some customers who will repurchase (within 60 days or longer than that), it just hasn't happened yet.`
+__Note__: Both repurchase rates trail down to 0 for the most recent time range. This is because not that much time has gone by since recent purchases, which means there are likely some customers who will repurchase (within 60 days or longer than that), it just hasn't happened yet.`
     },
     {
       type: "viz_block",

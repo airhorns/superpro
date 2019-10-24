@@ -29,6 +29,8 @@ class Sales::RepurchaseIntervalFacts < DataModel::FactTable
   dimension :days_until_next_order_bucket_label, DataModel::Types::String
 
   dimension_join :customer, Sales::CustomersDimension
+  dimension_join :business_line, Sales::BusinessLinesDimension
 
   global_filter :date, :order_date
+  global_filter :business_line_id, :business_line_id
 end
