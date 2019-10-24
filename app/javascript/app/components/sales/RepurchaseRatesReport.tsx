@@ -59,7 +59,8 @@ __Note__: Both repurchase rates trail down to 0 for the most recent time range. 
         measures: [{ model: "Sales::RepurchaseIntervalFacts", field: "count", id: "count" }],
         dimensions: [
           { model: "Sales::RepurchaseIntervalFacts", field: "days_since_previous_order_bucket_label", id: "days_since_previous_order" }
-        ]
+        ],
+        orderings: [{ id: "days_since_previous_order", direction: "asc" }]
       },
       viz: {
         type: "viz",
@@ -79,6 +80,7 @@ __Note__: Both repurchase rates trail down to 0 for the most recent time range. 
     },
     {
       type: "viz_block",
+      title: "Cohort Retention - Percentage of Customers who made another purchase",
       query: {
         measures: [
           { model: "Sales::RepurchaseCohortFacts", field: "pct_active_customers", id: "pct_active_customers" },
@@ -105,6 +107,7 @@ __Note__: Both repurchase rates trail down to 0 for the most recent time range. 
     },
     {
       type: "viz_block",
+      title: "Cohort Retention - Total Cohort Revenue",
       query: {
         measures: [
           { model: "Sales::RepurchaseCohortFacts", field: "total_spend", id: "total_spend" },
