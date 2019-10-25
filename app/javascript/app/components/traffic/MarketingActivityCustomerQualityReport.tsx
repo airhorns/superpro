@@ -73,6 +73,11 @@ _Note_: For all the numbers on this report, we're measuring how customers behave
             field: { model: "Traffic::CustomerAcquisitionFacts", field: "landing_page_source_category", id: "src" },
             operator: "equals",
             values: ["paid"]
+          },
+          {
+            field: { model: "Traffic::CustomerAcquisitionFacts", field: "count", id: "count" },
+            operator: "greater_than_or_equals",
+            values: [3]
           }
         ],
         limit: 30
@@ -121,6 +126,11 @@ _Note_: For all the numbers on this report, we're measuring how customers behave
             field: { model: "Traffic::CustomerAcquisitionFacts", field: "landing_page_source_category", id: "src" },
             operator: "equals",
             values: ["email"]
+          },
+          {
+            field: { model: "Traffic::CustomerAcquisitionFacts", field: "count", id: "count" },
+            operator: "greater_than_or_equals",
+            values: [3]
           }
         ],
         limit: 30
@@ -145,7 +155,7 @@ _Note_: For all the numbers on this report, we're measuring how customers behave
     },
     {
       type: "markdown_block",
-      markdown: `The above two reports show which campaigns are driving customers that have the highest average predicted spend over the next 3 months compared to the average spend over the previous three months. There's two graphs one for paid & CPC campaigns, and one for email campaigns. Each graph includes the top 30 campaigns for that category. We split paid and email out because email campaigns are often effective but yield less control over spend, whereas paid/CPC campaigns can have their budgets adjusted to aquire the most valuable customers possible.
+      markdown: `The above two reports show which campaigns are driving customers that have the highest average predicted spend over the next 3 months compared to the average spend over the previous three months. There's two graphs one for paid & CPC campaigns, and one for email campaigns. Each graph includes the top 30 campaigns for that category that have driven at least 3 orders to reduce noise. We split paid and email out because email campaigns are often effective but yield less control over spend, whereas paid/CPC campaigns can have their budgets adjusted to aquire the most valuable customers possible.
 
 __Note__: Previous 3 month spend and future 3 month spend often don't line up perfectly for a variety of reasons usually owing to new campaigns, small sample size, campaign adjustments in the 3 month window, Superpro prediction inaccuracy, and confounding factors like discounts being present in some campaign's copy.`
     },
@@ -168,6 +178,13 @@ __Note__: Previous 3 month spend and future 3 month spend often don't line up pe
         ],
         dimensions: [{ model: "Traffic::CustomerAcquisitionFacts", field: "landing_page_source_campaign", id: "identifier" }],
         orderings: [{ id: "early_repurchase_rate", direction: "desc" }],
+        filters: [
+          {
+            field: { model: "Traffic::CustomerAcquisitionFacts", field: "count", id: "count" },
+            operator: "greater_than_or_equals",
+            values: [3]
+          }
+        ],
         limit: 30
       },
       viz: {
