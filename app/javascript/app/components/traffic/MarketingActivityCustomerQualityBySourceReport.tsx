@@ -60,9 +60,9 @@ _Note_: For all the numbers on this report, we're measuring how customers behave
             id: "average_future_3_month_revenue"
           }
         ],
-        dimensions: [{ model: "Traffic::CustomerAcquisitionFacts", field: "landing_page_identifier", id: "identifier" }],
+        dimensions: [{ model: "Traffic::CustomerAcquisitionFacts", field: "landing_page_source_medium", id: "identifier" }],
         orderings: [{ id: "average_future_3_month_revenue", direction: "desc" }],
-        limit: 25
+        limit: 30
       },
       viz: {
         type: "viz",
@@ -78,7 +78,7 @@ _Note_: For all the numbers on this report, we're measuring how customers behave
     },
     {
       type: "markdown_block",
-      markdown: `The above report shows which campaigns are driving customers that have the highest predicted value over the next 3 months. The graph includes the top 25 campaigns.`
+      markdown: `The above report shows which campaigns are driving customers that have the highest predicted value over the next 3 months. The graph includes the top 30 campaigns.`
     },
     {
       type: "viz_block",
@@ -97,9 +97,9 @@ _Note_: For all the numbers on this report, we're measuring how customers behave
             id: "overall_repurchase_rate"
           }
         ],
-        dimensions: [{ model: "Traffic::CustomerAcquisitionFacts", field: "landing_page_identifier", id: "identifier" }],
+        dimensions: [{ model: "Traffic::CustomerAcquisitionFacts", field: "landing_page_source_medium", id: "identifier" }],
         orderings: [{ id: "early_repurchase_rate", direction: "desc" }],
-        limit: 25
+        limit: 30
       },
       viz: {
         type: "viz",
@@ -121,7 +121,7 @@ _Note_: For all the numbers on this report, we're measuring how customers behave
     },
     {
       type: "markdown_block",
-      markdown: `The above report shows the repurchase rates of customers acquired from a given source / medium -- both the Early Repurchase Rate, which is defined as customers who make a repeat purchase less than 60 days after their first purchase, and the Overall Repurchase Rate, which is defined as customers who ever make a repeat purchase. The graph includes the top 25 campaigns by Early Repurchase Rate. Campaigns driving customers who come back and repurchase are driving much higher value traffic, especially those with a high early repeat purchase rate, as early repurchases often indicate a customer who will end up being very high value.
+      markdown: `The above report shows the repurchase rates of customers acquired from a given source / medium -- both the Early Repurchase Rate, which is defined as customers who make a repeat purchase less than 60 days after their first purchase, and the Overall Repurchase Rate, which is defined as customers who ever make a repeat purchase. The graph includes the top 30 campaigns by Early Repurchase Rate. Campaigns driving customers who come back and repurchase are driving much higher value traffic, especially those with a high early repeat purchase rate, as early repurchases often indicate a customer who will end up being very high value.
 
 Below is the raw data powering this report for deeper investigation.`
     },

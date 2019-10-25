@@ -56,7 +56,11 @@ class Traffic::CustomerAcquisitionFacts < DataModel::FactTable
   dimension :future_12_month_predicted_spend_bucket_label, DataModel::Types::String
   dimension :future_24_month_predicted_spend_bucket_label, DataModel::Types::String
 
-  dimension :landing_page_identifier, DataModel::Types::String do
+  dimension :landing_page_source_campaign, DataModel::Types::String do
+    concat(table_node[:landing_page_utm_source], Arel.sql("' '"), table_node[:landing_page_utm_campaign])
+  end
+
+  dimension :landing_page_source_medium, DataModel::Types::String do
     concat(table_node[:landing_page_utm_source], Arel.sql("' '"), table_node[:landing_page_utm_medium])
   end
 

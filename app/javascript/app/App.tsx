@@ -10,8 +10,6 @@ import { ToastContainer, FlagsProvider } from "../superlib";
 import { AppSidebar } from "./components/chrome/AppSidebar";
 import { NotFoundPage } from "./components/chrome/NotFoundPage";
 import { PageLoadSpin } from "../superlib";
-
-import MarketingActivityCustomerQualityReport from "./components/traffic/MarketingActivityCustomerQualityReport";
 import styled from "styled-components";
 
 const HomePage = React.lazy(() => import("./components/home/HomePage"));
@@ -31,6 +29,12 @@ const YearlyOrdersReviewReport = React.lazy(() => import("./components/sales/Yea
 const RepurchaseRatesReport = React.lazy(() => import("./components/sales/RepurchaseRatesReport"));
 const TrafficOverviewReport = React.lazy(() => import("./components/traffic/TrafficOverviewReport"));
 const SlowLandingPagesReport = React.lazy(() => import("./components/traffic/SlowLandingPagesReport"));
+const MarketingActivityCustomerQualityBySourceReport = React.lazy(() =>
+  import("./components/traffic/MarketingActivityCustomerQualityBySourceReport")
+);
+const MarketingActivityCustomerQualityByCampaignReport = React.lazy(() =>
+  import("./components/traffic/MarketingActivityCustomerQualityByCampaignReport")
+);
 const RFMBreakdownReport = React.lazy(() => import("./components/customers/RFMBreakdownReport"));
 const ReporrtBuilderPage = React.lazy(() => import("./components/report_builder/ReportBuilderPage"));
 
@@ -113,9 +117,14 @@ export const App = () => {
                                 <Route path="/traffic/overview" exact component={TrafficOverviewReport} />
                                 <Route path="/traffic/slow_landing_pages" exact component={SlowLandingPagesReport} />
                                 <Route
-                                  path="/traffic/marketing_activity_customer_quality"
+                                  path="/traffic/marketing_activity_customer_quality_by_source"
                                   exact
-                                  component={MarketingActivityCustomerQualityReport}
+                                  component={MarketingActivityCustomerQualityBySourceReport}
+                                />
+                                <Route
+                                  path="/traffic/marketing_activity_customer_quality_by_campaign"
+                                  exact
+                                  component={MarketingActivityCustomerQualityByCampaignReport}
                                 />
                                 <Route path="/customers/rfm_breakdown" exact component={RFMBreakdownReport} />
                                 <Route path="/report_builder" exact component={ReporrtBuilderPage} />
