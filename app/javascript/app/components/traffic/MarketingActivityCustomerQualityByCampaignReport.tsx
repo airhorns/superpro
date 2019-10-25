@@ -49,10 +49,16 @@ _Note_: For all the numbers on this report, we're measuring how customers behave
     },
     {
       type: "viz_block",
-      title: "Average Predicted 3 Month Value by Source / Campaign Of Customer's First Order - CPC Campaigns",
+      title: "Average Previous and Predicted 3 Month Value by Source / Campaign Of Customer's First Order - CPC Campaigns",
       size: "large",
       query: {
         measures: [
+          {
+            model: "Traffic::CustomerAcquisitionFacts",
+            field: "previous_3_month_spend",
+            operator: "average",
+            id: "average_past_3_month_revenue"
+          },
           {
             model: "Traffic::CustomerAcquisitionFacts",
             field: "future_3_month_predicted_spend",
@@ -79,13 +85,19 @@ _Note_: For all the numbers on this report, we're measuring how customers behave
             vizType: "bar",
             xId: "identifier",
             yId: "average_future_3_month_revenue"
+          },
+          {
+            type: "viz_system",
+            vizType: "bar",
+            xId: "identifier",
+            yId: "average_past_3_month_revenue"
           }
         ]
       }
     },
     {
       type: "viz_block",
-      title: "Average Predicted 3 Month Value by Source / Campaign Of Customer's First Order - Email Campaigns",
+      title: "Average Previous and Predicted 3 Month Value by Source / Campaign Of Customer's First Order - Email Campaigns",
       size: "large",
       query: {
         measures: [
@@ -94,6 +106,12 @@ _Note_: For all the numbers on this report, we're measuring how customers behave
             field: "future_3_month_predicted_spend",
             operator: "average",
             id: "average_future_3_month_revenue"
+          },
+          {
+            model: "Traffic::CustomerAcquisitionFacts",
+            field: "previous_3_month_spend",
+            operator: "average",
+            id: "average_past_3_month_revenue"
           }
         ],
         dimensions: [{ model: "Traffic::CustomerAcquisitionFacts", field: "landing_page_source_campaign", id: "identifier" }],
@@ -114,6 +132,12 @@ _Note_: For all the numbers on this report, we're measuring how customers behave
             type: "viz_system",
             vizType: "bar",
             xId: "identifier",
+            yId: "average_past_3_month_revenue"
+          },
+          {
+            type: "viz_system",
+            vizType: "bar",
+            xId: "identifier",
             yId: "average_future_3_month_revenue"
           }
         ]
@@ -121,7 +145,9 @@ _Note_: For all the numbers on this report, we're measuring how customers behave
     },
     {
       type: "markdown_block",
-      markdown: `The above two report shows which campaigns are driving customers that have the highest predicted value over the next 3 months -- one for CPC campaigns, and one for email campaigns. Each graph includes the top 30 campaigns for that category. We split these out because email campaigns are often effective but yield less control over spend, whereas CPC campaigns can have their budgets adjusted to aquire the most valuable customers possible.`
+      markdown: `The above two reports show which campaigns are driving customers that have the highest average predicted spend over the next 3 months compared to the average spend over the previous three months. There's two graphs one for CPC campaigns, and one for email campaigns. Each graph includes the top 30 campaigns for that category. We split CPC and email out because email campaigns are often effective but yield less control over spend, whereas CPC campaigns can have their budgets adjusted to aquire the most valuable customers possible.
+
+      __Note__: Previous 3 month spend and future 3 month spend often don't line up perfectly for a variety of reasons usually owing to new campaigns, campaign adjustments in the 3 month window, Superpro prediction inaccuracy, and confounding factors like discounts being present in some campaign's copy.`
     },
     {
       type: "viz_block",
