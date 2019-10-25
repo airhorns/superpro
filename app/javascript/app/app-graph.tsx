@@ -18,7 +18,7 @@ export type Scalars = {
   ISO8601DateTime: string,
   /** Untyped JSON output useful for bags of values who's keys or types can't be predicted ahead of time. */
   JSONScalar: any,
-  /**
+  /** 
  * Represents textual data as UTF-8 character sequences. This type is most often
    * used by GraphQL to represent free-form human-readable text.
  **/
@@ -41,7 +41,7 @@ export type Account = {
 
 /** Attributes for creating or updating an account */
 export type AccountAttributes = {
-  /**
+  /** 
  * An opaque identifier that will appear on objects created/updated because of
    * this attributes hash, or on errors from it being invalid.
  **/
@@ -653,7 +653,7 @@ export type UserEdge = {
 
 /** Attributes for inviting a new user */
 export type UserInviteAttributes = {
-  /**
+  /** 
  * An opaque identifier that will appear on objects created/updated because of
    * this attributes hash, or on errors from it being invalid.
  **/
@@ -1266,13 +1266,13 @@ export type SiderInfoComponentProps = Omit<ApolloReactComponents.QueryComponentO
     export const SiderInfoComponent = (props: SiderInfoComponentProps) => (
       <ApolloReactComponents.Query<SiderInfoQuery, SiderInfoQueryVariables> query={SiderInfoDocument} {...props} />
     );
-
+    
 
 /**
  * __useSiderInfoQuery__
  *
  * To run a query within a React component, call `useSiderInfoQuery` and pass it any options that fit your needs.
- * When your component renders, `useSiderInfoQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * When your component renders, `useSiderInfoQuery` returns an object from Apollo Client that contains loading, error, and data properties 
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
@@ -1306,13 +1306,13 @@ export type GetAccountForSettingsComponentProps = Omit<ApolloReactComponents.Que
     export const GetAccountForSettingsComponent = (props: GetAccountForSettingsComponentProps) => (
       <ApolloReactComponents.Query<GetAccountForSettingsQuery, GetAccountForSettingsQueryVariables> query={GetAccountForSettingsDocument} {...props} />
     );
-
+    
 
 /**
  * __useGetAccountForSettingsQuery__
  *
  * To run a query within a React component, call `useGetAccountForSettingsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetAccountForSettingsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * When your component renders, `useGetAccountForSettingsQuery` returns an object from Apollo Client that contains loading, error, and data properties 
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
@@ -1352,7 +1352,7 @@ export type UpdateAccountSettingsComponentProps = Omit<ApolloReactComponents.Mut
     export const UpdateAccountSettingsComponent = (props: UpdateAccountSettingsComponentProps) => (
       <ApolloReactComponents.Mutation<UpdateAccountSettingsMutation, UpdateAccountSettingsMutationVariables> mutation={UpdateAccountSettingsDocument} {...props} />
     );
-
+    
 
 /**
  * __useUpdateAccountSettingsMutation__
@@ -1393,7 +1393,7 @@ export type InviteNewUserComponentProps = Omit<ApolloReactComponents.MutationCom
     export const InviteNewUserComponent = (props: InviteNewUserComponentProps) => (
       <ApolloReactComponents.Mutation<InviteNewUserMutation, InviteNewUserMutationVariables> mutation={InviteNewUserDocument} {...props} />
     );
-
+    
 
 /**
  * __useInviteNewUserMutation__
@@ -1436,13 +1436,13 @@ export type GetUsersForSettingsComponentProps = Omit<ApolloReactComponents.Query
     export const GetUsersForSettingsComponent = (props: GetUsersForSettingsComponentProps) => (
       <ApolloReactComponents.Query<GetUsersForSettingsQuery, GetUsersForSettingsQueryVariables> query={GetUsersForSettingsDocument} {...props} />
     );
-
+    
 
 /**
  * __useGetUsersForSettingsQuery__
  *
  * To run a query within a React component, call `useGetUsersForSettingsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetUsersForSettingsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * When your component renders, `useGetUsersForSettingsQuery` returns an object from Apollo Client that contains loading, error, and data properties 
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
@@ -1478,7 +1478,7 @@ export type RestartConnectionSyncComponentProps = Omit<ApolloReactComponents.Mut
     export const RestartConnectionSyncComponent = (props: RestartConnectionSyncComponentProps) => (
       <ApolloReactComponents.Mutation<RestartConnectionSyncMutation, RestartConnectionSyncMutationVariables> mutation={RestartConnectionSyncDocument} {...props} />
     );
-
+    
 
 /**
  * __useRestartConnectionSyncMutation__
@@ -1519,7 +1519,7 @@ export type SyncConnectionNowComponentProps = Omit<ApolloReactComponents.Mutatio
     export const SyncConnectionNowComponent = (props: SyncConnectionNowComponentProps) => (
       <ApolloReactComponents.Mutation<SyncConnectionNowMutation, SyncConnectionNowMutationVariables> mutation={SyncConnectionNowDocument} {...props} />
     );
-
+    
 
 /**
  * __useSyncConnectionNowMutation__
@@ -1561,7 +1561,7 @@ export type SetConnectionEnabledComponentProps = Omit<ApolloReactComponents.Muta
     export const SetConnectionEnabledComponent = (props: SetConnectionEnabledComponentProps) => (
       <ApolloReactComponents.Mutation<SetConnectionEnabledMutation, SetConnectionEnabledMutationVariables> mutation={SetConnectionEnabledDocument} {...props} />
     );
-
+    
 
 /**
  * __useSetConnectionEnabledMutation__
@@ -1603,7 +1603,7 @@ export type DiscardConnectionComponentProps = Omit<ApolloReactComponents.Mutatio
     export const DiscardConnectionComponent = (props: DiscardConnectionComponentProps) => (
       <ApolloReactComponents.Mutation<DiscardConnectionMutation, DiscardConnectionMutationVariables> mutation={DiscardConnectionDocument} {...props} />
     );
-
+    
 
 /**
  * __useDiscardConnectionMutation__
@@ -1641,13 +1641,13 @@ export type GetConnectionsIndexPageComponentProps = Omit<ApolloReactComponents.Q
     export const GetConnectionsIndexPageComponent = (props: GetConnectionsIndexPageComponentProps) => (
       <ApolloReactComponents.Query<GetConnectionsIndexPageQuery, GetConnectionsIndexPageQueryVariables> query={GetConnectionsIndexPageDocument} {...props} />
     );
-
+    
 
 /**
  * __useGetConnectionsIndexPageQuery__
  *
  * To run a query within a React component, call `useGetConnectionsIndexPageQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetConnectionsIndexPageQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * When your component renders, `useGetConnectionsIndexPageQuery` returns an object from Apollo Client that contains loading, error, and data properties 
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
@@ -1685,13 +1685,13 @@ export type GetFacebookAdAccountsComponentProps = Omit<ApolloReactComponents.Que
     export const GetFacebookAdAccountsComponent = (props: GetFacebookAdAccountsComponentProps) => (
       <ApolloReactComponents.Query<GetFacebookAdAccountsQuery, GetFacebookAdAccountsQueryVariables> query={GetFacebookAdAccountsDocument} {...props} />
     );
-
+    
 
 /**
  * __useGetFacebookAdAccountsQuery__
  *
  * To run a query within a React component, call `useGetFacebookAdAccountsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetFacebookAdAccountsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * When your component renders, `useGetFacebookAdAccountsQuery` returns an object from Apollo Client that contains loading, error, and data properties 
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
@@ -1727,7 +1727,7 @@ export type CompleteFacebookAdAccountSetupComponentProps = Omit<ApolloReactCompo
     export const CompleteFacebookAdAccountSetupComponent = (props: CompleteFacebookAdAccountSetupComponentProps) => (
       <ApolloReactComponents.Mutation<CompleteFacebookAdAccountSetupMutation, CompleteFacebookAdAccountSetupMutationVariables> mutation={CompleteFacebookAdAccountSetupDocument} {...props} />
     );
-
+    
 
 /**
  * __useCompleteFacebookAdAccountSetupMutation__
@@ -1773,13 +1773,13 @@ export type GetGoogleAnalyticsViewsComponentProps = Omit<ApolloReactComponents.Q
     export const GetGoogleAnalyticsViewsComponent = (props: GetGoogleAnalyticsViewsComponentProps) => (
       <ApolloReactComponents.Query<GetGoogleAnalyticsViewsQuery, GetGoogleAnalyticsViewsQueryVariables> query={GetGoogleAnalyticsViewsDocument} {...props} />
     );
-
+    
 
 /**
  * __useGetGoogleAnalyticsViewsQuery__
  *
  * To run a query within a React component, call `useGetGoogleAnalyticsViewsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetGoogleAnalyticsViewsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * When your component renders, `useGetGoogleAnalyticsViewsQuery` returns an object from Apollo Client that contains loading, error, and data properties 
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
@@ -1815,7 +1815,7 @@ export type CompleteGoogleAnalyticsSetupComponentProps = Omit<ApolloReactCompone
     export const CompleteGoogleAnalyticsSetupComponent = (props: CompleteGoogleAnalyticsSetupComponentProps) => (
       <ApolloReactComponents.Mutation<CompleteGoogleAnalyticsSetupMutation, CompleteGoogleAnalyticsSetupMutationVariables> mutation={CompleteGoogleAnalyticsSetupDocument} {...props} />
     );
-
+    
 
 /**
  * __useCompleteGoogleAnalyticsSetupMutation__
@@ -1856,7 +1856,7 @@ export type ConnectPlaidComponentProps = Omit<ApolloReactComponents.MutationComp
     export const ConnectPlaidComponent = (props: ConnectPlaidComponentProps) => (
       <ApolloReactComponents.Mutation<ConnectPlaidMutation, ConnectPlaidMutationVariables> mutation={ConnectPlaidDocument} {...props} />
     );
-
+    
 
 /**
  * __useConnectPlaidMutation__
@@ -1897,7 +1897,7 @@ export type ConnectShopifyComponentProps = Omit<ApolloReactComponents.MutationCo
     export const ConnectShopifyComponent = (props: ConnectShopifyComponentProps) => (
       <ApolloReactComponents.Mutation<ConnectShopifyMutation, ConnectShopifyMutationVariables> mutation={ConnectShopifyDocument} {...props} />
     );
-
+    
 
 /**
  * __useConnectShopifyMutation__
@@ -1934,13 +1934,13 @@ export type ReportBuilderPageComponentProps = Omit<ApolloReactComponents.QueryCo
     export const ReportBuilderPageComponent = (props: ReportBuilderPageComponentProps) => (
       <ApolloReactComponents.Query<ReportBuilderPageQuery, ReportBuilderPageQueryVariables> query={ReportBuilderPageDocument} {...props} />
     );
-
+    
 
 /**
  * __useReportBuilderPageQuery__
  *
  * To run a query within a React component, call `useReportBuilderPageQuery` and pass it any options that fit your needs.
- * When your component renders, `useReportBuilderPageQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * When your component renders, `useReportBuilderPageQuery` returns an object from Apollo Client that contains loading, error, and data properties 
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
@@ -1998,13 +1998,13 @@ export type WarehouseQueryComponentProps = Omit<ApolloReactComponents.QueryCompo
     export const WarehouseQueryComponent = (props: WarehouseQueryComponentProps) => (
       <ApolloReactComponents.Query<WarehouseQueryQuery, WarehouseQueryQueryVariables> query={WarehouseQueryDocument} {...props} />
     );
-
+    
 
 /**
  * __useWarehouseQueryQuery__
  *
  * To run a query within a React component, call `useWarehouseQueryQuery` and pass it any options that fit your needs.
- * When your component renders, `useWarehouseQueryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * When your component renders, `useWarehouseQueryQuery` returns an object from Apollo Client that contains loading, error, and data properties 
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
@@ -2054,13 +2054,13 @@ export type GetWarehouseGlobalFilterOptionsComponentProps = Omit<ApolloReactComp
     export const GetWarehouseGlobalFilterOptionsComponent = (props: GetWarehouseGlobalFilterOptionsComponentProps) => (
       <ApolloReactComponents.Query<GetWarehouseGlobalFilterOptionsQuery, GetWarehouseGlobalFilterOptionsQueryVariables> query={GetWarehouseGlobalFilterOptionsDocument} {...props} />
     );
-
+    
 
 /**
  * __useGetWarehouseGlobalFilterOptionsQuery__
  *
  * To run a query within a React component, call `useGetWarehouseGlobalFilterOptionsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetWarehouseGlobalFilterOptionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * When your component renders, `useGetWarehouseGlobalFilterOptionsQuery` returns an object from Apollo Client that contains loading, error, and data properties 
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
@@ -2100,7 +2100,7 @@ export type AttachUploadToContainerComponentProps = Omit<ApolloReactComponents.M
     export const AttachUploadToContainerComponent = (props: AttachUploadToContainerComponentProps) => (
       <ApolloReactComponents.Mutation<AttachUploadToContainerMutation, AttachUploadToContainerMutationVariables> mutation={AttachUploadToContainerDocument} {...props} />
     );
-
+    
 
 /**
  * __useAttachUploadToContainerMutation__
@@ -2147,7 +2147,7 @@ export type AttachRemoteUrlToContainerComponentProps = Omit<ApolloReactComponent
     export const AttachRemoteUrlToContainerComponent = (props: AttachRemoteUrlToContainerComponentProps) => (
       <ApolloReactComponents.Mutation<AttachRemoteUrlToContainerMutation, AttachRemoteUrlToContainerMutationVariables> mutation={AttachRemoteUrlToContainerDocument} {...props} />
     );
-
+    
 
 /**
  * __useAttachRemoteUrlToContainerMutation__
