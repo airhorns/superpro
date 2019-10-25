@@ -14929,18 +14929,18 @@ CREATE TABLE warehouse.dim_shopify_customers (
     total_order_count bigint,
     total_successful_order_count bigint,
     total_cancelled_order_count bigint,
-    total_spend double precision,
-    average_spend double precision,
-    previous_1_month_spend double precision,
-    previous_3_month_spend double precision,
-    previous_6_month_spend double precision,
-    previous_12_month_spend double precision,
-    future_3_month_predicted_spend double precision,
-    future_3_month_predicted_spend_quintile integer,
-    future_12_month_predicted_spend double precision,
-    future_12_month_predicted_spend_quintile integer,
-    future_24_month_predicted_spend double precision,
-    future_24_month_predicted_spend_quintile integer,
+    total_revenue double precision,
+    average_revenue double precision,
+    previous_1_month_revenue double precision,
+    previous_3_month_revenue double precision,
+    previous_6_month_revenue double precision,
+    previous_12_month_revenue double precision,
+    future_3_month_predicted_revenue double precision,
+    future_3_month_predicted_revenue_quintile integer,
+    future_12_month_predicted_revenue double precision,
+    future_12_month_predicted_revenue_quintile integer,
+    future_24_month_predicted_revenue double precision,
+    future_24_month_predicted_revenue_quintile integer,
     most_recent_order_id bigint,
     most_recent_order_number bigint,
     most_recent_order_at timestamp with time zone,
@@ -14978,20 +14978,20 @@ CREATE TABLE warehouse.fct_customer_acquisitions (
     total_order_count bigint,
     total_successful_order_count bigint,
     total_cancelled_order_count bigint,
-    total_spend double precision,
-    previous_1_month_spend double precision,
-    previous_3_month_spend double precision,
-    previous_6_month_spend double precision,
-    previous_12_month_spend double precision,
-    future_3_month_predicted_spend double precision,
-    future_3_month_predicted_spend_quintile integer,
-    future_3_month_predicted_spend_bucket_label text,
-    future_12_month_predicted_spend double precision,
-    future_12_month_predicted_spend_quintile integer,
-    future_12_month_predicted_spend_bucket_label text,
-    future_24_month_predicted_spend double precision,
-    future_24_month_predicted_spend_quintile integer,
-    future_24_month_predicted_spend_bucket_label text,
+    total_revenue double precision,
+    previous_1_month_revenue double precision,
+    previous_3_month_revenue double precision,
+    previous_6_month_revenue double precision,
+    previous_12_month_revenue double precision,
+    future_3_month_predicted_revenue double precision,
+    future_3_month_predicted_revenue_quintile integer,
+    future_3_month_predicted_revenue_bucket_label text,
+    future_12_month_predicted_revenue double precision,
+    future_12_month_predicted_revenue_quintile integer,
+    future_12_month_predicted_revenue_bucket_label text,
+    future_24_month_predicted_revenue double precision,
+    future_24_month_predicted_revenue_quintile integer,
+    future_24_month_predicted_revenue_bucket_label text,
     days_until_next_order double precision,
     early_repurchaser boolean
 );
@@ -15021,7 +15021,7 @@ CREATE TABLE warehouse.fct_shopify_customer_retention (
     total_customers bigint,
     total_active_customers bigint,
     total_orders numeric,
-    total_spend double precision,
+    total_revenue double precision,
     months_since_genesis integer,
     genesis_month timestamp with time zone,
     account_id bigint,
@@ -15743,12 +15743,12 @@ CREATE TABLE warehouse.stg_shopify_customer_order_aggregates (
     total_order_count bigint,
     total_successful_order_count bigint,
     total_cancelled_order_count bigint,
-    total_spend double precision,
-    average_spend double precision,
-    previous_1_month_spend double precision,
-    previous_3_month_spend double precision,
-    previous_6_month_spend double precision,
-    previous_12_month_spend double precision,
+    total_revenue double precision,
+    average_revenue double precision,
+    previous_1_month_revenue double precision,
+    previous_3_month_revenue double precision,
+    previous_6_month_revenue double precision,
+    previous_12_month_revenue double precision,
     most_recent_order_id bigint,
     most_recent_order_number bigint,
     most_recent_order_at timestamp with time zone,
@@ -15769,7 +15769,7 @@ CREATE TABLE warehouse.stg_shopify_customer_rfm (
     account_id bigint,
     business_line_id bigint,
     total_order_count bigint,
-    total_spend double precision,
+    total_revenue double precision,
     days_since_last_order double precision,
     recency_quintile integer,
     frequency_quintile integer,
@@ -20646,31 +20646,59 @@ CREATE INDEX tp_sales_order_id__sdc_sequence_idx ON tap_csv.sales USING btree (o
 
 
 --
--- Name: fct_customer_acquisitions__index_on_account_id__acquired_at__bu; Type: INDEX; Schema: warehouse; Owner: -
+-- Name: dim_business_lines__index_on_account_id__name; Type: INDEX; Schema: warehouse; Owner: -
 --
 
-CREATE INDEX fct_customer_acquisitions__index_on_account_id__acquired_at__bu ON warehouse.fct_customer_acquisitions USING btree (account_id, acquired_at, business_line_id, customer_id);
-
-
---
--- Name: fct_shopify_customer_pareto__index_on_account_id__year__custome; Type: INDEX; Schema: warehouse; Owner: -
---
-
-CREATE INDEX fct_shopify_customer_pareto__index_on_account_id__year__custome ON warehouse.fct_shopify_customer_pareto USING btree (account_id, year, customer_rank);
+CREATE INDEX dim_business_lines__index_on_account_id__name ON warehouse.dim_business_lines USING btree (account_id, name);
 
 
 --
--- Name: fct_shopify_orders__index_on_account_id__business_line_id; Type: INDEX; Schema: warehouse; Owner: -
+-- Name: dim_shopify_customers__index_on_account_id__business_line_id; Type: INDEX; Schema: warehouse; Owner: -
 --
 
-CREATE INDEX fct_shopify_orders__index_on_account_id__business_line_id ON warehouse.fct_shopify_orders USING btree (account_id, business_line_id);
+CREATE INDEX dim_shopify_customers__index_on_account_id__business_line_id ON warehouse.dim_shopify_customers USING btree (account_id, business_line_id);
 
 
 --
--- Name: fct_shopify_repurchase_intervals__index_on_account_id__order_da; Type: INDEX; Schema: warehouse; Owner: -
+-- Name: dim_shopify_customers__index_on_account_id__customer_id; Type: INDEX; Schema: warehouse; Owner: -
 --
 
-CREATE INDEX fct_shopify_repurchase_intervals__index_on_account_id__order_da ON warehouse.fct_shopify_repurchase_intervals USING btree (account_id, order_date, business_line_id, customer_id);
+CREATE INDEX dim_shopify_customers__index_on_account_id__customer_id ON warehouse.dim_shopify_customers USING btree (account_id, customer_id);
+
+
+--
+-- Name: dim_shopify_customers__index_on_account_id__total_successful_or; Type: INDEX; Schema: warehouse; Owner: -
+--
+
+CREATE INDEX dim_shopify_customers__index_on_account_id__total_successful_or ON warehouse.dim_shopify_customers USING btree (account_id, total_successful_order_count);
+
+
+--
+-- Name: fct_shopify_customer_pareto__index_on_account_id__business_line; Type: INDEX; Schema: warehouse; Owner: -
+--
+
+CREATE INDEX fct_shopify_customer_pareto__index_on_account_id__business_line ON warehouse.fct_shopify_customer_pareto USING btree (account_id, business_line_id, year);
+
+
+--
+-- Name: fct_shopify_orders__index_on_account_id__customer_id__created_a; Type: INDEX; Schema: warehouse; Owner: -
+--
+
+CREATE INDEX fct_shopify_orders__index_on_account_id__customer_id__created_a ON warehouse.fct_shopify_orders USING btree (account_id, customer_id, created_at);
+
+
+--
+-- Name: fct_shopify_orders__index_on_cancelled_at__customer_id__created; Type: INDEX; Schema: warehouse; Owner: -
+--
+
+CREATE INDEX fct_shopify_orders__index_on_cancelled_at__customer_id__created ON warehouse.fct_shopify_orders USING btree (cancelled_at, customer_id, created_at);
+
+
+--
+-- Name: fct_shopify_rfm_thresholds__index_on_account_id__business_line_; Type: INDEX; Schema: warehouse; Owner: -
+--
+
+CREATE INDEX fct_shopify_rfm_thresholds__index_on_account_id__business_line_ ON warehouse.fct_shopify_rfm_thresholds USING btree (account_id, business_line_id);
 
 
 --
@@ -20681,17 +20709,17 @@ CREATE INDEX fct_snowplow_page_views__index_on_account_id__max_tstamp ON warehou
 
 
 --
--- Name: fct_snowplow_sessions__index_on_account_id__session_start; Type: INDEX; Schema: warehouse; Owner: -
+-- Name: stg_shopify_customer_order_aggregates__index_on_account_id__cus; Type: INDEX; Schema: warehouse; Owner: -
 --
 
-CREATE INDEX fct_snowplow_sessions__index_on_account_id__session_start ON warehouse.fct_snowplow_sessions USING btree (account_id, session_start);
+CREATE INDEX stg_shopify_customer_order_aggregates__index_on_account_id__cus ON warehouse.stg_shopify_customer_order_aggregates USING btree (account_id, customer_id);
 
 
 --
--- Name: stg_shopify_customer_rfm__index_on_account_id__customer_id; Type: INDEX; Schema: warehouse; Owner: -
+-- Name: stg_shopify_customer_order_aggregates__index_on_customer_id; Type: INDEX; Schema: warehouse; Owner: -
 --
 
-CREATE INDEX stg_shopify_customer_rfm__index_on_account_id__customer_id ON warehouse.stg_shopify_customer_rfm USING btree (account_id, customer_id);
+CREATE INDEX stg_shopify_customer_order_aggregates__index_on_customer_id ON warehouse.stg_shopify_customer_order_aggregates USING btree (customer_id);
 
 
 --
@@ -20713,20 +20741,6 @@ CREATE INDEX stg_snowplow_web_events_scroll_depth__index_on_page_view_id ON ware
 --
 
 CREATE INDEX stg_snowplow_web_events_time__index_on_page_view_id ON warehouse.stg_snowplow_web_events_time USING btree (page_view_id);
-
-
---
--- Name: stg_snowplow_web_performance_timing_context__index_on_page_view; Type: INDEX; Schema: warehouse; Owner: -
---
-
-CREATE INDEX stg_snowplow_web_performance_timing_context__index_on_page_view ON warehouse.stg_snowplow_web_performance_timing_context USING btree (page_view_id);
-
-
---
--- Name: stg_snowplow_web_ua_parser_context__index_on_page_view_id; Type: INDEX; Schema: warehouse; Owner: -
---
-
-CREATE INDEX stg_snowplow_web_ua_parser_context__index_on_page_view_id ON warehouse.stg_snowplow_web_ua_parser_context USING btree (page_view_id);
 
 
 --

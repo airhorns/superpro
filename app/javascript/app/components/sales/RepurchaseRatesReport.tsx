@@ -111,7 +111,7 @@ __Note__: Both repurchase rates trail down to 0 for the most recent time range. 
       title: "Cohort Retention - Total Cohort Revenue",
       query: {
         measures: [
-          { model: "Sales::RepurchaseCohortFacts", field: "total_spend", id: "total_spend" },
+          { model: "Sales::RepurchaseCohortFacts", field: "total_revenue", id: "total_revenue" },
           { model: "Sales::RepurchaseCohortFacts", field: "genesis_month", id: "genesis_month" },
           { model: "Sales::RepurchaseCohortFacts", field: "months_since_genesis", id: "months_since_genesis" }
         ],
@@ -125,7 +125,7 @@ __Note__: Both repurchase rates trail down to 0 for the most recent time range. 
             type: "viz_system",
             vizType: "cohorts",
             xId: "months_since_genesis",
-            yId: "total_spend",
+            yId: "total_revenue",
             extra: {
               cohortId: "genesis_month"
             }

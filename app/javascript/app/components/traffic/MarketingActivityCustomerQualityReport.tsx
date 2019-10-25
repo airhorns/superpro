@@ -25,7 +25,7 @@ _Note_: For all the numbers on this report, we're measuring how customers behave
         dimensions: [
           {
             model: "Traffic::CustomerAcquisitionFacts",
-            field: "future_24_month_predicted_spend_bucket_label",
+            field: "future_24_month_predicted_revenue_bucket_label",
             id: "predicted_clv"
           }
         ],
@@ -55,13 +55,13 @@ _Note_: For all the numbers on this report, we're measuring how customers behave
         measures: [
           {
             model: "Traffic::CustomerAcquisitionFacts",
-            field: "previous_3_month_spend",
+            field: "previous_3_month_revenue",
             operator: "average",
             id: "average_past_3_month_revenue"
           },
           {
             model: "Traffic::CustomerAcquisitionFacts",
-            field: "future_3_month_predicted_spend",
+            field: "future_3_month_predicted_revenue",
             operator: "average",
             id: "average_future_3_month_revenue"
           }
@@ -108,13 +108,13 @@ _Note_: For all the numbers on this report, we're measuring how customers behave
         measures: [
           {
             model: "Traffic::CustomerAcquisitionFacts",
-            field: "future_3_month_predicted_spend",
+            field: "future_3_month_predicted_revenue",
             operator: "average",
             id: "average_future_3_month_revenue"
           },
           {
             model: "Traffic::CustomerAcquisitionFacts",
-            field: "previous_3_month_spend",
+            field: "previous_3_month_revenue",
             operator: "average",
             id: "average_past_3_month_revenue"
           }
@@ -222,20 +222,20 @@ Below is the raw data powering this report for deeper investigation.`
             operator: "average",
             id: "average_first_order_price"
           },
-          { model: "Traffic::CustomerAcquisitionFacts", field: "total_spend", operator: "sum", id: "total_revenue" },
+          { model: "Traffic::CustomerAcquisitionFacts", field: "total_revenue", operator: "sum", id: "total_revenue" },
           {
             model: "Traffic::CustomerAcquisitionFacts",
-            field: "future_3_month_predicted_spend",
+            field: "future_3_month_predicted_revenue",
             operator: "average",
-            id: "average_future_3_month_predicted_spend"
+            id: "average_future_3_month_predicted_revenue"
           },
           {
             model: "Traffic::CustomerAcquisitionFacts",
-            field: "future_12_month_predicted_spend",
+            field: "future_12_month_predicted_revenue",
             operator: "average",
-            id: "average_future_12_month_predicted_spend"
+            id: "average_future_12_month_predicted_revenue"
           },
-          { model: "Traffic::CustomerAcquisitionFacts", field: "future_24_month_predicted_spend", operator: "sum", id: "customer_equity" }
+          { model: "Traffic::CustomerAcquisitionFacts", field: "future_24_month_predicted_revenue", operator: "sum", id: "customer_equity" }
         ],
         dimensions: [
           { model: "Traffic::CustomerAcquisitionFacts", field: "landing_page_utm_source", id: "utm_source" },

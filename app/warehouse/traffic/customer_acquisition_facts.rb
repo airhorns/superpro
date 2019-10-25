@@ -7,16 +7,16 @@ class Traffic::CustomerAcquisitionFacts < DataModel::FactTable
   measure :total_order_count, DataModel::Types::Number
   measure :total_successful_order_count, DataModel::Types::Number
   measure :total_cancelled_order_count, DataModel::Types::Number
-  measure :total_spend, DataModel::Types::Currency
+  measure :total_revenue, DataModel::Types::Currency
 
-  measure :previous_1_month_spend, DataModel::Types::Currency
-  measure :previous_3_month_spend, DataModel::Types::Currency
-  measure :previous_6_month_spend, DataModel::Types::Currency
-  measure :previous_12_month_spend, DataModel::Types::Currency
+  measure :previous_1_month_revenue, DataModel::Types::Currency
+  measure :previous_3_month_revenue, DataModel::Types::Currency
+  measure :previous_6_month_revenue, DataModel::Types::Currency
+  measure :previous_12_month_revenue, DataModel::Types::Currency
 
-  measure :future_3_month_predicted_spend, DataModel::Types::Currency
-  measure :future_12_month_predicted_spend, DataModel::Types::Currency
-  measure :future_24_month_predicted_spend, DataModel::Types::Currency
+  measure :future_3_month_predicted_revenue, DataModel::Types::Currency
+  measure :future_12_month_predicted_revenue, DataModel::Types::Currency
+  measure :future_24_month_predicted_revenue, DataModel::Types::Currency
 
   measure :days_until_next_order, DataModel::Types::Number
 
@@ -50,12 +50,12 @@ class Traffic::CustomerAcquisitionFacts < DataModel::FactTable
   dimension :landing_page_utm_content, DataModel::Types::String
   dimension :landing_page_source_category, DataModel::Types::String
 
-  dimension :future_3_month_predicted_spend_quintile, DataModel::Types::Number
-  dimension :future_12_month_predicted_spend_quintile, DataModel::Types::Number
-  dimension :future_24_month_predicted_spend_quintile, DataModel::Types::Number
-  dimension :future_3_month_predicted_spend_bucket_label, DataModel::Types::String
-  dimension :future_12_month_predicted_spend_bucket_label, DataModel::Types::String
-  dimension :future_24_month_predicted_spend_bucket_label, DataModel::Types::String
+  dimension :future_3_month_predicted_revenue_quintile, DataModel::Types::Number
+  dimension :future_12_month_predicted_revenue_quintile, DataModel::Types::Number
+  dimension :future_24_month_predicted_revenue_quintile, DataModel::Types::Number
+  dimension :future_3_month_predicted_revenue_bucket_label, DataModel::Types::String
+  dimension :future_12_month_predicted_revenue_bucket_label, DataModel::Types::String
+  dimension :future_24_month_predicted_revenue_bucket_label, DataModel::Types::String
 
   dimension :landing_page_source_campaign, DataModel::Types::String do
     concat(table_node[:landing_page_utm_source], Arel.sql("' '"), table_node[:landing_page_utm_campaign])
