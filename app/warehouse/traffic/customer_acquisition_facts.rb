@@ -48,6 +48,7 @@ class Traffic::CustomerAcquisitionFacts < DataModel::FactTable
   dimension :landing_page_utm_medium, DataModel::Types::String
   dimension :landing_page_utm_campaign, DataModel::Types::String
   dimension :landing_page_utm_content, DataModel::Types::String
+  dimension :landing_page_source_category, DataModel::Types::String
 
   dimension :future_3_month_predicted_spend_quintile, DataModel::Types::Number
   dimension :future_12_month_predicted_spend_quintile, DataModel::Types::Number

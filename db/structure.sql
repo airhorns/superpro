@@ -14930,6 +14930,7 @@ CREATE TABLE warehouse.dim_shopify_customers (
     total_successful_order_count bigint,
     total_cancelled_order_count bigint,
     total_spend double precision,
+    average_spend double precision,
     previous_1_month_spend double precision,
     previous_3_month_spend double precision,
     previous_6_month_spend double precision,
@@ -14972,6 +14973,7 @@ CREATE TABLE warehouse.fct_customer_acquisitions (
     landing_page_utm_medium text,
     landing_page_utm_campaign text,
     landing_page_utm_content text,
+    landing_page_source_category text,
     first_order_total_price double precision,
     total_order_count bigint,
     total_successful_order_count bigint,
@@ -15742,6 +15744,7 @@ CREATE TABLE warehouse.stg_shopify_customer_order_aggregates (
     total_successful_order_count bigint,
     total_cancelled_order_count bigint,
     total_spend double precision,
+    average_spend double precision,
     previous_1_month_spend double precision,
     previous_3_month_spend double precision,
     previous_6_month_spend double precision,
@@ -20643,52 +20646,24 @@ CREATE INDEX tp_sales_order_id__sdc_sequence_idx ON tap_csv.sales USING btree (o
 
 
 --
--- Name: dim_business_lines__index_on_account_id__name; Type: INDEX; Schema: warehouse; Owner: -
+-- Name: fct_customer_acquisitions__index_on_account_id__acquired_at__bu; Type: INDEX; Schema: warehouse; Owner: -
 --
 
-CREATE INDEX dim_business_lines__index_on_account_id__name ON warehouse.dim_business_lines USING btree (account_id, name);
-
-
---
--- Name: dim_shopify_customers__index_on_account_id__business_line_id; Type: INDEX; Schema: warehouse; Owner: -
---
-
-CREATE INDEX dim_shopify_customers__index_on_account_id__business_line_id ON warehouse.dim_shopify_customers USING btree (account_id, business_line_id);
+CREATE INDEX fct_customer_acquisitions__index_on_account_id__acquired_at__bu ON warehouse.fct_customer_acquisitions USING btree (account_id, acquired_at, business_line_id, customer_id);
 
 
 --
--- Name: dim_shopify_customers__index_on_account_id__customer_id; Type: INDEX; Schema: warehouse; Owner: -
+-- Name: fct_shopify_customer_pareto__index_on_account_id__year__custome; Type: INDEX; Schema: warehouse; Owner: -
 --
 
-CREATE INDEX dim_shopify_customers__index_on_account_id__customer_id ON warehouse.dim_shopify_customers USING btree (account_id, customer_id);
-
-
---
--- Name: dim_shopify_customers__index_on_account_id__total_successful_or; Type: INDEX; Schema: warehouse; Owner: -
---
-
-CREATE INDEX dim_shopify_customers__index_on_account_id__total_successful_or ON warehouse.dim_shopify_customers USING btree (account_id, total_successful_order_count);
+CREATE INDEX fct_shopify_customer_pareto__index_on_account_id__year__custome ON warehouse.fct_shopify_customer_pareto USING btree (account_id, year, customer_rank);
 
 
 --
--- Name: fct_shopify_customer_pareto__index_on_account_id__business_line; Type: INDEX; Schema: warehouse; Owner: -
+-- Name: fct_shopify_orders__index_on_account_id__business_line_id; Type: INDEX; Schema: warehouse; Owner: -
 --
 
-CREATE INDEX fct_shopify_customer_pareto__index_on_account_id__business_line ON warehouse.fct_shopify_customer_pareto USING btree (account_id, business_line_id, year);
-
-
---
--- Name: fct_shopify_orders__index_on_account_id__customer_id__created_a; Type: INDEX; Schema: warehouse; Owner: -
---
-
-CREATE INDEX fct_shopify_orders__index_on_account_id__customer_id__created_a ON warehouse.fct_shopify_orders USING btree (account_id, customer_id, created_at);
-
-
---
--- Name: fct_shopify_orders__index_on_cancelled_at__customer_id__created; Type: INDEX; Schema: warehouse; Owner: -
---
-
-CREATE INDEX fct_shopify_orders__index_on_cancelled_at__customer_id__created ON warehouse.fct_shopify_orders USING btree (cancelled_at, customer_id, created_at);
+CREATE INDEX fct_shopify_orders__index_on_account_id__business_line_id ON warehouse.fct_shopify_orders USING btree (account_id, business_line_id);
 
 
 --
@@ -20699,13 +20674,6 @@ CREATE INDEX fct_shopify_repurchase_intervals__index_on_account_id__order_da ON 
 
 
 --
--- Name: fct_shopify_rfm_thresholds__index_on_account_id__business_line_; Type: INDEX; Schema: warehouse; Owner: -
---
-
-CREATE INDEX fct_shopify_rfm_thresholds__index_on_account_id__business_line_ ON warehouse.fct_shopify_rfm_thresholds USING btree (account_id, business_line_id);
-
-
---
 -- Name: fct_snowplow_page_views__index_on_account_id__max_tstamp; Type: INDEX; Schema: warehouse; Owner: -
 --
 
@@ -20713,17 +20681,17 @@ CREATE INDEX fct_snowplow_page_views__index_on_account_id__max_tstamp ON warehou
 
 
 --
--- Name: stg_shopify_customer_order_aggregates__index_on_account_id__cus; Type: INDEX; Schema: warehouse; Owner: -
+-- Name: fct_snowplow_sessions__index_on_account_id__session_start; Type: INDEX; Schema: warehouse; Owner: -
 --
 
-CREATE INDEX stg_shopify_customer_order_aggregates__index_on_account_id__cus ON warehouse.stg_shopify_customer_order_aggregates USING btree (account_id, customer_id);
+CREATE INDEX fct_snowplow_sessions__index_on_account_id__session_start ON warehouse.fct_snowplow_sessions USING btree (account_id, session_start);
 
 
 --
--- Name: stg_shopify_customer_order_aggregates__index_on_customer_id; Type: INDEX; Schema: warehouse; Owner: -
+-- Name: stg_shopify_customer_rfm__index_on_account_id__customer_id; Type: INDEX; Schema: warehouse; Owner: -
 --
 
-CREATE INDEX stg_shopify_customer_order_aggregates__index_on_customer_id ON warehouse.stg_shopify_customer_order_aggregates USING btree (customer_id);
+CREATE INDEX stg_shopify_customer_rfm__index_on_account_id__customer_id ON warehouse.stg_shopify_customer_rfm USING btree (account_id, customer_id);
 
 
 --
@@ -20745,6 +20713,20 @@ CREATE INDEX stg_snowplow_web_events_scroll_depth__index_on_page_view_id ON ware
 --
 
 CREATE INDEX stg_snowplow_web_events_time__index_on_page_view_id ON warehouse.stg_snowplow_web_events_time USING btree (page_view_id);
+
+
+--
+-- Name: stg_snowplow_web_performance_timing_context__index_on_page_view; Type: INDEX; Schema: warehouse; Owner: -
+--
+
+CREATE INDEX stg_snowplow_web_performance_timing_context__index_on_page_view ON warehouse.stg_snowplow_web_performance_timing_context USING btree (page_view_id);
+
+
+--
+-- Name: stg_snowplow_web_ua_parser_context__index_on_page_view_id; Type: INDEX; Schema: warehouse; Owner: -
+--
+
+CREATE INDEX stg_snowplow_web_ua_parser_context__index_on_page_view_id ON warehouse.stg_snowplow_web_ua_parser_context USING btree (page_view_id);
 
 
 --
