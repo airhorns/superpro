@@ -50,6 +50,7 @@ class DataModel::HasAggregationsNodeVisitor < Arel::Visitors::Visitor
 
   alias visit_Integer visit_scalar
   alias visit_String visit_scalar
+  alias visit_NilClass visit_scalar
   alias visit_Arel_Nodes_Quoted visit_scalar
   alias visit_Arel_Attributes_Attribute visit_scalar
 end

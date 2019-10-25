@@ -60,6 +60,7 @@ __Note__: Both repurchase rates trail down to 0 for the most recent time range. 
         dimensions: [
           { model: "Sales::RepurchaseIntervalFacts", field: "days_since_previous_order_bucket_label", id: "days_since_previous_order" }
         ],
+        filters: [{ id: "days_since_previous_order", operator: "is_not_null" }],
         orderings: [{ id: "days_since_previous_order", direction: "asc" }]
       },
       viz: {
