@@ -188,7 +188,7 @@ GEM
       tzinfo
     excon (0.66.0)
     execjs (2.7.0)
-    facebookbusiness (0.4.0.8)
+    facebookbusiness (0.4.0.9)
       faraday (~> 0.15)
       json (~> 2.2)
     factory_bot (5.1.1)
