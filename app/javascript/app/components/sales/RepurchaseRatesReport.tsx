@@ -77,7 +77,7 @@ __Note__: Both repurchase rates trail down to 0 for the most recent time range. 
     },
     {
       type: "markdown_block",
-      markdown: `The heatmaps below show repeat purchase percentage and the total spend for customers who made their first purchase in a given month (the "genesis" month) over the next 12 months. This visualization shows how customers aquired in a given month go on to re-engage with the brand by repurchasing. Ideally, newer cohorts (lower on the heatmap) perform better by repurchasing more often and spending more by some month later. Diagonal patterns in the graph often represent big cohorts acquired around big events, like Black Friday or a big Q4.`
+      markdown: `The heatmaps below show repeat purchase percentage and the total spend for customers who made their first purchase in a given month (the "genesis" month) over the next 12 months. This visualization shows how customers acquired in a given month go on to re-engage with the brand by repurchasing. Ideally, newer cohorts (lower on the heatmap) perform better by repurchasing more often and spending more by some month later. Diagonal patterns in the graph often represent big cohorts acquired around big events, like Black Friday or a big Q4.`
     },
     {
       type: "viz_block",
