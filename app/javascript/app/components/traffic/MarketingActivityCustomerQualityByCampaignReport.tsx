@@ -49,7 +49,7 @@ _Note_: For all the numbers on this report, we're measuring how customers behave
     },
     {
       type: "viz_block",
-      title: "Average Predicted 3 Month Value by Source / Campaign Of Customer's First Order",
+      title: "Average Predicted 3 Month Value by Source / Campaign Of Customer's First Order - CPC Campaigns",
       size: "large",
       query: {
         measures: [
@@ -62,6 +62,49 @@ _Note_: For all the numbers on this report, we're measuring how customers behave
         ],
         dimensions: [{ model: "Traffic::CustomerAcquisitionFacts", field: "landing_page_source_campaign", id: "identifier" }],
         orderings: [{ id: "average_future_3_month_revenue", direction: "desc" }],
+        filters: [
+          {
+            field: { model: "Traffic::CustomerAcquisitionFacts", field: "landing_page_utm_medium", id: "src" },
+            operator: "equals",
+            values: ["cpc"]
+          }
+        ],
+        limit: 30
+      },
+      viz: {
+        type: "viz",
+        systems: [
+          {
+            type: "viz_system",
+            vizType: "bar",
+            xId: "identifier",
+            yId: "average_future_3_month_revenue"
+          }
+        ]
+      }
+    },
+    {
+      type: "viz_block",
+      title: "Average Predicted 3 Month Value by Source / Campaign Of Customer's First Order - Email Campaigns",
+      size: "large",
+      query: {
+        measures: [
+          {
+            model: "Traffic::CustomerAcquisitionFacts",
+            field: "future_3_month_predicted_spend",
+            operator: "average",
+            id: "average_future_3_month_revenue"
+          }
+        ],
+        dimensions: [{ model: "Traffic::CustomerAcquisitionFacts", field: "landing_page_source_campaign", id: "identifier" }],
+        orderings: [{ id: "average_future_3_month_revenue", direction: "desc" }],
+        filters: [
+          {
+            field: { model: "Traffic::CustomerAcquisitionFacts", field: "landing_page_utm_medium", id: "src" },
+            operator: "equals",
+            values: ["email"]
+          }
+        ],
         limit: 30
       },
       viz: {
@@ -78,7 +121,7 @@ _Note_: For all the numbers on this report, we're measuring how customers behave
     },
     {
       type: "markdown_block",
-      markdown: `The above report shows which campaigns are driving customers that have the highest predicted value over the next 3 months. The graph includes the top 30 campaigns.`
+      markdown: `The above two report shows which campaigns are driving customers that have the highest predicted value over the next 3 months -- one for CPC campaigns, and one for email campaigns. Each graph includes the top 30 campaigns for that category. We split these out because email campaigns are often effective but yield less control over spend, whereas CPC campaigns can have their budgets adjusted to aquire the most valuable customers possible.`
     },
     {
       type: "viz_block",
