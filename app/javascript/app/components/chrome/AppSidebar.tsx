@@ -104,15 +104,9 @@ export const AppSidebar = withRouter(
                     <NavigationSubItemButton path="/traffic/overview" exact text="Overview" onClick={this.close} />
                     <NavigationSubItemButton path="/traffic/slow_landing_pages" exact text="Slow Landing Pages" onClick={this.close} />
                     <NavigationSubItemButton
-                      path="/traffic/marketing_activity_customer_quality_by_source"
+                      path="/traffic/marketing_activity_customer_quality"
                       exact
-                      text="Customer Quality By Source"
-                      onClick={this.close}
-                    />
-                    <NavigationSubItemButton
-                      path="/traffic/marketing_activity_customer_quality_by_campaign"
-                      exact
-                      text="Customer Quality By Campaign"
+                      text="Customer Quality"
                       onClick={this.close}
                     />
                   </NavigationSectionButton>

@@ -49,7 +49,7 @@ _Note_: For all the numbers on this report, we're measuring how customers behave
     },
     {
       type: "viz_block",
-      title: "Average Previous and Predicted 3 Month Value by Source / Campaign Of Customer's First Order - CPC Campaigns",
+      title: "Average Previous and Predicted 3 Month Value by Source / Campaign Of Customer's First Order - Paid Campaigns",
       size: "large",
       query: {
         measures: [
@@ -72,7 +72,7 @@ _Note_: For all the numbers on this report, we're measuring how customers behave
           {
             field: { model: "Traffic::CustomerAcquisitionFacts", field: "landing_page_utm_medium", id: "src" },
             operator: "equals",
-            values: ["cpc"]
+            values: ["cpc", "paid"]
           }
         ],
         limit: 30
@@ -145,7 +145,7 @@ _Note_: For all the numbers on this report, we're measuring how customers behave
     },
     {
       type: "markdown_block",
-      markdown: `The above two reports show which campaigns are driving customers that have the highest average predicted spend over the next 3 months compared to the average spend over the previous three months. There's two graphs one for CPC campaigns, and one for email campaigns. Each graph includes the top 30 campaigns for that category. We split CPC and email out because email campaigns are often effective but yield less control over spend, whereas CPC campaigns can have their budgets adjusted to aquire the most valuable customers possible.
+      markdown: `The above two reports show which campaigns are driving customers that have the highest average predicted spend over the next 3 months compared to the average spend over the previous three months. There's two graphs one for paid & CPC campaigns, and one for email campaigns. Each graph includes the top 30 campaigns for that category. We split CPC and email out because email campaigns are often effective but yield less control over spend, whereas CPC campaigns can have their budgets adjusted to aquire the most valuable customers possible.
 
 __Note__: Previous 3 month spend and future 3 month spend often don't line up perfectly for a variety of reasons usually owing to new campaigns, small sample size, campaign adjustments in the 3 month window, Superpro prediction inaccuracy, and confounding factors like discounts being present in some campaign's copy.`
     },
