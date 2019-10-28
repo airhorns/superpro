@@ -78,7 +78,7 @@
     "core-js": "3",
     "cypress": "^3.5.0",
     "d3-array": "^2.3.3",
-    "d3-scale": "^3.1.0",
+    "d3-scale": "^3.2.0",
     "d3-scale-chromatic": "^1.5.0",
     "dinero.js": "^1.6.0",
     "echarts": "^4.4.0",
