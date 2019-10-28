@@ -231,17 +231,20 @@ Below is the raw data powering this report for deeper investigation.`
           },
           {
             model: "Traffic::CustomerAcquisitionFacts",
-            field: "future_12_month_predicted_revenue",
-            operator: "average",
-            id: "average_future_12_month_predicted_revenue"
+            field: "early_repurchase_rate",
+            id: "early_repurchase_rate"
           },
-          { model: "Traffic::CustomerAcquisitionFacts", field: "future_24_month_predicted_revenue", operator: "sum", id: "customer_equity" }
+          {
+            model: "Traffic::CustomerAcquisitionFacts",
+            field: "overall_repurchase_rate",
+            id: "overall_repurchase_rate"
+          }
         ],
         dimensions: [
           { model: "Traffic::CustomerAcquisitionFacts", field: "landing_page_utm_source", id: "utm_source" },
           { model: "Traffic::CustomerAcquisitionFacts", field: "landing_page_utm_campaign", id: "utm_campaign" }
         ],
-        orderings: [{ id: "customer_equity", direction: "desc" }]
+        orderings: [{ id: "count", direction: "desc" }]
       }
     }
   ]
