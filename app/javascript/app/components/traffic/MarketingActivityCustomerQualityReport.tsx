@@ -142,13 +142,13 @@ _Note_: For all the numbers on this report, we're measuring how customers behave
             type: "viz_system",
             vizType: "bar",
             xId: "identifier",
-            yId: "average_past_3_month_revenue"
+            yId: "average_future_3_month_revenue"
           },
           {
             type: "viz_system",
             vizType: "bar",
             xId: "identifier",
-            yId: "average_future_3_month_revenue"
+            yId: "average_past_3_month_revenue"
           }
         ]
       }
