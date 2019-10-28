@@ -10359,10 +10359,10 @@ react-loader-spinner@^3.1.4:
     babel-runtime "^6.26.0"
     prop-types "^15.6.2"
 
-react-loads@^8.3.3:
-  version "8.3.8"
-  resolved "https://registry.yarnpkg.com/react-loads/-/react-loads-8.3.8.tgz#40974d8931439cca4f9a78e5643b3a6a13c57e8e"
-  integrity sha512-H+Wi9Bw/0S8DXRTU/xNNCCoasTzBByiYO/kTgxWYVqrrkMOokSMvg160lw/KO0ebpHGpzzCHGmqwUW8ZMSY/UA==
+react-loads@^8.3.9:
+  version "8.3.9"
+  resolved "https://registry.yarnpkg.com/react-loads/-/react-loads-8.3.9.tgz#5c8693b4fe0e96806cf23844be1190f8d73a0421"
+  integrity sha512-WeKfYrI8jjBONQ7jnMJSVNv91xMsLNWzaYYSo5xUIKBJPFOaHSRwDvhZTo1j5/34u/iBoUwlIQC3c9Ehtm758A==
 
 react-number-format@^4.0.8:
   version "4.3.0"
