@@ -10383,10 +10383,10 @@ react-loads@^8.3.9:
   resolved "https://registry.yarnpkg.com/react-loads/-/react-loads-8.3.9.tgz#5c8693b4fe0e96806cf23844be1190f8d73a0421"
   integrity sha512-WeKfYrI8jjBONQ7jnMJSVNv91xMsLNWzaYYSo5xUIKBJPFOaHSRwDvhZTo1j5/34u/iBoUwlIQC3c9Ehtm758A==
 
-react-number-format@^4.0.8:
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/react-number-format/-/react-number-format-4.3.0.tgz#3c6d7c77debad50a121da57a26abd937c9432da6"
-  integrity sha512-IAxm26MVyuiG+CCPlrz4KAOmxi/mVidK/3pIm2796qkfNtfF108QBBOBGLIFFRJQHwdDN/HI0beiAXK6mJM4Lw==
+react-number-format@^4.3.1:
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/react-number-format/-/react-number-format-4.3.1.tgz#eccfc851d88d74c894ba463620ccb467defbdefb"
+  integrity sha512-ze6Lp7SGM71Jr0uZhUaN6grthv08NKTfJezS26zAWZq63ubmJ++FOX7ueGSK27EvpT7/e3ce9L3jlqr1YMFS7Q==
   dependencies:
     prop-types "^15.7.2"
 
