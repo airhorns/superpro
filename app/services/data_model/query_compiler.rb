@@ -14,7 +14,7 @@ module DataModel
       @alias_replace_counter = 0
     end
 
-    def sql
+    def arel
       measures_by_model = @query_specification.fetch(:measures, []).group_by { |measure_spec| measure_spec[:model] }
       dimensions_by_model = @query_specification.fetch(:dimensions, []).group_by { |dimension_spec| dimension_spec[:model] }
 
@@ -29,8 +29,11 @@ module DataModel
       ordering_specs = @query_specification.fetch(:orderings, [])
       filter_specs = @query_specification.fetch(:filters, [])
 
-      query = select_for_model(model, measure_specs, dimension_specs, ordering_specs, filter_specs)
-      query.to_sql
+      select_for_model(model, measure_specs, dimension_specs, ordering_specs, filter_specs)
+    end
+
+    def sql
+      arel.to_sql
     end
 
     private
