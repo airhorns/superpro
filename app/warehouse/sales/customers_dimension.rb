@@ -14,19 +14,19 @@ class Sales::CustomersDimension < DataModel::DimensionTable
   dimension :most_recent_order_at, DataModel::Types::DateTime
 
   dimension :total_revenue, DataModel::Types::Currency
-  dimension :total_order_count, DataModel::Types::Number
-  dimension :total_successful_order_count, DataModel::Types::Number
-  dimension :total_cancelled_order_count, DataModel::Types::Number
-  dimension :previous_1_month_revenue, DataModel::Types::Currency
-  dimension :previous_3_month_revenue, DataModel::Types::Currency
-  dimension :previous_6_month_revenue, DataModel::Types::Currency
-  dimension :previous_12_month_revenue, DataModel::Types::Currency
+  dimension :total_order_count, DataModel::Types::Number, measureable: true
+  dimension :total_successful_order_count, DataModel::Types::Number, measureable: true
+  dimension :total_cancelled_order_count, DataModel::Types::Number, measureable: true
+  dimension :previous_1_month_revenue, DataModel::Types::Currency, measureable: true
+  dimension :previous_3_month_revenue, DataModel::Types::Currency, measureable: true
+  dimension :previous_6_month_revenue, DataModel::Types::Currency, measureable: true
+  dimension :previous_12_month_revenue, DataModel::Types::Currency, measureable: true
 
-  dimension :future_3_month_predicted_revenue, DataModel::Types::Currency
+  dimension :future_3_month_predicted_revenue, DataModel::Types::Currency, measureable: true
   dimension :future_3_month_predicted_revenue_quintile, DataModel::Types::Number
-  dimension :future_12_month_predicted_revenue, DataModel::Types::Currency
+  dimension :future_12_month_predicted_revenue, DataModel::Types::Currency, measureable: true
   dimension :future_12_month_predicted_revenue_quintile, DataModel::Types::Number
-  dimension :future_24_month_predicted_revenue, DataModel::Types::Currency
+  dimension :future_24_month_predicted_revenue, DataModel::Types::Currency, measureable: true
   dimension :future_24_month_predicted_revenue_quintile, DataModel::Types::Number
 
   dimension :rfm_score, DataModel::Types::String

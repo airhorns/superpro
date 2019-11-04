@@ -96,6 +96,20 @@ class DataModel::QueryCompilerTest < ActiveSupport::TestCase
     )
   end
 
+  test "it can select measures provided by dimensions while joining in the dimension" do
+    assert_matches_snapshot compile(
+      measures: [
+        {
+          model: "Sales::OrderProductLineFacts",
+          field: "customer_previous_3_month_revenue",   # comes from a joined in dimension where the field is actually a dimension, but we treat it as a measure here
+          operator: "average",
+          id: "previous_3_month_revenue",
+        },
+      ],
+      dimensions: [{ model: "Sales::OrderProductLineFacts", field: "variant_product_type", id: "type" }],
+    )
+  end
+
   def compile(query_spec)
     assert DataModel::Query.new(@account, SuperproWarehouse, query_spec).validate!
     DataModel::QueryCompiler.new(@account, SuperproWarehouse, query_spec).sql

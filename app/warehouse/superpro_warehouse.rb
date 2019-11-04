@@ -4,6 +4,7 @@ class SuperproWarehouse < DataModel::Warehouse
   include DataModel::DefaultOperators
 
   register_fact_table Sales::OrderFacts
+  register_fact_table Sales::OrderProductLineFacts
   register_fact_table Sales::CustomerParetoFacts
   register_fact_table Sales::RepurchaseCohortFacts
   register_fact_table Sales::RepurchaseIntervalFacts

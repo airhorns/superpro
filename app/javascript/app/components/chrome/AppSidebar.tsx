@@ -113,6 +113,12 @@ export const AppSidebar = withRouter(
                   <NavigationSectionButton path="/customers" text="Customers" icon={<Customers />} onClick={this.close}>
                     <NavigationSubItemButton path="/customers/overview" exact text="Overview" onClick={this.close} />
                     <NavigationSubItemButton path="/customers/rfm_breakdown" exact text="RFM Breakdown" onClick={this.close} />
+                    <NavigationSubItemButton
+                      path="/customers/first_purchase_behavior"
+                      exact
+                      text="First Purchase Behavior"
+                      onClick={this.close}
+                    />
                   </NavigationSectionButton>
                   <Box flex />
                   <NavigationSectionButton path="/invite" text="Invite Users" icon={<Invite />} onClick={this.close} />

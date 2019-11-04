@@ -14961,6 +14961,28 @@ CREATE TABLE warehouse.dim_shopify_customers (
 
 
 --
+-- Name: dim_shopify_variants; Type: TABLE; Schema: warehouse; Owner: -
+--
+
+CREATE TABLE warehouse.dim_shopify_variants (
+    account_id bigint,
+    variant_id bigint,
+    product_id bigint,
+    sku text,
+    variant_title text,
+    product_title text,
+    current_price double precision,
+    "position" bigint,
+    variant_created_at timestamp with time zone,
+    product_created_at timestamp with time zone,
+    product_published_at timestamp with time zone,
+    tags text,
+    product_vendor text,
+    product_type text
+);
+
+
+--
 -- Name: fct_customer_acquisitions; Type: TABLE; Schema: warehouse; Owner: -
 --
 
@@ -15026,6 +15048,28 @@ CREATE TABLE warehouse.fct_shopify_customer_retention (
     genesis_month timestamp with time zone,
     account_id bigint,
     pct_active_customers numeric
+);
+
+
+--
+-- Name: fct_shopify_order_product_lines; Type: TABLE; Schema: warehouse; Owner: -
+--
+
+CREATE TABLE warehouse.fct_shopify_order_product_lines (
+    account_id bigint,
+    business_line_id bigint,
+    order_id bigint,
+    order_seq_number bigint,
+    customer_id bigint,
+    created_at timestamp with time zone,
+    new_vs_repeat text,
+    sku text,
+    quantity bigint,
+    product_id bigint,
+    variant_id bigint,
+    pre_tax_price double precision,
+    price double precision,
+    taxable boolean
 );
 
 
@@ -15879,6 +15923,7 @@ CREATE VIEW warehouse.stg_shopify_product_variants AS
 
 CREATE VIEW warehouse.stg_shopify_products AS
  SELECT products.id AS product_id,
+    products.account_id,
     NULLIF(lower(products.product_type), ''::text) AS product_type,
     NULLIF(lower(products.title), ''::text) AS title,
     products.handle,
@@ -20671,6 +20716,13 @@ CREATE INDEX dim_shopify_customers__index_on_account_id__customer_id ON warehous
 --
 
 CREATE INDEX dim_shopify_customers__index_on_account_id__total_successful_or ON warehouse.dim_shopify_customers USING btree (account_id, total_successful_order_count);
+
+
+--
+-- Name: dim_shopify_variants__index_on_account_id__variant_id; Type: INDEX; Schema: warehouse; Owner: -
+--
+
+CREATE INDEX dim_shopify_variants__index_on_account_id__variant_id ON warehouse.dim_shopify_variants USING btree (account_id, variant_id);
 
 
 --

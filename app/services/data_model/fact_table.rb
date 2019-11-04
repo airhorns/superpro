@@ -40,7 +40,7 @@ module DataModel
           label: join.key_in_fact_table,
         )
 
-        # Represent the joined in dimension columns as dimensions on this fact table implemented by the JOIN
+        # Represent the joined in fields as fields on this fact table implemented by the JOIN
         dimension.dimension_fields.each do |_key, dimension_field|
           self.dimension(
             "#{prefix}_#{dimension_field.field_name}",
@@ -48,6 +48,17 @@ module DataModel
             column: dimension_field.column_name,
             sql: dimension_field.custom_sql_node,
             label: "#{nice_prefix} #{dimension_field.field_label}",
+            join: join,
+          )
+        end
+
+        dimension.measure_fields.each do |_key, measure_field|
+          self.measure(
+            "#{prefix}_#{measure_field.field_name}",
+            measure_field.data_type,
+            column: measure_field.column_name,
+            sql: measure_field.custom_sql_node,
+            label: "#{nice_prefix} #{measure_field.field_label}",
             join: join,
           )
         end

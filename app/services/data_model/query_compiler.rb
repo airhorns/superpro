@@ -48,6 +48,11 @@ module DataModel
         node = projection_node_for_measure_spec(model, measure_spec)
         projections << safe_alias_node(node, alias_name)
         projections_by_id[measure_spec[:id]] = { node: node, spec: measure_spec, type: :measure, alias_name: alias_name }
+
+        join_node = join_node_for_measure_spec(model, measure_spec)
+        if join_node
+          joins << join_node
+        end
       end
 
       dimension_specs.each do |dimension_spec|
@@ -87,7 +92,8 @@ module DataModel
 
     def projection_node_for_measure_spec(model, measure_spec)
       field = model.measure_fields.fetch(measure_spec[:field].to_sym)
-      expression = field.custom_sql_node || model.table_node[field.field_name]
+      source_table = field.requires_join? ? field.join.model.table_node : model.table_node
+      expression = field.custom_sql_node || source_table[field.column_name]
 
       if measure_spec[:operator]
         expression = apply_operator(expression, field, measure_spec[:operator].to_sym)
@@ -111,7 +117,14 @@ module DataModel
     end
 
     def join_node_for_dimension_spec(model, dimension_spec)
-      field = model.dimension_fields.fetch(dimension_spec[:field].to_sym)
+      join_node_for_field(model, model.dimension_fields.fetch(dimension_spec[:field].to_sym))
+    end
+
+    def join_node_for_measure_spec(model, measure_spec)
+      join_node_for_field(model, model.measure_fields.fetch(measure_spec[:field].to_sym))
+    end
+
+    def join_node_for_field(model, field)
       if field.join
         relation_node = field.join.model.table_node
         fact_join_column = model.table_node[field.join.key_in_fact_table]

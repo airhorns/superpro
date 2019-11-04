@@ -167,6 +167,22 @@ class DataModel::QueryTest < ActiveSupport::TestCase
     assert_equal [{ "total_price" => nil }], result
   end
 
+  test "it can measure dimension fields that are measurable" do
+    result = run_query(
+      measures: [
+        {
+          model: "Sales::OrderProductLineFacts",
+          field: "customer_previous_3_month_revenue",   # comes from a joined in dimension where the field is actually a dimension, but we treat it as a measure here
+          operator: "average",
+          id: "previous_3_month_revenue",
+        },
+      ],
+      dimensions: [{ model: "Sales::OrderProductLineFacts", field: "variant_product_type", id: "type" }],
+    )
+
+    assert_equal [], result
+  end
+
   def run_query(spec)
     DataModel::Query.new(@account, SuperproWarehouse, spec).run
   end
