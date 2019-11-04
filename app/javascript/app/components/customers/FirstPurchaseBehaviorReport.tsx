@@ -63,7 +63,7 @@ const doc: ReportDocument = {
     },
     {
       type: "viz_block",
-      title: "First Purchase Vendor By 3 Month Previous Revenue and 3 Month Predicted Revenue",
+      title: "3 Month Previous Revenue and 3 Month Predicted Revenue By First Purchase Vendor",
       size: "large",
       query: {
         measures: [
@@ -110,7 +110,7 @@ const doc: ReportDocument = {
     },
     {
       type: "viz_block",
-      title: "First Purchase Type By 3 Month Previous Revenue and 3 Month Predicted Revenue",
+      title: "3 Month Previous Revenue and 3 Month Predicted Revenue By First Purchase Type",
       size: "large",
       query: {
         measures: [
@@ -134,7 +134,8 @@ const doc: ReportDocument = {
             operator: "equals",
             values: [1]
           }
-        ]
+        ],
+        limit: 30
       },
       viz: {
         type: "viz",
@@ -150,6 +151,96 @@ const doc: ReportDocument = {
             vizType: "bar",
             xId: "type",
             yId: "future_3_month_predicted_revenue"
+          }
+        ]
+      }
+    },
+    {
+      type: "viz_block",
+      title: "Early Repurchase Rate and Overall Repurchase Rate By First Purchase Type",
+      size: "large",
+      query: {
+        measures: [
+          {
+            model: "Sales::OrderProductLineFacts",
+            field: "customer_early_repurchase_rate",
+            id: "early_repurchase_rate"
+          },
+          {
+            model: "Sales::OrderProductLineFacts",
+            field: "customer_overall_repurchase_rate",
+            id: "overall_repurchase_rate"
+          }
+        ],
+        dimensions: [{ model: "Sales::OrderProductLineFacts", field: "variant_product_type", id: "type" }],
+        filters: [
+          {
+            field: { model: "Sales::OrderProductLineFacts", field: "order_seq_number", id: "order_seq_number" },
+            operator: "equals",
+            values: [1]
+          }
+        ],
+        limit: 30
+      },
+      viz: {
+        type: "viz",
+        systems: [
+          {
+            type: "viz_system",
+            vizType: "bar",
+            xId: "type",
+            yId: "early_repurchase_rate"
+          },
+          {
+            type: "viz_system",
+            vizType: "bar",
+            xId: "type",
+            yId: "overall_repurchase_rate"
+          }
+        ]
+      }
+    },
+    {
+      type: "viz_block",
+      title: "Early Repurchase Rate and Overall Repurchase Rate By First Purchase Vendor",
+      size: "large",
+      query: {
+        measures: [
+          {
+            model: "Sales::OrderProductLineFacts",
+            field: "customer_early_repurchase_rate",
+            id: "early_repurchase_rate"
+          },
+          {
+            model: "Sales::OrderProductLineFacts",
+            field: "customer_overall_repurchase_rate",
+            id: "overall_repurchase_rate"
+          }
+        ],
+        dimensions: [{ model: "Sales::OrderProductLineFacts", field: "variant_product_type", id: "vendor" }],
+        filters: [
+          {
+            field: { model: "Sales::OrderProductLineFacts", field: "order_seq_number", id: "order_seq_number" },
+            operator: "equals",
+            values: [1]
+          }
+        ],
+        limit: 30
+      },
+      viz: {
+        type: "viz",
+        systems: [
+          {
+            type: "viz_system",
+            vizType: "bar",
+            xId: "vendor",
+            yId: "early_repurchase_rate"
+          },
+          {
+            type: "viz_system",
+            vizType: "bar",
+            xId: "vendor",
+            yId: "overall_repurchase_rate"
           }
         ]
       }

@@ -35,4 +35,26 @@ class Sales::CustomersDimension < DataModel::DimensionTable
   dimension :rfm_recency_quintile, DataModel::Types::Number
   dimension :rfm_frequency_quintile, DataModel::Types::Number
   dimension :rfm_monetary_quintile, DataModel::Types::Number
+
+  measure :early_repurchaser_count, DataModel::Types::Number, allow_operators: false do
+    Arel.sql("case when #{sql_string(table_node[:early_repurchaser].eq(true))} then 1 end").count
+  end
+
+  measure :early_repurchase_rate, DataModel::Types::Percentage, allow_operators: false do
+    cast(
+      Arel.sql("case when #{sql_string(table_node[:early_repurchaser].eq(true))} then 1 end").count,
+      :numeric
+    ) / nullif(Arel.sql("*").count, Arel.sql("0"))
+  end
+
+  measure :overall_repurchaser_count, DataModel::Types::Number, allow_operators: false do
+    Arel.sql("case when #{sql_string(table_node[:ever_repurchaser])} then 1 end").count
+  end
+
+  measure :overall_repurchase_rate, DataModel::Types::Percentage, allow_operators: false do
+    cast(
+      Arel.sql("case when #{sql_string(table_node[:ever_repurchaser])} then 1 end").count,
+      :numeric
+    ) / nullif(Arel.sql("*").count, Arel.sql("0"))
+  end
 end
