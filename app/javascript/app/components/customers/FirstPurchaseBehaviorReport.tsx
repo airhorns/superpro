@@ -8,29 +8,27 @@ const doc: ReportDocument = {
     {
       type: "viz_block",
       title: "First Purchases By Vendor",
+      size: "large",
       query: {
         measures: [{ model: "Sales::OrderProductLineFacts", field: "quantity", operator: "sum", id: "total_units" }],
-        dimensions: [
-          { model: "Sales::OrderProductLineFacts", field: "created_at", operator: "date_trunc_day", id: "date" },
-          { model: "Sales::OrderProductLineFacts", field: "variant_product_vendor", id: "vendor" }
-        ],
+        dimensions: [{ model: "Sales::OrderProductLineFacts", field: "variant_product_vendor", id: "vendor" }],
         filters: [
           {
             field: { model: "Sales::OrderProductLineFacts", field: "order_seq_number", id: "order_seq_number" },
             operator: "equals",
             values: [1]
           }
-        ]
+        ],
+        limit: 30
       },
       viz: {
         type: "viz",
         systems: [
           {
             type: "viz_system",
-            vizType: "line",
-            xId: "date",
-            yId: "total_units",
-            segmentIds: ["vendor"]
+            vizType: "bar",
+            xId: "vendor",
+            yId: "total_units"
           }
         ]
       }
@@ -38,29 +36,27 @@ const doc: ReportDocument = {
     {
       type: "viz_block",
       title: "First Purchases By Type",
+      size: "large",
       query: {
         measures: [{ model: "Sales::OrderProductLineFacts", field: "quantity", operator: "sum", id: "total_units" }],
-        dimensions: [
-          { model: "Sales::OrderProductLineFacts", field: "created_at", operator: "date_trunc_day", id: "date" },
-          { model: "Sales::OrderProductLineFacts", field: "variant_product_type", id: "type" }
-        ],
+        dimensions: [{ model: "Sales::OrderProductLineFacts", field: "variant_product_type", id: "type" }],
         filters: [
           {
             field: { model: "Sales::OrderProductLineFacts", field: "order_seq_number", id: "order_seq_number" },
             operator: "equals",
             values: [1]
           }
-        ]
+        ],
+        limit: 30
       },
       viz: {
         type: "viz",
         systems: [
           {
             type: "viz_system",
-            vizType: "line",
-            xId: "date",
-            yId: "total_units",
-            segmentIds: ["type"]
+            vizType: "bar",
+            xId: "type",
+            yId: "total_units"
           }
         ]
       }
@@ -68,6 +64,7 @@ const doc: ReportDocument = {
     {
       type: "viz_block",
       title: "First Purchase Vendor By 3 Month Previous Revenue and 3 Month Predicted Revenue",
+      size: "large",
       query: {
         measures: [
           {
@@ -90,7 +87,8 @@ const doc: ReportDocument = {
             operator: "equals",
             values: [1]
           }
-        ]
+        ],
+        limit: 30
       },
       viz: {
         type: "viz",
@@ -113,6 +111,7 @@ const doc: ReportDocument = {
     {
       type: "viz_block",
       title: "First Purchase Type By 3 Month Previous Revenue and 3 Month Predicted Revenue",
+      size: "large",
       query: {
         measures: [
           {
