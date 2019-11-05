@@ -24,7 +24,7 @@
     "@graphql-codegen/schema-ast": "^1.8.2",
     "@graphql-codegen/typescript": "^1.8.2",
     "@graphql-codegen/typescript-operations": "^1.8.2",
-    "@graphql-codegen/typescript-react-apollo": "^1.8.2",
+    "@graphql-codegen/typescript-react-apollo": "^1.8.3",
     "@rails/webpacker": "^4.0.7",
     "@sentry/browser": "^5.7.1",
     "@types/activestorage": "^5.2.2",
