@@ -3,6 +3,8 @@ import { Markdown, TextArea, Box } from "grommet";
 import styled from "styled-components";
 import { MarkdownBlock } from "../../schema";
 import { SimpleModal } from "superlib";
+import queryString from "query-string";
+import useReactRouter from "use-react-router";
 
 export const StyledMarkdownBlockContainer = styled.div`
   @media print {
@@ -11,9 +13,13 @@ export const StyledMarkdownBlockContainer = styled.div`
 `;
 
 export const HackyMarkdownEditor = (props: { block: MarkdownBlock }) => {
+  const { location } = useReactRouter();
+  const params = queryString.parse(location.search);
+  const editable = !!params.edit;
+
   const [value, setValue] = React.useState(props.block.markdown);
   return (
-    <SimpleModal trigger={setShow => <Markdown onClick={() => setShow(true)}>{value}</Markdown>}>
+    <SimpleModal trigger={setShow => <Markdown onClick={() => editable && setShow(true)}>{value}</Markdown>}>
       <Box width="xlarge" height="xlarge">
         <TextArea fill value={value} onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => setValue(event.target.value)} />
       </Box>

@@ -17,6 +17,7 @@ export class GlobalFilterController {
   history: RouteComponentProps["history"];
   location: RouteComponentProps["location"];
   state: GlobalFilterSet;
+  baseQueryParams: { [key: string]: any };
 
   static Context = StorageContext;
   static Provider = (props: { children: React.ReactNode }) => {
@@ -32,9 +33,10 @@ export class GlobalFilterController {
     this.location = location;
     this.state = { filters: {} };
 
-    const parsed = queryString.parse(this.location.search);
-    if (parsed.filters) {
-      this.state.filters = JSON.parse(parsed.filters as string) as GlobalFilterSet["filters"];
+    const { filters, ...rest } = queryString.parse(this.location.search);
+    this.baseQueryParams = rest;
+    if (filters) {
+      this.state.filters = JSON.parse(filters as string) as GlobalFilterSet["filters"];
     }
   }
 
@@ -54,7 +56,7 @@ export class GlobalFilterController {
     fn();
     this.history.push({
       pathname: this.location.pathname,
-      search: "?" + queryString.stringify({ filters: JSON.stringify(this.state.filters) })
+      search: "?" + queryString.stringify({ ...this.baseQueryParams, filters: JSON.stringify(this.state.filters) })
     });
   }
 }
