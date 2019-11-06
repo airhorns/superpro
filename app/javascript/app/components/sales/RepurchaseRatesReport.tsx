@@ -30,6 +30,10 @@ __Note__: Both repurchase rates trail down to 0 for the most recent time range. 
       }
     },
     {
+      type: "markdown_block",
+      markdown: `&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`
+    },
+    {
       type: "viz_block",
       query: {
         measures: [{ model: "Sales::RepurchaseIntervalFacts", field: "overall_repurchase_rate", id: "overall_repurchase_rate" }],
