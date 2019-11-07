@@ -19,7 +19,7 @@
     "@babel/core": "^7.7.0",
     "@babel/preset-react": "^7.0.0",
     "@graphql-codegen/add": "^1.8.2",
-    "@graphql-codegen/cli": "^1.8.2",
+    "@graphql-codegen/cli": "^1.8.3",
     "@graphql-codegen/fragment-matcher": "^1.8.2",
     "@graphql-codegen/schema-ast": "^1.8.3",
     "@graphql-codegen/typescript": "^1.8.2",
