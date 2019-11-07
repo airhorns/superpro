@@ -244,6 +244,42 @@ const doc: ReportDocument = {
           }
         ]
       }
+    },
+    {
+      type: "table_block",
+      title: "First Sales Order and Customer Values By Individual Product",
+      query: {
+        measures: [
+          { model: "Sales::OrderProductLineFacts", field: "count", id: "purchase_count" },
+          { model: "Sales::OrderProductLineFacts", field: "quantity", operator: "average", id: "average_quantity" },
+          {
+            model: "Sales::OrderProductLineFacts",
+            field: "customer_first_order_total_price",
+            operator: "average",
+            id: "average_first_order_value"
+          },
+          {
+            model: "Sales::OrderProductLineFacts",
+            field: "customer_first_3_month_revenue",
+            operator: "average",
+            id: "average_3_month_revenue"
+          }
+        ],
+        dimensions: [
+          { model: "Sales::OrderProductLineFacts", field: "variant_product_id", id: "id" },
+          { model: "Sales::OrderProductLineFacts", field: "variant_product_title", id: "product_title" },
+          { model: "Sales::OrderProductLineFacts", field: "variant_product_type", id: "product_type" },
+          { model: "Sales::OrderProductLineFacts", field: "variant_product_vendor", id: "product_vendor" }
+        ],
+        orderings: [{ id: "purchase_count", direction: "desc" }],
+        filters: [
+          {
+            field: { model: "Sales::OrderProductLineFacts", field: "order_seq_number", id: "order_seq_number" },
+            operator: "equals",
+            values: [1]
+          }
+        ]
+      }
     }
   ]
 };

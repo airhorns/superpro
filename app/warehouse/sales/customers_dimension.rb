@@ -13,21 +13,36 @@ class Sales::CustomersDimension < DataModel::DimensionTable
   dimension :first_order_at, DataModel::Types::DateTime
   dimension :most_recent_order_at, DataModel::Types::DateTime
 
-  dimension :total_revenue, DataModel::Types::Currency
+  dimension :total_revenue, DataModel::Types::Currency, measureable: true
   dimension :total_order_count, DataModel::Types::Number, measureable: true
   dimension :total_successful_order_count, DataModel::Types::Number, measureable: true
   dimension :total_cancelled_order_count, DataModel::Types::Number, measureable: true
+
+  dimension :first_order_total_price, DataModel::Types::Currency, measureable: true
+  dimension :first_order_at, DataModel::Types::DateTime
+  dimension :first_order_number, DataModel::Types::String
+  dimension :second_order_total_price, DataModel::Types::Currency, measureable: true
+  dimension :second_order_at, DataModel::Types::DateTime
+  dimension :second_order_number, DataModel::Types::String
+
   dimension :previous_1_month_revenue, DataModel::Types::Currency, measureable: true
   dimension :previous_3_month_revenue, DataModel::Types::Currency, measureable: true
   dimension :previous_6_month_revenue, DataModel::Types::Currency, measureable: true
   dimension :previous_12_month_revenue, DataModel::Types::Currency, measureable: true
+  dimension :first_1_month_revenue, DataModel::Types::Currency, measureable: true
+  dimension :first_3_month_revenue, DataModel::Types::Currency, measureable: true
+  dimension :first_6_month_revenue, DataModel::Types::Currency, measureable: true
+  dimension :first_12_month_revenue, DataModel::Types::Currency, measureable: true
 
   dimension :future_3_month_predicted_revenue, DataModel::Types::Currency, measureable: true
   dimension :future_3_month_predicted_revenue_quintile, DataModel::Types::Number
+  dimension :future_3_month_predicted_revenue_bucket_label, DataModel::Types::String
   dimension :future_12_month_predicted_revenue, DataModel::Types::Currency, measureable: true
   dimension :future_12_month_predicted_revenue_quintile, DataModel::Types::Number
+  dimension :future_12_month_predicted_revenue_bucket_label, DataModel::Types::String
   dimension :future_24_month_predicted_revenue, DataModel::Types::Currency, measureable: true
   dimension :future_24_month_predicted_revenue_quintile, DataModel::Types::Number
+  dimension :future_24_month_predicted_revenue_bucket_label, DataModel::Types::String
 
   dimension :rfm_score, DataModel::Types::String
   dimension :rfm_label, DataModel::Types::String
