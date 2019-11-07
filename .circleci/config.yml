@@ -6,7 +6,8 @@ jobs:
     docker:
       - image: superpro/deploy-container
     steps:
-      - setup_remote_docker
+      - setup_remote_docker:
+          docker_layer_caching: true
       - checkout
       - gcp-cli/initialize
       - run:
