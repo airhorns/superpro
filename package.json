@@ -137,7 +137,7 @@
     "ts-node": "^8.0.3",
     "tslib": "^1.9.3",
     "type-zoo": "^3.3.0",
-    "typescript": "^3.5.1",
+    "typescript": "^3.7.2",
     "url-join": "^4.0.1",
     "use-bus": "^2.1.0",
     "use-detect-print": "^0.0.2",
