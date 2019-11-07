@@ -12,7 +12,6 @@
           }[];
         };
       }
-
       const result: IntrospectionResultData = {
   "__schema": {
     "types": [
@@ -37,6 +36,5 @@
     ]
   }
 };
-
       export default result;
     
