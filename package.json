@@ -53,7 +53,7 @@
     "@types/react-json-tree": "^0.6.11",
     "@types/react-resizable": "^1.7.0",
     "@types/react-router-dom": "^5.1.2",
-    "@types/react-select": "^2.0.17",
+    "@types/react-select": "^3.0.8",
     "@types/segment-analytics": "^0.0.32",
     "@types/shortid": "^0.0.29",
     "@types/slate": "^0.47.3",

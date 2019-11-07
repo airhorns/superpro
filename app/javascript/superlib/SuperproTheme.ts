@@ -3,7 +3,7 @@ import { generate } from "grommet/themes";
 import { normalizeColor } from "grommet/utils";
 import { lighten } from "polished";
 import { merge } from "lodash";
-import { Props as ReactSelectProps } from "react-select/lib/Select";
+import { Props as ReactSelectProps } from "react-select";
 
 const HeadingAutoWidths = {
   xlarge: {

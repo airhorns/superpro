@@ -1,7 +1,6 @@
-import ReactSelect from "react-select";
+import ReactSelect, { ValueType } from "react-select";
 import React from "react";
 import { Row, SuperproReactSelectTheme, isArrayOptionType } from "superlib";
-import { ValueType } from "react-select/lib/types";
 import { VizBlock, TableBlock } from "../../schema";
 import { ReportBuilderContext } from "./ReportBuilder";
 import { Dimension } from "../../WarehouseQuery";

@@ -1,8 +1,6 @@
 import * as React from "react";
 import { find, compact, isArray } from "lodash";
-import ReactSelect from "react-select";
-import { Props as ReactSelectProps } from "react-select/lib/Select";
-import { ValueType } from "react-select/lib/types";
+import ReactSelect, { ValueType, Props as ReactSelectProps } from "react-select";
 import { isArrayOptionType } from "../utils";
 import { FieldProps, DocType, pathToName, pathToClassName } from "./utils";
 import { useSuperForm } from "../superform";
