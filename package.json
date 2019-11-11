@@ -89,7 +89,7 @@
     "fork-ts-checker-webpack-plugin": "^1.6.0",
     "graphql": "^14.1.1",
     "graphql-tag": "^2.10.1",
-    "grommet": "^2.7.2",
+    "grommet": "^2.8.0",
     "immutable": "^4.0.0-rc.12",
     "is-hotkey": "^0.1.4",
     "is-image": "^3.0.0",
