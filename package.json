@@ -125,7 +125,7 @@
     "regenerator-runtime": "^0.13.2",
     "rrule": "^2.6.2",
     "shortid": "^2.2.14",
-    "slate": "^0.47.4",
+    "slate": "^0.47.9",
     "slate-auto-replace": "^0.12.1",
     "slate-collapse-on-escape": "^0.8.1",
     "slate-hotkeys": "^0.2.9",
