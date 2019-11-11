@@ -111,7 +111,7 @@
     "react-file-icon": "^0.2.0",
     "react-gravatar": "^2.6.3",
     "react-helmet": "^5.2.1",
-    "react-infinite-scroll-component": "^4.5.2",
+    "react-infinite-scroll-component": "^5.0.3",
     "react-json-tree": "^0.11.2",
     "react-load-script": "^0.0.6",
     "react-loader-spinner": "^3.1.4",
