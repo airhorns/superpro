@@ -21,12 +21,15 @@ spec:
       - superuser
     singer-importer:
       - superuser
+    scorpion_production:
+      - superuser
   enableMasterLoadBalancer: true
   enableReplicaLoadBalancer: true
   allowedSourceRanges: # load balancers' source ranges for both master and replica services
     - 0.0.0.0/0
   databases:
     superpro_production: superpro_production
+    scorpion_production: scorpion_production
 
   # Expert section
 
