@@ -48,7 +48,7 @@
     "@types/react-beautiful-dnd": "^11.0.2",
     "@types/react-dom": "^16.9.3",
     "@types/react-gravatar": "^2.6.7",
-    "@types/react-helmet": "^5.0.13",
+    "@types/react-helmet": "^5.0.14",
     "@types/react-infinite-scroll-component": "^4.2.5",
     "@types/react-json-tree": "^0.6.11",
     "@types/react-resizable": "^1.7.0",
